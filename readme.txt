@@ -1,0 +1,4 @@
+- Curso
+- Número de grupo
+- Nombre y legajo de todos los integrantes
+- Email del integrante responsable del grupo.
