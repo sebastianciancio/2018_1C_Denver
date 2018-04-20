@@ -19,7 +19,7 @@ namespace FrbaHotel
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Form2 frm = new Form2();
+            Cliente frm = new Cliente();
             frm.Show();
         }
 
