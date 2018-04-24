@@ -199,7 +199,7 @@ CREATE TABLE [dbo].[formas_pago](
 GO
 
 CREATE TABLE [dbo].[funcionalidades](
-      [funcionalidad_id] [smallint] NOT NULL,
+      [funcionalidad_id] [smallint] IDENTITY(1,1) NOT NULL,
       [funcionalidad_nombre] [nvarchar](255) NULL,
       [funcionalidad_created] [datetime] NULL,
  CONSTRAINT [PK_funcionalidades] PRIMARY KEY CLUSTERED 
@@ -228,7 +228,7 @@ GO
 
 
 CREATE TABLE [dbo].[hoteles](
-      [hotel_id] [smallint] NOT NULL,
+      [hotel_id] [smallint] IDENTITY(1,1) NOT NULL,
       [hotel_calle] [nvarchar](255) NULL,
       [hotel_nro_calle] [numeric](18, 0) NULL,
       [hotel_ciudad] [nvarchar](255) NULL,
@@ -247,6 +247,7 @@ CREATE TABLE [dbo].[hoteles](
 ) ON [PRIMARY]
 GO
 
+
 CREATE TABLE [dbo].[hoteles_regimenes](
       [hotel_regimen_hotel_id] [smallint] NULL,
       [hotel_regimen_regimen_id] [numeric](18, 0) NULL
@@ -264,7 +265,7 @@ CREATE TABLE [dbo].[paises](
 GO
 
 CREATE TABLE [dbo].[regimenes](
-      [regimen_id] [numeric](18, 0) NOT NULL,
+      [regimen_id] [numeric](18, 0) IDENTITY(1,1) NOT NULL,
       [regimen_descripcion] [nvarchar](255) NULL,
       [regimen_precio] [numeric](18, 2) NULL,
       [regimen_activo] [char](1) NULL,
@@ -277,12 +278,10 @@ CREATE TABLE [dbo].[regimenes](
 GO
 
 CREATE TABLE [dbo].[reservas](
+      [reserva_codigo] [numeric](18, 0) NOT NULL,      
       [reserva_fecha_inicio] [datetime] NULL,
-      [reserva_created] [nchar](10) NULL,
-      [reserva_codigo] [numeric](18, 0) NOT NULL,
       [reserva_cant_noches] [numeric](18, 0) NULL,
       [reserva_fecha_fin] [datetime] NULL,
-      [reserva_precio_total] [numeric](18, 2) NULL,
       [reserva_cliente_tipo_documento_id] [smallint] NULL,
       [reserva_cliente_pasaporte_nro] [numeric](18, 0) NULL,
       [reserva_hotel_id] [smallint] NULL,
@@ -291,12 +290,14 @@ CREATE TABLE [dbo].[reservas](
       [reserva_motivo_cancelacion] [ntext] NULL,
       [reserva_fecha_cancelacion] [datetime] NULL,
       [reserva_usuario_user_cancelacion] [nvarchar](50) NULL,
+      [reserva_created] [nchar](10) NULL,      
  CONSTRAINT [PK_reservas] PRIMARY KEY CLUSTERED 
 (
       [reserva_codigo] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
+
 
 CREATE TABLE [dbo].[reservas_habitaciones](
       [reserva_habitaciones_reserva_codigo] [numeric](18, 0) NULL,
@@ -410,11 +411,12 @@ CREACION DE LOS CONSTRAINT
 ALTER TABLE [dbo].[regimenes] ADD  CONSTRAINT [DF_regimenes_regimen_activo]  DEFAULT ('S') FOR [regimen_activo]
 GO
 
-ALTER TABLE [dbo].[reservas]  WITH CHECK ADD  CONSTRAINT [FK_reservas_clientes] FOREIGN KEY([reserva_cliente_tipo_documento_id], [reserva_cliente_pasaporte_nro])
+
+ALTER TABLE [dbo].[reservas]  WITH NOCHECK ADD  CONSTRAINT [FK_reservas_clientes] FOREIGN KEY([reserva_cliente_tipo_documento_id], [reserva_cliente_pasaporte_nro])
 REFERENCES [dbo].[clientes] ([cliente_tipo_documento_id], [cliente_pasaporte_nro])
 GO
 
-ALTER TABLE [dbo].[reservas] CHECK CONSTRAINT [FK_reservas_clientes]
+ALTER TABLE [dbo].[reservas] NOCHECK CONSTRAINT [FK_reservas_clientes]
 GO
 
 ALTER TABLE [dbo].[reservas]  WITH CHECK ADD  CONSTRAINT [FK_reservas_estados] FOREIGN KEY([reserva_estado_id])
@@ -438,11 +440,11 @@ GO
 ALTER TABLE [dbo].[reservas] CHECK CONSTRAINT [FK_reservas_usuarios]
 GO
 
-ALTER TABLE [dbo].[reservas]  WITH CHECK ADD  CONSTRAINT [FK_reservas_usuarios1] FOREIGN KEY([reserva_usuario_user_cancelacion])
+ALTER TABLE [dbo].[reservas]  WITH NOCHECK ADD  CONSTRAINT [FK_reservas_usuarios1] FOREIGN KEY([reserva_usuario_user_cancelacion])
 REFERENCES [dbo].[usuarios] ([usuario_user])
 GO
 
-ALTER TABLE [dbo].[reservas] CHECK CONSTRAINT [FK_reservas_usuarios1]
+ALTER TABLE [dbo].[reservas] NOCHECK CONSTRAINT [FK_reservas_usuarios1]
 GO
 
 ALTER TABLE [dbo].[reservas_habitaciones]  WITH CHECK ADD  CONSTRAINT [FK_reservas_habitaciones_regimenes] FOREIGN KEY([reserva_habitaciones_regimen_id])
@@ -662,14 +664,6 @@ ALTER TABLE [dbo].[facturas_items] CHECK CONSTRAINT [FK_facturas_items_reservas]
 GO
 
 
-/****** TIPO DOCUMENTOS ******/
-INSERT INTO tipo_documentos VALUES (1, 'PASAPORTE');
-INSERT INTO tipo_documentos VALUES (2, 'DNI');
-INSERT INTO tipo_documentos VALUES (3, 'CEDULA POLICIAL');
-INSERT INTO tipo_documentos VALUES (4, 'LE');
-INSERT INTO tipo_documentos VALUES (5, 'LC');
-GO
-
 /****** PAISES  ******/
 INSERT INTO paises VALUES (1, 'ARGENTINA');
 INSERT INTO paises VALUES (2, 'CHILE');
@@ -693,6 +687,57 @@ INSERT INTO paises VALUES (19, 'HAITÍ');
 INSERT INTO paises VALUES (20, 'REPÚBLICA DOMINICANA');
 INSERT INTO paises VALUES (21, 'PUERTO RICO');
 INSERT INTO paises VALUES (22, 'ESPAÑA');
+GO
+
+/****** FORMAS_PAGO  ******/
+INSERT INTO formas_pago VALUES (1, 'EFECTIVO');
+INSERT INTO formas_pago VALUES (2, 'TARJETA DE CREDITO');
+INSERT INTO formas_pago VALUES (3, 'TARJETA DE DEBITO');
+INSERT INTO formas_pago VALUES (4, 'CHEQUE');
+GO
+
+/****** ESTADOS  ******/
+INSERT INTO estados VALUES (1, 'RESERVA CORRECTA');
+INSERT INTO estados VALUES (2, 'RESERVA MODIFICADA');
+INSERT INTO estados VALUES (3, 'RESERVA CANCELADA POR RECEPCIÓN');
+INSERT INTO estados VALUES (4, 'RESERVA CANCELADA POR CLIENTE');
+INSERT INTO estados VALUES (5, 'RESERVA CANCELADA POR NO-SHOW');
+INSERT INTO estados VALUES (6, 'RESERVA CON INGRESO (EFECTIVIZADA)');
+GO
+
+/****** tipo_documentos  ******/
+INSERT INTO tipo_documentos VALUES (1, 'PASAPORTE');
+INSERT INTO tipo_documentos VALUES (2, 'DNI');
+INSERT INTO tipo_documentos VALUES (3, 'LE');
+INSERT INTO tipo_documentos VALUES (4, 'LC');
+INSERT INTO tipo_documentos VALUES (5, 'CEDULA POLICIAL');
+GO
+
+/****** usuarios  ******/
+INSERT INTO usuarios (usuario_user, usuario_pass, usuario_nombre, usuario_apellido) VALUES ('GUEST', 'GUEST','GUEST','GUEST');
+INSERT INTO usuarios (usuario_user, usuario_pass, usuario_nombre, usuario_apellido) VALUES ('MIGRATION', 'MIGRATION','MIGRATION','MIGRATION');
+GO
+
+
+/****** roles  ******/
+INSERT INTO roles (rol_nombre, rol_created) VALUES ('ADMINISTRADOR',GETDATE());
+INSERT INTO roles (rol_nombre, rol_created) VALUES ('RECEPCIONISTA',GETDATE());
+INSERT INTO roles (rol_nombre, rol_created) VALUES ('GUEST',GETDATE());
+GO
+
+/****** funcionalidades  ******/
+INSERT INTO funcionalidades (funcionalidad_nombre, funcionalidad_created) VALUES ('ABM DE ROL', GETDATE());
+INSERT INTO funcionalidades (funcionalidad_nombre, funcionalidad_created) VALUES ('ABM DE USUARIO', GETDATE());
+INSERT INTO funcionalidades (funcionalidad_nombre, funcionalidad_created) VALUES ('ABM DE CLIENTE', GETDATE());
+INSERT INTO funcionalidades (funcionalidad_nombre, funcionalidad_created) VALUES ('ABM DE HOTEL', GETDATE());
+INSERT INTO funcionalidades (funcionalidad_nombre, funcionalidad_created) VALUES ('ABM DE HABITACIÓN', GETDATE());
+INSERT INTO funcionalidades (funcionalidad_nombre, funcionalidad_created) VALUES ('ABM RÉGIMEN DE ESTADÍA', GETDATE());
+INSERT INTO funcionalidades (funcionalidad_nombre, funcionalidad_created) VALUES ('GENERAR O MODIFICAR UN RESERVA', GETDATE());
+INSERT INTO funcionalidades (funcionalidad_nombre, funcionalidad_created) VALUES ('CANCELAR RESERVA', GETDATE());
+INSERT INTO funcionalidades (funcionalidad_nombre, funcionalidad_created) VALUES ('REGISTRAR ESTADÍA (CHECK-IN/CHECK-OUT)', GETDATE());
+INSERT INTO funcionalidades (funcionalidad_nombre, funcionalidad_created) VALUES ('REGISTRAR CONSUMIBLES', GETDATE());
+INSERT INTO funcionalidades (funcionalidad_nombre, funcionalidad_created) VALUES ('FACTURAR ESTADÍA', GETDATE());
+INSERT INTO funcionalidades (funcionalidad_nombre, funcionalidad_created) VALUES ('LISTADO ESTADÍSTICO', GETDATE());
 GO
 
 /****** CLIENTES ******/
@@ -733,3 +778,133 @@ SELECT
       ,[Cliente_Depto]
       ,[Cliente_Nacionalidad]
 )
+GO
+
+/****** HOTELES ******/
+INSERT INTO hoteles 
+(hotel_ciudad, hotel_calle, hotel_nro_calle, hotel_estrellas, hotel_recarga_estrella, hotel_pais_id, hotel_created)
+( 
+SELECT     Hotel_Ciudad, Hotel_Calle, Hotel_Nro_Calle, Hotel_CantEstrella, Hotel_Recarga_Estrella, 1, GETDATE()
+FROM         gd_esquema.Maestra
+GROUP BY Hotel_Ciudad, Hotel_Calle, Hotel_Nro_Calle, Hotel_CantEstrella, Hotel_Recarga_Estrella
+)
+GO
+
+
+/****** usuarios_hoteles  ******/
+INSERT INTO usuarios_hoteles (usuario_hotel_id, usuario_usuario_user) VALUES (1,'GUEST');
+INSERT INTO usuarios_hoteles (usuario_hotel_id, usuario_usuario_user) VALUES (2,'GUEST');
+INSERT INTO usuarios_hoteles (usuario_hotel_id, usuario_usuario_user) VALUES (3,'GUEST');
+INSERT INTO usuarios_hoteles (usuario_hotel_id, usuario_usuario_user) VALUES (4,'GUEST');
+INSERT INTO usuarios_hoteles (usuario_hotel_id, usuario_usuario_user) VALUES (5,'GUEST');
+INSERT INTO usuarios_hoteles (usuario_hotel_id, usuario_usuario_user) VALUES (6,'GUEST');
+INSERT INTO usuarios_hoteles (usuario_hotel_id, usuario_usuario_user) VALUES (7,'GUEST');
+INSERT INTO usuarios_hoteles (usuario_hotel_id, usuario_usuario_user) VALUES (8,'GUEST');
+INSERT INTO usuarios_hoteles (usuario_hotel_id, usuario_usuario_user) VALUES (9,'GUEST');
+INSERT INTO usuarios_hoteles (usuario_hotel_id, usuario_usuario_user) VALUES (10,'GUEST');
+INSERT INTO usuarios_hoteles (usuario_hotel_id, usuario_usuario_user) VALUES (11,'GUEST');
+INSERT INTO usuarios_hoteles (usuario_hotel_id, usuario_usuario_user) VALUES (12,'GUEST');
+INSERT INTO usuarios_hoteles (usuario_hotel_id, usuario_usuario_user) VALUES (13,'GUEST');
+INSERT INTO usuarios_hoteles (usuario_hotel_id, usuario_usuario_user) VALUES (14,'GUEST');
+INSERT INTO usuarios_hoteles (usuario_hotel_id, usuario_usuario_user) VALUES (15,'GUEST');
+INSERT INTO usuarios_hoteles (usuario_hotel_id, usuario_usuario_user) VALUES (1,'MIGRATION');
+INSERT INTO usuarios_hoteles (usuario_hotel_id, usuario_usuario_user) VALUES (2,'MIGRATION');
+INSERT INTO usuarios_hoteles (usuario_hotel_id, usuario_usuario_user) VALUES (3,'MIGRATION');
+INSERT INTO usuarios_hoteles (usuario_hotel_id, usuario_usuario_user) VALUES (4,'MIGRATION');
+INSERT INTO usuarios_hoteles (usuario_hotel_id, usuario_usuario_user) VALUES (5,'MIGRATION');
+INSERT INTO usuarios_hoteles (usuario_hotel_id, usuario_usuario_user) VALUES (6,'MIGRATION');
+INSERT INTO usuarios_hoteles (usuario_hotel_id, usuario_usuario_user) VALUES (7,'MIGRATION');
+INSERT INTO usuarios_hoteles (usuario_hotel_id, usuario_usuario_user) VALUES (8,'MIGRATION');
+INSERT INTO usuarios_hoteles (usuario_hotel_id, usuario_usuario_user) VALUES (9,'MIGRATION');
+INSERT INTO usuarios_hoteles (usuario_hotel_id, usuario_usuario_user) VALUES (10,'MIGRATION');
+INSERT INTO usuarios_hoteles (usuario_hotel_id, usuario_usuario_user) VALUES (11,'MIGRATION');
+INSERT INTO usuarios_hoteles (usuario_hotel_id, usuario_usuario_user) VALUES (12,'MIGRATION');
+INSERT INTO usuarios_hoteles (usuario_hotel_id, usuario_usuario_user) VALUES (13,'MIGRATION');
+INSERT INTO usuarios_hoteles (usuario_hotel_id, usuario_usuario_user) VALUES (14,'MIGRATION');
+INSERT INTO usuarios_hoteles (usuario_hotel_id, usuario_usuario_user) VALUES (15,'MIGRATION');
+GO
+
+/****** TIPO_HABITACIONES ******/
+INSERT INTO tipo_habitaciones (tipo_habitacion_descripcion, tipo_habitacion_porcentual, tipo_habitacion_id, tipo_habitacion_created)
+(
+SELECT  DISTINCT   Habitacion_Tipo_Descripcion, Habitacion_Tipo_Porcentual, Habitacion_Tipo_Codigo, GETDATE()
+FROM         gd_esquema.Maestra
+
+)
+GO
+
+/****** HABITACIONES ******/
+INSERT INTO habitaciones 
+(habitacion_nro, habitacion_piso, habitacion_frente, habitacion_created, habitacion_hotel_id, habitacion_tipo_habitacion_id)
+(
+SELECT distinct Habitacion_Numero, Habitacion_Piso, Habitacion_Frente, GETDATE(), (SELECT distinct t1.hotel_id FROM hoteles as t1 WHERE t1.hotel_calle = gd_esquema.Maestra.Hotel_Calle AND t1.hotel_ciudad = gd_esquema.Maestra.Hotel_Ciudad), Habitacion_Tipo_Codigo
+FROM         gd_esquema.Maestra
+
+)
+GO
+
+/****** CONSUMIBLES ******/
+INSERT INTO consumibles
+(consumible_id, consumible_descripcion, consumible_precio, consumible_created)
+(
+SELECT     Consumible_Codigo, Consumible_Descripcion, Consumible_Precio, GETDATE()
+FROM         gd_esquema.Maestra
+WHERE Consumible_Codigo is not null
+GROUP BY Consumible_Codigo, Consumible_Descripcion, Consumible_Precio
+)
+GO
+
+/****** REGIMENES ******/
+INSERT INTO regimenes
+(regimen_descripcion,regimen_precio,regimen_created)
+(
+SELECT     Regimen_Descripcion, Regimen_Precio, GETDATE()
+FROM         gd_esquema.Maestra
+group by Regimen_Descripcion, Regimen_Precio
+)
+GO
+
+
+/****** CONSUMIBLES_CLIENTES ******/
+INSERT INTO consumibles_clientes
+(consumible_cliente_consumible_id, consumible_cliente_pasaporte_nro, consumible_cliente_tipo_documento_id, consumible_cliente_fecha_consumo)
+(
+SELECT     Consumible_Codigo, Cliente_Pasaporte_Nro, 1, NULL
+FROM         gd_esquema.Maestra
+WHERE
+      Consumible_Codigo IS NOT NULL AND  Cliente_Pasaporte_Nro NOT IN(5833450,8573690,9616602,10968810,13197523,17144724,17993372,19944671,25170042,27682640,28333918,28766839,33462772,33467493,40407965,41118734,49848816,52451739,56505775,58145810,58685660,
+      59187942,59790782,65047886,69110399,72231403,74872928, 74899834,75898906,82103542,82337502,83630142,85044064,87591511,
+      88559381,89094646,90135406,91296720,95744921)
+GROUP BY
+      Consumible_Codigo, Cliente_Pasaporte_Nro
+)
+GO
+
+
+/****** HOTELES_REGIMENES ******/
+INSERT INTO hoteles_regimenes
+(hotel_regimen_hotel_id,hotel_regimen_regimen_id)
+(
+SELECT DISTINCT    
+(SELECT distinct t1.hotel_id FROM hoteles as t1 WHERE t1.hotel_calle = gd_esquema.Maestra.Hotel_Calle AND t1.hotel_ciudad = gd_esquema.Maestra.Hotel_Ciudad),
+(SELECT distinct t1.regimen_id FROM regimenes as t1 WHERE t1.regimen_descripcion = gd_esquema.Maestra.Regimen_Descripcion)
+ 
+FROM gd_esquema.Maestra
+)
+GO
+
+
+/****** RESERVAS ******/
+INSERT INTO reservas
+(reserva_fecha_inicio, reserva_fecha_fin,reserva_codigo,reserva_cant_noches, reserva_cliente_tipo_documento_id, reserva_cliente_pasaporte_nro, reserva_hotel_id, reserva_usuario_user, reserva_estado_id)
+(
+SELECT     Reserva_Fecha_Inicio, (Reserva_Fecha_Inicio+Reserva_Cant_Noches), Reserva_Codigo, Reserva_Cant_Noches, 1, Cliente_Pasaporte_Nro, (SELECT distinct t1.hotel_id FROM hoteles as t1 WHERE t1.hotel_calle = gd_esquema.Maestra.Hotel_Calle AND t1.hotel_ciudad = gd_esquema.Maestra.Hotel_Ciudad), 'MIGRATION',1
+FROM         gd_esquema.Maestra
+WHERE
+      Cliente_Pasaporte_Nro NOT IN(5833450,8573690,9616602,10968810,13197523,17144724,17993372,19944671,25170042,27682640,28333918,28766839,33462772,33467493,40407965,41118734,49848816,52451739,56505775,58145810,58685660,
+      59187942,59790782,65047886,69110399,72231403,74872928, 74899834,75898906,82103542,82337502,83630142,85044064,87591511,
+      88559381,89094646,90135406,91296720,95744921)
+  GROUP BY
+      Reserva_Fecha_Inicio, Reserva_Codigo, Reserva_Cant_Noches, Cliente_Pasaporte_Nro, Hotel_Calle, Hotel_Ciudad
+)
+GO
