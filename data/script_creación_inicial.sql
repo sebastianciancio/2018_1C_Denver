@@ -716,6 +716,8 @@ GO
 /****** usuarios  ******/
 INSERT INTO usuarios (usuario_user, usuario_pass, usuario_nombre, usuario_apellido) VALUES ('GUEST', 'GUEST','GUEST','GUEST');
 INSERT INTO usuarios (usuario_user, usuario_pass, usuario_nombre, usuario_apellido) VALUES ('MIGRATION', 'MIGRATION','MIGRATION','MIGRATION');
+INSERT INTO usuarios (usuario_user, usuario_pass, usuario_nombre, usuario_apellido) VALUES ('ADMIN', 'ADMIN','ADMIN','ADMIN');
+INSERT INTO usuarios (usuario_user, usuario_pass, usuario_nombre, usuario_apellido) VALUES ('RECEPCION', 'RECEPCION','RECEPCION','RECEPCION');
 GO
 
 
@@ -723,6 +725,12 @@ GO
 INSERT INTO roles (rol_nombre, rol_created) VALUES ('ADMINISTRADOR',GETDATE());
 INSERT INTO roles (rol_nombre, rol_created) VALUES ('RECEPCIONISTA',GETDATE());
 INSERT INTO roles (rol_nombre, rol_created) VALUES ('GUEST',GETDATE());
+GO
+
+/****** usuarios_roles  ******/
+INSERT INTO usuarios_roles (usuario_rol_usuario_user, usuario_rol_rol_nombre, usuario_rol_created) VALUES ('ADMIN','ADMINISTRADOR',GETDATE());
+INSERT INTO usuarios_roles (usuario_rol_usuario_user, usuario_rol_rol_nombre, usuario_rol_created) VALUES ('RECEPCION','RECEPCIONISTA',GETDATE());
+INSERT INTO usuarios_roles (usuario_rol_usuario_user, usuario_rol_rol_nombre, usuario_rol_created) VALUES ('GUEST','GUEST',GETDATE());
 GO
 
 /****** funcionalidades  ******/
