@@ -7,14 +7,28 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Data.SqlClient;
+
 
 namespace FrbaHotel
 {
     public partial class Cliente : Form
     {
+
+        private DataBase db;
+
+        public static Cliente c1;
+        public string cliente_apellido;
+        public string cliente_nombre;
+        public int cliente_dni;
+
         public Cliente()
         {
+        
             InitializeComponent();
+            db = DataBase.GetInstance();
+            Cliente.c1 = this;
+          
         }
 
         private void textBox2_TextChanged(object sender, EventArgs e)
@@ -34,9 +48,13 @@ namespace FrbaHotel
 
         private void btn_buscar_Click(object sender, EventArgs e)
         {
-
-
-
+            SqlCommand cmd = new SqlCommand("dbo.buscar_cliente", db.Connection);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@apellido_cliente", SqlDbType.VarChar ).Value = "González";
+         /*   cmd.Parameters.AddWithValue("@cliente_apellido", SqlDbType.VarChar ).Value = txb_cliente_apellido;
+            cmd.Parameters.AddWithValue("@cliente_nombre", SqlDbType.VarChar ).Value = txb_cliente_nombre;
+            cmd.Parameters.AddWithValue("@cliente_dni", SqlDbType.Int ).Value = txb_cliente_dni;*/
+            cmd.ExecuteNonQuery(); 
 
             btn_eliminar.Visible = true;
             btn_modif.Visible = true;
@@ -57,5 +75,7 @@ namespace FrbaHotel
         {
 
         }
+
+
     }
 }

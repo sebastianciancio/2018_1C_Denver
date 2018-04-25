@@ -44,12 +44,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AbmCliente\Form1.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AbmCliente\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
-    </Compile>
     <Compile Include="AbmHabitacion\Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -74,16 +68,17 @@
     <Compile Include="CancelarReserva\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="DataBase.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Cliente.cs">
+    <Compile Include="AbmCliente\Cliente.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Cliente.Designer.cs">
+    <Compile Include="AbmCliente\Cliente.Designer.cs">
       <DependentUpon>Cliente.cs</DependentUpon>
     </Compile>
     <Compile Include="GenerarModificacionReserva\Form1.cs">
@@ -127,7 +122,7 @@
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Cliente.resx">
+    <EmbeddedResource Include="AbmCliente\Cliente.resx">
       <DependentUpon>Cliente.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -142,6 +137,7 @@
     <EmbeddedResource Include="UserControl1.resx">
       <DependentUpon>UserControl1.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="ClassDiagram1.cd" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -153,7 +149,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

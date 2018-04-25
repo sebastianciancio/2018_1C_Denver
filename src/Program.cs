@@ -15,7 +15,19 @@ namespace FrbaHotel
         static void Main()
         {
             Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
+            string connectionString = @"Data Source=localhost\SQLSERVER2012;Initial Catalog=GD1C2018;
+                                      Persist Security Info=True;User ID=gdHotel2018;Password=gd2018";                               
+            connectionString += "; MultipleActiveResultSets=True";
+            try
+            {
+                DataBase.GetInstance().Conectar(connectionString);
+            }
+            catch
+            {
+                MessageBox.Show("No se pudo conectar con " + DataBase.GetInstance().ConnectionString);
+                Application.Exit();
+            }
+        /*    Application.SetCompatibleTextRenderingDefault(false);*/
             Application.Run(new Form1());
         }
     }
