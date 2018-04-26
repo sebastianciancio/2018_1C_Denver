@@ -50,12 +50,13 @@ namespace FrbaHotel
         {
             SqlCommand cmd = new SqlCommand("dbo.buscar_cliente", db.Connection);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.AddWithValue("@apellido_cliente", SqlDbType.VarChar ).Value = "González";
-         /*   cmd.Parameters.AddWithValue("@cliente_apellido", SqlDbType.VarChar ).Value = txb_cliente_apellido;
-            cmd.Parameters.AddWithValue("@cliente_nombre", SqlDbType.VarChar ).Value = txb_cliente_nombre;
-            cmd.Parameters.AddWithValue("@cliente_dni", SqlDbType.Int ).Value = txb_cliente_dni;*/
-            cmd.ExecuteNonQuery(); 
+            /*cmd.Parameters.AddWithValue("@apellido_cliente", SqlDbType.VarChar ).Value = "González";*/
 
+            cmd.Parameters.AddWithValue("@cliente_apellido", SqlDbType.VarChar ).Value = txb_cliente_apellido.Text;
+            cmd.Parameters.AddWithValue("@cliente_nombre", SqlDbType.VarChar ).Value = txb_cliente_nombre.Text;
+            cmd.Parameters.AddWithValue("@cliente_dni", SqlDbType.Int ).Value = txb_cliente_dni.Text;
+            cmd.ExecuteNonQuery(); 
+      
             btn_eliminar.Visible = true;
             btn_modif.Visible = true;
             dgv_tablaCliente.Visible = true;
