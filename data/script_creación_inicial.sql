@@ -38,12 +38,16 @@ ALTER TABLE [dbo].[usuarios_hoteles] DROP CONSTRAINT [FK_usuarios_hoteles_usuari
 ALTER TABLE [dbo].[usuarios_hoteles] DROP CONSTRAINT [FK_usuarios_hoteles_hoteles];
 ALTER TABLE [dbo].[usuarios_roles] DROP CONSTRAINT [FK_usuarios_roles_usuarios];
 ALTER TABLE [dbo].[usuarios_roles] DROP CONSTRAINT [FK_usuarios_roles_roles];
-ALTER TABLE [dbo].[consumibles_clientes] DROP CONSTRAINT [FK_consumibles_clientes_consumibles];
-ALTER TABLE [dbo].[consumibles_clientes] DROP CONSTRAINT [FK_consumibles_clientes_clientes];
 ALTER TABLE [dbo].[facturas_items] DROP CONSTRAINT [FK_facturas_items_reservas];
 ALTER TABLE [dbo].[facturas_items] DROP CONSTRAINT [FK_facturas_items_facturas];
 ALTER TABLE [dbo].[facturas_items] DROP CONSTRAINT [FK_facturas_items_consumibles];
 ALTER TABLE [dbo].[mantenimientos] DROP CONSTRAINT [FK_mantenimientos_hoteles];
+ALTER TABLE [dbo].[consumibles_clientes] DROP CONSTRAINT [FK_consumibles_clientes_reservas]
+ALTER TABLE [dbo].[consumibles_clientes] DROP CONSTRAINT [FK_consumibles_clientes_consumibles]
+ALTER TABLE [dbo].[consumibles_clientes] DROP CONSTRAINT [FK_consumibles_clientes_clientes]
+ALTER TABLE [dbo].[disponibilidades] DROP CONSTRAINT [FK_disponibilidades_tipo_habitaciones]
+ALTER TABLE [dbo].[disponibilidades] DROP CONSTRAINT [FK_disponibilidades_habitaciones]
+ALTER TABLE [dbo].[disponibilidades] DROP CONSTRAINT [DF_disponibilidades_disponibilidad_ocupado]
 
 /*  --------------------------------------------------------------------------------
 ELIMINACION TODAS LAS TABLAS
@@ -73,6 +77,7 @@ DROP TABLE [dbo].[usuarios];
 DROP TABLE [dbo].[usuarios_hoteles];
 DROP TABLE [dbo].[usuarios_roles];
 DROP TABLE [dbo].[mantenimientos];
+DROP TABLE [dbo].[disponibilidades]
 
 /*  --------------------------------------------------------------------------------
 CREACION DE TODA LA ESTRUCUTRA NUEVA
@@ -101,9 +106,9 @@ CREATE TABLE [dbo].[clientes](
       [cliente_dom_localidad] [nvarchar](255) NULL,
       [cliente_telefono] [nvarchar](50) NULL,
       [cliente_nacionalidad] [nvarchar](255) NULL,
-      [cliente_created] [datetime] NULL,
       [cliente_activo] [char](1) NULL,
       [cliente_pais_id] [smallint] NULL,
+      [cliente_created] [datetime] NULL,      
  CONSTRAINT [PK_clientes_1] PRIMARY KEY CLUSTERED 
 (
       [cliente_tipo_documento_id] ASC,
@@ -134,17 +139,18 @@ CREATE TABLE [dbo].[consumibles_clientes](
       [consumible_cliente_consumible_id] [numeric](18, 0) NULL,
       [consumible_cliente_tipo_documento_id] [smallint] NULL,
       [consumible_cliente_pasaporte_nro] [numeric](18, 0) NULL,
-      [consumible_cliente_fecha_consumo] [datetime] NULL
+      [consumible_cliente_fecha_consumo] [datetime] NULL,
+      [consumible_cliente_reserva_codigo] [numeric](18, 0) NULL
 ) ON [PRIMARY]
 GO
 
 
 CREATE TABLE [dbo].[estadias](
-      [estadia_fecha_inicio] [datetime] NULL,
-      [estadia_cant_noches] [numeric](18, 0) NULL,
       [estadia_cliente_tipo_documento_id] [smallint] NULL,
       [estadia_cliente_pasaporte_nro] [numeric](18, 0) NULL,
-      [estadia_fecha_fin] [datetime] NULL,
+      [estadia_fecha_inicio] [datetime] NULL,
+      [estadia_cant_noches] [numeric](18, 0) NULL,
+      [estadia_fecha_fin] [datetime] NULL,      
       [estadia_hotel_id] [smallint] NULL,
       [estadia_reserva_codigo] [numeric](18, 0) NULL,
       [estadia_usuario_user] [nvarchar](50) NULL,
@@ -179,8 +185,8 @@ CREATE TABLE [dbo].[facturas](
 GO
 
 CREATE TABLE [dbo].[facturas_items](
+      [factura_item_nro] [numeric](18, 0) NULL,      
       [factura_item_cant] [numeric](18, 0) NULL,
-      [factura_item_nro] [numeric](18, 0) NULL,
       [factura_item_monto] [numeric](18, 2) NULL,
       [factura_item_descripcion] [nvarchar](255) NULL,
       [factura_consumible_id] [numeric](18, 0) NULL,
@@ -214,10 +220,10 @@ CREATE TABLE [dbo].[habitaciones](
       [habitacion_piso] [numeric](18, 0) NULL,
       [habitacion_frente] [nvarchar](50) NULL,
       [habitacion_tipo_habitacion_id] [numeric](18, 0) NULL,
-      [habitacion_created] [datetime] NULL,
       [habitacion_descripcion] [ntext] NULL,
       [habitacion_hotel_id] [smallint] NOT NULL,
       [habitacion_activa] [char](1) NULL,
+      [habitacion_created] [datetime] NULL,      
  CONSTRAINT [PK_habitaciones] PRIMARY KEY NONCLUSTERED 
 (
       [habitacion_nro] ASC,
@@ -232,14 +238,13 @@ CREATE TABLE [dbo].[hoteles](
       [hotel_calle] [nvarchar](255) NULL,
       [hotel_nro_calle] [numeric](18, 0) NULL,
       [hotel_ciudad] [nvarchar](255) NULL,
+      [hotel_pais_id] [smallint] NULL,      
+      [hotel_email] [nvarchar](255) NULL,
+      [hotel_telefono] [nvarchar](255) NULL,      
       [hotel_estrellas] [numeric](18, 0) NULL,
       [hotel_recarga_estrella] [numeric](18, 0) NULL,
-      [hotel_created] [datetime] NULL,
-      [hotel_nombre] [nvarchar](255) NULL,
-      [hotel_email] [nvarchar](255) NULL,
-      [hotel_telefono] [nvarchar](255) NULL,
-      [hotel_pais_id] [smallint] NULL,
       [hotel_activo] [char](1) NULL,
+      [hotel_created] [datetime] NULL,      
  CONSTRAINT [PK_hoteles] PRIMARY KEY CLUSTERED 
 (
       [hotel_id] ASC
@@ -360,17 +365,17 @@ GO
 CREATE TABLE [dbo].[usuarios](
       [usuario_user] [nvarchar](50) NOT NULL,
       [usuario_pass] [nvarchar](50) NULL,
-      [usuario_created] [datetime] NULL,
-      [usuario_login_fallidos] [smallint] NOT NULL,
-      [usuario_activo] [char](1) NOT NULL,
+      [usuario_apellido] [nvarchar](255) NULL,      
       [usuario_nombre] [nvarchar](255) NULL,
-      [usuario_apellido] [nvarchar](255) NULL,
       [usuario_tipo_documento_id] [smallint] NULL,
       [usuario_nro_documento] [nvarchar](255) NULL,
       [usuario_email] [nvarchar](255) NULL,
       [usuario_telefono] [nvarchar](255) NULL,
       [usuario_direccion] [nvarchar](255) NULL,
       [usuario_fecha_nac] [datetime] NULL,
+      [usuario_activo] [char](1) NOT NULL,      
+      [usuario_login_fallidos] [smallint] NOT NULL,      
+      [usuario_created] [datetime] NULL,      
  CONSTRAINT [PK_usuarios] PRIMARY KEY CLUSTERED 
 (
       [usuario_user] ASC
@@ -392,11 +397,25 @@ CREATE TABLE [dbo].[usuarios_roles](
 GO
 
 CREATE TABLE [dbo].[mantenimientos](
+      [mantenimiento_id] [numeric](18, 0) IDENTITY(1,1) NOT NULL,
       [mantenimiento_hotel_id] [smallint] NULL,
       [mantenimiento_fecha_desde] [datetime] NULL,
       [mantenimiento_fecha_hasta] [datetime] NULL,
       [mantenimiento_motivo] [nvarchar](255) NULL,
       [mantenimiento_created] [datetime] NULL
+ CONSTRAINT [PK_mantenimientos] PRIMARY KEY CLUSTERED 
+(
+      [mantenimiento_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+CREATE TABLE [dbo].[disponibilidades](
+      [disponibilidad_habitacion_nro] [numeric](18, 0) NULL,
+      [disponibilidad_hotel_id] [smallint] NULL,
+      [disponibilidad_fecha] [datetime] NULL,
+      [disponibilidad_ocupado] [nchar](1) NULL,
+      [disponibilidad_tipo_habitacion_id] [numeric](18, 0) NULL
 ) ON [PRIMARY]
 GO
 
@@ -586,6 +605,7 @@ GO
 ALTER TABLE [dbo].[clientes] CHECK CONSTRAINT [FK_clientes_tipo_documentos]
 GO
 
+
 ALTER TABLE [dbo].[consumibles_clientes]  WITH CHECK ADD  CONSTRAINT [FK_consumibles_clientes_clientes] FOREIGN KEY([consumible_cliente_tipo_documento_id], [consumible_cliente_pasaporte_nro])
 REFERENCES [dbo].[clientes] ([cliente_tipo_documento_id], [cliente_pasaporte_nro])
 GO
@@ -599,6 +619,14 @@ GO
 
 ALTER TABLE [dbo].[consumibles_clientes] CHECK CONSTRAINT [FK_consumibles_clientes_consumibles]
 GO
+
+ALTER TABLE [dbo].[consumibles_clientes]  WITH CHECK ADD  CONSTRAINT [FK_consumibles_clientes_reservas] FOREIGN KEY([consumible_cliente_reserva_codigo])
+REFERENCES [dbo].[reservas] ([reserva_codigo])
+GO
+
+ALTER TABLE [dbo].[consumibles_clientes] CHECK CONSTRAINT [FK_consumibles_clientes_reservas]
+GO
+
 
 ALTER TABLE [dbo].[estadias]  WITH CHECK ADD  CONSTRAINT [FK_estadias_clientes] FOREIGN KEY([estadia_cliente_tipo_documento_id], [estadia_cliente_pasaporte_nro])
 REFERENCES [dbo].[clientes] ([cliente_tipo_documento_id], [cliente_pasaporte_nro])
@@ -661,6 +689,23 @@ REFERENCES [dbo].[reservas] ([reserva_codigo])
 GO
 
 ALTER TABLE [dbo].[facturas_items] CHECK CONSTRAINT [FK_facturas_items_reservas]
+GO
+
+ALTER TABLE [dbo].[disponibilidades] ADD  CONSTRAINT [DF_disponibilidades_disponibilidad_ocupado]  DEFAULT ('N') FOR [disponibilidad_ocupado]
+GO
+
+ALTER TABLE [dbo].[disponibilidades]  WITH CHECK ADD  CONSTRAINT [FK_disponibilidades_habitaciones] FOREIGN KEY([disponibilidad_habitacion_nro], [disponibilidad_hotel_id])
+REFERENCES [dbo].[habitaciones] ([habitacion_nro], [habitacion_hotel_id])
+GO
+
+ALTER TABLE [dbo].[disponibilidades] CHECK CONSTRAINT [FK_disponibilidades_habitaciones]
+GO
+
+ALTER TABLE [dbo].[disponibilidades]  WITH CHECK ADD  CONSTRAINT [FK_disponibilidades_tipo_habitaciones] FOREIGN KEY([disponibilidad_tipo_habitacion_id])
+REFERENCES [dbo].[tipo_habitaciones] ([tipo_habitacion_id])
+GO
+
+ALTER TABLE [dbo].[disponibilidades] CHECK CONSTRAINT [FK_disponibilidades_tipo_habitaciones]
 GO
 
 
@@ -873,22 +918,6 @@ group by Regimen_Descripcion, Regimen_Precio
 GO
 
 
-/****** CONSUMIBLES_CLIENTES ******/
-INSERT INTO consumibles_clientes
-(consumible_cliente_consumible_id, consumible_cliente_pasaporte_nro, consumible_cliente_tipo_documento_id, consumible_cliente_fecha_consumo)
-(
-SELECT     Consumible_Codigo, Cliente_Pasaporte_Nro, 1, NULL
-FROM         gd_esquema.Maestra
-WHERE
-      Consumible_Codigo IS NOT NULL AND  Cliente_Pasaporte_Nro NOT IN(5833450,8573690,9616602,10968810,13197523,17144724,17993372,19944671,25170042,27682640,28333918,28766839,33462772,33467493,40407965,41118734,49848816,52451739,56505775,58145810,58685660,
-      59187942,59790782,65047886,69110399,72231403,74872928, 74899834,75898906,82103542,82337502,83630142,85044064,87591511,
-      88559381,89094646,90135406,91296720,95744921)
-GROUP BY
-      Consumible_Codigo, Cliente_Pasaporte_Nro
-)
-GO
-
-
 /****** HOTELES_REGIMENES ******/
 INSERT INTO hoteles_regimenes
 (hotel_regimen_hotel_id,hotel_regimen_regimen_id)
@@ -914,5 +943,22 @@ WHERE
       88559381,89094646,90135406,91296720,95744921)
   GROUP BY
       Reserva_Fecha_Inicio, Reserva_Codigo, Reserva_Cant_Noches, Cliente_Pasaporte_Nro, Hotel_Calle, Hotel_Ciudad
+)
+GO
+
+
+
+/****** CONSUMIBLES_CLIENTES ******/
+INSERT INTO consumibles_clientes
+(consumible_cliente_consumible_id, consumible_cliente_pasaporte_nro, consumible_cliente_tipo_documento_id, consumible_cliente_fecha_consumo, consumible_cliente_reserva_codigo)
+(
+SELECT     Consumible_Codigo, Cliente_Pasaporte_Nro, 1, NULL, (SELECT TOP 1 reserva_codigo FROM reservas WHERE reserva_cliente_pasaporte_nro = gd_esquema.Maestra.Cliente_Pasaporte_Nro)
+FROM         gd_esquema.Maestra
+WHERE
+      Consumible_Codigo IS NOT NULL AND  Cliente_Pasaporte_Nro NOT IN(5833450,8573690,9616602,10968810,13197523,17144724,17993372,19944671,25170042,27682640,28333918,28766839,33462772,33467493,40407965,41118734,49848816,52451739,56505775,58145810,58685660,
+      59187942,59790782,65047886,69110399,72231403,74872928, 74899834,75898906,82103542,82337502,83630142,85044064,87591511,
+      88559381,89094646,90135406,91296720,95744921)
+GROUP BY
+      Consumible_Codigo, Cliente_Pasaporte_Nro
 )
 GO
