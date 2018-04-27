@@ -74,7 +74,8 @@ namespace FrbaHotel
 
         private void button1_Click(object sender, EventArgs e)
         {
-
+            AbmCliente.Cliente_modificacion frm = new  AbmCliente.Cliente_modificacion();
+            frm.Show();
         }
 
 

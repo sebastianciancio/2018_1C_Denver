@@ -1,0 +1,4 @@
+﻿instancia = SQLSERVER2012
+base de datos = GD2C2016
+user = gdHotel2018
+password = gd2018
