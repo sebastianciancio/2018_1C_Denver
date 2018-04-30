@@ -117,26 +117,11 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <metadata name="col_Nombre.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="col_apellido.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="col_dni.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="col_dir.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="Col_cpt.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="btt_add_client.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAEEAAAA+CAIAAAD74eEGAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        wwAADsMBx2+oZAAAEPBJREFUaEOt2nm81tO3B3AZM2ZKEtdYMpTIdHENl8yUMk8Zb6MMuSKSqaQuiXL1
+        wgAADsIBFShKgAAAEPBJREFUaEOt2nm81tO3B3AZM2ZKEtdYMpTIdHENl8yUMk8Zb6MMuSKSqaQuiXL1
         IjRRCBVp1ExoUJkaNSgyzzPdd8/6ts/jOU/n1M/9/LFf67u/e6+1Pmutvb97P+est/Kf4c8//wzhr7/+
         +uOPP0JOAuhPY3777bfoicfU/w/xTzlAcuXbb79dunTp1KlTX3/99ddee2348OGjRo0aM2bM5MmTdb73
         3nvz58//5ptv/r9cT/jXOSRXfvzxx2XLls2cOXPkyJH33ntv/fr1d9lllw022GC91Vh//fV33nnnxo0b

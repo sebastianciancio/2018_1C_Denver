@@ -78,5 +78,11 @@ namespace FrbaHotel
                 tran = null;
             }
         }
+
+        public static String GetConfigValue(String parametro)
+        {
+            String[] valorConfig = parametro.Split('=');
+            return valorConfig[1].Trim();
+        }
     }
 }

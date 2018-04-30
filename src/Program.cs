@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -15,8 +16,17 @@ namespace FrbaHotel
         static void Main()
         {
             Application.EnableVisualStyles();
-            string connectionString = @"Data Source=localhost\SQLSERVER2012;Initial Catalog=GD1C2018;
-                                      Persist Security Info=True;User ID=gdHotel2018;Password=gd2018";                               
+
+            // Leo el Archivo de Configuracion
+            String[] config = File.ReadAllLines("../../Config.txt");
+
+            // Extraigo los valores del Archivo de Configuracion
+            String instancia = DataBase.GetConfigValue(config[0]);
+            String db_name = DataBase.GetConfigValue(config[1]);
+            String db_user = DataBase.GetConfigValue(config[2]);
+            String db_pass = DataBase.GetConfigValue(config[3]);
+
+            string connectionString = @"Data Source=" + instancia + ";Initial Catalog=" + db_name + ";Persist Security Info=True;User ID=" + db_user + ";Password=" + db_pass;
             connectionString += "; MultipleActiveResultSets=True";
             try
             {
@@ -30,5 +40,6 @@ namespace FrbaHotel
         /*    Application.SetCompatibleTextRenderingDefault(false);*/
             Application.Run(new Form1());
         }
+
     }
 }

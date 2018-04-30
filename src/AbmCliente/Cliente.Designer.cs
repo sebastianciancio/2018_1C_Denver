@@ -34,11 +34,6 @@
             this.LBLnombre = new System.Windows.Forms.Label();
             this.btn_buscar = new System.Windows.Forms.Button();
             this.dgv_tablaCliente = new System.Windows.Forms.DataGridView();
-            this.col_Nombre = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.col_apellido = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.col_dni = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.col_dir = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Col_cpt = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.btn_modif = new System.Windows.Forms.Button();
             this.lbl_apellido = new System.Windows.Forms.Label();
             this.lbl_dni = new System.Windows.Forms.Label();
@@ -87,48 +82,12 @@
             // dgv_tablaCliente
             // 
             this.dgv_tablaCliente.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgv_tablaCliente.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.col_Nombre,
-            this.col_apellido,
-            this.col_dni,
-            this.col_dir,
-            this.Col_cpt});
             this.dgv_tablaCliente.Location = new System.Drawing.Point(91, 127);
             this.dgv_tablaCliente.Name = "dgv_tablaCliente";
             this.dgv_tablaCliente.Size = new System.Drawing.Size(544, 150);
             this.dgv_tablaCliente.TabIndex = 4;
             this.dgv_tablaCliente.Visible = false;
             this.dgv_tablaCliente.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
-            // 
-            // col_Nombre
-            // 
-            this.col_Nombre.HeaderText = "Nombre";
-            this.col_Nombre.Name = "col_Nombre";
-            this.col_Nombre.ReadOnly = true;
-            // 
-            // col_apellido
-            // 
-            this.col_apellido.HeaderText = "Apellido";
-            this.col_apellido.Name = "col_apellido";
-            this.col_apellido.ReadOnly = true;
-            // 
-            // col_dni
-            // 
-            this.col_dni.HeaderText = "DNI";
-            this.col_dni.Name = "col_dni";
-            this.col_dni.ReadOnly = true;
-            // 
-            // col_dir
-            // 
-            this.col_dir.HeaderText = "Dirección";
-            this.col_dir.Name = "col_dir";
-            this.col_dir.ReadOnly = true;
-            // 
-            // Col_cpt
-            // 
-            this.Col_cpt.HeaderText = "Cod. Postal";
-            this.Col_cpt.Name = "Col_cpt";
-            this.Col_cpt.ReadOnly = true;
             // 
             // btn_modif
             // 
@@ -219,16 +178,11 @@
         private System.Windows.Forms.Label LBLnombre;
         private System.Windows.Forms.Button btn_buscar;
         private System.Windows.Forms.DataGridView dgv_tablaCliente;
-        private System.Windows.Forms.DataGridViewTextBoxColumn col_Nombre;
-        private System.Windows.Forms.DataGridViewTextBoxColumn col_apellido;
         private System.Windows.Forms.Button btn_modif;
         private System.Windows.Forms.Label lbl_apellido;
         private System.Windows.Forms.Label lbl_dni;
         private System.Windows.Forms.TextBox txb_cliente_dni;
         private System.Windows.Forms.Button btt_add_client;
-        private System.Windows.Forms.DataGridViewTextBoxColumn col_dni;
-        private System.Windows.Forms.DataGridViewTextBoxColumn col_dir;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Col_cpt;
         private System.Windows.Forms.Button btn_eliminar;
     }
 }
