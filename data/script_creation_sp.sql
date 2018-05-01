@@ -34,3 +34,53 @@ END
 
 GO
 
+
+/****** Object:  StoredProcedure [dbo].[cargar_cliente]    Script Date: 4/30/2018 10:43:53 PM ******/
+
+DROP PROCEDURE [dbo].[cargar_cliente]
+
+CREATE PROCEDURE [dbo].[cargar_cliente]
+	@cliente_nombre nvarchar(255),
+	@cliente_apellido nvarchar(255),
+	@cliente_tipo_documento nvarchar(50),
+	@cliente_pasaporte_nro numeric(18,0),
+	@cliente_email nvarchar(255),
+	@cliente_telefono nvarchar(50),
+	@cliente_dom_calle nvarchar(255),
+	@cliente_dom_nro nvarchar(255),
+	@cliente_dom_localidad nvarchar(255),
+	@cliente_pais_origen nvarchar(255),
+	@cliente_nacionalidad nvarchar(255),
+	@cliente_fecha_nac datetime
+AS
+BEGIN
+	INSERT INTO clientes(
+		cliente_nombre,
+		cliente_apellido,
+		cliente_tipo_documento_id,
+		cliente_pasaporte_nro,
+		cliente_email,
+		cliente_telefono,
+		cliente_dom_calle,
+		cliente_dom_nro,
+		cliente_dom_localidad,
+		cliente_pais_id,
+		cliente_nacionalidad,
+		cliente_fecha_nac,
+		cliente_activo)
+	VALUES(
+		@cliente_nombre,
+		@cliente_apellido,
+		(select tipo_documento_id from tipo_documentos where  tipo_documento_nombre = @cliente_tipo_documento),
+		@cliente_pasaporte_nro,
+		@cliente_email,
+		@cliente_telefono,
+		@cliente_dom_calle,
+		@cliente_dom_nro,
+		@cliente_dom_localidad,
+		(select pais_id from paises where pais_nombre = @cliente_pais_origen),
+		@cliente_nacionalidad,
+		@cliente_fecha_nac,
+		'S')
+END
+GO
