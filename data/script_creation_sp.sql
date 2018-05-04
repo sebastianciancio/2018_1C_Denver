@@ -84,3 +84,26 @@ BEGIN
 		'S')
 END
 GO
+
+/****** Object:  StoredProcedure [dbo].[eliminar_cliente]    Script Date: 5/3/2018 11:52:53 PM ******/
+
+
+DROP PROCEDURE [dbo].[eliminar_cliente]
+
+CREATE PROCEDURE [dbo].[eliminar_cliente] --Ver cómo hacer para que se pueda buscar sólo con algunos de estos parametros y no sólo con todos.
+	@cliente_nombre nvarchar(255) = NULL,
+	@cliente_apellido nvarchar(255) = NULL,
+	@cliente_tipo_documento nvarchar(50) = NULL,
+	@cliente_pasaporte_nro numeric(18,0) = NULL,
+	@cliente_email nvarchar(250) = NULL
+AS
+BEGIN
+	UPDATE [dbo].[clientes]
+		SET cliente_activo = 'N'
+	WHERE 
+		@cliente_nombre = cliente_nombre AND
+		@cliente_apellido = cliente_apellido AND
+		(SELECT tipo_documento_id FROM tipo_documentos WHERE @cliente_tipo_documento = tipo_documento_nombre) = cliente_tipo_documento_id AND
+		@cliente_pasaporte_nro = cliente_pasaporte_nro AND
+		@cliente_email = cliente_email
+END
