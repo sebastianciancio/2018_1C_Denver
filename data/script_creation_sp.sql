@@ -90,20 +90,166 @@ GO
 
 DROP PROCEDURE [dbo].[eliminar_cliente]
 
-CREATE PROCEDURE [dbo].[eliminar_cliente] --Ver cómo hacer para que se pueda buscar sólo con algunos de estos parametros y no sólo con todos.
-	@cliente_nombre nvarchar(255) = NULL,
-	@cliente_apellido nvarchar(255) = NULL,
+CREATE PROCEDURE [dbo].[eliminar_cliente]
 	@cliente_tipo_documento nvarchar(50) = NULL,
-	@cliente_pasaporte_nro numeric(18,0) = NULL,
-	@cliente_email nvarchar(250) = NULL
+	@cliente_pasaporte_nro numeric(18,0) = NULL
 AS
 BEGIN
 	UPDATE [dbo].[clientes]
 		SET cliente_activo = 'N'
 	WHERE 
-		@cliente_nombre = cliente_nombre AND
-		@cliente_apellido = cliente_apellido AND
 		(SELECT tipo_documento_id FROM tipo_documentos WHERE @cliente_tipo_documento = tipo_documento_nombre) = cliente_tipo_documento_id AND
-		@cliente_pasaporte_nro = cliente_pasaporte_nro AND
-		@cliente_email = cliente_email
+		@cliente_pasaporte_nro = cliente_pasaporte_nro
 END
+GO
+
+/****** Object:  StoredProcedure [dbo].[cargar_hotel]   Script Date: 5/4/2018 11:52:53 PM ******/
+
+
+DROP PROCEDURE [dbo].[cargar_hotel]
+
+CREATE PROCEDURE [dbo].[cargar_hotel]
+	@hotel_nombre nvarchar(255),
+	@hotel_email nvarchar(255),
+	@hotel_telefono nvarchar(255),
+	@hotel_calle nvarchar(255),
+	@hotel_nro_calle numeric(18,0),
+	@hotel_estrellas numeric(18,0),
+	@hotel_ciudad nvarchar(255),
+	@hotel_pais nvarchar(255),
+	--@tipo_de_regimenes??
+	@hotel_created datetime
+AS
+BEGIN
+	INSERT INTO hoteles(
+		hotel_nombre,
+		hotel_email,
+		hotel_telefono,
+		hotel_calle,
+		hotel_nro_calle,
+		hotel_estrellas,
+		hotel_ciudad,
+		hotel_pais_id,
+		--tipo de regimenes?
+		hotel_created,
+		hotel_activo)
+	VALUES(
+		@hotel_nombre,
+		@hotel_email,
+		@hotel_telefono,
+		@hotel_calle,
+		@hotel_nro_calle,
+		@hotel_estrellas,
+		@hotel_ciudad,
+		@hotel_pais,
+		@hotel_created,
+		'S')
+END
+GO
+
+/****** Object:  StoredProcedure [dbo].[eliminar_hotel]   Script Date: 5/4/2018 11:52:53 PM ******/
+
+DROP PROCEDURE [dbo].[eliminar_hotel]
+
+CREATE PROCEDURE [dbo].[eliminar_hotel]
+	@hotel_id smallint
+AS
+BEGIN
+	UPDATE [dbo].[hoteles]
+		SET hotel_activo = 'N'
+	WHERE
+		@hotel_id = hotel_id
+END
+GO
+
+/****** Object:  StoredProcedure [dbo].[cargar_habitacion]   Script Date: 5/4/2018 11:52:53 PM ******/
+
+DROP PROCEDURE [dbo].[cargar_habitacion]
+
+CREATE PROCEDURE [dbo].[cargar_habitacion]
+	@habitacion_nro numeric(18,0),
+	@habitacion_piso numeric(18,0),
+	@habitacion_frente nvarchar(50),
+	@habitacion_tipo_habitacion numeric(18,0),
+	@habitacion_descripcion ntext
+AS
+BEGIN
+	INSERT INTO habitaciones(
+	habitacion_nro,
+	habitacion_piso,
+	habitacion_frente,
+	habitacion_tipo_habitacion_id,
+	habitacion_descripcion,
+	habitacion_activa)
+	VALUES(
+	@habitacion_nro,
+	@habitacion_piso,
+	@habitacion_frente,
+	@habitacion_tipo_habitacion,
+	@habitacion_descripcion,
+	'S')
+END
+GO
+
+/****** Object:  StoredProcedure [dbo].[eliminar_habitacion]   Script Date: 5/4/2018 11:52:53 PM ******/
+
+DROP PROCEDURE [dbo].[eliminar_habitacion]
+
+CREATE PROCEDURE [dbo].[eliminar_habitacion]
+	@habitacion_nro numeric(18,0)
+AS
+BEGIN
+	UPDATE [dbo].[habitaciones]
+		SET habitacion_activa = 'N'
+	WHERE
+		@habitacion_nro = habitacion_nro
+END
+GO
+
+/****** Object:  StoredProcedure [dbo].[cargar_regimen]   Script Date: 5/4/2018 11:52:53 PM ******/
+
+DROP PROCEDURE [dbo].[cargar_regimen] 
+
+CREATE PROCEDURE [dbo].[cargar_regimen] 
+	@regimen_id numeric(18,0),
+	@regimen_descripcion nvarchar(255),
+	@regimen_precio numeric(18,0),
+	@regimen_created datetime
+AS
+BEGIN
+	INSERT INTO [dbo].[regimenes](
+		regimen_id,
+		regimen_descripcion,
+		regimen_precio,
+		regimen_created,
+		regimen_activo
+		)
+	VALUES(
+		@regimen_id,
+		@regimen_descripcion,
+		@regimen_precio,
+		@regimen_created,
+		'S')
+END
+GO
+
+/****** Object:  StoredProcedure [dbo].[cargar_reserva]   Script Date: 5/4/2018 11:52:53 PM ******/
+
+DROP PROCEDURE [dbo].[cargar_reserva]
+
+CREATE PROCEDURE [dbo].[cargar_reserva]
+	@reserva_codigo numeric(18,0),
+	@reserva_fecha_inicio datetime,
+	@reserva_fecha_fin datetime,
+AS
+BEGIN
+	INSERT INTO [dbo].[reservas](
+		reserva_codigo,
+		reserva_fecha_inicio,
+		reserva_fecha_fin)
+	VALUES(
+		@reserva_codigo,
+		@reserva_fecha_inicio,
+		@reserva_fecha_fin)
+END
+GO
