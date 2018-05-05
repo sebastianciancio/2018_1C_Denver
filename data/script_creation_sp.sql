@@ -42,7 +42,7 @@ DROP PROCEDURE [dbo].[cargar_cliente]
 CREATE PROCEDURE [dbo].[cargar_cliente]
 	@cliente_nombre nvarchar(255),
 	@cliente_apellido nvarchar(255),
-	@cliente_tipo_documento nvarchar(50),
+	@cliente_tipo_documento_id smallint,
 	@cliente_pasaporte_nro numeric(18,0),
 	@cliente_email nvarchar(255),
 	@cliente_telefono nvarchar(50),
@@ -67,11 +67,12 @@ BEGIN
 		cliente_pais_id,
 		cliente_nacionalidad,
 		cliente_fecha_nac,
-		cliente_activo)
+		cliente_activo,
+		cliente_created)
 	VALUES(
 		@cliente_nombre,
 		@cliente_apellido,
-		(select tipo_documento_id from tipo_documentos where  tipo_documento_nombre = @cliente_tipo_documento),
+		@cliente_tipo_documento_id,
 		@cliente_pasaporte_nro,
 		@cliente_email,
 		@cliente_telefono,
@@ -81,7 +82,8 @@ BEGIN
 		(select pais_id from paises where pais_nombre = @cliente_pais_origen),
 		@cliente_nacionalidad,
 		@cliente_fecha_nac,
-		'S')
+		'S',
+		GETDATE())
 END
 GO
 
@@ -91,14 +93,14 @@ GO
 DROP PROCEDURE [dbo].[eliminar_cliente]
 
 CREATE PROCEDURE [dbo].[eliminar_cliente]
-	@cliente_tipo_documento nvarchar(50) = NULL,
-	@cliente_pasaporte_nro numeric(18,0) = NULL
+	@cliente_tipo_documento_id smallint,
+	@cliente_pasaporte_nro numeric(18,0)
 AS
 BEGIN
 	UPDATE [dbo].[clientes]
 		SET cliente_activo = 'N'
 	WHERE 
-		(SELECT tipo_documento_id FROM tipo_documentos WHERE @cliente_tipo_documento = tipo_documento_nombre) = cliente_tipo_documento_id AND
+		@cliente_tipo_documento_id = cliente_tipo_documento_id AND
 		@cliente_pasaporte_nro = cliente_pasaporte_nro
 END
 GO
@@ -109,6 +111,7 @@ GO
 DROP PROCEDURE [dbo].[cargar_hotel]
 
 CREATE PROCEDURE [dbo].[cargar_hotel]
+	@hotel_id smallint,
 	@hotel_nombre nvarchar(255),
 	@hotel_email nvarchar(255),
 	@hotel_telefono nvarchar(255),
@@ -116,12 +119,12 @@ CREATE PROCEDURE [dbo].[cargar_hotel]
 	@hotel_nro_calle numeric(18,0),
 	@hotel_estrellas numeric(18,0),
 	@hotel_ciudad nvarchar(255),
-	@hotel_pais nvarchar(255),
-	--@tipo_de_regimenes??
+	@hotel_pais_id smallint,
 	@hotel_created datetime
 AS
 BEGIN
-	INSERT INTO hoteles(
+	INSERT INTO [dbo].[hoteles](
+		hotel_id,
 		hotel_nombre,
 		hotel_email,
 		hotel_telefono,
@@ -130,7 +133,7 @@ BEGIN
 		hotel_estrellas,
 		hotel_ciudad,
 		hotel_pais_id,
-		--tipo de regimenes?
+		hotel_recarga_estrella,
 		hotel_created,
 		hotel_activo)
 	VALUES(
@@ -141,8 +144,9 @@ BEGIN
 		@hotel_nro_calle,
 		@hotel_estrellas,
 		@hotel_ciudad,
-		@hotel_pais,
-		@hotel_created,
+		@hotel_pais_id,
+		10,
+		GETDATE(),
 		'S')
 END
 GO
@@ -163,6 +167,7 @@ END
 GO
 
 /****** Object:  StoredProcedure [dbo].[cargar_habitacion]   Script Date: 5/4/2018 11:52:53 PM ******/
+select * from habitaciones
 
 DROP PROCEDURE [dbo].[cargar_habitacion]
 
@@ -170,7 +175,8 @@ CREATE PROCEDURE [dbo].[cargar_habitacion]
 	@habitacion_nro numeric(18,0),
 	@habitacion_piso numeric(18,0),
 	@habitacion_frente nvarchar(50),
-	@habitacion_tipo_habitacion numeric(18,0),
+	@habitacion_tipo_habitacion_id numeric(18,0),
+	@habitacion_hotel_id smallint,
 	@habitacion_descripcion ntext
 AS
 BEGIN
@@ -180,14 +186,16 @@ BEGIN
 	habitacion_frente,
 	habitacion_tipo_habitacion_id,
 	habitacion_descripcion,
-	habitacion_activa)
+	habitacion_activa,
+	habitacion_created)
 	VALUES(
 	@habitacion_nro,
 	@habitacion_piso,
 	@habitacion_frente,
-	@habitacion_tipo_habitacion,
+	@habitacion_tipo_habitacion_id,
 	@habitacion_descripcion,
-	'S')
+	'S',
+	GETDATE())
 END
 GO
 
@@ -196,12 +204,14 @@ GO
 DROP PROCEDURE [dbo].[eliminar_habitacion]
 
 CREATE PROCEDURE [dbo].[eliminar_habitacion]
-	@habitacion_nro numeric(18,0)
+	@habitacion_nro numeric(18,0),
+	@habitacion_hotel_id smallint
 AS
 BEGIN
 	UPDATE [dbo].[habitaciones]
 		SET habitacion_activa = 'N'
 	WHERE
+		@habitacion_hotel_id = habitacion_hotel_id AND
 		@habitacion_nro = habitacion_nro
 END
 GO
@@ -210,11 +220,10 @@ GO
 
 DROP PROCEDURE [dbo].[cargar_regimen] 
 
-CREATE PROCEDURE [dbo].[cargar_regimen] 
+CREATE PROCEDURE [dbo].[cargar_regimen]
 	@regimen_id numeric(18,0),
 	@regimen_descripcion nvarchar(255),
-	@regimen_precio numeric(18,0),
-	@regimen_created datetime
+	@regimen_precio numeric(18,0)
 AS
 BEGIN
 	INSERT INTO [dbo].[regimenes](
@@ -228,28 +237,119 @@ BEGIN
 		@regimen_id,
 		@regimen_descripcion,
 		@regimen_precio,
-		@regimen_created,
+		GETDATE(),
 		'S')
 END
 GO
 
-/****** Object:  StoredProcedure [dbo].[cargar_reserva]   Script Date: 5/4/2018 11:52:53 PM ******/
+/****** Object:  StoredProcedure [dbo].[eliminar_regimen]   Script Date: 5/5/2018 11:52:53 PM ******/
 
-DROP PROCEDURE [dbo].[cargar_reserva]
+DROP PROCEDURE [dbo].[eliminar_regimen]
 
-CREATE PROCEDURE [dbo].[cargar_reserva]
-	@reserva_codigo numeric(18,0),
-	@reserva_fecha_inicio datetime,
-	@reserva_fecha_fin datetime,
+CREATE PROCEDURE [dbo].[eliminar_regimen]
+	@regimen_id numeric(18,0)
 AS
 BEGIN
-	INSERT INTO [dbo].[reservas](
-		reserva_codigo,
-		reserva_fecha_inicio,
-		reserva_fecha_fin)
+	UPDATE [dbo].[regimenes]
+		SET regimen_activo = 'N'
+	WHERE
+		@regimen_id = regimen_id
+END
+GO
+
+/****** Object:  StoredProcedure [dbo].[cargar_rol]   Script Date: 5/5/2018 11:52:53 PM ******/
+
+DROP PROCEDURE [dbo].[cargar_rol]
+
+CREATE PROCEDURE [dbo].[cargar_rol]
+	@rol_nombre nvarchar(255)
+AS
+BEGIN
+	INSERT INTO [dbo].[roles](
+		rol_nombre,
+		rol_activo,
+		rol_created)
 	VALUES(
-		@reserva_codigo,
-		@reserva_fecha_inicio,
-		@reserva_fecha_fin)
+		@rol_nombre,
+		'S',
+		GETDATE())
+END
+GO
+
+/****** Object:  StoredProcedure [dbo].[eliminar_rol]   Script Date: 5/5/2018 11:52:53 PM ******/
+
+DROP PROCEDURE [dbo].[eliminar_rol] 
+
+CREATE PROCEDURE [dbo].[eliminar_rol]
+	@rol_nombre nvarchar(255)
+AS
+BEGIN
+	UPDATE [dbo].[roles]
+		SET rol_activo = 'N'
+	WHERE
+		@rol_nombre = rol_nombre
+END
+GO
+
+/****** Object:  StoredProcedure [dbo].[cargar_usuario]   Script Date: 5/5/2018 11:52:53 PM ******/
+
+DROP PROCEDURE [dbo].[cargar_usuario] 
+
+CREATE PROCEDURE [dbo].[cargar_usuario]
+	@usuario_user nvarchar(50),
+	@usuario_pass nvarchar(50),
+	@usuario_nombre nvarchar(255),
+	@usuario_apellido nvarchar(255),
+	@usuario_tipo_documento_id smallint,
+	@usuario_nro_documento nvarchar(255),
+	@usuario_email nvarchar(255),
+	@usuario_telefono nvarchar(255),
+	@usuario_direccion nvarchar(255),
+	@usuario_fecha_nac datetime
+AS
+BEGIN
+	INSERT INTO [dbo].[usuarios](
+		usuario_user,
+		usuario_pass,
+		usuario_nombre,
+		usuario_apellido,
+		usuario_tipo_documento_id,
+		usuario_nro_documento,
+		usuario_email,
+		usuario_telefono,
+		usuario_direccion,
+		usuario_fecha_nac,
+		usuario_activo,
+		usuario_login_fallidos,
+		usuario_created)
+	VALUES(
+		@usuario_user,
+		@usuario_pass,
+		@usuario_nombre,
+		@usuario_apellido,
+		@usuario_tipo_documento_id,
+		@usuario_nro_documento,
+		@usuario_email,
+		@usuario_telefono,
+		@usuario_direccion,
+		@usuario_fecha_nac,
+		'S',
+		0,
+		GETDATE())
+END
+GO
+
+/****** Object:  StoredProcedure [dbo].[eliminar_usuario]   Script Date: 5/5/2018 11:52:53 PM ******/
+
+DROP PROCEDURE [dbo].[eliminar_usuario] 
+
+CREATE PROCEDURE [dbo].[eliminar_usuario]
+	@usuario_user nvarchar(50)
+AS
+BEGIN
+	UPDATE [dbo].[usuarios]
+		SET usuario_activo = 'N'
+	WHERE
+		@usuario_user = usuario_user
 END
 GO
