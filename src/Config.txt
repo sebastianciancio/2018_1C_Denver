@@ -1,0 +1,4 @@
+﻿instancia = TATO-PC\SQLEXPRESS
+base de datos = GD1C2018
+user = gdHotel2018
+password = gd2018
