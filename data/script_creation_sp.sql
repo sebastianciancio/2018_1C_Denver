@@ -4,7 +4,10 @@ GO
 /****** Object:  StoredProcedure [dbo].[buscar_cliente]    Script Date: 4/30/2018 7:41:53 PM ******/
 DROP PROCEDURE [dbo].[buscar_cliente]
 GO
+if EXISTS (SELECT * FROM sysobjects  WHERE name='buscar_cliente_completo')
+drop procedure dbo.buscar_cliente_completo
 
+go 
 /****** Object:  StoredProcedure [dbo].[buscar_cliente]    Script Date: 4/30/2018 7:41:53 PM ******/
 SET ANSI_NULLS ON
 GO
@@ -16,6 +19,7 @@ GO
 CREATE PROCEDURE [dbo].[buscar_cliente]    
     @cliente_apellido nvarchar(255) = NULL ,
 	@cliente_nombre nvarchar(255) = NULL,
+--	@cliente_doc int = NULL
 	@cliente_dni int = NULL 
 AS   
 BEGIN 
@@ -29,7 +33,8 @@ BEGIN
 		INNER JOIN tipo_documentos ON cliente_tipo_documento_id = tipo_documento_id 
 	WHERE cliente_apellido LIKE '%' + ISNULL(@cliente_apellido, cliente_apellido) + '%'
 		AND cliente_nombre LIKE '%' + ISNULL(@cliente_nombre, cliente_nombre) + '%'
-		AND cliente_pasaporte_nro = ISNULL(@cliente_dni, cliente_pasaporte_nro) ; 
+		AND cliente_pasaporte_nro = ISNULL(@cliente_dni, cliente_pasaporte_nro) ;
+		--AND cliente_tipo_documento_id = ISNULL(@cliente_doc, cliente_tipo_documento_id) 
 END
 
 GO
@@ -352,4 +357,21 @@ BEGIN
 	WHERE
 		@usuario_user = usuario_user
 END
+GO
+
+CREATE PROCEDURE [dbo].[buscar_cliente_completo] 
+	@cliente_doc nvarchar(50) = NULL,
+	@cliente_dni int = NULL 
+AS   
+BEGIN 
+    -- SET NOCOUNT ON added to prevent extra result sets from interfering with SELECT statements.
+	SET NOCOUNT ON;  
+
+	SELECT *
+		FROM clientes 
+		 INNER JOIN tipo_documentos ON cliente_tipo_documento_id = tipo_documento_id 
+		  WHERE	cliente_pasaporte_nro  = ISNULL(@cliente_dni, cliente_pasaporte_nro) 
+		    AND tipo_documento_nombre  = ISNULL(@cliente_doc, tipo_documento_nombre) ;
+END
+
 GO

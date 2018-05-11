@@ -44,6 +44,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AbmCliente\Cliente_alta.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmCliente\Cliente_alta.Designer.cs">
+      <DependentUpon>Cliente_alta.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AbmCliente\Cliente_modificacion.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmCliente\Cliente_modificacion.Designer.cs">
+      <DependentUpon>Cliente_modificacion.cs</DependentUpon>
+    </Compile>
     <Compile Include="AbmHabitacion\Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -119,6 +131,12 @@
     <Compile Include="UserControl1.Designer.cs">
       <DependentUpon>UserControl1.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="AbmCliente\Cliente_alta.resx">
+      <DependentUpon>Cliente_alta.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AbmCliente\Cliente_modificacion.resx">
+      <DependentUpon>Cliente_modificacion.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
@@ -153,7 +171,9 @@
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Config.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

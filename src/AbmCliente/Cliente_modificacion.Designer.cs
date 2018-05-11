@@ -30,8 +30,8 @@
         {
             this.lbl_mod_cl_t_dni = new System.Windows.Forms.Label();
             this.lbl_cl_mod_dni = new System.Windows.Forms.Label();
-            this.txb_cl_mod_dni = new System.Windows.Forms.TextBox();
-            this.txb_cl_mod_doc = new System.Windows.Forms.TextBox();
+            this.txb_cli_mod_dni = new System.Windows.Forms.TextBox();
+            this.txb_cli_mod_doc = new System.Windows.Forms.TextBox();
             this.lbl_cli_mod_nombre = new System.Windows.Forms.Label();
             this.txb_cli_mod_nombres = new System.Windows.Forms.TextBox();
             this.lbl_cli_mod_apellidos = new System.Windows.Forms.Label();
@@ -42,13 +42,13 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.lbl_cli_mod_direccion = new System.Windows.Forms.Label();
-            this.txb_cli_mod_direccion = new System.Windows.Forms.TextBox();
+            this.txb_cli_mod_calle = new System.Windows.Forms.TextBox();
             this.lbl_cli_mod_cp = new System.Windows.Forms.Label();
             this.txb_cli_mod_cp = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.lbl_cli_mod_numero = new System.Windows.Forms.Label();
-            this.txb_cli_mod_numero = new System.Windows.Forms.TextBox();
+            this.txb_cli_mod_nro = new System.Windows.Forms.TextBox();
             this.lbl_cli_mod_piso = new System.Windows.Forms.Label();
             this.txb_cli_mod_piso = new System.Windows.Forms.TextBox();
             this.lbl_cli_mod_localidad = new System.Windows.Forms.Label();
@@ -65,6 +65,8 @@
             this.label12 = new System.Windows.Forms.Label();
             this.btn_cli_mod_guardar = new System.Windows.Forms.Button();
             this.btn_cli_mod_volver = new System.Windows.Forms.Button();
+            this.label8 = new System.Windows.Forms.Label();
+            this.txb_cli_mod_dpto = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // lbl_mod_cl_t_dni
@@ -79,30 +81,30 @@
             // lbl_cl_mod_dni
             // 
             this.lbl_cl_mod_dni.AutoSize = true;
-            this.lbl_cl_mod_dni.Location = new System.Drawing.Point(146, 31);
+            this.lbl_cl_mod_dni.Location = new System.Drawing.Point(197, 31);
             this.lbl_cl_mod_dni.Name = "lbl_cl_mod_dni";
             this.lbl_cl_mod_dni.Size = new System.Drawing.Size(19, 13);
             this.lbl_cl_mod_dni.TabIndex = 2;
             this.lbl_cl_mod_dni.Text = "N°";
             // 
-            // txb_cl_mod_dni
+            // txb_cli_mod_dni
             // 
-            this.txb_cl_mod_dni.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.txb_cl_mod_dni.Location = new System.Drawing.Point(181, 28);
-            this.txb_cl_mod_dni.MaxLength = 15;
-            this.txb_cl_mod_dni.Name = "txb_cl_mod_dni";
-            this.txb_cl_mod_dni.ReadOnly = true;
-            this.txb_cl_mod_dni.Size = new System.Drawing.Size(92, 20);
-            this.txb_cl_mod_dni.TabIndex = 3;
+            this.txb_cli_mod_dni.ImeMode = System.Windows.Forms.ImeMode.On;
+            this.txb_cli_mod_dni.Location = new System.Drawing.Point(234, 28);
+            this.txb_cli_mod_dni.MaxLength = 15;
+            this.txb_cli_mod_dni.Name = "txb_cli_mod_dni";
+            this.txb_cli_mod_dni.ReadOnly = true;
+            this.txb_cli_mod_dni.Size = new System.Drawing.Size(143, 20);
+            this.txb_cli_mod_dni.TabIndex = 3;
             // 
-            // txb_cl_mod_doc
+            // txb_cli_mod_doc
             // 
-            this.txb_cl_mod_doc.Location = new System.Drawing.Point(75, 28);
-            this.txb_cl_mod_doc.MaxLength = 5;
-            this.txb_cl_mod_doc.Name = "txb_cl_mod_doc";
-            this.txb_cl_mod_doc.ReadOnly = true;
-            this.txb_cl_mod_doc.Size = new System.Drawing.Size(66, 20);
-            this.txb_cl_mod_doc.TabIndex = 4;
+            this.txb_cli_mod_doc.Location = new System.Drawing.Point(75, 28);
+            this.txb_cli_mod_doc.MaxLength = 5;
+            this.txb_cli_mod_doc.Name = "txb_cli_mod_doc";
+            this.txb_cli_mod_doc.ReadOnly = true;
+            this.txb_cli_mod_doc.Size = new System.Drawing.Size(105, 20);
+            this.txb_cli_mod_doc.TabIndex = 4;
             // 
             // lbl_cli_mod_nombre
             // 
@@ -192,12 +194,12 @@
             this.lbl_cli_mod_direccion.TabIndex = 14;
             this.lbl_cli_mod_direccion.Text = "Dirección";
             // 
-            // txb_cli_mod_direccion
+            // txb_cli_mod_calle
             // 
-            this.txb_cli_mod_direccion.Location = new System.Drawing.Point(18, 235);
-            this.txb_cli_mod_direccion.Name = "txb_cli_mod_direccion";
-            this.txb_cli_mod_direccion.Size = new System.Drawing.Size(241, 20);
-            this.txb_cli_mod_direccion.TabIndex = 15;
+            this.txb_cli_mod_calle.Location = new System.Drawing.Point(18, 235);
+            this.txb_cli_mod_calle.Name = "txb_cli_mod_calle";
+            this.txb_cli_mod_calle.Size = new System.Drawing.Size(241, 20);
+            this.txb_cli_mod_calle.TabIndex = 15;
             // 
             // lbl_cli_mod_cp
             // 
@@ -244,12 +246,12 @@
             this.lbl_cli_mod_numero.TabIndex = 20;
             this.lbl_cli_mod_numero.Text = "Número";
             // 
-            // txb_cli_mod_numero
+            // txb_cli_mod_nro
             // 
-            this.txb_cli_mod_numero.Location = new System.Drawing.Point(274, 235);
-            this.txb_cli_mod_numero.Name = "txb_cli_mod_numero";
-            this.txb_cli_mod_numero.Size = new System.Drawing.Size(50, 20);
-            this.txb_cli_mod_numero.TabIndex = 21;
+            this.txb_cli_mod_nro.Location = new System.Drawing.Point(274, 235);
+            this.txb_cli_mod_nro.Name = "txb_cli_mod_nro";
+            this.txb_cli_mod_nro.Size = new System.Drawing.Size(50, 20);
+            this.txb_cli_mod_nro.TabIndex = 21;
             // 
             // lbl_cli_mod_piso
             // 
@@ -381,6 +383,7 @@
             this.btn_cli_mod_guardar.TabIndex = 51;
             this.btn_cli_mod_guardar.Text = "Guardar";
             this.btn_cli_mod_guardar.UseVisualStyleBackColor = true;
+            this.btn_cli_mod_guardar.Click += new System.EventHandler(this.btn_cli_mod_guardar_Click);
             // 
             // btn_cli_mod_volver
             // 
@@ -391,11 +394,29 @@
             this.btn_cli_mod_volver.Text = "Volver";
             this.btn_cli_mod_volver.UseVisualStyleBackColor = true;
             // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(380, 219);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(30, 13);
+            this.label8.TabIndex = 53;
+            this.label8.Text = "Dpto";
+            // 
+            // txb_cli_mod_dpto
+            // 
+            this.txb_cli_mod_dpto.Location = new System.Drawing.Point(383, 235);
+            this.txb_cli_mod_dpto.Name = "txb_cli_mod_dpto";
+            this.txb_cli_mod_dpto.Size = new System.Drawing.Size(24, 20);
+            this.txb_cli_mod_dpto.TabIndex = 54;
+            // 
             // Cliente_modificacion
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(407, 437);
+            this.ClientSize = new System.Drawing.Size(419, 437);
+            this.Controls.Add(this.txb_cli_mod_dpto);
+            this.Controls.Add(this.label8);
             this.Controls.Add(this.btn_cli_mod_volver);
             this.Controls.Add(this.btn_cli_mod_guardar);
             this.Controls.Add(this.label12);
@@ -412,13 +433,13 @@
             this.Controls.Add(this.lbl_cli_mod_localidad);
             this.Controls.Add(this.txb_cli_mod_piso);
             this.Controls.Add(this.lbl_cli_mod_piso);
-            this.Controls.Add(this.txb_cli_mod_numero);
+            this.Controls.Add(this.txb_cli_mod_nro);
             this.Controls.Add(this.lbl_cli_mod_numero);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.txb_cli_mod_cp);
             this.Controls.Add(this.lbl_cli_mod_cp);
-            this.Controls.Add(this.txb_cli_mod_direccion);
+            this.Controls.Add(this.txb_cli_mod_calle);
             this.Controls.Add(this.lbl_cli_mod_direccion);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
@@ -429,12 +450,13 @@
             this.Controls.Add(this.lbl_cli_mod_apellidos);
             this.Controls.Add(this.txb_cli_mod_nombres);
             this.Controls.Add(this.lbl_cli_mod_nombre);
-            this.Controls.Add(this.txb_cl_mod_doc);
-            this.Controls.Add(this.txb_cl_mod_dni);
+            this.Controls.Add(this.txb_cli_mod_doc);
+            this.Controls.Add(this.txb_cli_mod_dni);
             this.Controls.Add(this.lbl_cl_mod_dni);
             this.Controls.Add(this.lbl_mod_cl_t_dni);
             this.Name = "Cliente_modificacion";
             this.Text = "Modificación de cliente";
+            this.Load += new System.EventHandler(this.Cliente_modificacion_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -444,8 +466,8 @@
 
         private System.Windows.Forms.Label lbl_mod_cl_t_dni;
         private System.Windows.Forms.Label lbl_cl_mod_dni;
-        private System.Windows.Forms.TextBox txb_cl_mod_dni;
-        private System.Windows.Forms.TextBox txb_cl_mod_doc;
+        private System.Windows.Forms.TextBox txb_cli_mod_dni;
+        private System.Windows.Forms.TextBox txb_cli_mod_doc;
         private System.Windows.Forms.Label lbl_cli_mod_nombre;
         private System.Windows.Forms.TextBox txb_cli_mod_nombres;
         private System.Windows.Forms.Label lbl_cli_mod_apellidos;
@@ -456,13 +478,13 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label lbl_cli_mod_direccion;
-        private System.Windows.Forms.TextBox txb_cli_mod_direccion;
+        private System.Windows.Forms.TextBox txb_cli_mod_calle;
         private System.Windows.Forms.Label lbl_cli_mod_cp;
         private System.Windows.Forms.TextBox txb_cli_mod_cp;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label lbl_cli_mod_numero;
-        private System.Windows.Forms.TextBox txb_cli_mod_numero;
+        private System.Windows.Forms.TextBox txb_cli_mod_nro;
         private System.Windows.Forms.Label lbl_cli_mod_piso;
         private System.Windows.Forms.TextBox txb_cli_mod_piso;
         private System.Windows.Forms.Label lbl_cli_mod_localidad;
@@ -479,6 +501,8 @@
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Button btn_cli_mod_guardar;
         private System.Windows.Forms.Button btn_cli_mod_volver;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.TextBox txb_cli_mod_dpto;
 
     }
 }

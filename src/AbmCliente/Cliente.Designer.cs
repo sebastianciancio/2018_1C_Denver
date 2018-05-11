@@ -135,6 +135,7 @@
             this.btt_add_client.TabIndex = 9;
             this.btt_add_client.Text = ".";
             this.btt_add_client.UseVisualStyleBackColor = true;
+            this.btt_add_client.Click += new System.EventHandler(this.btt_add_client_Click);
             // 
             // btn_eliminar
             // 

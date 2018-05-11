@@ -50,7 +50,7 @@ namespace FrbaHotel
         {
             SqlCommand cmd = new SqlCommand("dbo.buscar_cliente", db.Connection);
             cmd.CommandType = CommandType.StoredProcedure;
-
+            
             if (txb_cliente_apellido.Text != "")
                 cmd.Parameters.AddWithValue("@cliente_apellido", SqlDbType.VarChar ).Value = txb_cliente_apellido.Text;
 
@@ -69,7 +69,7 @@ namespace FrbaHotel
             {
                 da.Fill(dt);
             }
-
+           
             // Cargo la Grilla con los datos obtenidos
             dgv_tablaCliente.DataSource = dt;
 
@@ -86,13 +86,34 @@ namespace FrbaHotel
 
         private void button2_Click(object sender, EventArgs e)
         {
-
+            
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            //AbmCliente.Cliente_modificacion frm = new  AbmCliente.Cliente_modificacion();
-            //frm.Show();
+            AbmCliente.Cliente_modificacion frm = new  AbmCliente.Cliente_modificacion();
+            DataGridViewRow row = dgv_tablaCliente.CurrentRow;
+
+            //por el numero obtiene la columna
+            // Obtenés los valores caves de la tabla Cliente <3 
+            string tipoDni = row.Cells[0].Value.ToString();
+            string numDni = row.Cells[1].Value.ToString();
+
+            //Paso el valor de las claves al nuevo formulario de modificación
+            //para poder consultar la base de datos y traer los campos que se quieran modificar
+            frm.tipoDocumento = tipoDni;
+            frm.nroDocumento = numDni;
+
+
+            frm.Show();
+            
+        }
+
+        private void btt_add_client_Click(object sender, EventArgs e)
+        {
+            FrbaHotel.AbmCliente.Cliente_alta cli_mod = new FrbaHotel.AbmCliente.Cliente_alta();
+            
+            cli_mod.Show();
         }
 
 

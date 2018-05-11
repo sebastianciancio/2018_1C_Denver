@@ -86,6 +86,7 @@
             this.btn_cli_new_guardar.TabIndex = 88;
             this.btn_cli_new_guardar.Text = "Guardar";
             this.btn_cli_new_guardar.UseVisualStyleBackColor = true;
+            this.btn_cli_new_guardar.Click += new System.EventHandler(this.btn_cli_new_guardar_Click);
             // 
             // label12
             // 
@@ -385,6 +386,7 @@
             // 
             // cmb_cli_new_tip_doc
             // 
+            this.cmb_cli_new_tip_doc.AllowDrop = true;
             this.cmb_cli_new_tip_doc.FormattingEnabled = true;
             this.cmb_cli_new_tip_doc.Items.AddRange(new object[] {
             "DNI",
@@ -394,6 +396,7 @@
             this.cmb_cli_new_tip_doc.Name = "cmb_cli_new_tip_doc";
             this.cmb_cli_new_tip_doc.Size = new System.Drawing.Size(60, 21);
             this.cmb_cli_new_tip_doc.TabIndex = 90;
+            this.cmb_cli_new_tip_doc.Click += new System.EventHandler(this.btn_cli_new_guardar_Click);
             // 
             // label8
             // 
