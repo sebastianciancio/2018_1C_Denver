@@ -82,7 +82,12 @@ namespace FrbaHotel.AbmCliente
             cmd.Parameters.AddWithValue("@cliente_email", SqlDbType.VarChar).Value = txb_cli_mod_mail.Text;
             cmd.Parameters.AddWithValue("@cliente_calle", SqlDbType.VarChar).Value = txb_cli_mod_calle.Text;
             cmd.Parameters.AddWithValue("@cliente_nro", SqlDbType.VarChar).Value = txb_cli_mod_nro.Text;
+            cmd.Parameters.AddWithValue("@cliente_piso", SqlDbType.Int).Value = txb_cli_mod_piso.Text;
+            cmd.Parameters.AddWithValue("@cliente_dpto", SqlDbType.VarChar).Value = txb_cli_mod_dpto.Text;
             //FAltan parametros
+
+
+            cmd.BeginExecuteNonQuery();
         }
 
 

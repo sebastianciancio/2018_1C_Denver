@@ -94,22 +94,29 @@ GO
 
 /****** Object:  StoredProcedure [dbo].[eliminar_cliente]    Script Date: 5/3/2018 11:52:53 PM ******/
 
-
+if EXISTS (SELECT * FROM sysobjects  WHERE name='eliminar_cliente')
 DROP PROCEDURE [dbo].[eliminar_cliente]
+GO
 
 CREATE PROCEDURE [dbo].[eliminar_cliente]
-	@cliente_tipo_documento_id smallint,
+	@cliente_tipo_documento_id nvarchar(50),
 	@cliente_pasaporte_nro numeric(18,0)
 AS
 BEGIN
+
+	DECLARE @tip_doc smallint ;
+
+	SELECT @tip_doc = TIPO_DOCUMENTO_ID FROM dbo.tipo_documentos
+		WHERE tipo_documento_nombre = @cliente_tipo_documento_id ;
+
 	UPDATE [dbo].[clientes]
 		SET cliente_activo = 'N'
 	WHERE 
-		@cliente_tipo_documento_id = cliente_tipo_documento_id AND
-		@cliente_pasaporte_nro = cliente_pasaporte_nro
+		 cliente_tipo_documento_id = @tip_doc AND
+		 cliente_pasaporte_nro = @cliente_pasaporte_nro 
 END
-GO
 
+GO
 /****** Object:  StoredProcedure [dbo].[cargar_hotel]   Script Date: 5/4/2018 11:52:53 PM ******/
 
 

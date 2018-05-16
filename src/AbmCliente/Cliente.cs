@@ -95,7 +95,7 @@ namespace FrbaHotel
             DataGridViewRow row = dgv_tablaCliente.CurrentRow;
 
             //por el numero obtiene la columna
-            // Obtenés los valores caves de la tabla Cliente <3 
+            // Obtenés los valores caves de la tabla Cliente 
             string tipoDni = row.Cells[0].Value.ToString();
             string numDni = row.Cells[1].Value.ToString();
 
@@ -114,6 +114,27 @@ namespace FrbaHotel
             FrbaHotel.AbmCliente.Cliente_alta cli_mod = new FrbaHotel.AbmCliente.Cliente_alta();
             
             cli_mod.Show();
+        }
+
+        private void btn_eliminar_Click(object sender, EventArgs e)
+        {
+            // SP eliminar cliente
+            SqlCommand cmd = new SqlCommand("dbo.eliminar_cliente", db.Connection);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            //Levanto la linea seleccionada
+            DataGridViewRow row = dgv_tablaCliente.CurrentRow;
+
+            //por el numero obtiene la columna
+            // Obtenés los valores caves de la tabla Cliente 
+            string tipoDni = row.Cells[0].Value.ToString();
+            string numDni = row.Cells[1].Value.ToString();
+   
+            //paso los parametros al SP
+                 cmd.Parameters.AddWithValue("@cliente_tipo_documento_id", SqlDbType.VarChar).Value = tipoDni;
+                cmd.Parameters.AddWithValue("@cliente_pasaporte_nro", SqlDbType.VarChar).Value = numDni;
+
+                cmd.BeginExecuteNonQuery();
         }
 
 

@@ -84,6 +84,8 @@
             this.dgv_tablaCliente.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgv_tablaCliente.Location = new System.Drawing.Point(91, 127);
             this.dgv_tablaCliente.Name = "dgv_tablaCliente";
+            this.dgv_tablaCliente.ReadOnly = true;
+            this.dgv_tablaCliente.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgv_tablaCliente.Size = new System.Drawing.Size(544, 150);
             this.dgv_tablaCliente.TabIndex = 4;
             this.dgv_tablaCliente.Visible = false;
@@ -146,6 +148,7 @@
             this.btn_eliminar.Text = "Eliminar";
             this.btn_eliminar.UseVisualStyleBackColor = true;
             this.btn_eliminar.Visible = false;
+            this.btn_eliminar.Click += new System.EventHandler(this.btn_eliminar_Click);
             // 
             // Cliente
             // 
