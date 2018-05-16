@@ -87,7 +87,7 @@ namespace FrbaHotel.AbmCliente
             //FAltan parametros
 
 
-            cmd.BeginExecuteNonQuery();
+            cmd.ExecuteNonQuery();
         }
 
 

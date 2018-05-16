@@ -134,7 +134,7 @@ namespace FrbaHotel
                  cmd.Parameters.AddWithValue("@cliente_tipo_documento_id", SqlDbType.VarChar).Value = tipoDni;
                 cmd.Parameters.AddWithValue("@cliente_pasaporte_nro", SqlDbType.VarChar).Value = numDni;
 
-                cmd.BeginExecuteNonQuery();
+                cmd.ExecuteNonQuery();
         }
 
 

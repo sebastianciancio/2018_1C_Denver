@@ -33,7 +33,8 @@ BEGIN
 		INNER JOIN tipo_documentos ON cliente_tipo_documento_id = tipo_documento_id 
 	WHERE cliente_apellido LIKE '%' + ISNULL(@cliente_apellido, cliente_apellido) + '%'
 		AND cliente_nombre LIKE '%' + ISNULL(@cliente_nombre, cliente_nombre) + '%'
-		AND cliente_pasaporte_nro = ISNULL(@cliente_dni, cliente_pasaporte_nro) ;
+		AND cliente_pasaporte_nro = ISNULL(@cliente_dni, cliente_pasaporte_nro)
+		AND  cliente_activo != 'N' ;
 		--AND cliente_tipo_documento_id = ISNULL(@cliente_doc, cliente_tipo_documento_id) 
 END
 
