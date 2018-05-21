@@ -43,6 +43,13 @@ namespace FrbaHotel
 
         }
 
+        private void button4_Click(object sender, EventArgs e)
+        {
+            AbmHotel.BuscarHotel frm = new AbmHotel.BuscarHotel();
+            frm.Show();
+
+        }
+
 
     }
 }

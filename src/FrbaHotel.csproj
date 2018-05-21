@@ -62,6 +62,18 @@
     <Compile Include="AbmHabitacion\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="AbmHotel\BuscarHotel.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmHotel\BuscarHotel.Designer.cs">
+      <DependentUpon>BuscarHotel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AbmHotel\Hotel_modificacion.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmHotel\Hotel_modificacion.Designer.cs">
+      <DependentUpon>Hotel_modificacion.cs</DependentUpon>
+    </Compile>
     <Compile Include="AbmRegimen\Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -73,6 +85,12 @@
     </Compile>
     <Compile Include="AbmRol\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CancelarReserva\Cancelar_reserva.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CancelarReserva\Cancelar_reserva.Designer.cs">
+      <DependentUpon>Cancelar_reserva.cs</DependentUpon>
     </Compile>
     <Compile Include="CancelarReserva\Form1.cs">
       <SubType>Form</SubType>
@@ -137,6 +155,15 @@
     <EmbeddedResource Include="AbmCliente\Cliente_modificacion.resx">
       <DependentUpon>Cliente_modificacion.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="AbmHotel\buscarHotel.resx">
+      <DependentUpon>BuscarHotel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AbmHotel\Hotel_modificacion.resx">
+      <DependentUpon>Hotel_modificacion.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CancelarReserva\Cancelar_reserva.resx">
+      <DependentUpon>Cancelar_reserva.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
@@ -151,6 +178,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <EmbeddedResource Include="UserControl1.resx">
       <DependentUpon>UserControl1.cs</DependentUpon>
@@ -173,6 +201,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Config.txt" />
+    <None Include="Resources\hotel.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

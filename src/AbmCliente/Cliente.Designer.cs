@@ -58,7 +58,6 @@
             this.txb_cliente_apellido.Name = "txb_cliente_apellido";
             this.txb_cliente_apellido.Size = new System.Drawing.Size(143, 20);
             this.txb_cliente_apellido.TabIndex = 1;
-            this.txb_cliente_apellido.TextChanged += new System.EventHandler(this.textBox2_TextChanged);
             // 
             // LBLnombre
             // 
@@ -89,8 +88,7 @@
             this.dgv_tablaCliente.Size = new System.Drawing.Size(544, 150);
             this.dgv_tablaCliente.TabIndex = 4;
             this.dgv_tablaCliente.Visible = false;
-            this.dgv_tablaCliente.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
-            // 
+            
             // btn_modif
             // 
             this.btn_modif.Location = new System.Drawing.Point(712, 127);
@@ -168,8 +166,6 @@
             this.Controls.Add(this.txb_cliente_nombre);
             this.Name = "Cliente";
             this.Text = "Clientes";
-            this.Load += new System.EventHandler(this.Cliente_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.dgv_tablaCliente)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

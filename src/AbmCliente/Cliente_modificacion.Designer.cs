@@ -393,6 +393,7 @@
             this.btn_cli_mod_volver.TabIndex = 52;
             this.btn_cli_mod_volver.Text = "Volver";
             this.btn_cli_mod_volver.UseVisualStyleBackColor = true;
+            this.btn_cli_mod_volver.Click += new System.EventHandler(this.btn_cli_mod_volver_Click);
             // 
             // label8
             // 

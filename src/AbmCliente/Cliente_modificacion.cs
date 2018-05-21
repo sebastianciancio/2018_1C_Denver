@@ -90,6 +90,11 @@ namespace FrbaHotel.AbmCliente
             cmd.ExecuteNonQuery();
         }
 
+        private void btn_cli_mod_volver_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
 
 
 

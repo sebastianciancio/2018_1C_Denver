@@ -31,20 +31,7 @@ namespace FrbaHotel
           
         }
 
-        private void textBox2_TextChanged(object sender, EventArgs e)
-        {
 
-        }
-
-        private void Cliente_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
 
         private void btn_buscar_Click(object sender, EventArgs e)
         {
