@@ -34,6 +34,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Messaging" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -67,6 +68,12 @@
     </Compile>
     <Compile Include="AbmHotel\BuscarHotel.Designer.cs">
       <DependentUpon>BuscarHotel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AbmHotel\Hotel_Baja.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmHotel\Hotel_Baja.Designer.cs">
+      <DependentUpon>Hotel_Baja.cs</DependentUpon>
     </Compile>
     <Compile Include="AbmHotel\Hotel_modificacion.cs">
       <SubType>Form</SubType>
@@ -155,8 +162,14 @@
     <EmbeddedResource Include="AbmCliente\Cliente_modificacion.resx">
       <DependentUpon>Cliente_modificacion.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="AbmHabitacion\Form1.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="AbmHotel\buscarHotel.resx">
       <DependentUpon>BuscarHotel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AbmHotel\Hotel_Baja.resx">
+      <DependentUpon>Hotel_Baja.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="AbmHotel\Hotel_modificacion.resx">
       <DependentUpon>Hotel_modificacion.cs</DependentUpon>
