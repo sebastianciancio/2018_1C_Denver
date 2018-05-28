@@ -79,6 +79,7 @@
             this.btn_cli_new_volver.TabIndex = 89;
             this.btn_cli_new_volver.Text = "Volver";
             this.btn_cli_new_volver.UseVisualStyleBackColor = true;
+            this.btn_cli_new_volver.Click += new System.EventHandler(this.btn_cli_new_volver_Click);
             // 
             // btn_cli_new_guardar
             // 

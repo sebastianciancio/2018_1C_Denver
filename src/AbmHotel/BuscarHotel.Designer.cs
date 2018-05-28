@@ -167,7 +167,6 @@
             // 
             // btn_new_hotel
             // 
-            this.btn_new_hotel.Image = global::FrbaHotel.Properties.Resources.hotel;
             this.btn_new_hotel.ImageKey = "(none)";
             this.btn_new_hotel.Location = new System.Drawing.Point(12, 5);
             this.btn_new_hotel.Name = "btn_new_hotel";
@@ -175,6 +174,7 @@
             this.btn_new_hotel.TabIndex = 21;
             this.btn_new_hotel.Text = "Nuevo";
             this.btn_new_hotel.UseVisualStyleBackColor = true;
+            this.btn_new_hotel.Click += new System.EventHandler(this.btn_new_hotel_Click);
             // 
             // BuscarHotel
             // 

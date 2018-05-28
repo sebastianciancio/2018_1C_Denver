@@ -115,6 +115,12 @@ namespace FrbaHotel
             // Si existen datos
             if (row != null)
             {
+               DialogResult result = MessageBox.Show("Esta seguro de que desea eliminar?", "Confirmar eliminación",
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
+                if ( result == DialogResult.Yes ) 
+                {
+
                 //por el numero obtiene la columna
                 // Obtenés los valores caves de la tabla Cliente 
                 string tipoDni = row.Cells[0].Value.ToString();
@@ -134,7 +140,9 @@ namespace FrbaHotel
 
                 // Actualizo la Tabla del Resultado de la Busqueda
                 btn_buscar_Click(new object(), new EventArgs());
+                }
             }
+               
         }
     }
 }
