@@ -34,8 +34,17 @@ namespace FrbaHotel
             }
             catch
             {
-                MessageBox.Show("No se pudo conectar con " + DataBase.GetInstance().ConnectionString);
-                Application.Exit();
+                //MessageBox.Show("No se pudo conectar con " + DataBase.GetInstance().ConnectionString);
+                MessageBox.Show("Se ha detectado un problema en la configuracion de la Aplicacion. Error: DB-001","Error");
+
+                // Finalizo la ejecucion de la Application
+                if (System.Windows.Forms.Application.MessageLoop)
+                {
+                    System.Windows.Forms.Application.Exit();
+                } else {
+                    System.Environment.Exit(1);
+                }
+                
             }
         /*    Application.SetCompatibleTextRenderingDefault(false);*/
             Application.Run(new Form1());
