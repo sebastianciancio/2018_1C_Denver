@@ -1,8 +1,9 @@
+USE [GD1C2018]
+GO
+
 /*  --------------------------------------------------------------------------------
 ELIMINACION DE TODOS LAS CONSTRAINT
 -------------------------------------------------------------------------------- */
-USE [GD1C2018]
-GO
 
 ALTER TABLE [dbo].[clientes] DROP CONSTRAINT [FK_clientes_tipo_documentos];
 ALTER TABLE [dbo].[clientes] DROP CONSTRAINT [FK_clientes_paises];
@@ -235,6 +236,7 @@ GO
 
 CREATE TABLE [dbo].[hoteles](
       [hotel_id] [smallint] IDENTITY(1,1) NOT NULL,
+	  [hotel_nombre] [nvarchar](255) NULL,
       [hotel_calle] [nvarchar](255) NULL,
       [hotel_nro_calle] [numeric](18, 0) NULL,
       [hotel_ciudad] [nvarchar](255) NULL,

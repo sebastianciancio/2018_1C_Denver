@@ -40,12 +40,14 @@
             this.txb_cliente_dni = new System.Windows.Forms.TextBox();
             this.btt_add_client = new System.Windows.Forms.Button();
             this.btn_eliminar = new System.Windows.Forms.Button();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_tablaCliente)).BeginInit();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // txb_cliente_nombre
             // 
-            this.txb_cliente_nombre.Location = new System.Drawing.Point(144, 39);
+            this.txb_cliente_nombre.Location = new System.Drawing.Point(72, 35);
             this.txb_cliente_nombre.MaxLength = 100;
             this.txb_cliente_nombre.Name = "txb_cliente_nombre";
             this.txb_cliente_nombre.Size = new System.Drawing.Size(113, 20);
@@ -54,7 +56,7 @@
             // 
             // txb_cliente_apellido
             // 
-            this.txb_cliente_apellido.Location = new System.Drawing.Point(334, 39);
+            this.txb_cliente_apellido.Location = new System.Drawing.Point(251, 35);
             this.txb_cliente_apellido.Name = "txb_cliente_apellido";
             this.txb_cliente_apellido.Size = new System.Drawing.Size(143, 20);
             this.txb_cliente_apellido.TabIndex = 1;
@@ -62,7 +64,7 @@
             // LBLnombre
             // 
             this.LBLnombre.AutoSize = true;
-            this.LBLnombre.Location = new System.Drawing.Point(91, 42);
+            this.LBLnombre.Location = new System.Drawing.Point(19, 38);
             this.LBLnombre.Name = "LBLnombre";
             this.LBLnombre.Size = new System.Drawing.Size(47, 13);
             this.LBLnombre.TabIndex = 2;
@@ -70,7 +72,7 @@
             // 
             // btn_buscar
             // 
-            this.btn_buscar.Location = new System.Drawing.Point(667, 39);
+            this.btn_buscar.Location = new System.Drawing.Point(577, 32);
             this.btn_buscar.Name = "btn_buscar";
             this.btn_buscar.Size = new System.Drawing.Size(120, 25);
             this.btn_buscar.TabIndex = 3;
@@ -80,18 +82,20 @@
             // 
             // dgv_tablaCliente
             // 
+            this.dgv_tablaCliente.AllowUserToDeleteRows = false;
             this.dgv_tablaCliente.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgv_tablaCliente.Location = new System.Drawing.Point(91, 127);
+            this.dgv_tablaCliente.Location = new System.Drawing.Point(12, 101);
+            this.dgv_tablaCliente.MultiSelect = false;
             this.dgv_tablaCliente.Name = "dgv_tablaCliente";
             this.dgv_tablaCliente.ReadOnly = true;
             this.dgv_tablaCliente.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgv_tablaCliente.Size = new System.Drawing.Size(544, 150);
+            this.dgv_tablaCliente.Size = new System.Drawing.Size(680, 225);
             this.dgv_tablaCliente.TabIndex = 4;
             this.dgv_tablaCliente.Visible = false;
-            
+            // 
             // btn_modif
             // 
-            this.btn_modif.Location = new System.Drawing.Point(712, 127);
+            this.btn_modif.Location = new System.Drawing.Point(712, 120);
             this.btn_modif.Name = "btn_modif";
             this.btn_modif.Size = new System.Drawing.Size(88, 29);
             this.btn_modif.TabIndex = 5;
@@ -103,7 +107,7 @@
             // lbl_apellido
             // 
             this.lbl_apellido.AutoSize = true;
-            this.lbl_apellido.Location = new System.Drawing.Point(274, 42);
+            this.lbl_apellido.Location = new System.Drawing.Point(202, 38);
             this.lbl_apellido.Name = "lbl_apellido";
             this.lbl_apellido.Size = new System.Drawing.Size(44, 13);
             this.lbl_apellido.TabIndex = 6;
@@ -113,7 +117,7 @@
             // lbl_dni
             // 
             this.lbl_dni.AutoSize = true;
-            this.lbl_dni.Location = new System.Drawing.Point(499, 42);
+            this.lbl_dni.Location = new System.Drawing.Point(427, 38);
             this.lbl_dni.Name = "lbl_dni";
             this.lbl_dni.Size = new System.Drawing.Size(26, 13);
             this.lbl_dni.TabIndex = 7;
@@ -121,7 +125,7 @@
             // 
             // txb_cliente_dni
             // 
-            this.txb_cliente_dni.Location = new System.Drawing.Point(550, 39);
+            this.txb_cliente_dni.Location = new System.Drawing.Point(461, 35);
             this.txb_cliente_dni.Name = "txb_cliente_dni";
             this.txb_cliente_dni.Size = new System.Drawing.Size(96, 20);
             this.txb_cliente_dni.TabIndex = 8;
@@ -129,7 +133,7 @@
             // btt_add_client
             // 
             this.btt_add_client.Image = ((System.Drawing.Image)(resources.GetObject("btt_add_client.Image")));
-            this.btt_add_client.Location = new System.Drawing.Point(1, 0);
+            this.btt_add_client.Location = new System.Drawing.Point(12, 12);
             this.btt_add_client.Name = "btt_add_client";
             this.btt_add_client.Size = new System.Drawing.Size(82, 64);
             this.btt_add_client.TabIndex = 9;
@@ -139,7 +143,7 @@
             // 
             // btn_eliminar
             // 
-            this.btn_eliminar.Location = new System.Drawing.Point(713, 191);
+            this.btn_eliminar.Location = new System.Drawing.Point(714, 174);
             this.btn_eliminar.Name = "btn_eliminar";
             this.btn_eliminar.Size = new System.Drawing.Size(86, 26);
             this.btn_eliminar.TabIndex = 10;
@@ -148,26 +152,38 @@
             this.btn_eliminar.Visible = false;
             this.btn_eliminar.Click += new System.EventHandler(this.btn_eliminar_Click);
             // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.txb_cliente_dni);
+            this.groupBox1.Controls.Add(this.txb_cliente_nombre);
+            this.groupBox1.Controls.Add(this.txb_cliente_apellido);
+            this.groupBox1.Controls.Add(this.LBLnombre);
+            this.groupBox1.Controls.Add(this.btn_buscar);
+            this.groupBox1.Controls.Add(this.lbl_dni);
+            this.groupBox1.Controls.Add(this.lbl_apellido);
+            this.groupBox1.Location = new System.Drawing.Point(100, 0);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(710, 83);
+            this.groupBox1.TabIndex = 12;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Buscador";
+            // 
             // Cliente
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(814, 338);
             this.Controls.Add(this.btn_eliminar);
-            this.Controls.Add(this.btt_add_client);
-            this.Controls.Add(this.txb_cliente_dni);
-            this.Controls.Add(this.lbl_dni);
-            this.Controls.Add(this.lbl_apellido);
             this.Controls.Add(this.btn_modif);
+            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.btt_add_client);
             this.Controls.Add(this.dgv_tablaCliente);
-            this.Controls.Add(this.btn_buscar);
-            this.Controls.Add(this.LBLnombre);
-            this.Controls.Add(this.txb_cliente_apellido);
-            this.Controls.Add(this.txb_cliente_nombre);
             this.Name = "Cliente";
             this.Text = "Clientes";
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_tablaCliente)).EndInit();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -184,5 +200,6 @@
         private System.Windows.Forms.TextBox txb_cliente_dni;
         private System.Windows.Forms.Button btt_add_client;
         private System.Windows.Forms.Button btn_eliminar;
+        private System.Windows.Forms.GroupBox groupBox1;
     }
 }

@@ -32,8 +32,6 @@ namespace FrbaHotel.AbmCliente
 
         private void Cliente_modificacion_Load(object sender, EventArgs e)
         {
-
-            
             //
             SqlCommand cmd = new SqlCommand("dbo.buscar_cliente_completo", db.Connection);
             cmd.CommandType = CommandType.StoredProcedure;
@@ -68,8 +66,6 @@ namespace FrbaHotel.AbmCliente
             txb_cli_mod_localidad.Text    = row["cliente_dom_localidad"].ToString();
             txb_cli_mod_telefono.Text     = row["cliente_telefono"].ToString();
             txb_cli_mod_nacionalidad.Text = row["cliente_nacionalidad"].ToString();
-
-
         }
 
         private void btn_cli_mod_guardar_Click(object sender, EventArgs e)
@@ -77,17 +73,28 @@ namespace FrbaHotel.AbmCliente
             SqlCommand cmd = new SqlCommand("dbo.modificar_cliente", db.Connection);
             cmd.CommandType = CommandType.StoredProcedure;
 
+            cmd.Parameters.AddWithValue("@cliente_tipo_documento", SqlDbType.VarChar).Value = txb_cli_mod_doc.Text;
+            cmd.Parameters.AddWithValue("@cliente_pasaporte_nro", SqlDbType.Int).Value = Convert.ToInt32(txb_cli_mod_dni.Text);
             cmd.Parameters.AddWithValue("@cliente_apellido", SqlDbType.VarChar).Value = txb_cli_mod_apellidos.Text;
             cmd.Parameters.AddWithValue("@cliente_nombre", SqlDbType.VarChar).Value = txb_cli_mod_nombres.Text;
+            cmd.Parameters.AddWithValue("@cliente_fecha_nac", SqlDbType.DateTime).Value = "";
             cmd.Parameters.AddWithValue("@cliente_email", SqlDbType.VarChar).Value = txb_cli_mod_mail.Text;
-            cmd.Parameters.AddWithValue("@cliente_calle", SqlDbType.VarChar).Value = txb_cli_mod_calle.Text;
-            cmd.Parameters.AddWithValue("@cliente_nro", SqlDbType.VarChar).Value = txb_cli_mod_nro.Text;
-            cmd.Parameters.AddWithValue("@cliente_piso", SqlDbType.Int).Value = txb_cli_mod_piso.Text;
+            cmd.Parameters.AddWithValue("@cliente_dom_calle", SqlDbType.VarChar).Value = txb_cli_mod_calle.Text;
+            cmd.Parameters.AddWithValue("@cliente_dom_nro", SqlDbType.VarChar).Value = txb_cli_mod_nro.Text;
+            cmd.Parameters.AddWithValue("@cliente_piso", SqlDbType.Int).Value = Convert.ToInt32(txb_cli_mod_piso.Text);
             cmd.Parameters.AddWithValue("@cliente_dpto", SqlDbType.VarChar).Value = txb_cli_mod_dpto.Text;
-            //FAltan parametros
-
+            cmd.Parameters.AddWithValue("@cliente_dom_localidad", SqlDbType.VarChar).Value = txb_cli_mod_localidad.Text;
+            cmd.Parameters.AddWithValue("@cliente_telefono", SqlDbType.VarChar).Value = txb_cli_mod_telefono.Text;
+            cmd.Parameters.AddWithValue("@cliente_nacionalidad", SqlDbType.VarChar).Value = txb_cli_mod_nacionalidad.Text;
+            cmd.Parameters.AddWithValue("@cliente_pais_id", SqlDbType.SmallInt).Value = Convert.ToInt32("1");
 
             cmd.ExecuteNonQuery();
+
+            // Cierro la Ventana
+            Close();
+
+            // Muestro resultado de la operacion
+            MessageBox.Show("Se ha modificado el cliente " + txb_cli_mod_apellidos.Text + " " + txb_cli_mod_nombres.Text, "Mensaje");
         }
 
         private void btn_cli_mod_volver_Click(object sender, EventArgs e)

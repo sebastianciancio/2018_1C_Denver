@@ -1,29 +1,61 @@
 USE [GD1C2018]
 GO
 
-/****** Object:  StoredProcedure [dbo].[buscar_cliente]    Script Date: 4/30/2018 7:41:53 PM ******/
-DROP PROCEDURE [dbo].[buscar_cliente]
-GO
-if EXISTS (SELECT * FROM sysobjects  WHERE name='buscar_cliente_completo')
-drop procedure dbo.buscar_cliente_completo
-
-go 
-/****** Object:  StoredProcedure [dbo].[buscar_cliente]    Script Date: 4/30/2018 7:41:53 PM ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
 
+/*  --------------------------------------------------------------------------------
+ELIMINACION DE LOS SP
+-------------------------------------------------------------------------------- */
+
+if EXISTS (SELECT * FROM sys.objects  WHERE object_id = OBJECT_ID(N'buscar_cliente') AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [dbo].[buscar_cliente]
+if EXISTS (SELECT * FROM sys.objects  WHERE object_id = OBJECT_ID(N'buscar_cliente_completo') AND type IN (N'P', N'PC'))
+	drop procedure [dbo].[buscar_cliente_completo]
+if EXISTS (SELECT * FROM sys.objects  WHERE object_id = OBJECT_ID(N'cargar_cliente') AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [dbo].[cargar_cliente]
+if EXISTS (SELECT * FROM sys.objects  WHERE object_id = OBJECT_ID(N'eliminar_cliente') AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [dbo].[eliminar_cliente]
+if EXISTS (SELECT * FROM sys.objects  WHERE object_id = OBJECT_ID(N'cargar_hotel') AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [dbo].[cargar_hotel]
+if EXISTS (SELECT * FROM sys.objects  WHERE object_id = OBJECT_ID(N'eliminar_hotel') AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [dbo].[eliminar_hotel]
+if EXISTS (SELECT * FROM sys.objects  WHERE object_id = OBJECT_ID(N'cargar_habitacion') AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [dbo].[cargar_habitacion]
+if EXISTS (SELECT * FROM sys.objects  WHERE object_id = OBJECT_ID(N'eliminar_habitacion') AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [dbo].[eliminar_habitacion]
+if EXISTS (SELECT * FROM sys.objects  WHERE object_id = OBJECT_ID(N'cargar_regimen') AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [dbo].[cargar_regimen] 
+if EXISTS (SELECT * FROM sys.objects  WHERE object_id = OBJECT_ID(N'eliminar_regimen') AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [dbo].[eliminar_regimen]
+if EXISTS (SELECT * FROM sys.objects  WHERE object_id = OBJECT_ID(N'cargar_rol') AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [dbo].[cargar_rol]
+if EXISTS (SELECT * FROM sys.objects  WHERE object_id = OBJECT_ID(N'eliminar_rol') AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [dbo].[eliminar_rol] 
+if EXISTS (SELECT * FROM sys.objects  WHERE object_id = OBJECT_ID(N'cargar_usuario') AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [dbo].[cargar_usuario] 
+if EXISTS (SELECT * FROM sys.objects  WHERE object_id = OBJECT_ID(N'eliminar_usuario') AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [dbo].[eliminar_usuario] 
+if EXISTS (SELECT * FROM sys.objects  WHERE object_id = OBJECT_ID(N'modificar_cliente') AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [dbo].[modificar_cliente] 
+GO
+
+
+/*  --------------------------------------------------------------------------------
+CREACION DE  LOS SP
+-------------------------------------------------------------------------------- */
 
 CREATE PROCEDURE [dbo].[buscar_cliente]    
-    @cliente_apellido nvarchar(255) = NULL ,
+	@cliente_apellido nvarchar(255) = NULL ,
 	@cliente_nombre nvarchar(255) = NULL,
 --	@cliente_doc int = NULL
 	@cliente_dni int = NULL 
 AS   
 BEGIN 
-    -- SET NOCOUNT ON added to prevent extra result sets from interfering with SELECT statements.
+	-- SET NOCOUNT ON added to prevent extra result sets from interfering with SELECT statements.
 	SET NOCOUNT ON;  
 
 	SELECT 
@@ -37,29 +69,32 @@ BEGIN
 		AND  cliente_activo != 'N' ;
 		--AND cliente_tipo_documento_id = ISNULL(@cliente_doc, cliente_tipo_documento_id) 
 END
-
 GO
 
-
-/****** Object:  StoredProcedure [dbo].[cargar_cliente]    Script Date: 4/30/2018 10:43:53 PM ******/
-
-DROP PROCEDURE [dbo].[cargar_cliente]
-
-CREATE PROCEDURE [dbo].[cargar_cliente]
-	@cliente_nombre nvarchar(255),
-	@cliente_apellido nvarchar(255),
-	@cliente_tipo_documento_id smallint,
-	@cliente_pasaporte_nro numeric(18,0),
-	@cliente_email nvarchar(255),
-	@cliente_telefono nvarchar(50),
-	@cliente_dom_calle nvarchar(255),
-	@cliente_dom_nro nvarchar(255),
-	@cliente_dom_localidad nvarchar(255),
-	@cliente_pais_origen nvarchar(255),
-	@cliente_nacionalidad nvarchar(255),
-	@cliente_fecha_nac datetime
+CREATE PROCEDURE [dbo].[cargar_cliente]    
+	@cliente_tipo_documento nvarchar(255) = NULL,
+	@cliente_pasaporte_nro numeric(18, 0) = NULL,
+	@cliente_apellido nvarchar(255) = NULL,
+	@cliente_nombre nvarchar(255) = NULL,
+	@cliente_fecha_nac datetime = NULL,
+	@cliente_email nvarchar(255) = NULL,
+	@cliente_dom_calle nvarchar(255) = NULL,
+	@cliente_dom_nro nvarchar(255) = NULL,
+	@cliente_piso numeric(18, 0) = NULL,
+	@cliente_dpto nvarchar(50) = NULL,
+	@cliente_dom_localidad nvarchar(255) = NULL,
+	@cliente_telefono nvarchar(50) = NULL,
+	@cliente_nacionalidad nvarchar(255) = NULL,
+	@cliente_pais_id smallint = NULL
 AS
 BEGIN
+	SET NOCOUNT ON; 
+
+	DECLARE @tipo_documento_id smallint ;
+
+	SELECT @tipo_documento_id = TIPO_DOCUMENTO_ID FROM dbo.tipo_documentos
+		WHERE tipo_documento_nombre = @cliente_tipo_documento ;
+
 	INSERT INTO clientes(
 		cliente_nombre,
 		cliente_apellido,
@@ -73,37 +108,33 @@ BEGIN
 		cliente_pais_id,
 		cliente_nacionalidad,
 		cliente_fecha_nac,
-		cliente_activo,
 		cliente_created)
 	VALUES(
 		@cliente_nombre,
 		@cliente_apellido,
-		@cliente_tipo_documento_id,
+		@tipo_documento_id,
 		@cliente_pasaporte_nro,
 		@cliente_email,
 		@cliente_telefono,
 		@cliente_dom_calle,
 		@cliente_dom_nro,
 		@cliente_dom_localidad,
-		(select pais_id from paises where pais_nombre = @cliente_pais_origen),
+		@cliente_pais_id,
 		@cliente_nacionalidad,
 		@cliente_fecha_nac,
-		'S',
 		GETDATE())
 END
 GO
 
-/****** Object:  StoredProcedure [dbo].[eliminar_cliente]    Script Date: 5/3/2018 11:52:53 PM ******/
 
-if EXISTS (SELECT * FROM sysobjects  WHERE name='eliminar_cliente')
-DROP PROCEDURE [dbo].[eliminar_cliente]
-GO
+
 
 CREATE PROCEDURE [dbo].[eliminar_cliente]
 	@cliente_tipo_documento_id nvarchar(50),
 	@cliente_pasaporte_nro numeric(18,0)
 AS
 BEGIN
+	SET NOCOUNT ON;  
 
 	DECLARE @tip_doc smallint ;
 
@@ -116,15 +147,10 @@ BEGIN
 		 cliente_tipo_documento_id = @tip_doc AND
 		 cliente_pasaporte_nro = @cliente_pasaporte_nro 
 END
-
 GO
-/****** Object:  StoredProcedure [dbo].[cargar_hotel]   Script Date: 5/4/2018 11:52:53 PM ******/
 
-
-DROP PROCEDURE [dbo].[cargar_hotel]
 
 CREATE PROCEDURE [dbo].[cargar_hotel]
-	@hotel_id smallint,
 	@hotel_nombre nvarchar(255),
 	@hotel_email nvarchar(255),
 	@hotel_telefono nvarchar(255),
@@ -136,42 +162,37 @@ CREATE PROCEDURE [dbo].[cargar_hotel]
 	@hotel_created datetime
 AS
 BEGIN
+	SET NOCOUNT ON;  
 	INSERT INTO [dbo].[hoteles](
-		hotel_id,
 		hotel_nombre,
-		hotel_email,
-		hotel_telefono,
 		hotel_calle,
 		hotel_nro_calle,
-		hotel_estrellas,
 		hotel_ciudad,
 		hotel_pais_id,
+		hotel_email,
+		hotel_telefono,
+		hotel_estrellas,
 		hotel_recarga_estrella,
-		hotel_created,
-		hotel_activo)
+		hotel_created)
 	VALUES(
 		@hotel_nombre,
-		@hotel_email,
-		@hotel_telefono,
 		@hotel_calle,
 		@hotel_nro_calle,
-		@hotel_estrellas,
 		@hotel_ciudad,
 		@hotel_pais_id,
+		@hotel_email,
+		@hotel_telefono,
+		@hotel_estrellas,
 		10,
-		GETDATE(),
-		'S')
+		GETDATE())
 END
 GO
-
-/****** Object:  StoredProcedure [dbo].[eliminar_hotel]   Script Date: 5/4/2018 11:52:53 PM ******/
-
-DROP PROCEDURE [dbo].[eliminar_hotel]
 
 CREATE PROCEDURE [dbo].[eliminar_hotel]
 	@hotel_id smallint
 AS
 BEGIN
+	SET NOCOUNT ON;  
 	UPDATE [dbo].[hoteles]
 		SET hotel_activo = 'N'
 	WHERE
@@ -179,10 +200,7 @@ BEGIN
 END
 GO
 
-/****** Object:  StoredProcedure [dbo].[cargar_habitacion]   Script Date: 5/4/2018 11:52:53 PM ******/
-select * from habitaciones
 
-DROP PROCEDURE [dbo].[cargar_habitacion]
 
 CREATE PROCEDURE [dbo].[cargar_habitacion]
 	@habitacion_nro numeric(18,0),
@@ -193,6 +211,7 @@ CREATE PROCEDURE [dbo].[cargar_habitacion]
 	@habitacion_descripcion ntext
 AS
 BEGIN
+	SET NOCOUNT ON;  
 	INSERT INTO habitaciones(
 	habitacion_nro,
 	habitacion_piso,
@@ -212,15 +231,13 @@ BEGIN
 END
 GO
 
-/****** Object:  StoredProcedure [dbo].[eliminar_habitacion]   Script Date: 5/4/2018 11:52:53 PM ******/
-
-DROP PROCEDURE [dbo].[eliminar_habitacion]
 
 CREATE PROCEDURE [dbo].[eliminar_habitacion]
 	@habitacion_nro numeric(18,0),
 	@habitacion_hotel_id smallint
 AS
 BEGIN
+	SET NOCOUNT ON;  
 	UPDATE [dbo].[habitaciones]
 		SET habitacion_activa = 'N'
 	WHERE
@@ -229,9 +246,6 @@ BEGIN
 END
 GO
 
-/****** Object:  StoredProcedure [dbo].[cargar_regimen]   Script Date: 5/4/2018 11:52:53 PM ******/
-
-DROP PROCEDURE [dbo].[cargar_regimen] 
 
 CREATE PROCEDURE [dbo].[cargar_regimen]
 	@regimen_id numeric(18,0),
@@ -239,6 +253,7 @@ CREATE PROCEDURE [dbo].[cargar_regimen]
 	@regimen_precio numeric(18,0)
 AS
 BEGIN
+	SET NOCOUNT ON;  
 	INSERT INTO [dbo].[regimenes](
 		regimen_id,
 		regimen_descripcion,
@@ -255,14 +270,12 @@ BEGIN
 END
 GO
 
-/****** Object:  StoredProcedure [dbo].[eliminar_regimen]   Script Date: 5/5/2018 11:52:53 PM ******/
-
-DROP PROCEDURE [dbo].[eliminar_regimen]
 
 CREATE PROCEDURE [dbo].[eliminar_regimen]
 	@regimen_id numeric(18,0)
 AS
 BEGIN
+	SET NOCOUNT ON;  
 	UPDATE [dbo].[regimenes]
 		SET regimen_activo = 'N'
 	WHERE
@@ -270,14 +283,12 @@ BEGIN
 END
 GO
 
-/****** Object:  StoredProcedure [dbo].[cargar_rol]   Script Date: 5/5/2018 11:52:53 PM ******/
-
-DROP PROCEDURE [dbo].[cargar_rol]
 
 CREATE PROCEDURE [dbo].[cargar_rol]
 	@rol_nombre nvarchar(255)
 AS
 BEGIN
+	SET NOCOUNT ON;  
 	INSERT INTO [dbo].[roles](
 		rol_nombre,
 		rol_activo,
@@ -289,14 +300,12 @@ BEGIN
 END
 GO
 
-/****** Object:  StoredProcedure [dbo].[eliminar_rol]   Script Date: 5/5/2018 11:52:53 PM ******/
-
-DROP PROCEDURE [dbo].[eliminar_rol] 
 
 CREATE PROCEDURE [dbo].[eliminar_rol]
 	@rol_nombre nvarchar(255)
 AS
 BEGIN
+	SET NOCOUNT ON;  
 	UPDATE [dbo].[roles]
 		SET rol_activo = 'N'
 	WHERE
@@ -304,9 +313,6 @@ BEGIN
 END
 GO
 
-/****** Object:  StoredProcedure [dbo].[cargar_usuario]   Script Date: 5/5/2018 11:52:53 PM ******/
-
-DROP PROCEDURE [dbo].[cargar_usuario] 
 
 CREATE PROCEDURE [dbo].[cargar_usuario]
 	@usuario_user nvarchar(50),
@@ -321,6 +327,7 @@ CREATE PROCEDURE [dbo].[cargar_usuario]
 	@usuario_fecha_nac datetime
 AS
 BEGIN
+	SET NOCOUNT ON;  
 	INSERT INTO [dbo].[usuarios](
 		usuario_user,
 		usuario_pass,
@@ -352,14 +359,12 @@ BEGIN
 END
 GO
 
-/****** Object:  StoredProcedure [dbo].[eliminar_usuario]   Script Date: 5/5/2018 11:52:53 PM ******/
-
-DROP PROCEDURE [dbo].[eliminar_usuario] 
 
 CREATE PROCEDURE [dbo].[eliminar_usuario]
 	@usuario_user nvarchar(50)
 AS
 BEGIN
+	SET NOCOUNT ON;  
 	UPDATE [dbo].[usuarios]
 		SET usuario_activo = 'N'
 	WHERE
@@ -381,5 +386,55 @@ BEGIN
 		  WHERE	cliente_pasaporte_nro  = ISNULL(@cliente_dni, cliente_pasaporte_nro) 
 		    AND tipo_documento_nombre  = ISNULL(@cliente_doc, tipo_documento_nombre) ;
 END
-
 GO
+
+
+CREATE PROCEDURE [dbo].[modificar_cliente] 
+	@cliente_tipo_documento nvarchar(255) = NULL,
+	@cliente_pasaporte_nro numeric(18, 0) = NULL,
+	@cliente_apellido nvarchar(255) = NULL,
+	@cliente_nombre nvarchar(255) = NULL,
+	@cliente_fecha_nac datetime = NULL,
+	@cliente_email nvarchar(255) = NULL,
+	@cliente_dom_calle nvarchar(255) = NULL,
+	@cliente_dom_nro nvarchar(255) = NULL,
+	@cliente_piso numeric(18, 0) = NULL,
+	@cliente_dpto nvarchar(50) = NULL,
+	@cliente_dom_localidad nvarchar(255) = NULL,
+	@cliente_telefono nvarchar(50) = NULL,
+	@cliente_nacionalidad nvarchar(255) = NULL,
+	@cliente_pais_id smallint = NULL
+AS   
+BEGIN 
+    -- SET NOCOUNT ON added to prevent extra result sets from interfering with SELECT statements.
+	SET NOCOUNT ON;  
+
+	DECLARE @tipo_documento_id smallint ;
+
+	SELECT @tipo_documento_id = TIPO_DOCUMENTO_ID FROM dbo.tipo_documentos
+		WHERE tipo_documento_nombre = @cliente_tipo_documento ;
+
+
+	UPDATE 
+		clientes 
+	SET
+		cliente_apellido = @cliente_apellido,
+		cliente_nombre = @cliente_nombre,
+		cliente_fecha_nac = @cliente_fecha_nac,
+		cliente_email = @cliente_email,
+		cliente_dom_calle = @cliente_dom_calle,
+		cliente_dom_nro = @cliente_dom_nro,
+		cliente_piso = @cliente_piso,
+		cliente_dpto = @cliente_dpto,
+		cliente_dom_localidad = @cliente_dom_localidad,
+		cliente_telefono = @cliente_telefono,
+		cliente_nacionalidad = @cliente_nacionalidad,
+		cliente_pais_id = @cliente_pais_id
+	WHERE
+		cliente_tipo_documento_id = @tipo_documento_id AND
+		cliente_pasaporte_nro = @cliente_pasaporte_nro;
+END
+GO
+
+
+

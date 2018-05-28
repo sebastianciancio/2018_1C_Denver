@@ -398,6 +398,7 @@
             this.cmb_cli_new_tip_doc.Name = "cmb_cli_new_tip_doc";
             this.cmb_cli_new_tip_doc.Size = new System.Drawing.Size(60, 21);
             this.cmb_cli_new_tip_doc.TabIndex = 90;
+            this.cmb_cli_new_tip_doc.SelectedIndexChanged += new System.EventHandler(this.cmb_cli_new_tip_doc_SelectedIndexChanged);
             this.cmb_cli_new_tip_doc.Click += new System.EventHandler(this.btn_cli_new_guardar_Click);
             // 
             // label8

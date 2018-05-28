@@ -112,20 +112,29 @@ namespace FrbaHotel
             //Levanto la linea seleccionada
             DataGridViewRow row = dgv_tablaCliente.CurrentRow;
 
-            //por el numero obtiene la columna
-            // Obtenés los valores caves de la tabla Cliente 
-            string tipoDni = row.Cells[0].Value.ToString();
-            string numDni = row.Cells[1].Value.ToString();
-   
-            //paso los parametros al SP
-                 cmd.Parameters.AddWithValue("@cliente_tipo_documento_id", SqlDbType.VarChar).Value = tipoDni;
+            // Si existen datos
+            if (row != null)
+            {
+                //por el numero obtiene la columna
+                // Obtenés los valores caves de la tabla Cliente 
+                string tipoDni = row.Cells[0].Value.ToString();
+                string numDni = row.Cells[1].Value.ToString();
+
+                //paso los parametros al SP
+                cmd.Parameters.AddWithValue("@cliente_tipo_documento_id", SqlDbType.VarChar).Value = tipoDni;
                 cmd.Parameters.AddWithValue("@cliente_pasaporte_nro", SqlDbType.VarChar).Value = numDni;
 
+                // Ejecuto el SP
                 cmd.ExecuteNonQuery();
-                
-                
+
+                // Muestro resultado de la operacion
+                MessageBox.Show("Se ha eliminado el cliente " + row.Cells[2].Value.ToString() + " " + row.Cells[2].Value.ToString(), "Mensaje");
+
+                dgv_tablaCliente.Visible = false;
+
+                // Actualizo la Tabla del Resultado de la Busqueda
+                btn_buscar_Click(new object(), new EventArgs());
+            }
         }
-
-
     }
 }
