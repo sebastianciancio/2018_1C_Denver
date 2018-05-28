@@ -34,10 +34,10 @@ namespace FrbaHotel.AbmHotel
                 cmd.Parameters.AddWithValue("@hotel_ciudad", SqlDbType.VarChar).Value = txb_ciudad.Text;
 
             if (txb_pais.Text != "")
-                cmd.Parameters.AddWithValue("@pais_nombre", SqlDbType.Int).Value = txb_pais.Text;
+                cmd.Parameters.AddWithValue("@pais_nombre", SqlDbType.VarChar).Value = txb_pais.Text;
 
-            if (cmb_estrellas.SelectedText != "")
-                cmd.Parameters.AddWithValue("@hotel_estrella", SqlDbType.Int).Value = cmb_estrellas.SelectedText;
+            if (cmb_estrellas.SelectedItem != "")
+                cmd.Parameters.AddWithValue("@hotel_estrellas", SqlDbType.VarChar).Value = cmb_estrellas.Text;
 
             DataTable dt = new DataTable();
 
@@ -77,6 +77,12 @@ namespace FrbaHotel.AbmHotel
             string id_hotel = row.Cells[0].Value.ToString();
 
             frm.id_hotel = id_hotel;
+        }
+
+        private void btn_new_hotel_Click(object sender, EventArgs e)
+        {
+            AbmHotel.Hotel_alta frm = new AbmHotel.Hotel_alta();
+            frm.Show(); 
         }
         }
 

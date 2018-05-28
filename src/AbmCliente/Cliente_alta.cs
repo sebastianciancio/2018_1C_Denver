@@ -29,7 +29,7 @@ namespace FrbaHotel.AbmCliente
             SqlCommand cmd = new SqlCommand("dbo.cargar_cliente", db.Connection);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.AddWithValue("@cliente_tipo_documento", SqlDbType.VarChar).Value = cmb_cli_new_tip_doc.Text;
+            cmd.Parameters.AddWithValue("@cliente_tipo_documento", SqlDbType.VarChar).Value = cmb_cli_new_tip_doc.SelectedItem;
             cmd.Parameters.AddWithValue("@cliente_pasaporte_nro", SqlDbType.Int).Value = Convert.ToInt32(txb_cl_new_dni.Text);
             cmd.Parameters.AddWithValue("@cliente_apellido", SqlDbType.VarChar).Value = txb_cli_new_apellidos.Text;
             cmd.Parameters.AddWithValue("@cliente_nombre", SqlDbType.VarChar).Value = txb_cli_new_nombres.Text;
@@ -56,6 +56,11 @@ namespace FrbaHotel.AbmCliente
         private void cmb_cli_new_tip_doc_SelectedIndexChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void btn_cli_new_volver_Click(object sender, EventArgs e)
+        {
+            Close();
         }
 
 

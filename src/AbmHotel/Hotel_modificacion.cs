@@ -50,6 +50,7 @@ namespace FrbaHotel.AbmHotel
 
         private void btn_guardar_Click(object sender, EventArgs e)
         {
+            
             SqlCommand cmd = new SqlCommand("dbo.modificar_hotel", db.Connection);
             cmd.CommandType = CommandType.StoredProcedure;
 
@@ -71,5 +72,7 @@ namespace FrbaHotel.AbmHotel
         {
             Close();
         }
+
+
 }
     }

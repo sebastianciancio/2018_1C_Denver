@@ -41,6 +41,8 @@ if EXISTS (SELECT * FROM sys.objects  WHERE object_id = OBJECT_ID(N'eliminar_usu
 	DROP PROCEDURE [dbo].[eliminar_usuario] 
 if EXISTS (SELECT * FROM sys.objects  WHERE object_id = OBJECT_ID(N'modificar_cliente') AND type IN (N'P', N'PC'))
 	DROP PROCEDURE [dbo].[modificar_cliente] 
+if EXISTS (SELECT * FROM sys.objects  WHERE object_id = OBJECT_ID(N'buscar_hotel') AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [dbo].[buscar_hotel]
 GO
 
 
@@ -158,33 +160,50 @@ CREATE PROCEDURE [dbo].[cargar_hotel]
 	@hotel_nro_calle numeric(18,0),
 	@hotel_estrellas numeric(18,0),
 	@hotel_ciudad nvarchar(255),
-	@hotel_pais_id smallint,
+	@hotel_pais nvarchar,
 	@hotel_created datetime
 AS
 BEGIN
+	
 	SET NOCOUNT ON;  
+    DECLARE @hotel_pais_id smallint ;
+	DECLARE @hotel_max     smallint ; 
+
+	SELECT @hotel_max = count(*) 
+		FROM hoteles ;
+
+	SELECT @hotel_pais_id = pais_id
+	FROM paises
+	WHERE pais_nombre = @hotel_pais ;
+
 	INSERT INTO [dbo].[hoteles](
-		hotel_nombre,
+		hotel_id,
 		hotel_calle,
 		hotel_nro_calle,
 		hotel_ciudad,
-		hotel_pais_id,
-		hotel_email,
-		hotel_telefono,
 		hotel_estrellas,
 		hotel_recarga_estrella,
-		hotel_created)
+		hotel_created,
+		hotel_nombre,
+		hotel_email,
+		hotel_telefono,
+		hotel_pais_id,
+		hotel_activo	
+		)
 	VALUES(
-		@hotel_nombre,
+	    @hotel_max,
 		@hotel_calle,
 		@hotel_nro_calle,
 		@hotel_ciudad,
-		@hotel_pais_id,
-		@hotel_email,
-		@hotel_telefono,
 		@hotel_estrellas,
 		10,
-		GETDATE())
+		GETDATE(),
+		@hotel_nombre,
+		@hotel_email,
+		@hotel_telefono,
+		@hotel_pais_id,
+		'S'
+)
 END
 GO
 
@@ -436,5 +455,33 @@ BEGIN
 END
 GO
 
+CREATE PROCEDURE [dbo].[buscar_hotel]    
+	@hotel_nombre nvarchar(255) = NULL ,
+	@hotel_ciudad nvarchar(255) = NULL,
+	@pais_nombre  nvarchar(255) = NULL, 
+	@hotel_estrellas smallint 
+AS   
+BEGIN 
+	-- SET NOCOUNT ON added to prevent extra result sets from interfering with SELECT statements.
+	SET NOCOUNT ON;  
+	DECLARE @pais_id smallint ;
 
+
+
+IF @pais_nombre != NULL
+BEGIN
+ 	SELECT @pais_id = pais_id
+	FROM paises
+	WHERE pais_nombre = @pais_id; 
+END	
+
+	SELECT *
+	FROM 
+		hoteles
+	 WHERE hotel_nombre LIKE '%' + ISNULL(@hotel_nombre, hotel_nombre) + '%'
+		AND hotel_ciudad LIKE '%' + ISNULL(@hotel_ciudad, hotel_ciudad) + '%'
+		AND hotel_pais_id = ISNULL(@pais_id, hotel_pais_id) 
+		AND hotel_estrellas = ISNULL(@hotel_estrellas, hotel_estrellas) ;
+END
+GO
 
