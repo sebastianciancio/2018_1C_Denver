@@ -69,8 +69,14 @@ namespace FrbaHotel
             else
             {
                 e.Cancel = true;
-
             }
+        }
+
+        private void button9_Click(object sender, EventArgs e)
+        {
+            Listados frm = new Listados();
+            frm.Show();
+
         }
 
 
