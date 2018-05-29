@@ -50,6 +50,28 @@ namespace FrbaHotel
 
         }
 
+        private void Principal_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            DialogResult result = MessageBox.Show("Esta seguro que desea salir de la Aplicacion?", "Mensaje", MessageBoxButtons.OKCancel,MessageBoxIcon.Question);
+
+            if (result == DialogResult.OK)
+            {
+                // Finalizo la ejecucion de la Application
+                if (System.Windows.Forms.Application.MessageLoop)
+                {
+                    System.Windows.Forms.Application.Exit();
+                }
+                else
+                {
+                    System.Environment.Exit(1);
+                }
+            }
+            else
+            {
+                e.Cancel = true;
+
+            }
+        }
 
 
     }
