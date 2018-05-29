@@ -20,7 +20,7 @@ namespace FrbaHotel.AbmHotel
         {
             InitializeComponent();
             db = DataBase.GetInstance();
-            Pais.cargarCombo(combo_pais);
+            Combos.cargarComboPais(combo_pais);
         }
 
         private void btn_buscar_Click(object sender, EventArgs e)

@@ -18,7 +18,9 @@ namespace FrbaHotel.AbmHotel
         {
             InitializeComponent();
             db = DataBase.GetInstance();
-            Pais.cargarCombo(combo_pais);
+
+            // Cargo el Combo Pais
+            Combos.cargarComboPais(combo_pais);
         }
 
         private void btn_guardar_Click(object sender, EventArgs e)

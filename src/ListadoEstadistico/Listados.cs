@@ -7,14 +7,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Data.SqlClient;
 
-namespace FrbaHotel.GenerarModificacionReserva
+
+namespace FrbaHotel
 {
-    public partial class Form1 : Form
+    public partial class Listados : Form
     {
-        public Form1()
+        public Listados()
         {
             InitializeComponent();
+
+            // Cargo el Combo Tipo de Reporte
+            Combos.cargarComboListados(cmb_tipo_reporte);
         }
     }
 }

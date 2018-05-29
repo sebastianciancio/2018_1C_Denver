@@ -59,8 +59,10 @@
             // 
             this.login_password.Location = new System.Drawing.Point(92, 69);
             this.login_password.Name = "login_password";
+            this.login_password.PasswordChar = '*';
             this.login_password.Size = new System.Drawing.Size(100, 20);
             this.login_password.TabIndex = 2;
+            this.login_password.UseSystemPasswordChar = true;
             // 
             // label2
             // 
@@ -124,15 +126,19 @@
             // 
             // Login
             // 
+            this.AcceptButton = this.btn_acceder;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
+            this.CancelButton = this.btn_salir;
             this.ClientSize = new System.Drawing.Size(416, 255);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.btn_salir);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.btn_acceder);
             this.Name = "Login";
+            this.ShowIcon = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Control de Acceso";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
