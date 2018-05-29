@@ -7,14 +7,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Data.SqlClient;
 
-namespace FrbaHotel.RegistrarConsumible
+namespace FrbaHotel
 {
-    public partial class Form1 : Form
+    public partial class Consumible : Form
     {
-        public Form1()
+        private DataBase db;
+        public Consumible()
         {
+            db = DataBase.GetInstance();
             InitializeComponent();
+
+
         }
     }
 }
