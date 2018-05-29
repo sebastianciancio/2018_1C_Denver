@@ -1,6 +1,6 @@
 ﻿namespace FrbaHotel.RegistrarConsumible
 {
-    partial class Form1
+    partial class Consumible
     {
         /// <summary>
         /// Required designer variable.

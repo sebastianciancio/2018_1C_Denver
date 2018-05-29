@@ -84,6 +84,12 @@ namespace FrbaHotel
             frm.Show();
         }
 
+        private void btn_consumibles_Click(object sender, EventArgs e)
+        {
+            Consumible frm = new Consumible();
+            frm.Show();
+        }
+
 
     }
 }

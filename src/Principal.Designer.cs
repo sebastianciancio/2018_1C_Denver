@@ -156,6 +156,7 @@
             this.btn_consumibles.TabIndex = 10;
             this.btn_consumibles.Text = "Registrar Consumibles";
             this.btn_consumibles.UseVisualStyleBackColor = false;
+            this.btn_consumibles.Click += new System.EventHandler(this.btn_consumibles_Click);
             // 
             // label2
             // 
