@@ -74,12 +74,14 @@ namespace FrbaHotel.AbmHotel
 
         private void btn_baja_Click(object sender, EventArgs e)
         {
-            AbmHotel.Hotel_Baja frm = new AbmHotel.Hotel_Baja();
-            DataGridViewRow row = dgv_tablaHotel.CurrentRow;
-            string id_hotel = row.Cells[0].Value.ToString();
 
-            frm.id_hotel = id_hotel;
-        }
+                AbmHotel.Hotel_Baja frm = new AbmHotel.Hotel_Baja();
+                DataGridViewRow row = dgv_tablaHotel.CurrentRow;
+                string id_hotel = row.Cells[0].Value.ToString();
+
+                frm.id_hotel = id_hotel;
+            }
+        
 
         private void btn_new_hotel_Click(object sender, EventArgs e)
         {

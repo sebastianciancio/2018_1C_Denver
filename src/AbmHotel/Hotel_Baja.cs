@@ -39,5 +39,28 @@ namespace FrbaHotel.AbmHotel
             txb_nombre.Text = row["hotel_nombre"].ToString();
 
         }
+
+        private void btn_volver_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void btn_guardar_Click(object sender, EventArgs e)
+        {
+            SqlCommand cmd = new SqlCommand("dbo.baja_hotel", db.Connection);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.AddWithValue("@id_hotel", SqlDbType.Int).Value = id_hotel;
+
+            cmd.Parameters.AddWithValue("@fecha_inicio", SqlDbType.DateTime).Value = dtp_inicio.Value;
+            cmd.Parameters.AddWithValue("@id_hotel", SqlDbType.DateTime).Value = dtp_fin.Value;
+
+            cmd.Parameters.AddWithValue("@motivo", SqlDbType.VarChar).Value = cmb_motivo.SelectedValue;
+
+            cmd.ExecuteNonQuery();
+
+            MessageBox.Show("El hotel " + txb_nombre.Text + " se dio de baja correctamente", "Mensaje");
+
+        }
     }
 }

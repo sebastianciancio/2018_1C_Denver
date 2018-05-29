@@ -99,6 +99,12 @@
     <Compile Include="AbmRol\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="accesoSistema.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="accesoSistema.designer.cs">
+      <DependentUpon>accesoSistema.cs</DependentUpon>
+    </Compile>
     <Compile Include="CancelarReserva\Cancelar_reserva.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -184,6 +190,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AbmHotel\Hotel_modificacion.resx">
       <DependentUpon>Hotel_modificacion.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="accesoSistema.resx">
+      <DependentUpon>accesoSistema.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="CancelarReserva\Cancelar_reserva.resx">
       <DependentUpon>Cancelar_reserva.cs</DependentUpon>
