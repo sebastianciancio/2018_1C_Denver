@@ -23,7 +23,7 @@ namespace FrbaHotel.AbmCliente
             db = DataBase.GetInstance();
             Cliente_alta.Cli_alta = this;
             Combos.cargarComboPais(combo_pais);
-            Documento.cargarComboDoc(cmb_cli_new_tip_doc);
+            Combos.cargarComboTipoDocumento(cmb_cli_new_tip_doc);
         }
 
         private void btn_cli_new_guardar_Click(object sender, EventArgs e)

@@ -88,6 +88,31 @@ namespace FrbaHotel.AbmHotel
             AbmHotel.Hotel_alta frm = new AbmHotel.Hotel_alta();
             frm.Show(); 
         }
+
+        private void btn_eliminar_Click(object sender, EventArgs e)
+        {
+            SqlCommand cmd = new SqlCommand("denver.eliminar_hotel", db.Connection);
+            cmd.CommandType = CommandType.StoredProcedure;
+             //Levanto la linea seleccionada
+            DataGridViewRow row = dgv_tablaHotel.CurrentRow;
+
+            // Si existen datos
+            if (row != null)
+            {
+                DialogResult result = MessageBox.Show("Esta seguro de que desea eliminar el hotel?", "Confirmar eliminación",
+                     MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                if (result == DialogResult.Yes)
+                {
+                    string hotel_nombre = row.Cells[0].Value.ToString();
+                    cmd.Parameters.AddWithValue("@hotel_nombre", SqlDbType.VarChar).Value = hotel_nombre;
+
+                    cmd.ExecuteNonQuery();
+
+                    MessageBox.Show("El hotel " + hotel_nombre + " Se elimino correctamente", "Mensaje");
+                }
+            }
+
+        }
         }
 
 

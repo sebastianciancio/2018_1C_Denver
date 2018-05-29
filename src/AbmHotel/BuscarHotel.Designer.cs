@@ -42,6 +42,7 @@
             this.btn_new_hotel = new System.Windows.Forms.Button();
             this.combo_pais = new System.Windows.Forms.ComboBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.btn_eliminar = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_tablaHotel)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -71,9 +72,9 @@
             // 
             // btn_baja
             // 
-            this.btn_baja.Location = new System.Drawing.Point(594, 166);
+            this.btn_baja.Location = new System.Drawing.Point(592, 152);
             this.btn_baja.Name = "btn_baja";
-            this.btn_baja.Size = new System.Drawing.Size(86, 26);
+            this.btn_baja.Size = new System.Drawing.Size(88, 26);
             this.btn_baja.TabIndex = 11;
             this.btn_baja.Text = "Baja";
             this.btn_baja.UseVisualStyleBackColor = true;
@@ -202,11 +203,23 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Buscador";
             // 
+            // btn_eliminar
+            // 
+            this.btn_eliminar.Location = new System.Drawing.Point(592, 199);
+            this.btn_eliminar.Name = "btn_eliminar";
+            this.btn_eliminar.Size = new System.Drawing.Size(88, 29);
+            this.btn_eliminar.TabIndex = 135;
+            this.btn_eliminar.Text = "Eliminar";
+            this.btn_eliminar.UseVisualStyleBackColor = true;
+            this.btn_eliminar.Visible = false;
+            this.btn_eliminar.Click += new System.EventHandler(this.btn_eliminar_Click);
+            // 
             // BuscarHotel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(708, 261);
+            this.Controls.Add(this.btn_eliminar);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.btn_new_hotel);
             this.Controls.Add(this.btn_baja);
@@ -237,5 +250,6 @@
         private System.Windows.Forms.Button btn_new_hotel;
         private System.Windows.Forms.ComboBox combo_pais;
         private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.Button btn_eliminar;
     }
 }
