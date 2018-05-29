@@ -64,7 +64,6 @@
             this.txb_cl_new_dni = new System.Windows.Forms.TextBox();
             this.lbl_cl_mod_dni = new System.Windows.Forms.Label();
             this.lbl_mod_cl_t_dni = new System.Windows.Forms.Label();
-            this.cmb_cli_new_tip_doc = new System.Windows.Forms.ComboBox();
             this.label8 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.txb_cli_new_dpto = new System.Windows.Forms.TextBox();
@@ -72,6 +71,7 @@
             this.combo_pais = new System.Windows.Forms.ComboBox();
             this.label13 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
+            this.cmb_cli_new_tip_doc = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // btn_cli_new_volver
@@ -366,7 +366,7 @@
             // txb_cl_new_dni
             // 
             this.txb_cl_new_dni.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.txb_cl_new_dni.Location = new System.Drawing.Point(175, 40);
+            this.txb_cl_new_dni.Location = new System.Drawing.Point(228, 40);
             this.txb_cl_new_dni.MaxLength = 15;
             this.txb_cl_new_dni.Name = "txb_cl_new_dni";
             this.txb_cl_new_dni.Size = new System.Drawing.Size(92, 20);
@@ -375,7 +375,7 @@
             // lbl_cl_mod_dni
             // 
             this.lbl_cl_mod_dni.AutoSize = true;
-            this.lbl_cl_mod_dni.Location = new System.Drawing.Point(140, 43);
+            this.lbl_cl_mod_dni.Location = new System.Drawing.Point(186, 43);
             this.lbl_cl_mod_dni.Name = "lbl_cl_mod_dni";
             this.lbl_cl_mod_dni.Size = new System.Drawing.Size(19, 13);
             this.lbl_cl_mod_dni.TabIndex = 54;
@@ -390,26 +390,11 @@
             this.lbl_mod_cl_t_dni.TabIndex = 53;
             this.lbl_mod_cl_t_dni.Text = "Tipo Doc.";
             // 
-            // cmb_cli_new_tip_doc
-            // 
-            this.cmb_cli_new_tip_doc.AllowDrop = true;
-            this.cmb_cli_new_tip_doc.FormattingEnabled = true;
-            this.cmb_cli_new_tip_doc.Items.AddRange(new object[] {
-            "DNI",
-            "DU",
-            "LE"});
-            this.cmb_cli_new_tip_doc.Location = new System.Drawing.Point(67, 40);
-            this.cmb_cli_new_tip_doc.Name = "cmb_cli_new_tip_doc";
-            this.cmb_cli_new_tip_doc.Size = new System.Drawing.Size(60, 21);
-            this.cmb_cli_new_tip_doc.TabIndex = 90;
-            this.cmb_cli_new_tip_doc.SelectedIndexChanged += new System.EventHandler(this.cmb_cli_new_tip_doc_SelectedIndexChanged);
-            this.cmb_cli_new_tip_doc.Click += new System.EventHandler(this.btn_cli_new_guardar_Click);
-            // 
             // label8
             // 
             this.label8.AutoSize = true;
             this.label8.ForeColor = System.Drawing.Color.Red;
-            this.label8.Location = new System.Drawing.Point(158, 43);
+            this.label8.Location = new System.Drawing.Point(211, 40);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(11, 13);
             this.label8.TabIndex = 91;
@@ -474,11 +459,23 @@
             this.label14.TabIndex = 133;
             this.label14.Text = "Pais";
             // 
+            // cmb_cli_new_tip_doc
+            // 
+            this.cmb_cli_new_tip_doc.FormattingEnabled = true;
+            this.cmb_cli_new_tip_doc.Items.AddRange(new object[] {
+            "PASAPORTE",
+            "DNI"});
+            this.cmb_cli_new_tip_doc.Location = new System.Drawing.Point(67, 40);
+            this.cmb_cli_new_tip_doc.Name = "cmb_cli_new_tip_doc";
+            this.cmb_cli_new_tip_doc.Size = new System.Drawing.Size(113, 21);
+            this.cmb_cli_new_tip_doc.TabIndex = 136;
+            // 
             // Cliente_alta
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(413, 461);
+            this.Controls.Add(this.cmb_cli_new_tip_doc);
             this.Controls.Add(this.combo_pais);
             this.Controls.Add(this.label13);
             this.Controls.Add(this.label14);
@@ -486,7 +483,6 @@
             this.Controls.Add(this.txb_cli_new_dpto);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.label8);
-            this.Controls.Add(this.cmb_cli_new_tip_doc);
             this.Controls.Add(this.btn_cli_new_volver);
             this.Controls.Add(this.btn_cli_new_guardar);
             this.Controls.Add(this.label12);
@@ -568,7 +564,6 @@
         private System.Windows.Forms.TextBox txb_cl_new_dni;
         private System.Windows.Forms.Label lbl_cl_mod_dni;
         private System.Windows.Forms.Label lbl_mod_cl_t_dni;
-        private System.Windows.Forms.ComboBox cmb_cli_new_tip_doc;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.TextBox txb_cli_new_dpto;
@@ -576,5 +571,6 @@
         private System.Windows.Forms.ComboBox combo_pais;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.ComboBox cmb_cli_new_tip_doc;
     }
 }
