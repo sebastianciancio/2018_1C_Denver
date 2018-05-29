@@ -112,7 +112,9 @@
             this.Controls.Add(this.btn_sistema);
             this.Controls.Add(this.btn_reserva);
             this.Name = "accesoSistema";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Bienvenidos a Hoteles Denver";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.accesoSistema_FormClosing);
             this.ResumeLayout(false);
 
         }

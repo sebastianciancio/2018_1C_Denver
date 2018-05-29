@@ -59,9 +59,33 @@ namespace FrbaHotel
 
         private void btn_sistema_Click(object sender, EventArgs e)
         {
+            this.Hide();
+
+            // Muestro el Login
             Login.Login frm = new Login.Login();
             frm.Show();
+        }
 
+        private void accesoSistema_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            DialogResult result = MessageBox.Show("Esta seguro que desea salir de la Aplicacion?", "Mensaje", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+
+            if (result == DialogResult.OK)
+            {
+                // Finalizo la ejecucion de la Application
+                if (System.Windows.Forms.Application.MessageLoop)
+                {
+                    System.Windows.Forms.Application.Exit();
+                }
+                else
+                {
+                    System.Environment.Exit(1);
+                }
+            }
+            else
+            {
+                e.Cancel = true;
+            }
         }
     }
 }
