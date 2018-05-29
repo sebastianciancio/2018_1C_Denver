@@ -37,8 +37,8 @@ namespace FrbaHotel.AbmHotel
             if (combo_pais.Text != "")
                 cmd.Parameters.AddWithValue("@pais_nombre", SqlDbType.VarChar).Value = combo_pais.Text;
 
-            if (cmb_estrellas.SelectedText != "")
-                cmd.Parameters.AddWithValue("@hotel_estrellas", SqlDbType.VarChar).Value = cmb_estrellas.SelectedText;
+            if (cmb_estrellas.Text != "")
+                cmd.Parameters.AddWithValue("@hotel_estrellas", SqlDbType.VarChar).Value = cmb_estrellas.Text;
 
             // Creo el DataTable para obtener los resultados del SP
             DataTable dt = new DataTable();
