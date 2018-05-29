@@ -59,8 +59,10 @@
             // 
             this.login_password.Location = new System.Drawing.Point(92, 69);
             this.login_password.Name = "login_password";
+            this.login_password.PasswordChar = '*';
             this.login_password.Size = new System.Drawing.Size(100, 20);
             this.login_password.TabIndex = 2;
+            this.login_password.UseSystemPasswordChar = true;
             // 
             // label2
             // 

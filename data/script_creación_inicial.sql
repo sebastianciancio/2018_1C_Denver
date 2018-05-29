@@ -768,10 +768,10 @@ INSERT INTO denver.tipo_documentos VALUES (5, 'CEDULA POLICIAL');
 GO
 
 /****** usuarios  ******/
-INSERT INTO denver.usuarios (usuario_user, usuario_pass, usuario_nombre, usuario_apellido) VALUES ('GUEST', 'GUEST','GUEST','GUEST');
-INSERT INTO denver.usuarios (usuario_user, usuario_pass, usuario_nombre, usuario_apellido) VALUES ('MIGRATION', 'MIGRATION','MIGRATION','MIGRATION');
-INSERT INTO denver.usuarios (usuario_user, usuario_pass, usuario_nombre, usuario_apellido) VALUES ('ADMIN', 'ADMIN','ADMIN','ADMIN');
-INSERT INTO denver.usuarios (usuario_user, usuario_pass, usuario_nombre, usuario_apellido) VALUES ('RECEPCION', 'RECEPCION','RECEPCION','RECEPCION');
+INSERT INTO denver.usuarios (usuario_user, usuario_pass, usuario_nombre, usuario_apellido) VALUES ('GUEST', HASHBYTES('SHA2_256','GUEST'),'GUEST','GUEST');
+INSERT INTO denver.usuarios (usuario_user, usuario_pass, usuario_nombre, usuario_apellido) VALUES ('MIGRATION', HASHBYTES('SHA2_256','MIGRATION'),'MIGRATION','MIGRATION');
+INSERT INTO denver.usuarios (usuario_user, usuario_pass, usuario_nombre, usuario_apellido) VALUES ('ADMIN', HASHBYTES('SHA2_256','ADMIN'),'ADMIN','ADMIN');
+INSERT INTO denver.usuarios (usuario_user, usuario_pass, usuario_nombre, usuario_apellido) VALUES ('RECEPCION', HASHBYTES('SHA2_256','RECEPCION'),'RECEPCION','RECEPCION');
 GO
 
 

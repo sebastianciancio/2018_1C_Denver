@@ -35,7 +35,7 @@ namespace FrbaHotel.Login
 
         private void btn_acceder_Click(object sender, EventArgs e)
         {
-            SqlDataAdapter sda = new SqlDataAdapter("SELECT count(*) FROM denver.usuarios AS u WHERE u.usuario_user = '" + login_usuario.Text + "' AND u.usuario_pass = '" + login_password.Text + "';", DataBase.GetInstance().Connection);
+            SqlDataAdapter sda = new SqlDataAdapter("SELECT count(*) FROM denver.usuarios AS u WHERE u.usuario_user = '" + login_usuario.Text + "' AND u.usuario_pass = HASHBYTES('SHA2_256','" + login_password.Text + "');", DataBase.GetInstance().Connection);
             DataTable dt = new DataTable();
             sda.Fill(dt);
 
