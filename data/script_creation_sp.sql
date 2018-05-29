@@ -44,6 +44,9 @@ if EXISTS (SELECT * FROM sys.objects  WHERE name = 'modificar_cliente' AND type 
 if EXISTS (SELECT * FROM sys.objects  WHERE name = 'buscar_hotel' AND type IN (N'P', N'PC'))
 	DROP PROCEDURE [denver].[buscar_hotel]
 GO
+if EXISTS (SELECT * FROM sys.objects  WHERE name = 'baja_hotel' AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [denver].[baja_hotel]
+GO
 
 
 /*  --------------------------------------------------------------------------------
@@ -469,6 +472,33 @@ BEGIN
 		AND hotel_ciudad LIKE '%' + ISNULL(@hotel_ciudad, hotel_ciudad) + '%'
 		AND hotel_pais_id = ISNULL(@pais_id, hotel_pais_id) 
 		AND hotel_estrellas = ISNULL(@hotel_estrellas, hotel_estrellas) ;
+END
+GO
+
+CREATE PROCEDURE [denver].[baja_hotel]    
+	@id_hotel smallint = NULL ,
+	@fecha_inicio datetime = NULL,
+	@fecha_fin  datetime = NULL, 
+	@motivo nvarchar(255) = NULL
+AS   
+BEGIN 
+	-- SET NOCOUNT ON added to prevent extra result sets from interfering with SELECT statements.
+	SET NOCOUNT ON;  
+
+INSERT INTO [denver].[mantenimientos](
+		mantenimiento_hotel_id,
+		mantenimiento_fecha_desde,
+		mantenimiento_fecha_hasta,
+		mantenimiento_motivo,
+		mantenimiento_created
+)
+	VALUES(
+		@id_hotel,
+		@fecha_inicio,
+		@fecha_fin,
+		@motivo,
+		GETDATE());
+
 END
 GO
 

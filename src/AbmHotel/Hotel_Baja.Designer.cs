@@ -119,6 +119,7 @@
             this.btn_volver.TabIndex = 54;
             this.btn_volver.Text = "Volver";
             this.btn_volver.UseVisualStyleBackColor = true;
+            this.btn_volver.Click += new System.EventHandler(this.btn_volver_Click);
             // 
             // btn_guardar
             // 
@@ -128,8 +129,9 @@
             this.btn_guardar.TabIndex = 53;
             this.btn_guardar.Text = "Guardar";
             this.btn_guardar.UseVisualStyleBackColor = true;
+            this.btn_guardar.Click += new System.EventHandler(this.btn_guardar_Click);
             // 
-            // Form1
+            // Hotel_Baja
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -144,7 +146,7 @@
             this.Controls.Add(this.lbl_inicio);
             this.Controls.Add(this.txb_nombre);
             this.Controls.Add(this.lbl_nombre);
-            this.Name = "Form1";
+            this.Name = "Hotel_Baja";
             this.Text = "Baja Hotel";
             this.ResumeLayout(false);
             this.PerformLayout();

@@ -66,6 +66,8 @@ namespace FrbaHotel.AbmHotel
 
 
             cmd.ExecuteNonQuery();
+
+            MessageBox.Show("El hotel " + txb_nombre.Text + " se modifico correctamente", "Mensaje");
         }
 
         private void btn__volver_Click(object sender, EventArgs e)
