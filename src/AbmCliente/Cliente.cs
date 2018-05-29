@@ -28,7 +28,7 @@ namespace FrbaHotel
             InitializeComponent();
             db = DataBase.GetInstance();
             Cliente.c1 = this;
-            Documento.cargarComboDoc(cmb_tipo_doc);
+            Combos.cargarComboTipoDocumento(cmb_tipo_doc);
         }
 
 
