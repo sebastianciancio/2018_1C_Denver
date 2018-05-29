@@ -12,14 +12,19 @@ using System.Data.SqlClient;
 
 namespace FrbaHotel
 {
-    public partial class Listados : Form
+    public partial class Reserva : Form
     {
-        public Listados()
+        private DataBase db;
+        public Reserva()
         {
+            db = DataBase.GetInstance();
             InitializeComponent();
 
-            // Cargo el Combo Tipo de Reporte
-            Combos.cargarComboListados(cmb_tipo_reporte);
+            // Cargo los Combos
+            Combos.cargarComboTipoHabitacion(cmb_tipo_hab);
+            Combos.cargarComboTipoRegimen(cmb_regimen);
+
+            
         }
     }
 }

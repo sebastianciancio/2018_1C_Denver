@@ -33,12 +33,12 @@
             this.button3 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
-            this.button6 = new System.Windows.Forms.Button();
+            this.btn_reserva = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
-            this.button7 = new System.Windows.Forms.Button();
-            this.button8 = new System.Windows.Forms.Button();
-            this.button9 = new System.Windows.Forms.Button();
-            this.button10 = new System.Windows.Forms.Button();
+            this.btn_check = new System.Windows.Forms.Button();
+            this.btn_facturar = new System.Windows.Forms.Button();
+            this.btn_listados = new System.Windows.Forms.Button();
+            this.btn_consumibles = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.button11 = new System.Windows.Forms.Button();
             this.SuspendLayout();
@@ -93,15 +93,16 @@
             this.button5.UseVisualStyleBackColor = true;
             this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
-            // button6
+            // btn_reserva
             // 
-            this.button6.BackColor = System.Drawing.Color.Lime;
-            this.button6.Location = new System.Drawing.Point(22, 61);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(140, 76);
-            this.button6.TabIndex = 5;
-            this.button6.Text = "Reservas";
-            this.button6.UseVisualStyleBackColor = false;
+            this.btn_reserva.BackColor = System.Drawing.Color.Lime;
+            this.btn_reserva.Location = new System.Drawing.Point(22, 61);
+            this.btn_reserva.Name = "btn_reserva";
+            this.btn_reserva.Size = new System.Drawing.Size(140, 76);
+            this.btn_reserva.TabIndex = 5;
+            this.btn_reserva.Text = "Reservas";
+            this.btn_reserva.UseVisualStyleBackColor = false;
+            this.btn_reserva.Click += new System.EventHandler(this.button6_Click);
             // 
             // label1
             // 
@@ -115,46 +116,46 @@
             this.label1.Text = "Administración Interna";
             this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
-            // button7
+            // btn_check
             // 
-            this.button7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
-            this.button7.Location = new System.Drawing.Point(173, 61);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(140, 76);
-            this.button7.TabIndex = 7;
-            this.button7.Text = "Check-In / Check-Out";
-            this.button7.UseVisualStyleBackColor = false;
+            this.btn_check.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.btn_check.Location = new System.Drawing.Point(173, 61);
+            this.btn_check.Name = "btn_check";
+            this.btn_check.Size = new System.Drawing.Size(140, 76);
+            this.btn_check.TabIndex = 7;
+            this.btn_check.Text = "Check-In / Check-Out";
+            this.btn_check.UseVisualStyleBackColor = false;
             // 
-            // button8
+            // btn_facturar
             // 
-            this.button8.BackColor = System.Drawing.Color.Lime;
-            this.button8.Location = new System.Drawing.Point(465, 61);
-            this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(140, 76);
-            this.button8.TabIndex = 8;
-            this.button8.Text = "Facturar";
-            this.button8.UseVisualStyleBackColor = false;
+            this.btn_facturar.BackColor = System.Drawing.Color.Lime;
+            this.btn_facturar.Location = new System.Drawing.Point(465, 61);
+            this.btn_facturar.Name = "btn_facturar";
+            this.btn_facturar.Size = new System.Drawing.Size(140, 76);
+            this.btn_facturar.TabIndex = 8;
+            this.btn_facturar.Text = "Facturar";
+            this.btn_facturar.UseVisualStyleBackColor = false;
             // 
-            // button9
+            // btn_listados
             // 
-            this.button9.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.button9.Location = new System.Drawing.Point(611, 61);
-            this.button9.Name = "button9";
-            this.button9.Size = new System.Drawing.Size(140, 76);
-            this.button9.TabIndex = 9;
-            this.button9.Text = "Listados";
-            this.button9.UseVisualStyleBackColor = false;
-            this.button9.Click += new System.EventHandler(this.button9_Click);
+            this.btn_listados.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btn_listados.Location = new System.Drawing.Point(611, 61);
+            this.btn_listados.Name = "btn_listados";
+            this.btn_listados.Size = new System.Drawing.Size(140, 76);
+            this.btn_listados.TabIndex = 9;
+            this.btn_listados.Text = "Listados";
+            this.btn_listados.UseVisualStyleBackColor = false;
+            this.btn_listados.Click += new System.EventHandler(this.button9_Click);
             // 
-            // button10
+            // btn_consumibles
             // 
-            this.button10.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
-            this.button10.Location = new System.Drawing.Point(319, 61);
-            this.button10.Name = "button10";
-            this.button10.Size = new System.Drawing.Size(140, 76);
-            this.button10.TabIndex = 10;
-            this.button10.Text = "Registrar Consumibles";
-            this.button10.UseVisualStyleBackColor = false;
+            this.btn_consumibles.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.btn_consumibles.Location = new System.Drawing.Point(319, 61);
+            this.btn_consumibles.Name = "btn_consumibles";
+            this.btn_consumibles.Size = new System.Drawing.Size(140, 76);
+            this.btn_consumibles.TabIndex = 10;
+            this.btn_consumibles.Text = "Registrar Consumibles";
+            this.btn_consumibles.UseVisualStyleBackColor = false;
             // 
             // label2
             // 
@@ -183,12 +184,12 @@
             this.ClientSize = new System.Drawing.Size(967, 354);
             this.Controls.Add(this.button11);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.button10);
-            this.Controls.Add(this.button9);
-            this.Controls.Add(this.button8);
-            this.Controls.Add(this.button7);
+            this.Controls.Add(this.btn_consumibles);
+            this.Controls.Add(this.btn_listados);
+            this.Controls.Add(this.btn_facturar);
+            this.Controls.Add(this.btn_check);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.button6);
+            this.Controls.Add(this.btn_reserva);
             this.Controls.Add(this.button5);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.button3);
@@ -211,12 +212,12 @@
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Button button5;
-        private System.Windows.Forms.Button button6;
+        private System.Windows.Forms.Button btn_reserva;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button button7;
-        private System.Windows.Forms.Button button8;
-        private System.Windows.Forms.Button button9;
-        private System.Windows.Forms.Button button10;
+        private System.Windows.Forms.Button btn_check;
+        private System.Windows.Forms.Button btn_facturar;
+        private System.Windows.Forms.Button btn_listados;
+        private System.Windows.Forms.Button btn_consumibles;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button button11;
     }

@@ -112,7 +112,7 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="Documento.cs" />
-    <Compile Include="Pais.cs" />
+    <Compile Include="Combos.cs" />
     <Compile Include="DataBase.cs" />
     <Compile Include="Principal.cs">
       <SubType>Form</SubType>
@@ -126,11 +126,11 @@
     <Compile Include="AbmCliente\Cliente.Designer.cs">
       <DependentUpon>Cliente.cs</DependentUpon>
     </Compile>
-    <Compile Include="GenerarModificacionReserva\Form1.cs">
+    <Compile Include="GenerarModificacionReserva\Reserva.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GenerarModificacionReserva\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="GenerarModificacionReserva\Reserva.Designer.cs">
+      <DependentUpon>Reserva.cs</DependentUpon>
     </Compile>
     <Compile Include="ListadoEstadistico\Listados.cs">
       <SubType>Form</SubType>
@@ -187,6 +187,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="CancelarReserva\Cancelar_reserva.resx">
       <DependentUpon>Cancelar_reserva.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GenerarModificacionReserva\Reserva.resx">
+      <DependentUpon>Reserva.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ListadoEstadistico\Listados.resx">
       <DependentUpon>Listados.cs</DependentUpon>

@@ -76,7 +76,12 @@ namespace FrbaHotel
         {
             Listados frm = new Listados();
             frm.Show();
+        }
 
+        private void button6_Click(object sender, EventArgs e)
+        {
+            Reserva frm = new Reserva();
+            frm.Show();
         }
 
 
