@@ -160,24 +160,13 @@ CREATE PROCEDURE [dbo].[cargar_hotel]
 	@hotel_nro_calle numeric(18,0),
 	@hotel_estrellas numeric(18,0),
 	@hotel_ciudad nvarchar(255),
-	@hotel_pais nvarchar,
-	@hotel_created datetime
+	@hotel_pais_id smallint
 AS
 BEGIN
 	
 	SET NOCOUNT ON;  
-    DECLARE @hotel_pais_id smallint ;
-	DECLARE @hotel_max     smallint ; 
-
-	SELECT @hotel_max = count(*) 
-		FROM hoteles ;
-
-	SELECT @hotel_pais_id = pais_id
-	FROM paises
-	WHERE pais_nombre = @hotel_pais ;
 
 	INSERT INTO [dbo].[hoteles](
-		hotel_id,
 		hotel_calle,
 		hotel_nro_calle,
 		hotel_ciudad,
@@ -191,7 +180,6 @@ BEGIN
 		hotel_activo	
 		)
 	VALUES(
-	    @hotel_max,
 		@hotel_calle,
 		@hotel_nro_calle,
 		@hotel_ciudad,
@@ -459,25 +447,24 @@ CREATE PROCEDURE [dbo].[buscar_hotel]
 	@hotel_nombre nvarchar(255) = NULL ,
 	@hotel_ciudad nvarchar(255) = NULL,
 	@pais_nombre  nvarchar(255) = NULL, 
-	@hotel_estrellas smallint 
+	@hotel_estrellas smallint = NULL
 AS   
 BEGIN 
 	-- SET NOCOUNT ON added to prevent extra result sets from interfering with SELECT statements.
 	SET NOCOUNT ON;  
 	DECLARE @pais_id smallint ;
 
+	IF @pais_nombre IS NOT NULL
+	BEGIN
+ 		SELECT @pais_id = pais_id
+		FROM paises
+		WHERE pais_nombre = @pais_nombre; 
+	END
 
-
-IF @pais_nombre != NULL
-BEGIN
- 	SELECT @pais_id = pais_id
-	FROM paises
-	WHERE pais_nombre = @pais_id; 
-END	
-
-	SELECT *
+	SELECT hotel_nombre AS Nombre, hotel_ciudad AS Ciudad, p.pais_nombre AS Pais, hotel_email AS Email, hotel_estrellas AS Estrellas
 	FROM 
 		hoteles
+		join paises p on hotel_pais_id = p.pais_id
 	 WHERE hotel_nombre LIKE '%' + ISNULL(@hotel_nombre, hotel_nombre) + '%'
 		AND hotel_ciudad LIKE '%' + ISNULL(@hotel_ciudad, hotel_ciudad) + '%'
 		AND hotel_pais_id = ISNULL(@pais_id, hotel_pais_id) 

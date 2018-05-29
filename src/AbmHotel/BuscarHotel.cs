@@ -20,6 +20,7 @@ namespace FrbaHotel.AbmHotel
         {
             InitializeComponent();
             db = DataBase.GetInstance();
+            Pais.cargarCombo(combo_pais);
         }
 
         private void btn_buscar_Click(object sender, EventArgs e)
@@ -33,12 +34,13 @@ namespace FrbaHotel.AbmHotel
             if (txb_ciudad.Text != "")
                 cmd.Parameters.AddWithValue("@hotel_ciudad", SqlDbType.VarChar).Value = txb_ciudad.Text;
 
-            if (txb_pais.Text != "")
-                cmd.Parameters.AddWithValue("@pais_nombre", SqlDbType.VarChar).Value = txb_pais.Text;
+            if (combo_pais.Text != "")
+                cmd.Parameters.AddWithValue("@pais_nombre", SqlDbType.VarChar).Value = combo_pais.Text;
 
-            if (cmb_estrellas.SelectedItem != "")
-                cmd.Parameters.AddWithValue("@hotel_estrellas", SqlDbType.VarChar).Value = cmb_estrellas.Text;
+            if (cmb_estrellas.SelectedText != "")
+                cmd.Parameters.AddWithValue("@hotel_estrellas", SqlDbType.VarChar).Value = cmb_estrellas.SelectedText;
 
+            // Creo el DataTable para obtener los resultados del SP
             DataTable dt = new DataTable();
 
             using (var da = new SqlDataAdapter(cmd))

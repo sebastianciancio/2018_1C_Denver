@@ -33,7 +33,6 @@
             this.cmb_regimenes = new System.Windows.Forms.ComboBox();
             this.lbl_regimenes = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.txb_pais = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.cmb_estrellas = new System.Windows.Forms.ComboBox();
@@ -50,15 +49,13 @@
             this.label4 = new System.Windows.Forms.Label();
             this.txb_calle = new System.Windows.Forms.TextBox();
             this.lbl_direccion = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
             this.lbl_asterisco = new System.Windows.Forms.Label();
-            this.cmb_creacion = new System.Windows.Forms.DateTimePicker();
-            this.lbl_fecha = new System.Windows.Forms.Label();
             this.txb_nombre = new System.Windows.Forms.TextBox();
             this.lbl_nombre = new System.Windows.Forms.Label();
             this.lbl_nro = new System.Windows.Forms.Label();
             this.txb_nro = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
+            this.combo_pais = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // btn__volver
@@ -88,7 +85,7 @@
             "All inclusive",
             "Pensión completa",
             "Solo desayuno"});
-            this.cmb_regimenes.Location = new System.Drawing.Point(247, 220);
+            this.cmb_regimenes.Location = new System.Drawing.Point(250, 186);
             this.cmb_regimenes.Name = "cmb_regimenes";
             this.cmb_regimenes.Size = new System.Drawing.Size(141, 21);
             this.cmb_regimenes.TabIndex = 125;
@@ -96,7 +93,7 @@
             // lbl_regimenes
             // 
             this.lbl_regimenes.AutoSize = true;
-            this.lbl_regimenes.Location = new System.Drawing.Point(244, 204);
+            this.lbl_regimenes.Location = new System.Drawing.Point(247, 170);
             this.lbl_regimenes.Name = "lbl_regimenes";
             this.lbl_regimenes.Size = new System.Drawing.Size(104, 13);
             this.lbl_regimenes.TabIndex = 124;
@@ -106,23 +103,16 @@
             // 
             this.label2.AutoSize = true;
             this.label2.ForeColor = System.Drawing.Color.Red;
-            this.label2.Location = new System.Drawing.Point(45, 165);
+            this.label2.Location = new System.Drawing.Point(44, 170);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(11, 13);
             this.label2.TabIndex = 123;
             this.label2.Text = "*";
             // 
-            // txb_pais
-            // 
-            this.txb_pais.Location = new System.Drawing.Point(15, 181);
-            this.txb_pais.Name = "txb_pais";
-            this.txb_pais.Size = new System.Drawing.Size(150, 20);
-            this.txb_pais.TabIndex = 122;
-            // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(13, 165);
+            this.label5.Location = new System.Drawing.Point(12, 170);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(27, 13);
             this.label5.TabIndex = 121;
@@ -267,16 +257,6 @@
             this.lbl_direccion.TabIndex = 106;
             this.lbl_direccion.Text = "Dirección";
             // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.ForeColor = System.Drawing.Color.Red;
-            this.label3.Location = new System.Drawing.Point(107, 205);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(11, 13);
-            this.label3.TabIndex = 105;
-            this.label3.Text = "*";
-            // 
             // lbl_asterisco
             // 
             this.lbl_asterisco.AutoSize = true;
@@ -286,23 +266,6 @@
             this.lbl_asterisco.Size = new System.Drawing.Size(11, 13);
             this.lbl_asterisco.TabIndex = 104;
             this.lbl_asterisco.Text = "*";
-            // 
-            // cmb_creacion
-            // 
-            this.cmb_creacion.Location = new System.Drawing.Point(15, 221);
-            this.cmb_creacion.Name = "cmb_creacion";
-            this.cmb_creacion.Size = new System.Drawing.Size(200, 20);
-            this.cmb_creacion.TabIndex = 103;
-            this.cmb_creacion.Value = new System.DateTime(1810, 1, 1, 0, 0, 0, 0);
-            // 
-            // lbl_fecha
-            // 
-            this.lbl_fecha.AutoSize = true;
-            this.lbl_fecha.Location = new System.Drawing.Point(12, 205);
-            this.lbl_fecha.Name = "lbl_fecha";
-            this.lbl_fecha.Size = new System.Drawing.Size(82, 13);
-            this.lbl_fecha.TabIndex = 102;
-            this.lbl_fecha.Text = "Fecha Creación";
             // 
             // txb_nombre
             // 
@@ -346,11 +309,26 @@
             this.label6.TabIndex = 130;
             this.label6.Text = "*";
             // 
+            // combo_pais
+            // 
+            this.combo_pais.FormattingEnabled = true;
+            this.combo_pais.Items.AddRange(new object[] {
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"});
+            this.combo_pais.Location = new System.Drawing.Point(15, 186);
+            this.combo_pais.Name = "combo_pais";
+            this.combo_pais.Size = new System.Drawing.Size(209, 21);
+            this.combo_pais.TabIndex = 132;
+            // 
             // Hotel_alta
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(432, 301);
+            this.Controls.Add(this.combo_pais);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.txb_nro);
             this.Controls.Add(this.lbl_nro);
@@ -359,7 +337,6 @@
             this.Controls.Add(this.cmb_regimenes);
             this.Controls.Add(this.lbl_regimenes);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.txb_pais);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.cmb_estrellas);
@@ -376,10 +353,7 @@
             this.Controls.Add(this.label4);
             this.Controls.Add(this.txb_calle);
             this.Controls.Add(this.lbl_direccion);
-            this.Controls.Add(this.label3);
             this.Controls.Add(this.lbl_asterisco);
-            this.Controls.Add(this.cmb_creacion);
-            this.Controls.Add(this.lbl_fecha);
             this.Controls.Add(this.txb_nombre);
             this.Controls.Add(this.lbl_nombre);
             this.Name = "Hotel_alta";
@@ -396,7 +370,6 @@
         private System.Windows.Forms.ComboBox cmb_regimenes;
         private System.Windows.Forms.Label lbl_regimenes;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox txb_pais;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox cmb_estrellas;
@@ -413,14 +386,12 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox txb_calle;
         private System.Windows.Forms.Label lbl_direccion;
-        private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label lbl_asterisco;
-        private System.Windows.Forms.DateTimePicker cmb_creacion;
-        private System.Windows.Forms.Label lbl_fecha;
         private System.Windows.Forms.TextBox txb_nombre;
         private System.Windows.Forms.Label lbl_nombre;
         private System.Windows.Forms.Label lbl_nro;
         private System.Windows.Forms.TextBox txb_nro;
         private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.ComboBox combo_pais;
     }
 }

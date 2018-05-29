@@ -47,8 +47,6 @@ namespace FrbaHotel
             if (txb_cliente_dni.Text != "")
                 cmd.Parameters.AddWithValue("@cliente_dni", SqlDbType.Int ).Value = txb_cliente_dni.Text;
 
-            //cmd.ExecuteNonQuery();
-
             // Creo el DataTable para obtener los resultados del SP
             DataTable dt = new DataTable();
 

@@ -22,6 +22,7 @@ namespace FrbaHotel.AbmCliente
             InitializeComponent();
             db = DataBase.GetInstance();
             Cliente_alta.Cli_alta = this;
+            Pais.cargarCombo(combo_pais);
         }
 
         private void btn_cli_new_guardar_Click(object sender, EventArgs e)
@@ -42,7 +43,7 @@ namespace FrbaHotel.AbmCliente
             cmd.Parameters.AddWithValue("@cliente_dom_localidad", SqlDbType.VarChar).Value = txb_cli_new_localidad.Text;
             cmd.Parameters.AddWithValue("@cliente_telefono", SqlDbType.VarChar).Value = txb_cli_new_telefono.Text;
             cmd.Parameters.AddWithValue("@cliente_nacionalidad", SqlDbType.VarChar).Value = txb_cli_new_nacionalidad.Text;
-            cmd.Parameters.AddWithValue("@cliente_pais_id", SqlDbType.SmallInt).Value = Convert.ToInt32("1");
+            cmd.Parameters.AddWithValue("@cliente_pais_id", SqlDbType.SmallInt).Value = combo_pais.SelectedValue;
 
             cmd.ExecuteNonQuery();
 

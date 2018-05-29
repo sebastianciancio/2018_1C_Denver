@@ -69,11 +69,14 @@
             this.label9 = new System.Windows.Forms.Label();
             this.txb_cli_new_dpto = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
+            this.combo_pais = new System.Windows.Forms.ComboBox();
+            this.label13 = new System.Windows.Forms.Label();
+            this.label14 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // btn_cli_new_volver
             // 
-            this.btn_cli_new_volver.Location = new System.Drawing.Point(286, 389);
+            this.btn_cli_new_volver.Location = new System.Drawing.Point(286, 416);
             this.btn_cli_new_volver.Name = "btn_cli_new_volver";
             this.btn_cli_new_volver.Size = new System.Drawing.Size(99, 25);
             this.btn_cli_new_volver.TabIndex = 89;
@@ -83,7 +86,7 @@
             // 
             // btn_cli_new_guardar
             // 
-            this.btn_cli_new_guardar.Location = new System.Drawing.Point(175, 389);
+            this.btn_cli_new_guardar.Location = new System.Drawing.Point(175, 416);
             this.btn_cli_new_guardar.Name = "btn_cli_new_guardar";
             this.btn_cli_new_guardar.Size = new System.Drawing.Size(100, 26);
             this.btn_cli_new_guardar.TabIndex = 88;
@@ -95,7 +98,7 @@
             // 
             this.label12.AutoSize = true;
             this.label12.ForeColor = System.Drawing.Color.Red;
-            this.label12.Location = new System.Drawing.Point(59, 325);
+            this.label12.Location = new System.Drawing.Point(62, 367);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(11, 13);
             this.label12.TabIndex = 87;
@@ -105,7 +108,7 @@
             // 
             this.label10.AutoSize = true;
             this.label10.ForeColor = System.Drawing.Color.Red;
-            this.label10.Location = new System.Drawing.Point(275, 322);
+            this.label10.Location = new System.Drawing.Point(278, 364);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(11, 13);
             this.label10.TabIndex = 86;
@@ -113,7 +116,7 @@
             // 
             // txb_cli_new_mail
             // 
-            this.txb_cli_new_mail.Location = new System.Drawing.Point(175, 338);
+            this.txb_cli_new_mail.Location = new System.Drawing.Point(178, 380);
             this.txb_cli_new_mail.MaxLength = 255;
             this.txb_cli_new_mail.Name = "txb_cli_new_mail";
             this.txb_cli_new_mail.Size = new System.Drawing.Size(210, 20);
@@ -123,7 +126,7 @@
             // 
             this.lbl_cli_mod_mail.AutoSize = true;
             this.lbl_cli_mod_mail.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_cli_mod_mail.Location = new System.Drawing.Point(172, 322);
+            this.lbl_cli_mod_mail.Location = new System.Drawing.Point(175, 364);
             this.lbl_cli_mod_mail.Name = "lbl_cli_mod_mail";
             this.lbl_cli_mod_mail.Size = new System.Drawing.Size(97, 13);
             this.lbl_cli_mod_mail.TabIndex = 85;
@@ -131,7 +134,7 @@
             // 
             // txb_cli_new_telefono
             // 
-            this.txb_cli_new_telefono.Location = new System.Drawing.Point(12, 338);
+            this.txb_cli_new_telefono.Location = new System.Drawing.Point(15, 380);
             this.txb_cli_new_telefono.Name = "txb_cli_new_telefono";
             this.txb_cli_new_telefono.Size = new System.Drawing.Size(134, 20);
             this.txb_cli_new_telefono.TabIndex = 83;
@@ -139,7 +142,7 @@
             // lbl_cli_mod_telefono
             // 
             this.lbl_cli_mod_telefono.AutoSize = true;
-            this.lbl_cli_mod_telefono.Location = new System.Drawing.Point(9, 322);
+            this.lbl_cli_mod_telefono.Location = new System.Drawing.Point(12, 364);
             this.lbl_cli_mod_telefono.Name = "lbl_cli_mod_telefono";
             this.lbl_cli_mod_telefono.Size = new System.Drawing.Size(49, 13);
             this.lbl_cli_mod_telefono.TabIndex = 82;
@@ -438,11 +441,47 @@
             this.label11.TabIndex = 94;
             this.label11.Text = "Dpto";
             // 
+            // combo_pais
+            // 
+            this.combo_pais.FormattingEnabled = true;
+            this.combo_pais.Items.AddRange(new object[] {
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"});
+            this.combo_pais.Location = new System.Drawing.Point(15, 334);
+            this.combo_pais.Name = "combo_pais";
+            this.combo_pais.Size = new System.Drawing.Size(209, 21);
+            this.combo_pais.TabIndex = 135;
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.ForeColor = System.Drawing.Color.Red;
+            this.label13.Location = new System.Drawing.Point(44, 318);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(11, 13);
+            this.label13.TabIndex = 134;
+            this.label13.Text = "*";
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(12, 318);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(27, 13);
+            this.label14.TabIndex = 133;
+            this.label14.Text = "Pais";
+            // 
             // Cliente_alta
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(413, 457);
+            this.ClientSize = new System.Drawing.Size(413, 461);
+            this.Controls.Add(this.combo_pais);
+            this.Controls.Add(this.label13);
+            this.Controls.Add(this.label14);
             this.Controls.Add(this.label11);
             this.Controls.Add(this.txb_cli_new_dpto);
             this.Controls.Add(this.label9);
@@ -534,5 +573,8 @@
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.TextBox txb_cli_new_dpto;
         private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.ComboBox combo_pais;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Label label14;
     }
 }
