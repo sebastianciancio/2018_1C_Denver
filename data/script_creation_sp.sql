@@ -11,38 +11,38 @@ GO
 ELIMINACION DE LOS SP
 -------------------------------------------------------------------------------- */
 
-if EXISTS (SELECT * FROM sys.objects  WHERE object_id = OBJECT_ID(N'buscar_cliente') AND type IN (N'P', N'PC'))
-	DROP PROCEDURE [dbo].[buscar_cliente]
-if EXISTS (SELECT * FROM sys.objects  WHERE object_id = OBJECT_ID(N'buscar_cliente_completo') AND type IN (N'P', N'PC'))
-	drop procedure [dbo].[buscar_cliente_completo]
-if EXISTS (SELECT * FROM sys.objects  WHERE object_id = OBJECT_ID(N'cargar_cliente') AND type IN (N'P', N'PC'))
-	DROP PROCEDURE [dbo].[cargar_cliente]
-if EXISTS (SELECT * FROM sys.objects  WHERE object_id = OBJECT_ID(N'eliminar_cliente') AND type IN (N'P', N'PC'))
-	DROP PROCEDURE [dbo].[eliminar_cliente]
-if EXISTS (SELECT * FROM sys.objects  WHERE object_id = OBJECT_ID(N'cargar_hotel') AND type IN (N'P', N'PC'))
-	DROP PROCEDURE [dbo].[cargar_hotel]
-if EXISTS (SELECT * FROM sys.objects  WHERE object_id = OBJECT_ID(N'eliminar_hotel') AND type IN (N'P', N'PC'))
-	DROP PROCEDURE [dbo].[eliminar_hotel]
-if EXISTS (SELECT * FROM sys.objects  WHERE object_id = OBJECT_ID(N'cargar_habitacion') AND type IN (N'P', N'PC'))
-	DROP PROCEDURE [dbo].[cargar_habitacion]
-if EXISTS (SELECT * FROM sys.objects  WHERE object_id = OBJECT_ID(N'eliminar_habitacion') AND type IN (N'P', N'PC'))
-	DROP PROCEDURE [dbo].[eliminar_habitacion]
-if EXISTS (SELECT * FROM sys.objects  WHERE object_id = OBJECT_ID(N'cargar_regimen') AND type IN (N'P', N'PC'))
-	DROP PROCEDURE [dbo].[cargar_regimen] 
-if EXISTS (SELECT * FROM sys.objects  WHERE object_id = OBJECT_ID(N'eliminar_regimen') AND type IN (N'P', N'PC'))
-	DROP PROCEDURE [dbo].[eliminar_regimen]
-if EXISTS (SELECT * FROM sys.objects  WHERE object_id = OBJECT_ID(N'cargar_rol') AND type IN (N'P', N'PC'))
-	DROP PROCEDURE [dbo].[cargar_rol]
-if EXISTS (SELECT * FROM sys.objects  WHERE object_id = OBJECT_ID(N'eliminar_rol') AND type IN (N'P', N'PC'))
-	DROP PROCEDURE [dbo].[eliminar_rol] 
-if EXISTS (SELECT * FROM sys.objects  WHERE object_id = OBJECT_ID(N'cargar_usuario') AND type IN (N'P', N'PC'))
-	DROP PROCEDURE [dbo].[cargar_usuario] 
-if EXISTS (SELECT * FROM sys.objects  WHERE object_id = OBJECT_ID(N'eliminar_usuario') AND type IN (N'P', N'PC'))
-	DROP PROCEDURE [dbo].[eliminar_usuario] 
-if EXISTS (SELECT * FROM sys.objects  WHERE object_id = OBJECT_ID(N'modificar_cliente') AND type IN (N'P', N'PC'))
-	DROP PROCEDURE [dbo].[modificar_cliente] 
-if EXISTS (SELECT * FROM sys.objects  WHERE object_id = OBJECT_ID(N'buscar_hotel') AND type IN (N'P', N'PC'))
-	DROP PROCEDURE [dbo].[buscar_hotel]
+if EXISTS (SELECT * FROM sys.objects  WHERE name = 'buscar_cliente' AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [denver].[buscar_cliente]
+if EXISTS (SELECT * FROM sys.objects  WHERE name = 'buscar_cliente_completo' AND type IN (N'P', N'PC'))
+	drop procedure [denver].[buscar_cliente_completo]
+if EXISTS (SELECT * FROM sys.objects  WHERE name = 'cargar_cliente' AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [denver].[cargar_cliente]
+if EXISTS (SELECT * FROM sys.objects  WHERE name = 'eliminar_cliente' AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [denver].[eliminar_cliente]
+if EXISTS (SELECT * FROM sys.objects  WHERE name = 'cargar_hotel' AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [denver].[cargar_hotel]
+if EXISTS (SELECT * FROM sys.objects  WHERE name = 'eliminar_hotel' AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [denver].[eliminar_hotel]
+if EXISTS (SELECT * FROM sys.objects  WHERE name = 'cargar_habitacion' AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [denver].[cargar_habitacion]
+if EXISTS (SELECT * FROM sys.objects  WHERE name = 'eliminar_habitacion' AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [denver].[eliminar_habitacion]
+if EXISTS (SELECT * FROM sys.objects  WHERE name = 'cargar_regimen' AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [denver].[cargar_regimen] 
+if EXISTS (SELECT * FROM sys.objects  WHERE name = 'eliminar_regimen' AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [denver].[eliminar_regimen]
+if EXISTS (SELECT * FROM sys.objects  WHERE name = 'cargar_rol' AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [denver].[cargar_rol]
+if EXISTS (SELECT * FROM sys.objects  WHERE name = 'eliminar_rol' AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [denver].[eliminar_rol] 
+if EXISTS (SELECT * FROM sys.objects  WHERE name = 'cargar_usuario' AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [denver].[cargar_usuario] 
+if EXISTS (SELECT * FROM sys.objects  WHERE name = 'eliminar_usuario' AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [denver].[eliminar_usuario] 
+if EXISTS (SELECT * FROM sys.objects  WHERE name = 'modificar_cliente' AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [denver].[modificar_cliente] 
+if EXISTS (SELECT * FROM sys.objects  WHERE name = 'buscar_hotel' AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [denver].[buscar_hotel]
 GO
 
 
@@ -50,7 +50,7 @@ GO
 CREACION DE  LOS SP
 -------------------------------------------------------------------------------- */
 
-CREATE PROCEDURE [dbo].[buscar_cliente]    
+CREATE PROCEDURE [denver].[buscar_cliente]    
 	@cliente_apellido nvarchar(255) = NULL ,
 	@cliente_nombre nvarchar(255) = NULL,
 --	@cliente_doc int = NULL
@@ -73,7 +73,7 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE [dbo].[cargar_cliente]    
+CREATE PROCEDURE [denver].[cargar_cliente]    
 	@cliente_tipo_documento nvarchar(255) = NULL,
 	@cliente_pasaporte_nro numeric(18, 0) = NULL,
 	@cliente_apellido nvarchar(255) = NULL,
@@ -131,7 +131,7 @@ GO
 
 
 
-CREATE PROCEDURE [dbo].[eliminar_cliente]
+CREATE PROCEDURE [denver].[eliminar_cliente]
 	@cliente_tipo_documento_id nvarchar(50),
 	@cliente_pasaporte_nro numeric(18,0)
 AS
@@ -143,7 +143,7 @@ BEGIN
 	SELECT @tip_doc = TIPO_DOCUMENTO_ID FROM dbo.tipo_documentos
 		WHERE tipo_documento_nombre = @cliente_tipo_documento_id ;
 
-	UPDATE [dbo].[clientes]
+	UPDATE [denver].[clientes]
 		SET cliente_activo = 'N'
 	WHERE 
 		 cliente_tipo_documento_id = @tip_doc AND
@@ -152,7 +152,7 @@ END
 GO
 
 
-CREATE PROCEDURE [dbo].[cargar_hotel]
+CREATE PROCEDURE [denver].[cargar_hotel]
 	@hotel_nombre nvarchar(255),
 	@hotel_email nvarchar(255),
 	@hotel_telefono nvarchar(255),
@@ -166,7 +166,7 @@ BEGIN
 	
 	SET NOCOUNT ON;  
 
-	INSERT INTO [dbo].[hoteles](
+	INSERT INTO [denver].[hoteles](
 		hotel_calle,
 		hotel_nro_calle,
 		hotel_ciudad,
@@ -195,12 +195,12 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE [dbo].[eliminar_hotel]
+CREATE PROCEDURE [denver].[eliminar_hotel]
 	@hotel_id smallint
 AS
 BEGIN
 	SET NOCOUNT ON;  
-	UPDATE [dbo].[hoteles]
+	UPDATE [denver].[hoteles]
 		SET hotel_activo = 'N'
 	WHERE
 		@hotel_id = hotel_id
@@ -209,7 +209,7 @@ GO
 
 
 
-CREATE PROCEDURE [dbo].[cargar_habitacion]
+CREATE PROCEDURE [denver].[cargar_habitacion]
 	@habitacion_nro numeric(18,0),
 	@habitacion_piso numeric(18,0),
 	@habitacion_frente nvarchar(50),
@@ -239,13 +239,13 @@ END
 GO
 
 
-CREATE PROCEDURE [dbo].[eliminar_habitacion]
+CREATE PROCEDURE [denver].[eliminar_habitacion]
 	@habitacion_nro numeric(18,0),
 	@habitacion_hotel_id smallint
 AS
 BEGIN
 	SET NOCOUNT ON;  
-	UPDATE [dbo].[habitaciones]
+	UPDATE [denver].[habitaciones]
 		SET habitacion_activa = 'N'
 	WHERE
 		@habitacion_hotel_id = habitacion_hotel_id AND
@@ -254,14 +254,14 @@ END
 GO
 
 
-CREATE PROCEDURE [dbo].[cargar_regimen]
+CREATE PROCEDURE [denver].[cargar_regimen]
 	@regimen_id numeric(18,0),
 	@regimen_descripcion nvarchar(255),
 	@regimen_precio numeric(18,0)
 AS
 BEGIN
 	SET NOCOUNT ON;  
-	INSERT INTO [dbo].[regimenes](
+	INSERT INTO [denver].[regimenes](
 		regimen_id,
 		regimen_descripcion,
 		regimen_precio,
@@ -278,12 +278,12 @@ END
 GO
 
 
-CREATE PROCEDURE [dbo].[eliminar_regimen]
+CREATE PROCEDURE [denver].[eliminar_regimen]
 	@regimen_id numeric(18,0)
 AS
 BEGIN
 	SET NOCOUNT ON;  
-	UPDATE [dbo].[regimenes]
+	UPDATE [denver].[regimenes]
 		SET regimen_activo = 'N'
 	WHERE
 		@regimen_id = regimen_id
@@ -291,12 +291,12 @@ END
 GO
 
 
-CREATE PROCEDURE [dbo].[cargar_rol]
+CREATE PROCEDURE [denver].[cargar_rol]
 	@rol_nombre nvarchar(255)
 AS
 BEGIN
 	SET NOCOUNT ON;  
-	INSERT INTO [dbo].[roles](
+	INSERT INTO [denver].[roles](
 		rol_nombre,
 		rol_activo,
 		rol_created)
@@ -308,12 +308,12 @@ END
 GO
 
 
-CREATE PROCEDURE [dbo].[eliminar_rol]
+CREATE PROCEDURE [denver].[eliminar_rol]
 	@rol_nombre nvarchar(255)
 AS
 BEGIN
 	SET NOCOUNT ON;  
-	UPDATE [dbo].[roles]
+	UPDATE [denver].[roles]
 		SET rol_activo = 'N'
 	WHERE
 		@rol_nombre = rol_nombre
@@ -321,7 +321,7 @@ END
 GO
 
 
-CREATE PROCEDURE [dbo].[cargar_usuario]
+CREATE PROCEDURE [denver].[cargar_usuario]
 	@usuario_user nvarchar(50),
 	@usuario_pass nvarchar(50),
 	@usuario_nombre nvarchar(255),
@@ -335,7 +335,7 @@ CREATE PROCEDURE [dbo].[cargar_usuario]
 AS
 BEGIN
 	SET NOCOUNT ON;  
-	INSERT INTO [dbo].[usuarios](
+	INSERT INTO [denver].[usuarios](
 		usuario_user,
 		usuario_pass,
 		usuario_nombre,
@@ -367,19 +367,19 @@ END
 GO
 
 
-CREATE PROCEDURE [dbo].[eliminar_usuario]
+CREATE PROCEDURE [denver].[eliminar_usuario]
 	@usuario_user nvarchar(50)
 AS
 BEGIN
 	SET NOCOUNT ON;  
-	UPDATE [dbo].[usuarios]
+	UPDATE [denver].[usuarios]
 		SET usuario_activo = 'N'
 	WHERE
 		@usuario_user = usuario_user
 END
 GO
 
-CREATE PROCEDURE [dbo].[buscar_cliente_completo] 
+CREATE PROCEDURE [denver].[buscar_cliente_completo] 
 	@cliente_doc nvarchar(50) = NULL,
 	@cliente_dni int = NULL 
 AS   
@@ -396,7 +396,7 @@ END
 GO
 
 
-CREATE PROCEDURE [dbo].[modificar_cliente] 
+CREATE PROCEDURE [denver].[modificar_cliente] 
 	@cliente_tipo_documento nvarchar(255) = NULL,
 	@cliente_pasaporte_nro numeric(18, 0) = NULL,
 	@cliente_apellido nvarchar(255) = NULL,
@@ -443,7 +443,7 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE [dbo].[buscar_hotel]    
+CREATE PROCEDURE [denver].[buscar_hotel]    
 	@hotel_nombre nvarchar(255) = NULL ,
 	@hotel_ciudad nvarchar(255) = NULL,
 	@pais_nombre  nvarchar(255) = NULL, 

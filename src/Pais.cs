@@ -22,7 +22,7 @@ namespace FrbaHotel
         public static void cargarCombo(ComboBox combo)
         {
            
-            SqlCommand cmd = new SqlCommand("SELECT pais_id, pais_nombre FROM dbo.paises ORDER BY pais_nombre", DataBase.GetInstance().Connection);
+            SqlCommand cmd = new SqlCommand("SELECT pais_id, pais_nombre FROM denver.paises ORDER BY pais_nombre", DataBase.GetInstance().Connection);
             SqlDataReader reader;
 
             reader = cmd.ExecuteReader();
