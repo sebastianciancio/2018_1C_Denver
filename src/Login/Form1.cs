@@ -17,6 +17,9 @@ namespace FrbaHotel
         {
             db = DataBase.GetInstance();
             InitializeComponent();
+
+            // Cargo los Combos
+            Combos.cargarComboHotel(cmb_hotel);
         }
 
         private void groupBox1_Enter(object sender, EventArgs e)
@@ -36,7 +39,7 @@ namespace FrbaHotel
 
         private void btn_acceder_Click(object sender, EventArgs e)
         {
-            SqlDataAdapter sda = new SqlDataAdapter("SELECT count(*), usuario_apellido, usuario_nombre, usuario_user, usuario_login_fallidos FROM denver.usuarios AS u WHERE u.usuario_user = UPPER('" + login_usuario.Text + "') AND u.usuario_pass = HASHBYTES('SHA2_256',UPPER('" + login_password.Text + "')) AND u.usuario_activo = 'S' GROUP BY usuario_apellido, usuario_nombre, usuario_user, usuario_login_fallidos;", db.Connection);
+            SqlDataAdapter sda = new SqlDataAdapter("SELECT count(*), usuario_apellido, usuario_nombre, usuario_user, usuario_login_fallidos, denver.cant_roles_usuario(usuario_user) FROM denver.usuarios AS u JOIN denver.usuarios_hoteles AS uh ON u.usuario_user = uh.usuario_usuario_user WHERE u.usuario_user = UPPER('" + login_usuario.Text + "') AND u.usuario_pass = HASHBYTES('SHA2_256',UPPER('" + login_password.Text + "')) AND uh.usuario_hotel_id = '" + cmb_hotel.SelectedValue + "' AND u.usuario_activo = 'S' GROUP BY usuario_apellido, usuario_nombre, usuario_user, usuario_login_fallidos;", db.Connection);
             DataTable dt = new DataTable();
             sda.Fill(dt);
 
@@ -52,6 +55,25 @@ namespace FrbaHotel
                     accesoSistema.UsuarioLogueado.Apellido = dt.Rows[0][1].ToString();
                     accesoSistema.UsuarioLogueado.Nombre = dt.Rows[0][2].ToString();
                     accesoSistema.UsuarioLogueado.Id = dt.Rows[0][3].ToString();
+                    accesoSistema.HotelIdActual = Convert.ToInt32(cmb_hotel.SelectedValue);
+                    accesoSistema.HotelNombreActual = cmb_hotel.Text;
+
+                    // Si tiene solo 1 Rol
+                    if (dt.Rows[0][5].ToString() == "1")
+                    {
+                        accesoSistema.UsuarioLogueado.Rol = dt.Rows[0][5].ToString();
+                    }
+                    else // Si tiene mas de un Rol
+                    {
+                        accesoSistema.UsuarioLogueado.Rol = dt.Rows[0][5].ToString();
+                    }
+                    
+
+                    // Reseteo los intentos fallidos
+                    SqlCommand cmd = new SqlCommand("denver.reset_intentos_loguin_fallidos", db.Connection);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@usuario_user", SqlDbType.VarChar).Value = login_usuario.Text;
+                    cmd.ExecuteNonQuery();
 
                     // Abro el Menu Principal
                     Principal frm = new Principal();

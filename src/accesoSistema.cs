@@ -13,7 +13,8 @@ namespace FrbaHotel
     public partial class accesoSistema : Form
     {
         // Declaro las variables Globales
-        static public int HotelSeleccionado;
+        static public int HotelIdActual = 0;
+        static public string HotelNombreActual;
         static public Usuario UsuarioLogueado = new Usuario();
 
         public accesoSistema()

@@ -20,8 +20,9 @@ namespace FrbaHotel
             InitializeComponent();
 
             // Cargo los Combos
-            //Combos.cargarComboTipoHabitacion(cmb_tipo_hab);
-
+            Combos.cargarComboCantidad(cmb_cantidad);
+            Combos.cargarComboConsumibles(cmb_productos);
+            Combos.cargarComboHabitacion(accesoSistema.HotelIdActual, cmb_habitaciones);
         }
     }
 }

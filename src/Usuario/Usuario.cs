@@ -14,6 +14,7 @@ namespace FrbaHotel
         private string apellido;
         private string nombre;
         private string id;
+        private string rol;
 
         public string Apellido
         {
@@ -32,11 +33,17 @@ namespace FrbaHotel
             get { return this.id; }
             set { this.id = value; }
         }
+        public string Rol
+        {
+            get { return this.rol; }
+            set { this.rol = value; }
+        }
         public Usuario()
         {
             this.apellido = "";
             this.nombre = "";
             this.id = "";
+            this.rol = "";
         }
     }
 }

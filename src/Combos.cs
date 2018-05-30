@@ -36,7 +36,6 @@ namespace FrbaHotel
             combo.DisplayMember = "pais_nombre";
             combo.DataSource = dt;
 
-            dt.Dispose();
         }
 
         public static void cargarComboTipoHabitacion(ComboBox combo)
@@ -56,7 +55,6 @@ namespace FrbaHotel
             combo.DisplayMember = "tipo_habitacion_descripcion";
             combo.DataSource = dt;
 
-            dt.Dispose();
         }
 
         public static void cargarComboTipoRegimen(ComboBox combo)
@@ -75,7 +73,6 @@ namespace FrbaHotel
             combo.DisplayMember = "regimen_descripcion";
             combo.DataSource = dt;
 
-            dt.Dispose();
         }
 
         public static void cargarComboTipoDocumento(ComboBox combo)
@@ -94,26 +91,24 @@ namespace FrbaHotel
             combo.DisplayMember = "tipo_documento_nombre";
             combo.DataSource = dt;
 
-            dt.Dispose();
         }
 
         public static void cargarComboHotel(ComboBox combo)
         {
-            SqlCommand cmd = new SqlCommand("SELECT hotel_id,ltrim(concat(hotel_nombre,' ',hotel_calle)) as nombre_hotel FROM denver.hoteles ORDER BY tipo_documento_nombre", DataBase.GetInstance().Connection);
+            SqlCommand cmd = new SqlCommand("SELECT hotel_id,hotel_nombre FROM denver.hoteles ORDER BY hotel_nombre", DataBase.GetInstance().Connection);
             SqlDataReader reader;
 
             reader = cmd.ExecuteReader();
 
             DataTable dt = new DataTable();
             dt.Columns.Add("hotel_id", typeof(int));
-            dt.Columns.Add("nombre_hotel", typeof(string));
+            dt.Columns.Add("hotel_nombre", typeof(string));
             dt.Load(reader);
 
             combo.ValueMember = "hotel_id";
-            combo.DisplayMember = "nombre_hotel";
+            combo.DisplayMember = "hotel_nombre";
             combo.DataSource = dt;
 
-            dt.Dispose();
         }
 
         public static void cargarComboListados(ComboBox combo)
@@ -131,5 +126,73 @@ namespace FrbaHotel
             combo.SelectedIndex = 1;
         }
 
+        public static void cargarComboCantidad(ComboBox combo)
+        {
+            // Cargo los Combos
+            combo.DisplayMember = "Text";
+            combo.ValueMember = "Value";
+
+            for(int i=1; i<=50;i++)
+            {
+                combo.Items.Add(new { Text = i.ToString(), Value = i.ToString() });
+            }
+
+            // Seteo el Item por default
+            combo.SelectedIndex = 0;
+        }
+
+        public static void cargarComboHabitacion(int id_hotel, ComboBox combo)
+        {
+            SqlCommand cmd = new SqlCommand("SELECT habitacion_nro FROM denver.habitaciones WHERE habitacion_hotel_id = "+id_hotel+" ORDER BY habitacion_nro", DataBase.GetInstance().Connection);
+            SqlDataReader reader;
+
+            reader = cmd.ExecuteReader();
+
+            DataTable dt = new DataTable();
+            dt.Columns.Add("habitacion_nro", typeof(string));
+            dt.Columns.Add("habitacion_detalle", typeof(string));
+            dt.Load(reader);
+
+            combo.ValueMember = "habitacion_nro";
+            combo.DisplayMember = "habitacion_detalle";
+            combo.DataSource = dt;
+
+        }
+
+		public static void cargarComboConsumibles(ComboBox combo)
+        {
+            SqlCommand cmd = new SqlCommand("SELECT consumible_id, consumible_descripcion FROM denver.consumibles ORDER BY consumible_descripcion", DataBase.GetInstance().Connection);
+            SqlDataReader reader;
+
+            reader = cmd.ExecuteReader();
+
+            DataTable dt = new DataTable();
+            dt.Columns.Add("consumible_id", typeof(int));
+            dt.Columns.Add("consumible_descripcion", typeof(string));
+            dt.Load(reader);
+
+            combo.ValueMember = "consumible_id";
+            combo.DisplayMember = "consumible_descripcion";
+            combo.DataSource = dt;
+
+        }
+
+        public static void cargarComboRoles(ComboBox combo)
+        {
+            SqlCommand cmd = new SqlCommand("SELECT consumible_id, consumible_descripcion FROM denver.consumibles ORDER BY consumible_descripcion", DataBase.GetInstance().Connection);
+            SqlDataReader reader;
+
+            reader = cmd.ExecuteReader();
+
+            DataTable dt = new DataTable();
+            dt.Columns.Add("consumible_id", typeof(int));
+            dt.Columns.Add("consumible_descripcion", typeof(string));
+            dt.Load(reader);
+
+            combo.ValueMember = "consumible_id";
+            combo.DisplayMember = "consumible_descripcion";
+            combo.DataSource = dt;
+
+        }
     }
 }

@@ -169,12 +169,15 @@
             this.label_usuario_logueado.AutoSize = true;
             this.label_usuario_logueado.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
             this.label_usuario_logueado.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.label_usuario_logueado.Dock = System.Windows.Forms.DockStyle.Right;
             this.label_usuario_logueado.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_usuario_logueado.Location = new System.Drawing.Point(836, 9);
+            this.label_usuario_logueado.Location = new System.Drawing.Point(839, 0);
             this.label_usuario_logueado.Name = "label_usuario_logueado";
+            this.label_usuario_logueado.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.label_usuario_logueado.Size = new System.Drawing.Size(128, 20);
             this.label_usuario_logueado.TabIndex = 13;
             this.label_usuario_logueado.Text = "usuario_logueado";
+            this.label_usuario_logueado.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // groupBox1
             // 

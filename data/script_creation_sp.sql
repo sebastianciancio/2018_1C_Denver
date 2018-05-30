@@ -49,7 +49,10 @@ if EXISTS (SELECT * FROM sys.objects  WHERE name = 'marcar_intentos_loguin_falli
 	DROP PROCEDURE [denver].[marcar_intentos_loguin_fallidos]
 if EXISTS (SELECT * FROM sys.objects  WHERE name = 'inhabilitar_usuario' AND type IN (N'P', N'PC'))
 	DROP PROCEDURE [denver].[inhabilitar_usuario]
-	
+if EXISTS (SELECT * FROM sys.objects  WHERE name = 'reset_intentos_loguin_fallidos' AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [denver].[reset_intentos_loguin_fallidos]
+if EXISTS (SELECT * FROM sys.objects  WHERE name = 'cant_roles_usuario' AND type IN (N'FN'))
+	DROP FUNCTION [denver].[cant_roles_usuario]
 GO
 
 
@@ -525,3 +528,21 @@ BEGIN
 END
 GO
 
+CREATE PROCEDURE denver.reset_intentos_loguin_fallidos 
+	@usuario_user nvarchar(50) = NULL
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	UPDATE usuarios SET usuario_login_fallidos = 0 WHERE usuario_user = @usuario_user;
+END
+GO
+
+CREATE FUNCTION denver.cant_roles_usuario (@usuario_user nvarchar(50))
+RETURNS int
+AS
+BEGIN
+	RETURN (SELECT count(*) FROM denver.usuarios_roles WHERE usuario_rol_usuario_user = @usuario_user)
+
+END
+GO

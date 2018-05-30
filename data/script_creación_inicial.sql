@@ -844,9 +844,9 @@ GO
 
 /****** HOTELES ******/
 INSERT INTO denver.hoteles 
-(hotel_ciudad, hotel_calle, hotel_nro_calle, hotel_estrellas, hotel_recarga_estrella, hotel_pais_id, hotel_created)
+(hotel_nombre,hotel_ciudad, hotel_calle, hotel_nro_calle, hotel_estrellas, hotel_recarga_estrella, hotel_pais_id, hotel_created)
 ( 
-SELECT     Hotel_Ciudad, Hotel_Calle, Hotel_Nro_Calle, Hotel_CantEstrella, Hotel_Recarga_Estrella, 1, GETDATE()
+SELECT     concat('Suc. ',Hotel_Calle),Hotel_Ciudad, Hotel_Calle, Hotel_Nro_Calle, Hotel_CantEstrella, Hotel_Recarga_Estrella, 1, GETDATE()
 FROM         gd_esquema.Maestra
 GROUP BY Hotel_Ciudad, Hotel_Calle, Hotel_Nro_Calle, Hotel_CantEstrella, Hotel_Recarga_Estrella
 )
@@ -884,6 +884,22 @@ INSERT INTO denver.usuarios_hoteles (usuario_hotel_id, usuario_usuario_user) VAL
 INSERT INTO denver.usuarios_hoteles (usuario_hotel_id, usuario_usuario_user) VALUES (13,'MIGRATION');
 INSERT INTO denver.usuarios_hoteles (usuario_hotel_id, usuario_usuario_user) VALUES (14,'MIGRATION');
 INSERT INTO denver.usuarios_hoteles (usuario_hotel_id, usuario_usuario_user) VALUES (15,'MIGRATION');
+INSERT INTO denver.usuarios_hoteles (usuario_hotel_id, usuario_usuario_user) VALUES (1,'ADMIN');
+INSERT INTO denver.usuarios_hoteles (usuario_hotel_id, usuario_usuario_user) VALUES (2,'ADMIN');
+INSERT INTO denver.usuarios_hoteles (usuario_hotel_id, usuario_usuario_user) VALUES (3,'ADMIN');
+INSERT INTO denver.usuarios_hoteles (usuario_hotel_id, usuario_usuario_user) VALUES (4,'ADMIN');
+INSERT INTO denver.usuarios_hoteles (usuario_hotel_id, usuario_usuario_user) VALUES (5,'ADMIN');
+INSERT INTO denver.usuarios_hoteles (usuario_hotel_id, usuario_usuario_user) VALUES (6,'ADMIN');
+INSERT INTO denver.usuarios_hoteles (usuario_hotel_id, usuario_usuario_user) VALUES (7,'ADMIN');
+INSERT INTO denver.usuarios_hoteles (usuario_hotel_id, usuario_usuario_user) VALUES (8,'ADMIN');
+INSERT INTO denver.usuarios_hoteles (usuario_hotel_id, usuario_usuario_user) VALUES (9,'ADMIN');
+INSERT INTO denver.usuarios_hoteles (usuario_hotel_id, usuario_usuario_user) VALUES (10,'ADMIN');
+INSERT INTO denver.usuarios_hoteles (usuario_hotel_id, usuario_usuario_user) VALUES (11,'ADMIN');
+INSERT INTO denver.usuarios_hoteles (usuario_hotel_id, usuario_usuario_user) VALUES (12,'ADMIN');
+INSERT INTO denver.usuarios_hoteles (usuario_hotel_id, usuario_usuario_user) VALUES (13,'ADMIN');
+INSERT INTO denver.usuarios_hoteles (usuario_hotel_id, usuario_usuario_user) VALUES (14,'ADMIN');
+INSERT INTO denver.usuarios_hoteles (usuario_hotel_id, usuario_usuario_user) VALUES (15,'ADMIN');
+
 GO
 
 /****** TIPO_HABITACIONES ******/
