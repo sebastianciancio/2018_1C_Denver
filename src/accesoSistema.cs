@@ -16,6 +16,7 @@ namespace FrbaHotel
         static public int HotelIdActual = 0;
         static public string HotelNombreActual;
         static public Usuario UsuarioLogueado = new Usuario();
+        System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(accesoSistema));
 
         public accesoSistema()
         {
@@ -24,6 +25,7 @@ namespace FrbaHotel
 
         private void btn_reserva_Click(object sender, EventArgs e)
         {
+
             btn_reserva.Enabled = false;
             btn_reserva.Visible = false;
 
@@ -38,6 +40,8 @@ namespace FrbaHotel
 
             btn_volver.Enabled = true;
             btn_volver.Visible = true;
+
+
 
 
         }
@@ -90,6 +94,23 @@ namespace FrbaHotel
             {
                 e.Cancel = true;
             }
+        }
+
+        private void btn_nueva_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            Reserva frm = new Reserva();
+
+            frm.Show();
+        }
+
+        private void btn_modificar_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            CancelarReserva.BuscarReserva frm = new CancelarReserva.BuscarReserva();
+
+            frm.Show();
+
         }
     }
 }

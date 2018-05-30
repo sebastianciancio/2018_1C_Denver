@@ -69,32 +69,34 @@
             this.btn_nueva.Enabled = false;
             this.btn_nueva.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btn_nueva.Font = new System.Drawing.Font("Monotype Corsiva", 15.75F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_nueva.Location = new System.Drawing.Point(171, 30);
+            this.btn_nueva.Location = new System.Drawing.Point(171, 57);
             this.btn_nueva.Name = "btn_nueva";
             this.btn_nueva.Size = new System.Drawing.Size(212, 52);
             this.btn_nueva.TabIndex = 2;
             this.btn_nueva.Text = "Reservar";
             this.btn_nueva.UseVisualStyleBackColor = true;
             this.btn_nueva.Visible = false;
+            this.btn_nueva.Click += new System.EventHandler(this.btn_nueva_Click);
             // 
             // btn_modificar
             // 
             this.btn_modificar.Enabled = false;
             this.btn_modificar.Font = new System.Drawing.Font("Monotype Corsiva", 15.75F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_modificar.Location = new System.Drawing.Point(171, 127);
+            this.btn_modificar.Location = new System.Drawing.Point(171, 160);
             this.btn_modificar.Name = "btn_modificar";
             this.btn_modificar.Size = new System.Drawing.Size(208, 51);
             this.btn_modificar.TabIndex = 3;
             this.btn_modificar.Text = "Modificar Reserva";
             this.btn_modificar.UseVisualStyleBackColor = true;
             this.btn_modificar.Visible = false;
+            this.btn_modificar.Click += new System.EventHandler(this.btn_modificar_Click);
             // 
             // btn_volver
             // 
             this.btn_volver.Enabled = false;
             this.btn_volver.Location = new System.Drawing.Point(462, 205);
             this.btn_volver.Name = "btn_volver";
-            this.btn_volver.Size = new System.Drawing.Size(61, 53);
+            this.btn_volver.Size = new System.Drawing.Size(41, 39);
             this.btn_volver.TabIndex = 4;
             this.btn_volver.Text = "Volver";
             this.btn_volver.UseVisualStyleBackColor = true;
@@ -105,7 +107,8 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(532, 261);
+            this.BackColor = System.Drawing.SystemColors.Control;
+            this.ClientSize = new System.Drawing.Size(531, 257);
             this.Controls.Add(this.btn_volver);
             this.Controls.Add(this.btn_modificar);
             this.Controls.Add(this.btn_nueva);

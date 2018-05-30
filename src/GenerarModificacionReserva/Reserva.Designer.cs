@@ -159,6 +159,7 @@
             this.Controls.Add(this.groupBox1);
             this.Name = "Reserva";
             this.Text = "Reservas";
+            this.Load += new System.EventHandler(this.Reserva_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();

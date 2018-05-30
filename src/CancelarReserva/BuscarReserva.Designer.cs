@@ -1,6 +1,6 @@
 ﻿namespace FrbaHotel.CancelarReserva
 {
-    partial class Form1
+    partial class BuscarReserva
     {
         /// <summary>
         /// Required designer variable.
