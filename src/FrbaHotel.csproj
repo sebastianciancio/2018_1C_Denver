@@ -169,6 +169,7 @@
     <Compile Include="UserControl1.Designer.cs">
       <DependentUpon>UserControl1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Usuario\Usuario.cs" />
     <EmbeddedResource Include="AbmCliente\Cliente_alta.resx">
       <DependentUpon>Cliente_alta.cs</DependentUpon>
     </EmbeddedResource>

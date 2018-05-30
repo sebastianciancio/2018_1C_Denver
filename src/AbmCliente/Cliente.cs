@@ -24,7 +24,7 @@ namespace FrbaHotel
 
         public Cliente()
         {
-        
+
             InitializeComponent();
             db = DataBase.GetInstance();
             Cliente.c1 = this;
@@ -35,17 +35,17 @@ namespace FrbaHotel
 
         private void btn_buscar_Click(object sender, EventArgs e)
         {
-            SqlCommand cmd = new SqlCommand("dbo.buscar_cliente", db.Connection);
+            SqlCommand cmd = new SqlCommand("denver.buscar_cliente", db.Connection);
             cmd.CommandType = CommandType.StoredProcedure;
-            
+
             if (txb_cliente_apellido.Text != "")
-                cmd.Parameters.AddWithValue("@cliente_apellido", SqlDbType.VarChar ).Value = txb_cliente_apellido.Text;
+                cmd.Parameters.AddWithValue("@cliente_apellido", SqlDbType.VarChar).Value = txb_cliente_apellido.Text;
 
             if (txb_cliente_nombre.Text != "")
-                cmd.Parameters.AddWithValue("@cliente_nombre", SqlDbType.VarChar ).Value = txb_cliente_nombre.Text;
+                cmd.Parameters.AddWithValue("@cliente_nombre", SqlDbType.VarChar).Value = txb_cliente_nombre.Text;
 
             if (txb_cliente_dni.Text != "")
-                cmd.Parameters.AddWithValue("@cliente_dni", SqlDbType.Int ).Value = txb_cliente_dni.Text;
+                cmd.Parameters.AddWithValue("@cliente_dni", SqlDbType.Int).Value = txb_cliente_dni.Text;
 
             if (cmb_tipo_doc.Text != "")
                 cmd.Parameters.AddWithValue("@cliente_tipo_doc", SqlDbType.Int).Value = cmb_tipo_doc.SelectedValue;
@@ -57,7 +57,7 @@ namespace FrbaHotel
             {
                 da.Fill(dt);
             }
-           
+
             // Cargo la Grilla con los datos obtenidos
             dgv_tablaCliente.DataSource = dt;
 
@@ -74,12 +74,12 @@ namespace FrbaHotel
 
         private void button2_Click(object sender, EventArgs e)
         {
-            
+
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            AbmCliente.Cliente_modificacion frm = new  AbmCliente.Cliente_modificacion();
+            AbmCliente.Cliente_modificacion frm = new AbmCliente.Cliente_modificacion();
             DataGridViewRow row = dgv_tablaCliente.CurrentRow;
 
             //por el numero obtiene la columna
@@ -94,20 +94,20 @@ namespace FrbaHotel
 
 
             frm.Show();
-            
+
         }
 
         private void btt_add_client_Click(object sender, EventArgs e)
         {
             FrbaHotel.AbmCliente.Cliente_alta cli_mod = new FrbaHotel.AbmCliente.Cliente_alta();
-            
+
             cli_mod.Show();
         }
 
         private void btn_eliminar_Click(object sender, EventArgs e)
         {
             // SP eliminar cliente
-            SqlCommand cmd = new SqlCommand("dbo.eliminar_cliente", db.Connection);
+            SqlCommand cmd = new SqlCommand("denver.eliminar_cliente", db.Connection);
             cmd.CommandType = CommandType.StoredProcedure;
 
             //Levanto la linea seleccionada
@@ -116,34 +116,34 @@ namespace FrbaHotel
             // Si existen datos
             if (row != null)
             {
-               DialogResult result = MessageBox.Show("Esta seguro de que desea eliminar?", "Confirmar eliminación",
-                    MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                DialogResult result = MessageBox.Show("Esta seguro de que desea eliminar?", "Confirmar eliminación",
+                     MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
 
-                if ( result == DialogResult.Yes ) 
+                if (result == DialogResult.Yes)
                 {
 
-                //por el numero obtiene la columna
-                // Obtenés los valores caves de la tabla Cliente 
-                string tipoDni = row.Cells[0].Value.ToString();
-                string numDni = row.Cells[1].Value.ToString();
+                    //por el numero obtiene la columna
+                    // Obtenés los valores caves de la tabla Cliente 
+                    string tipoDni = row.Cells[0].Value.ToString();
+                    string numDni = row.Cells[1].Value.ToString();
 
-                //paso los parametros al SP
-                cmd.Parameters.AddWithValue("@cliente_tipo_documento_id", SqlDbType.VarChar).Value = tipoDni;
-                cmd.Parameters.AddWithValue("@cliente_pasaporte_nro", SqlDbType.VarChar).Value = numDni;
+                    //paso los parametros al SP
+                    cmd.Parameters.AddWithValue("@cliente_tipo_documento_id", SqlDbType.VarChar).Value = tipoDni;
+                    cmd.Parameters.AddWithValue("@cliente_pasaporte_nro", SqlDbType.VarChar).Value = numDni;
 
-                // Ejecuto el SP
-                cmd.ExecuteNonQuery();
+                    // Ejecuto el SP
+                    cmd.ExecuteNonQuery();
 
-                // Muestro resultado de la operacion
-                MessageBox.Show("Se ha eliminado el cliente " + row.Cells[2].Value.ToString() + " " + row.Cells[2].Value.ToString(), "Mensaje");
+                    // Muestro resultado de la operacion
+                    MessageBox.Show("Se ha eliminado el cliente " + row.Cells[2].Value.ToString() + " " + row.Cells[2].Value.ToString(), "Mensaje");
 
-                dgv_tablaCliente.Visible = false;
+                    dgv_tablaCliente.Visible = false;
 
-                // Actualizo la Tabla del Resultado de la Busqueda
-                btn_buscar_Click(new object(), new EventArgs());
+                    // Actualizo la Tabla del Resultado de la Busqueda
+                    btn_buscar_Click(new object(), new EventArgs());
                 }
             }
-               
+
         }
     }
 }

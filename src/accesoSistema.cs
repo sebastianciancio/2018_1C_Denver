@@ -12,7 +12,10 @@ namespace FrbaHotel
 {
     public partial class accesoSistema : Form
     {
-        
+        // Declaro las variables Globales
+        static public int HotelSeleccionado;
+        static public Usuario UsuarioLogueado = new Usuario();
+
         public accesoSistema()
         {
             InitializeComponent();
@@ -62,7 +65,7 @@ namespace FrbaHotel
             this.Hide();
 
             // Muestro el Login
-            Login.Login frm = new Login.Login();
+            Login frm = new Login();
             frm.Show();
         }
 

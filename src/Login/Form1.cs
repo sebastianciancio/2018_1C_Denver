@@ -8,13 +8,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel;
 
-
-namespace FrbaHotel.Login
+namespace FrbaHotel
 {
     public partial class Login : Form
     {
+        private DataBase db;
         public Login()
         {
+            db = DataBase.GetInstance();
             InitializeComponent();
         }
 
@@ -35,23 +36,49 @@ namespace FrbaHotel.Login
 
         private void btn_acceder_Click(object sender, EventArgs e)
         {
-            SqlDataAdapter sda = new SqlDataAdapter("SELECT count(*) FROM denver.usuarios AS u WHERE u.usuario_user = '" + login_usuario.Text + "' AND u.usuario_pass = HASHBYTES('SHA2_256','" + login_password.Text + "');", DataBase.GetInstance().Connection);
+            SqlDataAdapter sda = new SqlDataAdapter("SELECT count(*), usuario_apellido, usuario_nombre, usuario_user, usuario_login_fallidos FROM denver.usuarios AS u WHERE u.usuario_user = UPPER('" + login_usuario.Text + "') AND u.usuario_pass = HASHBYTES('SHA2_256',UPPER('" + login_password.Text + "')) AND u.usuario_activo = 'S' GROUP BY usuario_apellido, usuario_nombre, usuario_user, usuario_login_fallidos;", db.Connection);
             DataTable dt = new DataTable();
             sda.Fill(dt);
 
-            
-            if (dt.Rows[0][0].ToString() == "1")
+            if (dt.Rows.Count == 1)
             {
-                // Cierro este Formulario
-                this.Hide();
+                // Si tuvo menos de 3 intentos fallidos
+                if (Convert.ToInt32(dt.Rows[0][4]) < 3)
+                {
+                    // Cierro este Formulario
+                    this.Hide();
 
-                // Abro el Menu Principal
-                Principal frm = new Principal();
-                frm.Show();
+                    // Guardo el Usuario Logueado
+                    accesoSistema.UsuarioLogueado.Apellido = dt.Rows[0][1].ToString();
+                    accesoSistema.UsuarioLogueado.Nombre = dt.Rows[0][2].ToString();
+                    accesoSistema.UsuarioLogueado.Id = dt.Rows[0][3].ToString();
+
+                    // Abro el Menu Principal
+                    Principal frm = new Principal();
+                    frm.Show();
+                }
+                else
+                {
+                    // Si tuvo 3 intentos fallidos
+                    MessageBox.Show("Usuario bloqueado por más de 3 intentos fallidos.", "Mensaje");
+
+                    // Bloqueo al Usuario
+                    SqlCommand cmd = new SqlCommand("denver.inhabilitar_usuario", db.Connection);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@usuario_user", SqlDbType.VarChar).Value = login_usuario.Text;
+                    cmd.ExecuteNonQuery();
+                }
+
             }
             else
             {
                 MessageBox.Show("Acceso no permitido.", "Mensaje");
+
+                // Incremento los Intentos Fallidos
+                SqlCommand cmd = new SqlCommand("denver.marcar_intentos_loguin_fallidos", db.Connection);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@usuario_user", SqlDbType.VarChar).Value = login_usuario.Text;
+                cmd.ExecuteNonQuery();
             }
 
 

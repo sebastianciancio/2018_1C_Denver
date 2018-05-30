@@ -15,6 +15,10 @@ namespace FrbaHotel
         public Principal()
         {
             InitializeComponent();
+
+            // Muestro el Usuario Logueado
+            this.label_usuario_logueado.Text = accesoSistema.UsuarioLogueado.Apellido + " " + accesoSistema.UsuarioLogueado.Nombre;
+
         }
 
         private void button1_Click(object sender, EventArgs e)

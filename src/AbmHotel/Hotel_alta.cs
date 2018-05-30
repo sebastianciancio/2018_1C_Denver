@@ -25,7 +25,7 @@ namespace FrbaHotel.AbmHotel
 
         private void btn_guardar_Click(object sender, EventArgs e)
         {
-            SqlCommand cmd = new SqlCommand("dbo.cargar_hotel", db.Connection);
+            SqlCommand cmd = new SqlCommand("denver.cargar_hotel", db.Connection);
             cmd.CommandType = CommandType.StoredProcedure;
 
             cmd.Parameters.AddWithValue("@hotel_nombre", SqlDbType.VarChar).Value = txb_nombre.Text;

@@ -1,4 +1,4 @@
-﻿namespace FrbaHotel.Login
+﻿namespace FrbaHotel
 {
     partial class Login
     {

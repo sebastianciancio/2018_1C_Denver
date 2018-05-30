@@ -43,9 +43,13 @@ if EXISTS (SELECT * FROM sys.objects  WHERE name = 'modificar_cliente' AND type 
 	DROP PROCEDURE [denver].[modificar_cliente] 
 if EXISTS (SELECT * FROM sys.objects  WHERE name = 'buscar_hotel' AND type IN (N'P', N'PC'))
 	DROP PROCEDURE [denver].[buscar_hotel]
-GO
 if EXISTS (SELECT * FROM sys.objects  WHERE name = 'baja_hotel' AND type IN (N'P', N'PC'))
 	DROP PROCEDURE [denver].[baja_hotel]
+if EXISTS (SELECT * FROM sys.objects  WHERE name = 'marcar_intentos_loguin_fallidos' AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [denver].[marcar_intentos_loguin_fallidos]
+if EXISTS (SELECT * FROM sys.objects  WHERE name = 'inhabilitar_usuario' AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [denver].[inhabilitar_usuario]
+	
 GO
 
 
@@ -499,6 +503,25 @@ INSERT INTO [denver].[mantenimientos](
 		@motivo,
 		GETDATE());
 
+END
+GO
+
+CREATE PROCEDURE denver.marcar_intentos_loguin_fallidos 
+	@usuario_user nvarchar(50) = NULL
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	UPDATE usuarios SET usuario_login_fallidos = usuario_login_fallidos + 1 WHERE usuario_user = @usuario_user;
+END
+GO
+
+CREATE PROCEDURE denver.inhabilitar_usuario 
+	@usuario_user nvarchar(50) = NULL
+AS
+BEGIN
+	SET NOCOUNT ON;
+	UPDATE usuarios SET usuario_activo = 'N' WHERE usuario_user = @usuario_user;
 END
 GO
 

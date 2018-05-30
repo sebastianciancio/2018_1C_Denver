@@ -25,7 +25,7 @@ namespace FrbaHotel.AbmHotel
 
         private void btn_buscar_Click(object sender, EventArgs e)
         {
-            SqlCommand cmd = new SqlCommand("dbo.buscar_hotel", db.Connection);
+            SqlCommand cmd = new SqlCommand("denver.buscar_hotel", db.Connection);
             cmd.CommandType = CommandType.StoredProcedure;
 
             if (txb_nombre.Text != "")
