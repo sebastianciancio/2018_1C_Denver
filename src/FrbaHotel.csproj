@@ -111,11 +111,11 @@
     <Compile Include="CancelarReserva\Cancelar_reserva.Designer.cs">
       <DependentUpon>Cancelar_reserva.cs</DependentUpon>
     </Compile>
-    <Compile Include="CancelarReserva\Form1.cs">
+    <Compile Include="CancelarReserva\BuscarReserva.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="CancelarReserva\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="CancelarReserva\BuscarReserva.Designer.cs">
+      <DependentUpon>BuscarReserva.cs</DependentUpon>
     </Compile>
     <Compile Include="Combos.cs" />
     <Compile Include="DataBase.cs" />
