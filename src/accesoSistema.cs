@@ -70,7 +70,9 @@ namespace FrbaHotel
             this.Hide();
 
             // Muestro el Login
-            Login frm = new Login();
+            Principal frm = new Principal();
+            // descomentar una vez que este hecho el login
+            //Login frm = new Login();
             frm.Show();
         }
 

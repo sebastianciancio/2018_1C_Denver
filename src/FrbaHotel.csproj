@@ -93,11 +93,17 @@
     <Compile Include="AbmRegimen\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="AbmRol\Form1.cs">
+    <Compile Include="AbmRol\AltaRol.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AbmRol\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="AbmRol\AltaRol.Designer.cs">
+      <DependentUpon>AltaRol.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AbmRol\GestionRoles.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmRol\GestionRoles.Designer.cs">
+      <DependentUpon>GestionRoles.cs</DependentUpon>
     </Compile>
     <Compile Include="accesoSistema.cs">
       <SubType>Form</SubType>
@@ -191,6 +197,12 @@
     <EmbeddedResource Include="AbmHotel\Hotel_modificacion.resx">
       <DependentUpon>Hotel_modificacion.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="AbmRol\AltaRol.resx">
+      <DependentUpon>AltaRol.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AbmRol\GestionRoles.resx">
+      <DependentUpon>GestionRoles.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="accesoSistema.resx">
       <DependentUpon>accesoSistema.cs</DependentUpon>
     </EmbeddedResource>
@@ -246,6 +258,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Config.txt" />
+    <None Include="Resources\volver.png" />
     <None Include="Resources\login.jpg" />
     <None Include="Resources\hotel.png" />
   </ItemGroup>

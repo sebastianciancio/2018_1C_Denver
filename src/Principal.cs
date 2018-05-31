@@ -28,9 +28,14 @@ namespace FrbaHotel
             frm.Show();
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void roles_Click(object sender, EventArgs e)
         {
+            this.Hide();
 
+            AbmRol.GestionRoles frm = new AbmRol.GestionRoles();
+
+            frm.Show();
+ 
         }
 
         private void button3_Click(object sender, EventArgs e)
