@@ -28,7 +28,9 @@ namespace FrbaHotel
             InitializeComponent();
             db = DataBase.GetInstance();
             Cliente.c1 = this;
-            Combos.cargarComboTipoDocumento(cmb_tipo_doc);
+
+            // Cargo el Combo
+            Combos.cargarComboTipoDocumento(cmb_tipo_doc, true);
         }
 
 
@@ -45,10 +47,10 @@ namespace FrbaHotel
                 cmd.Parameters.AddWithValue("@cliente_nombre", SqlDbType.VarChar).Value = txb_cliente_nombre.Text;
 
             if (txb_cliente_dni.Text != "")
-                cmd.Parameters.AddWithValue("@cliente_dni", SqlDbType.Int).Value = txb_cliente_dni.Text;
+                cmd.Parameters.AddWithValue("@cliente_nro_doc", SqlDbType.Int).Value = Convert.ToInt32(txb_cliente_dni.Text);
 
-            if (cmb_tipo_doc.Text != "")
-                cmd.Parameters.AddWithValue("@cliente_tipo_doc", SqlDbType.Int).Value = cmb_tipo_doc.SelectedValue;
+            if (cmb_tipo_doc.SelectedValue.ToString().CompareTo("0") > 0)
+                cmd.Parameters.AddWithValue("@cliente_tipo_doc", SqlDbType.Int).Value = Convert.ToInt32(cmb_tipo_doc.SelectedValue);
 
             // Creo el DataTable para obtener los resultados del SP
             DataTable dt = new DataTable();
@@ -57,6 +59,7 @@ namespace FrbaHotel
             {
                 da.Fill(dt);
             }
+ 
 
             // Cargo la Grilla con los datos obtenidos
             dgv_tablaCliente.DataSource = dt;

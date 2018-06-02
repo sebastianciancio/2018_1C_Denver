@@ -40,9 +40,9 @@
             this.btt_add_client = new System.Windows.Forms.Button();
             this.btn_eliminar = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.cmb_tipo_doc = new System.Windows.Forms.ComboBox();
-            this.lbl_tipo_doc = new System.Windows.Forms.Label();
             this.lbl_numero = new System.Windows.Forms.Label();
+            this.lbl_tipo_doc = new System.Windows.Forms.Label();
+            this.cmb_tipo_doc = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_tablaCliente)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -163,13 +163,14 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Buscador";
             // 
-            // cmb_tipo_doc
+            // lbl_numero
             // 
-            this.cmb_tipo_doc.FormattingEnabled = true;
-            this.cmb_tipo_doc.Location = new System.Drawing.Point(352, 35);
-            this.cmb_tipo_doc.Name = "cmb_tipo_doc";
-            this.cmb_tipo_doc.Size = new System.Drawing.Size(92, 21);
-            this.cmb_tipo_doc.TabIndex = 9;
+            this.lbl_numero.AutoSize = true;
+            this.lbl_numero.Location = new System.Drawing.Point(456, 16);
+            this.lbl_numero.Name = "lbl_numero";
+            this.lbl_numero.Size = new System.Drawing.Size(44, 13);
+            this.lbl_numero.TabIndex = 11;
+            this.lbl_numero.Text = "Número";
             // 
             // lbl_tipo_doc
             // 
@@ -180,14 +181,14 @@
             this.lbl_tipo_doc.TabIndex = 10;
             this.lbl_tipo_doc.Text = "Tipo Documento";
             // 
-            // lbl_numero
+            // cmb_tipo_doc
             // 
-            this.lbl_numero.AutoSize = true;
-            this.lbl_numero.Location = new System.Drawing.Point(456, 16);
-            this.lbl_numero.Name = "lbl_numero";
-            this.lbl_numero.Size = new System.Drawing.Size(44, 13);
-            this.lbl_numero.TabIndex = 11;
-            this.lbl_numero.Text = "Número";
+            this.cmb_tipo_doc.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmb_tipo_doc.FormattingEnabled = true;
+            this.cmb_tipo_doc.Location = new System.Drawing.Point(352, 35);
+            this.cmb_tipo_doc.Name = "cmb_tipo_doc";
+            this.cmb_tipo_doc.Size = new System.Drawing.Size(92, 21);
+            this.cmb_tipo_doc.TabIndex = 9;
             // 
             // Cliente
             // 

@@ -15,12 +15,14 @@ namespace FrbaHotel.AbmHotel
     public partial class BuscarHotel : Form
     {
         private DataBase db;
-        //public int hotel_id;
         public BuscarHotel()
         {
             InitializeComponent();
             db = DataBase.GetInstance();
-            Combos.cargarComboPais(combo_pais);
+
+            // Cargo los combos
+            Combos.cargarComboPais(combo_pais, true);
+            Combos.cargarComboCantidad(cmb_estrellas, 1,5, true);
         }
 
         private void btn_buscar_Click(object sender, EventArgs e)
@@ -34,11 +36,11 @@ namespace FrbaHotel.AbmHotel
             if (txb_ciudad.Text != "")
                 cmd.Parameters.AddWithValue("@hotel_ciudad", SqlDbType.VarChar).Value = txb_ciudad.Text;
 
-            if (combo_pais.Text != "")
-                cmd.Parameters.AddWithValue("@pais_nombre", SqlDbType.VarChar).Value = combo_pais.Text;
+            if (combo_pais.SelectedValue.ToString().CompareTo("0") > 0)
+                cmd.Parameters.AddWithValue("@pais_nombre", SqlDbType.VarChar).Value = combo_pais.SelectedText;
 
-            if (cmb_estrellas.Text != "")
-                cmd.Parameters.AddWithValue("@hotel_estrellas", SqlDbType.VarChar).Value = cmb_estrellas.Text;
+            if (cmb_estrellas.SelectedItem.ToString().CompareTo("0") > 0)
+                cmd.Parameters.AddWithValue("@hotel_estrellas", SqlDbType.Int).Value = Convert.ToInt32(cmb_estrellas.SelectedValue);
 
             // Creo el DataTable para obtener los resultados del SP
             DataTable dt = new DataTable();

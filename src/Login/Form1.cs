@@ -61,11 +61,12 @@ namespace FrbaHotel
                     // Si tiene solo 1 Rol
                     if (dt.Rows[0][5].ToString() == "1")
                     {
-                        accesoSistema.UsuarioLogueado.Rol = dt.Rows[0][5].ToString();
+                        // TODO
                     }
                     else // Si tiene mas de un Rol
                     {
-                        accesoSistema.UsuarioLogueado.Rol = dt.Rows[0][5].ToString();
+                        // TODO
+                        // Mostrar el combo de los Roles
                     }
                     
 

@@ -19,10 +19,20 @@ namespace FrbaHotel
             db = DataBase.GetInstance();
         }
 
-        public static void cargarComboPais(ComboBox combo)
+        private static void agregarTodosCombo(ComboBox combo, DataTable dt)
         {
-           
-            SqlCommand cmd = new SqlCommand("SELECT pais_id, pais_nombre FROM denver.paises ORDER BY pais_nombre", DataBase.GetInstance().Connection);
+            DataRow dr = dt.NewRow();
+            dr[combo.ValueMember] = 0;
+            dr[combo.DisplayMember] = "Todos";
+
+            dt.Rows.InsertAt(dr, 0);
+            combo.SelectedIndex = 0;
+        }
+
+        public static void cargarComboPais(ComboBox combo, bool agregarTodos = false)
+        {
+            SqlCommand cmd = new SqlCommand("denver.obtener_paises", DataBase.GetInstance().Connection);
+            cmd.CommandType = CommandType.StoredProcedure;
             SqlDataReader reader;
 
             reader = cmd.ExecuteReader();
@@ -36,12 +46,15 @@ namespace FrbaHotel
             combo.DisplayMember = "pais_nombre";
             combo.DataSource = dt;
 
+            if (agregarTodos)
+                agregarTodosCombo(combo, dt);
+
         }
 
-        public static void cargarComboTipoHabitacion(ComboBox combo)
+        public static void cargarComboTipoHabitacion(ComboBox combo, bool agregarTodos = false)
         {
-
-            SqlCommand cmd = new SqlCommand("SELECT tipo_habitacion_id,tipo_habitacion_descripcion FROM denver.tipo_habitaciones ORDER BY tipo_habitacion_descripcion", DataBase.GetInstance().Connection);
+            SqlCommand cmd = new SqlCommand("denver.obtener_tipo_habitaciones", DataBase.GetInstance().Connection);
+            cmd.CommandType = CommandType.StoredProcedure;
             SqlDataReader reader;            
 
             reader = cmd.ExecuteReader();
@@ -55,11 +68,16 @@ namespace FrbaHotel
             combo.DisplayMember = "tipo_habitacion_descripcion";
             combo.DataSource = dt;
 
+            if (agregarTodos)
+                agregarTodosCombo(combo, dt);
+
         }
 
-        public static void cargarComboTipoRegimen(ComboBox combo)
+        public static void cargarComboTipoRegimen(ComboBox combo, bool agregarTodos = false)
         {
-            SqlCommand cmd = new SqlCommand("SELECT regimen_id,regimen_descripcion FROM denver.regimenes ORDER BY regimen_descripcion", DataBase.GetInstance().Connection);
+            SqlCommand cmd = new SqlCommand("denver.obtener_regimenes", DataBase.GetInstance().Connection);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@hotel_id", SqlDbType.VarChar).Value = accesoSistema.HotelIdActual;
             SqlDataReader reader;
 
             reader = cmd.ExecuteReader();
@@ -73,11 +91,15 @@ namespace FrbaHotel
             combo.DisplayMember = "regimen_descripcion";
             combo.DataSource = dt;
 
+            if (agregarTodos)
+                agregarTodosCombo(combo, dt);
+
         }
 
-        public static void cargarComboTipoDocumento(ComboBox combo)
+        public static void cargarComboTipoDocumento(ComboBox combo, bool agregarTodos = false)
         {
-            SqlCommand cmd = new SqlCommand("SELECT tipo_documento_id,tipo_documento_nombre FROM denver.tipo_documentos ORDER BY tipo_documento_nombre", DataBase.GetInstance().Connection);
+            SqlCommand cmd = new SqlCommand("denver.obtener_tipo_documento", DataBase.GetInstance().Connection);
+            cmd.CommandType = CommandType.StoredProcedure;
             SqlDataReader reader;
 
             reader = cmd.ExecuteReader();
@@ -91,13 +113,20 @@ namespace FrbaHotel
             combo.DisplayMember = "tipo_documento_nombre";
             combo.DataSource = dt;
 
+            if (agregarTodos)
+                agregarTodosCombo(combo, dt);
+
         }
 
-        public static void cargarComboHotel(ComboBox combo)
+        public static void cargarComboHotel(ComboBox combo, bool agregarTodos = false)
         {
-            SqlCommand cmd = new SqlCommand("SELECT hotel_id,hotel_nombre FROM denver.hoteles ORDER BY hotel_nombre", DataBase.GetInstance().Connection);
-            SqlDataReader reader;
+            SqlCommand cmd = new SqlCommand("denver.obtener_hoteles", DataBase.GetInstance().Connection);
+            cmd.CommandType = CommandType.StoredProcedure;
 
+            if (accesoSistema.UsuarioLogueado.Id != "")
+                cmd.Parameters.AddWithValue("@usuario_user", SqlDbType.VarChar).Value = accesoSistema.UsuarioLogueado.Id;
+
+            SqlDataReader reader;
             reader = cmd.ExecuteReader();
 
             DataTable dt = new DataTable();
@@ -108,6 +137,9 @@ namespace FrbaHotel
             combo.ValueMember = "hotel_id";
             combo.DisplayMember = "hotel_nombre";
             combo.DataSource = dt;
+
+            if (agregarTodos)
+                agregarTodosCombo(combo, dt);
 
         }
 
@@ -126,13 +158,19 @@ namespace FrbaHotel
             combo.SelectedIndex = 1;
         }
 
-        public static void cargarComboCantidad(ComboBox combo)
+        public static void cargarComboCantidad(ComboBox combo, int desde = 1, int hasta = 50, bool agregarTodos = false)
         {
             // Cargo los Combos
             combo.DisplayMember = "Text";
             combo.ValueMember = "Value";
 
-            for(int i=1; i<=50;i++)
+            if (agregarTodos)
+            {
+                combo.Items.Add(new { Text = "Todos", Value = 0 });
+            }
+
+
+            for (int i = desde; i <= hasta; i++)
             {
                 combo.Items.Add(new { Text = i.ToString(), Value = i.ToString() });
             }
@@ -141,9 +179,11 @@ namespace FrbaHotel
             combo.SelectedIndex = 0;
         }
 
-        public static void cargarComboHabitacion(int id_hotel, ComboBox combo)
+        public static void cargarComboHabitacion(int id_hotel, ComboBox combo, bool agregarTodos = false)
         {
-            SqlCommand cmd = new SqlCommand("SELECT habitacion_nro FROM denver.habitaciones WHERE habitacion_hotel_id = "+id_hotel+" ORDER BY habitacion_nro", DataBase.GetInstance().Connection);
+            SqlCommand cmd = new SqlCommand("denver.obtener_habitaciones", DataBase.GetInstance().Connection);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@hotel_id", SqlDbType.VarChar).Value = accesoSistema.HotelIdActual;
             SqlDataReader reader;
 
             reader = cmd.ExecuteReader();
@@ -157,12 +197,16 @@ namespace FrbaHotel
             combo.DisplayMember = "habitacion_detalle";
             combo.DataSource = dt;
 
+            if (agregarTodos)
+                agregarTodosCombo(combo, dt);
+
         }
 
-		public static void cargarComboConsumibles(ComboBox combo)
+        public static void cargarComboConsumibles(ComboBox combo, bool agregarTodos = false)
         {
-            SqlCommand cmd = new SqlCommand("SELECT consumible_id, consumible_descripcion FROM denver.consumibles ORDER BY consumible_descripcion", DataBase.GetInstance().Connection);
-            SqlDataReader reader;
+            SqlCommand cmd = new SqlCommand("denver.obtener_consumibles", DataBase.GetInstance().Connection);
+            cmd.CommandType = CommandType.StoredProcedure;
+            SqlDataReader reader;            
 
             reader = cmd.ExecuteReader();
 
@@ -175,12 +219,16 @@ namespace FrbaHotel
             combo.DisplayMember = "consumible_descripcion";
             combo.DataSource = dt;
 
+            if (agregarTodos)
+                agregarTodosCombo(combo, dt);
+
         }
 
-        public static void cargarComboRoles(ComboBox combo)
+        public static void cargarComboRoles(ComboBox combo, bool agregarTodos = false)
         {
-            SqlCommand cmd = new SqlCommand("SELECT consumible_id, consumible_descripcion FROM denver.consumibles ORDER BY consumible_descripcion", DataBase.GetInstance().Connection);
-            SqlDataReader reader;
+            SqlCommand cmd = new SqlCommand("denver.obtener_roles", DataBase.GetInstance().Connection);
+            cmd.CommandType = CommandType.StoredProcedure;
+            SqlDataReader reader;            
 
             reader = cmd.ExecuteReader();
 
@@ -192,6 +240,9 @@ namespace FrbaHotel
             combo.ValueMember = "consumible_id";
             combo.DisplayMember = "consumible_descripcion";
             combo.DataSource = dt;
+
+            if (agregarTodos)
+                agregarTodosCombo(combo, dt);
 
         }
     }

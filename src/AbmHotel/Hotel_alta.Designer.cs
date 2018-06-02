@@ -80,6 +80,7 @@
             // 
             // cmb_regimenes
             // 
+            this.cmb_regimenes.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmb_regimenes.FormattingEnabled = true;
             this.cmb_regimenes.Items.AddRange(new object[] {
             "All inclusive",
@@ -130,13 +131,8 @@
             // 
             // cmb_estrellas
             // 
+            this.cmb_estrellas.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmb_estrellas.FormattingEnabled = true;
-            this.cmb_estrellas.Items.AddRange(new object[] {
-            "1",
-            "2",
-            "3",
-            "4",
-            "5"});
             this.cmb_estrellas.Location = new System.Drawing.Point(273, 38);
             this.cmb_estrellas.Name = "cmb_estrellas";
             this.cmb_estrellas.Size = new System.Drawing.Size(79, 21);
@@ -311,6 +307,7 @@
             // 
             // combo_pais
             // 
+            this.combo_pais.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.combo_pais.FormattingEnabled = true;
             this.combo_pais.Items.AddRange(new object[] {
             "1",

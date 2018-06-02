@@ -53,6 +53,22 @@ if EXISTS (SELECT * FROM sys.objects  WHERE name = 'reset_intentos_loguin_fallid
 	DROP PROCEDURE [denver].[reset_intentos_loguin_fallidos]
 if EXISTS (SELECT * FROM sys.objects  WHERE name = 'cant_roles_usuario' AND type IN (N'FN'))
 	DROP FUNCTION [denver].[cant_roles_usuario]
+if EXISTS (SELECT * FROM sys.objects  WHERE name = 'obtener_hoteles' AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [denver].[obtener_hoteles]
+if EXISTS (SELECT * FROM sys.objects  WHERE name = 'obtener_tipo_documento' AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [denver].[obtener_tipo_documento]
+if EXISTS (SELECT * FROM sys.objects  WHERE name = 'obtener_regimenes' AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [denver].[obtener_regimenes]
+if EXISTS (SELECT * FROM sys.objects  WHERE name = 'obtener_habitaciones' AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [denver].[obtener_habitaciones]
+if EXISTS (SELECT * FROM sys.objects  WHERE name = 'obtener_consumibles' AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [denver].[obtener_consumibles]
+if EXISTS (SELECT * FROM sys.objects  WHERE name = 'obtener_tipo_habitaciones' AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [denver].[obtener_tipo_habitaciones]
+if EXISTS (SELECT * FROM sys.objects  WHERE name = 'obtener_paises' AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [denver].[obtener_paises]
+if EXISTS (SELECT * FROM sys.objects  WHERE name = 'obtener_roles' AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [denver].[obtener_roles]
 GO
 
 
@@ -63,8 +79,8 @@ CREACION DE  LOS SP
 CREATE PROCEDURE [denver].[buscar_cliente]    
 	@cliente_apellido nvarchar(255) = NULL ,
 	@cliente_nombre nvarchar(255) = NULL,
---	@cliente_doc int = NULL
-	@cliente_dni int = NULL 
+	@cliente_tipo_doc int = NULL,
+	@cliente_nro_doc int = NULL 
 AS   
 BEGIN 
 	-- SET NOCOUNT ON added to prevent extra result sets from interfering with SELECT statements.
@@ -77,9 +93,9 @@ BEGIN
 		INNER JOIN tipo_documentos ON cliente_tipo_documento_id = tipo_documento_id 
 	WHERE cliente_apellido LIKE '%' + ISNULL(@cliente_apellido, cliente_apellido) + '%'
 		AND cliente_nombre LIKE '%' + ISNULL(@cliente_nombre, cliente_nombre) + '%'
-		AND cliente_pasaporte_nro = ISNULL(@cliente_dni, cliente_pasaporte_nro)
-		AND  cliente_activo != 'N' ;
-		--AND cliente_tipo_documento_id = ISNULL(@cliente_doc, cliente_tipo_documento_id) 
+		AND cliente_pasaporte_nro = ISNULL(@cliente_nro_doc, cliente_pasaporte_nro)
+		AND  cliente_activo != 'N'
+		AND cliente_tipo_documento_id = ISNULL(@cliente_tipo_doc, cliente_tipo_documento_id)  ;
 END
 GO
 
@@ -546,3 +562,110 @@ BEGIN
 
 END
 GO
+
+
+CREATE PROCEDURE denver.obtener_hoteles
+	@usuario_user nvarchar(50) = NULL
+AS
+BEGIN
+	SET NOCOUNT ON;
+	SELECT 
+		h.hotel_id, h.hotel_nombre 
+	FROM 
+		denver.hoteles as h
+		JOIN denver.usuarios_hoteles as uh ON h.hotel_id = uh.usuario_hotel_id
+	WHERE
+		uh.usuario_usuario_user = ISNULL(@usuario_user, uh.usuario_usuario_user)
+    GROUP BY
+		h.hotel_id, h.hotel_nombre 
+	ORDER BY 
+		h.hotel_nombre
+END
+GO
+
+CREATE PROCEDURE denver.obtener_tipo_documento
+AS
+BEGIN
+	SET NOCOUNT ON;
+	SELECT tipo_documento_id,tipo_documento_nombre FROM denver.tipo_documentos ORDER BY tipo_documento_nombre
+END
+GO
+
+CREATE PROCEDURE denver.obtener_regimenes
+	@hotel_id smallint
+AS
+BEGIN
+	SET NOCOUNT ON;
+	SELECT 
+		regimen_id,regimen_descripcion 
+	FROM 
+		denver.regimenes AS r
+		JOIN denver.hoteles_regimenes AS hr ON r.regimen_id = hr.hotel_regimen_regimen_id
+	WHERE
+		hr.hotel_regimen_hotel_id = ISNULL(@hotel_id, hr.hotel_regimen_hotel_id)
+	group by
+		regimen_id,regimen_descripcion 
+	ORDER BY regimen_descripcion
+END
+GO
+
+CREATE PROCEDURE denver.obtener_habitaciones
+	@hotel_id smallint
+AS
+BEGIN
+	SET NOCOUNT ON;
+	SELECT habitacion_nro FROM denver.habitaciones WHERE habitacion_hotel_id = @hotel_id ORDER BY habitacion_nro
+END
+GO
+
+
+
+
+
+
+
+
+
+CREATE PROCEDURE denver.obtener_consumibles
+AS
+BEGIN
+	SET NOCOUNT ON;
+	SELECT consumible_id, consumible_descripcion FROM denver.consumibles ORDER BY consumible_descripcion
+END
+GO
+
+CREATE PROCEDURE denver.obtener_tipo_habitaciones
+AS
+BEGIN
+	SET NOCOUNT ON;
+	SELECT tipo_habitacion_id,tipo_habitacion_descripcion FROM denver.tipo_habitaciones ORDER BY tipo_habitacion_descripcion
+END
+GO
+
+CREATE PROCEDURE denver.obtener_paises
+AS
+BEGIN
+	SET NOCOUNT ON;
+	SELECT pais_id, pais_nombre FROM denver.paises ORDER BY pais_nombre
+END
+GO
+
+CREATE PROCEDURE denver.obtener_roles
+	@usuario_user nvarchar(50) = NULL
+AS
+BEGIN
+	SET NOCOUNT ON;
+	SELECT 
+		r.rol_nombre
+	FROM 
+		denver.roles AS r
+		JOIN denver.usuarios_roles AS ur ON  r.rol_nombre = ur.usuario_rol_rol_nombre
+	WHERE
+		ur.usuario_rol_usuario_user = ISNULL(@usuario_user, ur.usuario_rol_usuario_user)
+	GROUP BY
+		r.rol_nombre
+	ORDER BY 
+		r.rol_nombre
+END
+GO
+

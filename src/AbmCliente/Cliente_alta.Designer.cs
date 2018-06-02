@@ -428,6 +428,7 @@
             // 
             // combo_pais
             // 
+            this.combo_pais.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.combo_pais.FormattingEnabled = true;
             this.combo_pais.Items.AddRange(new object[] {
             "1",
@@ -461,6 +462,7 @@
             // 
             // cmb_cli_new_tip_doc
             // 
+            this.cmb_cli_new_tip_doc.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmb_cli_new_tip_doc.FormattingEnabled = true;
             this.cmb_cli_new_tip_doc.Items.AddRange(new object[] {
             "PASAPORTE",

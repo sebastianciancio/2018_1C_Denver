@@ -23,7 +23,7 @@ namespace FrbaHotel.AbmRol
 
         private void GestionRoles_Load(object sender, EventArgs e)
         {
-            SqlCommand cmd = new SqlCommand("denver.buscar_roles", db.Connection);
+            SqlCommand cmd = new SqlCommand("denver.obtener_roles", db.Connection);
             cmd.CommandType = CommandType.StoredProcedure;
 
             DataTable dt = new DataTable();

@@ -21,6 +21,8 @@ namespace FrbaHotel.AbmHotel
 
             // Cargo el Combo Pais
             Combos.cargarComboPais(combo_pais);
+            Combos.cargarComboTipoRegimen(cmb_regimenes);
+            Combos.cargarComboCantidad(cmb_estrellas, 1, 5);
         }
 
         private void btn_guardar_Click(object sender, EventArgs e)
