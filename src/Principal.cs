@@ -30,7 +30,6 @@ namespace FrbaHotel
 
         private void roles_Click(object sender, EventArgs e)
         {
-            this.Hide();
 
             AbmRol.GestionRoles frm = new AbmRol.GestionRoles();
 
@@ -98,6 +97,19 @@ namespace FrbaHotel
         {
             Consumibles frm = new Consumibles();
             frm.Show();
+        }
+
+        private void btn_check_Click(object sender, EventArgs e)
+        {
+            Estadia frm = new Estadia();
+            frm.Show();
+        }
+
+        private void btn_facturar_Click(object sender, EventArgs e)
+        {
+            Facturar frm = new Facturar();
+            frm.Show();
+
         }
 
 

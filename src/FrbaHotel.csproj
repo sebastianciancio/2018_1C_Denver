@@ -125,6 +125,12 @@
     </Compile>
     <Compile Include="Combos.cs" />
     <Compile Include="DataBase.cs" />
+    <Compile Include="Facturar\Facturar.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Facturar\Facturar.Designer.cs">
+      <DependentUpon>Facturar.cs</DependentUpon>
+    </Compile>
     <Compile Include="Principal.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -163,11 +169,11 @@
     <Compile Include="RegistrarConsumible\Consumibles.Designer.cs">
       <DependentUpon>Consumibles.cs</DependentUpon>
     </Compile>
-    <Compile Include="RegistrarEstadia\Form1.cs">
+    <Compile Include="RegistrarEstadia\Estadia.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="RegistrarEstadia\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="RegistrarEstadia\Estadia.Designer.cs">
+      <DependentUpon>Estadia.cs</DependentUpon>
     </Compile>
     <Compile Include="UserControl1.cs">
       <SubType>UserControl</SubType>
@@ -209,6 +215,9 @@
     <EmbeddedResource Include="CancelarReserva\Cancelar_reserva.resx">
       <DependentUpon>Cancelar_reserva.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Facturar\Facturar.resx">
+      <DependentUpon>Facturar.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GenerarModificacionReserva\Reserva.resx">
       <DependentUpon>Reserva.cs</DependentUpon>
     </EmbeddedResource>
@@ -236,6 +245,9 @@
     </Compile>
     <EmbeddedResource Include="RegistrarConsumible\Consumibles.resx">
       <DependentUpon>Consumibles.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RegistrarEstadia\Estadia.resx">
+      <DependentUpon>Estadia.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UserControl1.resx">
       <DependentUpon>UserControl1.cs</DependentUpon>

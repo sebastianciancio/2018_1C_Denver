@@ -121,6 +121,7 @@
             this.btn_check.TabIndex = 7;
             this.btn_check.Text = "Check-In / Check-Out";
             this.btn_check.UseVisualStyleBackColor = false;
+            this.btn_check.Click += new System.EventHandler(this.btn_check_Click);
             // 
             // btn_facturar
             // 
@@ -131,6 +132,7 @@
             this.btn_facturar.TabIndex = 8;
             this.btn_facturar.Text = "Facturar";
             this.btn_facturar.UseVisualStyleBackColor = false;
+            this.btn_facturar.Click += new System.EventHandler(this.btn_facturar_Click);
             // 
             // btn_listados
             // 
