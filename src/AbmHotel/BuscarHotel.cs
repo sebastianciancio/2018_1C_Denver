@@ -23,6 +23,7 @@ namespace FrbaHotel.AbmHotel
             // Cargo los combos
             Combos.cargarComboPais(combo_pais, true);
             Combos.cargarComboCantidad(cmb_estrellas, 1,5, true);
+            Combos.cargarComboHotel(cmb_hotel, true);
         }
 
         private void btn_buscar_Click(object sender, EventArgs e)
@@ -30,8 +31,8 @@ namespace FrbaHotel.AbmHotel
             SqlCommand cmd = new SqlCommand("denver.buscar_hotel", db.Connection);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            if (txb_nombre.Text != "")
-                cmd.Parameters.AddWithValue("@hotel_nombre", SqlDbType.VarChar).Value = txb_nombre.Text;
+            if (cmb_hotel.SelectedValue.ToString().CompareTo("0") > 0)
+                cmd.Parameters.AddWithValue("@hotel_nombre", SqlDbType.VarChar).Value = cmb_hotel.Text;
 
             if (txb_ciudad.Text != "")
                 cmd.Parameters.AddWithValue("@hotel_ciudad", SqlDbType.VarChar).Value = txb_ciudad.Text;

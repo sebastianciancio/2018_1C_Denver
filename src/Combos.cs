@@ -158,6 +158,31 @@ namespace FrbaHotel
             combo.SelectedIndex = 1;
         }
 
+        public static void cargarComboEstado(ComboBox combo, bool agregarTodos = false)
+        {
+            // Cargo los Combos
+            combo.DisplayMember = "Text";
+            combo.ValueMember = "Value";
+
+            if (agregarTodos)
+            {
+                combo.Items.Add(new { Text = "Todos", Value = "-1" });
+            }
+
+            combo.Items.Add(new { Text = "Activo", Value = "1" });
+            combo.Items.Add(new { Text = "No Activo", Value = "0" });
+
+            // Seteo el Item por default
+            if (agregarTodos)
+            {
+                combo.SelectedIndex = -1;
+            }
+            else
+            {
+                combo.SelectedIndex = 1;
+            }
+        }
+
         public static void cargarComboCantidad(ComboBox combo, int desde = 1, int hasta = 50, bool agregarTodos = false)
         {
             // Cargo los Combos

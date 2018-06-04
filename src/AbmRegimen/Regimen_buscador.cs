@@ -7,14 +7,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Data.SqlClient;
 
 namespace FrbaHotel.AbmRegimen
 {
-    public partial class Form1 : Form
+    public partial class Regimen_buscador : Form
     {
-        public Form1()
+        private DataBase db;
+        public Regimen_buscador()
         {
+            db = DataBase.GetInstance();
             InitializeComponent();
+
+            // Cargo los combos
+            Combos.cargarComboEstado(cmb_estado, true);
         }
     }
 }

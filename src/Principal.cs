@@ -32,19 +32,21 @@ namespace FrbaHotel
         {
 
             AbmRol.GestionRoles frm = new AbmRol.GestionRoles();
-
             frm.Show();
- 
+
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-
+            AbmUsuarios.Usuarios_buscador frm = new AbmUsuarios.Usuarios_buscador();
+            frm.Show();
         }
 
         private void button5_Click(object sender, EventArgs e)
         {
 
+            AbmHabitacion.Habitaciones_buscador frm = new AbmHabitacion.Habitaciones_buscador();
+            frm.Show();
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -110,6 +112,12 @@ namespace FrbaHotel
             Facturar frm = new Facturar();
             frm.Show();
 
+        }
+
+        private void button11_Click(object sender, EventArgs e)
+        {
+            AbmRegimen.Regimen_buscador frm = new AbmRegimen.Regimen_buscador();
+            frm.Show();
         }
 
 

@@ -165,6 +165,7 @@
             this.button11.TabIndex = 12;
             this.button11.Text = "Régimen Estadía";
             this.button11.UseVisualStyleBackColor = false;
+            this.button11.Click += new System.EventHandler(this.button11_Click);
             // 
             // label_usuario_logueado
             // 
