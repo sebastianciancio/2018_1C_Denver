@@ -69,6 +69,11 @@ if EXISTS (SELECT * FROM sys.objects  WHERE name = 'obtener_paises' AND type IN 
 	DROP PROCEDURE [denver].[obtener_paises]
 if EXISTS (SELECT * FROM sys.objects  WHERE name = 'obtener_roles' AND type IN (N'P', N'PC'))
 	DROP PROCEDURE [denver].[obtener_roles]
+if EXISTS (SELECT * FROM sys.objects  WHERE name = 'habilitar_disponibilidad' AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [denver].[habilitar_disponibilidad]	
+if EXISTS (SELECT * FROM sys.objects  WHERE name = 'obtener_disponibilidad' AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [denver].[obtener_disponibilidad]	
+	
 GO
 
 
@@ -669,3 +674,62 @@ BEGIN
 END
 GO
 
+
+CREATE PROCEDURE denver.habilitar_disponibilidad 
+	@fecha_desde datetime = NULL,
+	@fecha_hasta datetime = NULL
+AS
+BEGIN
+	SET NOCOUNT ON;
+	declare @fecha_actual datetime = @fecha_desde
+
+	while (@fecha_actual < @fecha_hasta)
+	begin
+
+
+	insert into denver.disponibilidades (disponibilidad_hotel_id, disponibilidad_habitacion_nro, disponibilidad_tipo_habitacion_id, disponibilidad_ocupado, disponibilidad_fecha) 
+	(
+		SELECT
+			ho.hotel_id, hab.habitacion_nro, th.tipo_habitacion_id, 0, @fecha_actual
+		FROM 
+		denver.habitaciones AS hab
+		join denver.hoteles as ho on ho.hotel_id = hab.habitacion_hotel_id
+		join denver.tipo_habitaciones as th on ho.hotel_id = hab.habitacion_hotel_id
+	)
+		set @fecha_actual = dateadd(day, 1, @fecha_actual)
+	end
+END
+GO
+
+-- Vacio las disponibilidades
+truncate table denver.disponibilidades
+exec denver.habilitar_disponibilidad '06/01/2018', '12/31/2018'
+GO
+
+
+CREATE PROCEDURE denver.obtener_disponibilidad
+	@fecha_desde as datetime,
+	@fecha_hasta as datetime,
+	@hotel_id as smallint,
+	@tipo_habitacion as numeric(18,0),
+	@regimen_id as numeric(18,0) = NULL
+AS
+BEGIN
+	SELECT 
+		d.disponibilidad_habitacion_nro, th.tipo_habitacion_descripcion, r.regimen_descripcion, r.regimen_precio
+	from 
+		denver.disponibilidades as d
+		join denver.hoteles_regimenes as hr on hr.hotel_regimen_hotel_id = d.disponibilidad_hotel_id
+		join denver.regimenes as r on r.regimen_id = hr.hotel_regimen_regimen_id
+		join denver.tipo_habitaciones as th on th.tipo_habitacion_id = d.disponibilidad_tipo_habitacion_id
+	where
+		d.disponibilidad_fecha between ''+cast(@fecha_desde as varchar(20))+'' and ''+cast(@fecha_hasta as varchar(20))+'' 
+		and d.disponibilidad_hotel_id = @hotel_id
+		and d.disponibilidad_ocupado = 0 
+		and d.disponibilidad_tipo_habitacion_id = @tipo_habitacion 
+		and hr.hotel_regimen_regimen_id = @regimen_id
+		and r.regimen_activo = 'S'
+	group by 
+		d.disponibilidad_habitacion_nro, th.tipo_habitacion_descripcion, r.regimen_descripcion, r.regimen_precio
+END
+GO

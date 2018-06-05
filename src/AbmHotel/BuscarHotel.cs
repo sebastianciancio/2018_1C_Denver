@@ -31,17 +31,20 @@ namespace FrbaHotel.AbmHotel
             SqlCommand cmd = new SqlCommand("denver.buscar_hotel", db.Connection);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            if (cmb_hotel.SelectedValue.ToString().CompareTo("0") > 0)
+            if (cmb_hotel.SelectedIndex > 0)
                 cmd.Parameters.AddWithValue("@hotel_nombre", SqlDbType.VarChar).Value = cmb_hotel.Text;
 
             if (txb_ciudad.Text != "")
                 cmd.Parameters.AddWithValue("@hotel_ciudad", SqlDbType.VarChar).Value = txb_ciudad.Text;
 
-            if (combo_pais.SelectedValue.ToString().CompareTo("0") > 0)
-                cmd.Parameters.AddWithValue("@pais_nombre", SqlDbType.VarChar).Value = combo_pais.SelectedText;
+            if (combo_pais.SelectedIndex > 0)
+                cmd.Parameters.AddWithValue("@pais_nombre", SqlDbType.VarChar).Value = combo_pais.Text;
 
-            if (cmb_estrellas.SelectedItem.ToString().CompareTo("0") > 0)
-                cmd.Parameters.AddWithValue("@hotel_estrellas", SqlDbType.Int).Value = Convert.ToInt32(cmb_estrellas.SelectedValue);
+            if (cmb_estrellas.SelectedIndex > 0)
+            {
+                cmd.Parameters.AddWithValue("@hotel_estrellas", SqlDbType.Int).Value = Convert.ToInt32(cmb_estrellas.Text);
+            }
+                
 
             // Creo el DataTable para obtener los resultados del SP
             DataTable dt = new DataTable();
