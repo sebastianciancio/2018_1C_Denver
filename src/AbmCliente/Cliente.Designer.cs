@@ -43,8 +43,11 @@
             this.lbl_numero = new System.Windows.Forms.Label();
             this.lbl_tipo_doc = new System.Windows.Forms.Label();
             this.cmb_tipo_doc = new System.Windows.Forms.ComboBox();
+            this.btn_seleccionar = new System.Windows.Forms.Button();
+            this.panel_botones = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_tablaCliente)).BeginInit();
             this.groupBox1.SuspendLayout();
+            this.panel_botones.SuspendLayout();
             this.SuspendLayout();
             // 
             // txb_cliente_nombre
@@ -97,13 +100,12 @@
             // 
             // btn_modif
             // 
-            this.btn_modif.Location = new System.Drawing.Point(712, 120);
+            this.btn_modif.Location = new System.Drawing.Point(14, 12);
             this.btn_modif.Name = "btn_modif";
             this.btn_modif.Size = new System.Drawing.Size(88, 29);
             this.btn_modif.TabIndex = 5;
             this.btn_modif.Text = "Modificar";
             this.btn_modif.UseVisualStyleBackColor = true;
-            this.btn_modif.Visible = false;
             this.btn_modif.Click += new System.EventHandler(this.button1_Click);
             // 
             // lbl_apellido
@@ -136,13 +138,12 @@
             // 
             // btn_eliminar
             // 
-            this.btn_eliminar.Location = new System.Drawing.Point(714, 174);
+            this.btn_eliminar.Location = new System.Drawing.Point(16, 66);
             this.btn_eliminar.Name = "btn_eliminar";
             this.btn_eliminar.Size = new System.Drawing.Size(86, 26);
             this.btn_eliminar.TabIndex = 10;
             this.btn_eliminar.Text = "Eliminar";
             this.btn_eliminar.UseVisualStyleBackColor = true;
-            this.btn_eliminar.Visible = false;
             this.btn_eliminar.Click += new System.EventHandler(this.btn_eliminar_Click);
             // 
             // groupBox1
@@ -190,13 +191,34 @@
             this.cmb_tipo_doc.Size = new System.Drawing.Size(92, 21);
             this.cmb_tipo_doc.TabIndex = 9;
             // 
+            // btn_seleccionar
+            // 
+            this.btn_seleccionar.Location = new System.Drawing.Point(714, 300);
+            this.btn_seleccionar.Name = "btn_seleccionar";
+            this.btn_seleccionar.Size = new System.Drawing.Size(86, 26);
+            this.btn_seleccionar.TabIndex = 13;
+            this.btn_seleccionar.Text = "Seleccionar";
+            this.btn_seleccionar.UseVisualStyleBackColor = true;
+            this.btn_seleccionar.Visible = false;
+            this.btn_seleccionar.Click += new System.EventHandler(this.btn_seleccionar_Click);
+            // 
+            // panel_botones
+            // 
+            this.panel_botones.Controls.Add(this.btn_modif);
+            this.panel_botones.Controls.Add(this.btn_eliminar);
+            this.panel_botones.Location = new System.Drawing.Point(698, 101);
+            this.panel_botones.Name = "panel_botones";
+            this.panel_botones.Size = new System.Drawing.Size(112, 100);
+            this.panel_botones.TabIndex = 14;
+            this.panel_botones.Visible = false;
+            // 
             // Cliente
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(814, 338);
-            this.Controls.Add(this.btn_eliminar);
-            this.Controls.Add(this.btn_modif);
+            this.Controls.Add(this.panel_botones);
+            this.Controls.Add(this.btn_seleccionar);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.btt_add_client);
             this.Controls.Add(this.dgv_tablaCliente);
@@ -205,6 +227,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgv_tablaCliente)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.panel_botones.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -225,5 +248,7 @@
         private System.Windows.Forms.Label lbl_numero;
         private System.Windows.Forms.Label lbl_tipo_doc;
         private System.Windows.Forms.ComboBox cmb_tipo_doc;
+        private System.Windows.Forms.Button btn_seleccionar;
+        private System.Windows.Forms.Panel panel_botones;
     }
 }

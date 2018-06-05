@@ -28,11 +28,6 @@ namespace FrbaHotel
             
         }
 
-        private void Reserva_Load(object sender, EventArgs e)
-        {
-
-        }
-
         private void button1_Click(object sender, EventArgs e)
         {
             SqlCommand cmd = new SqlCommand("denver.obtener_disponibilidad", db.Connection);
@@ -43,15 +38,17 @@ namespace FrbaHotel
             DateTime fecha = DateTime.ParseExact("01-02-2018","dd-MM-yyyy", null);
 
             if (fecha_desde.Text != "")
-                cmd.Parameters.AddWithValue("@fecha_desde", SqlDbType.DateTime).Value = Convert.ToDateTime("01-01-2018");
+                cmd.Parameters.AddWithValue("@fecha_desde", SqlDbType.DateTime).Value = fecha_desde.Value;
 
             if (fecha_hasta.Text != "")
-                cmd.Parameters.AddWithValue("@fecha_hasta", SqlDbType.DateTime).Value = Convert.ToDateTime("01-01-2018");
+                cmd.Parameters.AddWithValue("@fecha_hasta", SqlDbType.DateTime).Value = fecha_hasta.Value;
 
             if (cmb_tipo_hab.SelectedValue.ToString().CompareTo("0") > 0)
+            //if (cmb_tipo_hab.SelectedIndex > 0)
                 cmd.Parameters.AddWithValue("@tipo_habitacion", SqlDbType.Int).Value = Convert.ToInt32(cmb_tipo_hab.SelectedValue);
 
-            if (cmb_regimen.SelectedValue.ToString().CompareTo("0") > 0)
+
+            if (cmb_regimen.SelectedIndex > 0)
                 cmd.Parameters.AddWithValue("@regimen_id", SqlDbType.Int).Value = Convert.ToInt32(cmb_regimen.SelectedValue);
 
             cmd.Parameters.AddWithValue("@hotel_id", SqlDbType.Int).Value = Convert.ToInt32(accesoSistema.HotelIdActual);
@@ -64,13 +61,45 @@ namespace FrbaHotel
                 da.Fill(dt);
             }
 
-
             // Cargo la Grilla con los datos obtenidos
             dg_disponibilidad.DataSource = dt;
 
             // Muestro los objetos ocultos
             dg_disponibilidad.Visible = true;
+            Container_disponibilidad.Visible = true;
+            Container_pasajero.Visible = true;
 
+            // Habilito la seleccion de Clientes
+            accesoSistema.habilitarSeleccionCliente = true;
+
+        }
+
+        private void btn_buscar_Click(object sender, EventArgs e)
+        {
+            Cliente frm = new Cliente();
+            frm.Show();
+        }
+
+        private void Reserva_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            // Deshabilito la seleccion de Clientes
+            accesoSistema.habilitarSeleccionCliente = false;
+        }
+
+        private void Reserva_Activated(object sender, EventArgs e)
+        {
+            // Si existe un cliente seleccionado
+            if (accesoSistema.ClienteSeleccionado.cliente_apellido != "")
+            {
+
+                Container_Detalle_Reserva.Visible = true;
+
+                // Cuando se activa el formulario, si existe el cliente seleccionado, lo cargo
+                txt_reserva_pasajero.Text = accesoSistema.ClienteSeleccionado.cliente_apellido + ' ' + accesoSistema.ClienteSeleccionado.cliente_nombre + " (" + accesoSistema.ClienteSeleccionado.cliente_tipo_documento + ' ' + accesoSistema.ClienteSeleccionado.cliente_dni+')';
+                txt_reserva_fechas.Text = fecha_desde.Text +" / "+ fecha_hasta.Text;
+                txt_reserva_habitacion.Text = cmb_tipo_hab.Text;
+                txt_reserva_total.Text = "$0.00";
+            }
         }
     }
 }

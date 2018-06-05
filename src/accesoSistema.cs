@@ -16,10 +16,14 @@ namespace FrbaHotel
         static public int HotelIdActual = 0;
         static public string HotelNombreActual;
         static public Usuario UsuarioLogueado = new Usuario();
+        static public Cliente ClienteSeleccionado = new Cliente();
+        static public bool habilitarSeleccionCliente = false;
+
         System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(accesoSistema));
 
         public accesoSistema()
         {
+            ClienteSeleccionado.cliente_apellido = "";
             InitializeComponent();
         }
 

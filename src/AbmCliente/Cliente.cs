@@ -21,6 +21,7 @@ namespace FrbaHotel
         public string cliente_apellido;
         public string cliente_nombre;
         public int cliente_dni;
+        public string cliente_tipo_documento;
 
         public Cliente()
         {
@@ -65,9 +66,21 @@ namespace FrbaHotel
             dgv_tablaCliente.DataSource = dt;
 
             // Muestro los objetos ocultos
-            btn_eliminar.Visible = true;
-            btn_modif.Visible = true;
             dgv_tablaCliente.Visible = true;
+
+
+            // Si solo es para seleccionar clientes, por ej. Reservas
+            if (accesoSistema.habilitarSeleccionCliente)
+            {
+                panel_botones.Visible = false;
+                btn_seleccionar.Visible = true;
+            }
+            else
+            {
+                panel_botones.Visible = true;
+                btn_seleccionar.Visible = false;
+            }
+            
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -147,6 +160,23 @@ namespace FrbaHotel
                 }
             }
 
+        }
+
+        private void btn_seleccionar_Click(object sender, EventArgs e)
+        {
+            //Levanto la linea seleccionada
+            DataGridViewRow row = dgv_tablaCliente.CurrentRow;
+
+            accesoSistema.ClienteSeleccionado.cliente_apellido = row.Cells[2].Value.ToString();
+            accesoSistema.ClienteSeleccionado.cliente_nombre = row.Cells[3].Value.ToString();
+            accesoSistema.ClienteSeleccionado.cliente_dni = Convert.ToInt32(row.Cells[1].Value.ToString());
+            accesoSistema.ClienteSeleccionado.cliente_tipo_documento = row.Cells[0].Value.ToString();
+
+            // Deshabilito la seleccion de Clientes
+            accesoSistema.habilitarSeleccionCliente = false;
+
+            // Cierro el Form
+            this.Close();
         }
     }
 }

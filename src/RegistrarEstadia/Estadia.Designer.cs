@@ -29,15 +29,15 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.nro_reserva = new System.Windows.Forms.TextBox();
+            this.button2 = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
+            this.nro_reserva = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.button1 = new System.Windows.Forms.Button();
             this.cmb_habitacion = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
             this.cmb_hotel = new System.Windows.Forms.ComboBox();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -56,6 +56,31 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Check-in";
             // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(199, 28);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.TabIndex = 8;
+            this.button2.Text = "Buscar";
+            this.button2.UseVisualStyleBackColor = true;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(8, 33);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(70, 13);
+            this.label2.TabIndex = 3;
+            this.label2.Text = "Nro. Reserva";
+            // 
+            // nro_reserva
+            // 
+            this.nro_reserva.Location = new System.Drawing.Point(84, 30);
+            this.nro_reserva.Name = "nro_reserva";
+            this.nro_reserva.Size = new System.Drawing.Size(93, 20);
+            this.nro_reserva.TabIndex = 1;
+            // 
             // label1
             // 
             this.label1.AutoSize = true;
@@ -64,22 +89,6 @@
             this.label1.Size = new System.Drawing.Size(32, 13);
             this.label1.TabIndex = 0;
             this.label1.Text = "Hotel";
-            // 
-            // nro_reserva
-            // 
-            this.nro_reserva.Location = new System.Drawing.Point(84, 21);
-            this.nro_reserva.Name = "nro_reserva";
-            this.nro_reserva.Size = new System.Drawing.Size(93, 20);
-            this.nro_reserva.TabIndex = 1;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(8, 24);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(70, 13);
-            this.label2.TabIndex = 3;
-            this.label2.Text = "Nro. Reserva";
             // 
             // dataGridView1
             // 
@@ -102,6 +111,15 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Check-out";
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(289, 28);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 7;
+            this.button1.Text = "Buscar";
+            this.button1.UseVisualStyleBackColor = true;
+            // 
             // cmb_habitacion
             // 
             this.cmb_habitacion.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -119,24 +137,6 @@
             this.label3.Size = new System.Drawing.Size(58, 13);
             this.label3.TabIndex = 5;
             this.label3.Text = "Habitación";
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(289, 28);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 7;
-            this.button1.Text = "Buscar";
-            this.button1.UseVisualStyleBackColor = true;
-            // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(196, 19);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 8;
-            this.button2.Text = "Buscar";
-            this.button2.UseVisualStyleBackColor = true;
             // 
             // cmb_hotel
             // 
