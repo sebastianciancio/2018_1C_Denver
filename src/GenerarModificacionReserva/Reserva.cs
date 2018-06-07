@@ -33,10 +33,6 @@ namespace FrbaHotel
             SqlCommand cmd = new SqlCommand("denver.obtener_disponibilidad", db.Connection);
             cmd.CommandType = CommandType.StoredProcedure;
 
-
-            //DateTime fecha = DateTime.ParseExact(fecha_desde.Text, "dd/mm/yyyy", CultureInfo.InvariantCulture);
-            DateTime fecha = DateTime.ParseExact("01-02-2018","dd-MM-yyyy", null);
-
             if (fecha_desde.Text != "")
                 cmd.Parameters.AddWithValue("@fecha_desde", SqlDbType.DateTime).Value = fecha_desde.Value;
 
@@ -64,6 +60,9 @@ namespace FrbaHotel
             // Cargo la Grilla con los datos obtenidos
             dg_disponibilidad.DataSource = dt;
 
+            // Oculto la Columna con Max Pax
+            dg_disponibilidad.Columns[4].Visible = false;
+
             // Muestro los objetos ocultos
             dg_disponibilidad.Visible = true;
             Container_disponibilidad.Visible = true;
@@ -76,6 +75,9 @@ namespace FrbaHotel
 
         private void btn_buscar_Click(object sender, EventArgs e)
         {
+            // Deshabilito la seleccion de Clientes
+            accesoSistema.habilitarSeleccionCliente = true;
+
             Cliente frm = new Cliente();
             frm.Show();
         }
@@ -98,8 +100,29 @@ namespace FrbaHotel
                 txt_reserva_pasajero.Text = accesoSistema.ClienteSeleccionado.cliente_apellido + ' ' + accesoSistema.ClienteSeleccionado.cliente_nombre + " (" + accesoSistema.ClienteSeleccionado.cliente_tipo_documento + ' ' + accesoSistema.ClienteSeleccionado.cliente_dni+')';
                 txt_reserva_fechas.Text = fecha_desde.Text +" / "+ fecha_hasta.Text;
                 txt_reserva_habitacion.Text = cmb_tipo_hab.Text;
-                txt_reserva_total.Text = "$0.00";
+
+                //Levanto las lineas seleccionada de disponibilidades
+                DataGridViewSelectedRowCollection row = dg_disponibilidad.SelectedRows;
+
+                // Calculo el total de la Reserva
+                int total_reserva = 0;
+                for (var indice = 0; indice < row.Count;indice++ )
+                {
+                    total_reserva += Convert.ToInt32(row[indice].Cells[4].Value) * Convert.ToInt32(row[indice].Cells[3].Value);
+                }
+
+                txt_reserva_total.Text = "$" + total_reserva;
+
+
+                
+
             }
+        }
+
+        // Si se cambio la seleccion de la reserva
+        private void dg_disponibilidad_SelectionChanged(object sender, EventArgs e)
+        {
+            Reserva_Activated(sender, e);
         }
     }
 }

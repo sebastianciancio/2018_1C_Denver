@@ -51,6 +51,7 @@
             this.txt_reserva_pasajero = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
+            this.btn_confirmar_reserva = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dg_disponibilidad)).BeginInit();
             this.Container_disponibilidad.SuspendLayout();
@@ -98,7 +99,7 @@
             // 
             // fecha_hasta
             // 
-            this.fecha_hasta.CustomFormat = "dd/mm/yyyy";
+            this.fecha_hasta.CustomFormat = "dd/MM/yyyy";
             this.fecha_hasta.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.fecha_hasta.Location = new System.Drawing.Point(468, 27);
             this.fecha_hasta.Name = "fecha_hasta";
@@ -143,7 +144,7 @@
             // 
             // fecha_desde
             // 
-            this.fecha_desde.CustomFormat = "dd/mm/yyyy";
+            this.fecha_desde.CustomFormat = "dd/MM/yyyy";
             this.fecha_desde.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.fecha_desde.Location = new System.Drawing.Point(133, 24);
             this.fecha_desde.Name = "fecha_desde";
@@ -167,9 +168,11 @@
             this.dg_disponibilidad.Location = new System.Drawing.Point(6, 19);
             this.dg_disponibilidad.Name = "dg_disponibilidad";
             this.dg_disponibilidad.ReadOnly = true;
+            this.dg_disponibilidad.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dg_disponibilidad.Size = new System.Drawing.Size(725, 155);
             this.dg_disponibilidad.TabIndex = 1;
             this.dg_disponibilidad.Visible = false;
+            this.dg_disponibilidad.SelectionChanged += new System.EventHandler(this.dg_disponibilidad_SelectionChanged);
             // 
             // Container_disponibilidad
             // 
@@ -206,6 +209,7 @@
             // 
             // Container_Detalle_Reserva
             // 
+            this.Container_Detalle_Reserva.Controls.Add(this.btn_confirmar_reserva);
             this.Container_Detalle_Reserva.Controls.Add(this.txt_reserva_total);
             this.Container_Detalle_Reserva.Controls.Add(this.label10);
             this.Container_Detalle_Reserva.Controls.Add(this.txt_reserva_habitacion);
@@ -216,7 +220,7 @@
             this.Container_Detalle_Reserva.Controls.Add(this.label7);
             this.Container_Detalle_Reserva.Location = new System.Drawing.Point(12, 401);
             this.Container_Detalle_Reserva.Name = "Container_Detalle_Reserva";
-            this.Container_Detalle_Reserva.Size = new System.Drawing.Size(737, 104);
+            this.Container_Detalle_Reserva.Size = new System.Drawing.Size(737, 119);
             this.Container_Detalle_Reserva.TabIndex = 35;
             this.Container_Detalle_Reserva.TabStop = false;
             this.Container_Detalle_Reserva.Text = "Detalle de la Reserva";
@@ -299,11 +303,21 @@
             this.label7.TabIndex = 14;
             this.label7.Text = "Pasajero:";
             // 
+            // btn_confirmar_reserva
+            // 
+            this.btn_confirmar_reserva.BackColor = System.Drawing.Color.Lime;
+            this.btn_confirmar_reserva.Location = new System.Drawing.Point(252, 85);
+            this.btn_confirmar_reserva.Name = "btn_confirmar_reserva";
+            this.btn_confirmar_reserva.Size = new System.Drawing.Size(202, 23);
+            this.btn_confirmar_reserva.TabIndex = 6;
+            this.btn_confirmar_reserva.Text = "Confirmar Reserva";
+            this.btn_confirmar_reserva.UseVisualStyleBackColor = false;
+            // 
             // Reserva
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(761, 545);
+            this.ClientSize = new System.Drawing.Size(761, 530);
             this.Controls.Add(this.Container_Detalle_Reserva);
             this.Controls.Add(this.Container_pasajero);
             this.Controls.Add(this.Container_disponibilidad);
@@ -348,5 +362,6 @@
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label txt_reserva_habitacion;
         private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Button btn_confirmar_reserva;
     }
 }

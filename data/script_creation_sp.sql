@@ -73,7 +73,8 @@ if EXISTS (SELECT * FROM sys.objects  WHERE name = 'habilitar_disponibilidad' AN
 	DROP PROCEDURE [denver].[habilitar_disponibilidad]	
 if EXISTS (SELECT * FROM sys.objects  WHERE name = 'obtener_disponibilidad' AND type IN (N'P', N'PC'))
 	DROP PROCEDURE [denver].[obtener_disponibilidad]	
-
+if EXISTS (SELECT * FROM sys.objects  WHERE name = 'cant_pasajeros_tipo_habitacion' AND type IN (N'FN'))
+	DROP FUNCTION [denver].[cant_pasajeros_tipo_habitacion]
 GO
 
 
@@ -559,6 +560,7 @@ BEGIN
 END
 GO
 
+
 CREATE FUNCTION denver.cant_roles_usuario (@usuario_user nvarchar(50))
 RETURNS int
 AS
@@ -716,7 +718,7 @@ CREATE PROCEDURE denver.obtener_disponibilidad
 AS
 BEGIN
 	SELECT 
-		d.disponibilidad_habitacion_nro as "Nro. de Habitacion", th.tipo_habitacion_descripcion as "Tipo de Habitacion", r.regimen_descripcion as Regimen, r.regimen_precio As "Precio Diario"
+		d.disponibilidad_habitacion_nro as "Nro. de Habitacion", th.tipo_habitacion_descripcion as "Tipo de Habitacion", r.regimen_descripcion as Regimen, r.regimen_precio As "Precio Diario por Pax", denver.cant_pasajeros_tipo_habitacion(th.tipo_habitacion_id) as "Max Pax"
 	from 
 		denver.disponibilidades as d
 		join denver.hoteles_regimenes as hr on hr.hotel_regimen_hotel_id = d.disponibilidad_hotel_id
@@ -730,6 +732,20 @@ BEGIN
 		and hr.hotel_regimen_regimen_id = isnull(@regimen_id,hr.hotel_regimen_regimen_id)
 		and r.regimen_activo = 'S'
 	group by 
-		d.disponibilidad_habitacion_nro, th.tipo_habitacion_descripcion, r.regimen_descripcion, r.regimen_precio
+		d.disponibilidad_habitacion_nro, th.tipo_habitacion_descripcion, r.regimen_descripcion, r.regimen_precio, th.tipo_habitacion_id
+END
+GO
+
+CREATE FUNCTION denver.cant_pasajeros_tipo_habitacion (@tipo_habitacion numeric(18,0))
+RETURNS int
+AS
+BEGIN
+	RETURN (SELECT CASE @tipo_habitacion
+		WHEN 1001 THEN 1
+		WHEN 1002 THEN 2
+		WHEN 1003 THEN 3
+		WHEN 1004 THEN 4		
+		ELSE 5
+	END)
 END
 GO

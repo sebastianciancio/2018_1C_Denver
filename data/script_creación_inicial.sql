@@ -987,14 +987,3 @@ GROUP BY
       Consumible_Codigo, Cliente_Pasaporte_Nro
 )
 GO
-
-/****** DISPONIBILIDAD ******/
-INSERT INTO denver.disponibilidades
-
-[disponibilidad_habitacion_nro]
-      ,[disponibilidad_hotel_id]
-      ,[disponibilidad_fecha]
-      ,[disponibilidad_ocupado]
-      ,[disponibilidad_tipo_habitacion_id]
-      
-  FROM [GD1C2018].[denver].[disponibilidades]
