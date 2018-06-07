@@ -60,8 +60,10 @@ namespace FrbaHotel
             // Cargo la Grilla con los datos obtenidos
             dg_disponibilidad.DataSource = dt;
 
-            // Oculto la Columna con Max Pax
+            // Oculto Columnas del Resultado
             dg_disponibilidad.Columns[4].Visible = false;
+            dg_disponibilidad.Columns[5].Visible = false;
+            dg_disponibilidad.Columns[6].Visible = false;
 
             // Muestro los objetos ocultos
             dg_disponibilidad.Visible = true;
@@ -134,6 +136,8 @@ namespace FrbaHotel
             cmd.Parameters.AddWithValue("@reserva_hotel_id", SqlDbType.Int).Value = Convert.ToInt32(accesoSistema.HotelIdActual);
             cmd.Parameters.AddWithValue("@reserva_usuario_user", SqlDbType.VarChar).Value = accesoSistema.UsuarioLogueado.Id;
             cmd.Parameters.AddWithValue("@reserva_estado_id", SqlDbType.Int).Value = 1;
+            cmd.Parameters.AddWithValue("@reserva_regimen_id", SqlDbType.Int).Value = Convert.ToInt32(accesoSistema.HotelIdActual);
+            cmd.Parameters.AddWithValue("@reserva_tipo_habitacion_id", SqlDbType.Int).Value = Convert.ToInt32(cmb_tipo_hab.SelectedValue);
             cmd.Parameters.AddWithValue("@nro_reserva", SqlDbType.Int).Direction = ParameterDirection.Output;
 
             // Ejecuto el SP

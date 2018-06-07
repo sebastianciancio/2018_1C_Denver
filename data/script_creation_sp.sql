@@ -77,6 +77,11 @@ if EXISTS (SELECT * FROM sys.objects  WHERE name = 'cant_pasajeros_tipo_habitaci
 	DROP FUNCTION [denver].[cant_pasajeros_tipo_habitacion]
 if EXISTS (SELECT * FROM sys.objects  WHERE name = 'crear_reserva' AND type IN (N'P', N'PC'))
 	DROP PROCEDURE [denver].[crear_reserva]	
+if EXISTS (SELECT * FROM sys.objects  WHERE name = 'agregar_habitaciones_reserva' AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [denver].[agregar_habitaciones_reserva]	
+if EXISTS (SELECT * FROM sys.objects  WHERE name = 'existe_usuario' AND type IN (N'FN'))
+	DROP FUNCTION [denver].[existe_usuario]
+
 GO
 
 
@@ -720,7 +725,7 @@ CREATE PROCEDURE denver.obtener_disponibilidad
 AS
 BEGIN
 	SELECT 
-		d.disponibilidad_habitacion_nro as "Nro. de Habitacion", th.tipo_habitacion_descripcion as "Tipo de Habitacion", r.regimen_descripcion as Regimen, r.regimen_precio As "Precio Diario por Pax", denver.cant_pasajeros_tipo_habitacion(th.tipo_habitacion_id) as "Max Pax"
+		d.disponibilidad_habitacion_nro as "Nro. de Habitacion", th.tipo_habitacion_descripcion as "Tipo de Habitacion", r.regimen_descripcion as Regimen, r.regimen_precio As "Precio Diario por Pax", denver.cant_pasajeros_tipo_habitacion(th.tipo_habitacion_id) as "Max Pax", r.regimen_id, th.tipo_habitacion_id
 	from 
 		denver.disponibilidades as d
 		join denver.hoteles_regimenes as hr on hr.hotel_regimen_hotel_id = d.disponibilidad_hotel_id
@@ -734,7 +739,7 @@ BEGIN
 		and hr.hotel_regimen_regimen_id = isnull(@regimen_id,hr.hotel_regimen_regimen_id)
 		and r.regimen_activo = 'S'
 	group by 
-		d.disponibilidad_habitacion_nro, th.tipo_habitacion_descripcion, r.regimen_descripcion, r.regimen_precio, th.tipo_habitacion_id
+		d.disponibilidad_habitacion_nro, th.tipo_habitacion_descripcion, r.regimen_descripcion, r.regimen_precio, th.tipo_habitacion_id, r.regimen_id
 END
 GO
 
@@ -760,6 +765,8 @@ CREATE PROCEDURE denver.crear_reserva
 	@reserva_hotel_id smallint,
 	@reserva_usuario_user nvarchar(50),
 	@reserva_estado_id smallint,
+	@reserva_regimen_id  numeric(18,0),
+	@reserva_tipo_habitacion_id  numeric(18,0),
 	@nro_reserva numeric(18,0) OUTPUT
 AS
 BEGIN
@@ -768,6 +775,28 @@ BEGIN
 	insert into denver.reservas (reserva_codigo,reserva_fecha_inicio,reserva_fecha_fin,reserva_cant_noches,reserva_cliente_tipo_documento_id,reserva_cliente_pasaporte_nro,reserva_hotel_id,reserva_usuario_user,reserva_estado_id,reserva_created) values (@next_id,@reserva_fecha_inicio,@reserva_fecha_fin,DATEDIFF(day, @reserva_fecha_inicio, @reserva_fecha_fin),@reserva_cliente_tipo_documento_id,@reserva_cliente_pasaporte_nro,@reserva_hotel_id,@reserva_usuario_user,@reserva_estado_id, GETDATE())
 
 	SELECT @nro_reserva = @next_id
+
 END
 GO
 
+CREATE PROCEDURE denver.agregar_habitaciones_reserva 
+	@nro_reserva numeric(18,0),
+	@reserva_fecha_inicio datetime,
+	@reserva_fecha_fin datetime,
+	@reserva_regimen_id  numeric(18,0),
+	@reserva_tipo_habitacion_id numeric(18,0),
+	@reserva_precio_habitacion numeric(18,0)
+AS
+BEGIN
+	insert into reservas_habitaciones (reserva_habitaciones_reserva_codigo,reserva_habitaciones_fecha_inicio,reserva_habitaciones_fecha_fin,reserva_habitaciones_tipo_habitacion_id,reserva_habitaciones_cant_noches,reserva_habitaciones_regimen_id,reserva_habitaciones_precio) values (@nro_reserva, @reserva_fecha_inicio,@reserva_fecha_fin,@reserva_tipo_habitacion_id,DATEDIFF(day, @reserva_fecha_inicio, @reserva_fecha_fin), @reserva_regimen_id, @reserva_precio_habitacion)
+END
+GO
+
+CREATE FUNCTION denver.existe_usuario (@usuario_user nvarchar(50))
+RETURNS int
+AS
+BEGIN
+	RETURN (SELECT count(*) FROM denver.usuarios WHERE usuario_user = @usuario_user)
+
+END
+GO
