@@ -110,7 +110,8 @@ namespace FrbaHotel
                 int total_reserva = 0;
                 for (var indice = 0; indice < row.Count;indice++ )
                 {
-                    total_reserva += Convert.ToInt32(row[indice].Cells[4].Value) * Convert.ToInt32(row[indice].Cells[3].Value);
+                    // Precio x dia x hab * cant pasajeros x hab * dias alojamiento
+                    total_reserva += Convert.ToInt32(row[indice].Cells[4].Value) * Convert.ToInt32(row[indice].Cells[3].Value) * (fecha_hasta.Value - fecha_desde.Value).Days;
                 }
 
                 txt_reserva_total.Text = "$" + total_reserva;
@@ -136,12 +137,34 @@ namespace FrbaHotel
             cmd.Parameters.AddWithValue("@reserva_hotel_id", SqlDbType.Int).Value = Convert.ToInt32(accesoSistema.HotelIdActual);
             cmd.Parameters.AddWithValue("@reserva_usuario_user", SqlDbType.VarChar).Value = accesoSistema.UsuarioLogueado.Id;
             cmd.Parameters.AddWithValue("@reserva_estado_id", SqlDbType.Int).Value = 1;
-            cmd.Parameters.AddWithValue("@reserva_regimen_id", SqlDbType.Int).Value = Convert.ToInt32(accesoSistema.HotelIdActual);
-            cmd.Parameters.AddWithValue("@reserva_tipo_habitacion_id", SqlDbType.Int).Value = Convert.ToInt32(cmb_tipo_hab.SelectedValue);
             cmd.Parameters.AddWithValue("@nro_reserva", SqlDbType.Int).Direction = ParameterDirection.Output;
 
             // Ejecuto el SP
             cmd.ExecuteNonQuery();
+
+            // Obtengo el nro de reserva
+            int nro_reserva_obtenida = Convert.ToInt32(cmd.Parameters["@nro_reserva"].Value);
+
+            //Levanto las lineas seleccionada de disponibilidades
+            DataGridViewSelectedRowCollection row = dg_disponibilidad.SelectedRows;
+
+            // Asocio las habitaciones a la Reserva
+            for (var indice = 0; indice < row.Count; indice++)
+            {
+                cmd = new SqlCommand("denver.agregar_habitaciones_reserva", db.Connection);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.AddWithValue("@nro_reserva", SqlDbType.Int).Value = nro_reserva_obtenida.ToString();
+                cmd.Parameters.AddWithValue("@reserva_fecha_inicio", SqlDbType.DateTime).Value = fecha_desde.Value;
+                cmd.Parameters.AddWithValue("@reserva_fecha_fin", SqlDbType.DateTime).Value = fecha_hasta.Value;
+                cmd.Parameters.AddWithValue("@reserva_regimen_id", SqlDbType.Int).Value = Convert.ToInt32(row[indice].Cells[5].Value);
+                cmd.Parameters.AddWithValue("@reserva_tipo_habitacion_id", SqlDbType.Int).Value = Convert.ToInt32(row[indice].Cells[6].Value);
+                cmd.Parameters.AddWithValue("@reserva_habitacion_nro", SqlDbType.Int).Value = Convert.ToInt32(row[indice].Cells[0].Value);
+                cmd.Parameters.AddWithValue("@reserva_precio_habitacion", SqlDbType.Int).Value = Convert.ToInt32(row[indice].Cells[4].Value)* Convert.ToInt32(row[indice].Cells[3].Value);
+
+                // Ejecuto el SP
+                cmd.ExecuteNonQuery();
+            }
 
             // Muestro el Nro de Reserva
             DialogResult result = MessageBox.Show("Reserva Nro.: " + cmd.Parameters["@nro_reserva"].Value.ToString(), "Confirmacion de Reserva",

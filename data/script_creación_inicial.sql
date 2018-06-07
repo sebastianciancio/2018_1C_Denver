@@ -320,6 +320,7 @@ CREATE TABLE [denver].[reservas_habitaciones](
       [reserva_habitaciones_tipo_habitacion_id] [numeric](18, 0) NULL,
       [reserva_habitaciones_cant_noches] [numeric](18, 0) NULL,
       [reserva_habitaciones_regimen_id] [numeric](18, 0) NULL,
+      [reserva_habitacion_nro] [numeric](18, 0) NOT NULL,      
       [reserva_habitaciones_precio] [numeric](18, 2) NULL
 ) ON [PRIMARY]
 GO

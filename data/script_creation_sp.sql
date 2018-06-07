@@ -81,6 +81,12 @@ if EXISTS (SELECT * FROM sys.objects  WHERE name = 'agregar_habitaciones_reserva
 	DROP PROCEDURE [denver].[agregar_habitaciones_reserva]	
 if EXISTS (SELECT * FROM sys.objects  WHERE name = 'existe_usuario' AND type IN (N'FN'))
 	DROP FUNCTION [denver].[existe_usuario]
+if EXISTS (SELECT * FROM sys.objects  WHERE name = 'obtener_pasajero_reserva' AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [denver].[obtener_pasajero_reserva]	
+if EXISTS (SELECT * FROM sys.objects  WHERE name = 'obtener_detalle_reserva' AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [denver].[obtener_detalle_reserva]	
+if EXISTS (SELECT * FROM sys.objects  WHERE name = 'confirmar_checkin' AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [denver].[confirmar_checkin]	
 
 GO
 
@@ -765,8 +771,6 @@ CREATE PROCEDURE denver.crear_reserva
 	@reserva_hotel_id smallint,
 	@reserva_usuario_user nvarchar(50),
 	@reserva_estado_id smallint,
-	@reserva_regimen_id  numeric(18,0),
-	@reserva_tipo_habitacion_id  numeric(18,0),
 	@nro_reserva numeric(18,0) OUTPUT
 AS
 BEGIN
@@ -785,10 +789,11 @@ CREATE PROCEDURE denver.agregar_habitaciones_reserva
 	@reserva_fecha_fin datetime,
 	@reserva_regimen_id  numeric(18,0),
 	@reserva_tipo_habitacion_id numeric(18,0),
+	@reserva_habitacion_nro numeric(18,0),
 	@reserva_precio_habitacion numeric(18,0)
 AS
 BEGIN
-	insert into reservas_habitaciones (reserva_habitaciones_reserva_codigo,reserva_habitaciones_fecha_inicio,reserva_habitaciones_fecha_fin,reserva_habitaciones_tipo_habitacion_id,reserva_habitaciones_cant_noches,reserva_habitaciones_regimen_id,reserva_habitaciones_precio) values (@nro_reserva, @reserva_fecha_inicio,@reserva_fecha_fin,@reserva_tipo_habitacion_id,DATEDIFF(day, @reserva_fecha_inicio, @reserva_fecha_fin), @reserva_regimen_id, @reserva_precio_habitacion)
+	insert into reservas_habitaciones (reserva_habitaciones_reserva_codigo,reserva_habitaciones_fecha_inicio,reserva_habitaciones_fecha_fin,reserva_habitaciones_tipo_habitacion_id,reserva_habitaciones_cant_noches,reserva_habitaciones_regimen_id,reserva_habitacion_nro,reserva_habitaciones_precio) values (@nro_reserva, @reserva_fecha_inicio,@reserva_fecha_fin,@reserva_tipo_habitacion_id,DATEDIFF(day, @reserva_fecha_inicio, @reserva_fecha_fin), @reserva_regimen_id, @reserva_habitacion_nro, @reserva_precio_habitacion)
 END
 GO
 
@@ -800,3 +805,55 @@ BEGIN
 
 END
 GO
+
+
+CREATE PROCEDURE denver.obtener_pasajero_reserva 
+	@nro_reserva numeric(18,0)
+AS
+BEGIN
+	SELECT
+	c.cliente_apellido as Apellido, c.cliente_nombre AS Nombre, td.tipo_documento_nombre AS "Tipo de Documento", c.cliente_pasaporte_nro AS "Nro. de Documento", c.cliente_tipo_documento_id
+	FROM
+		denver.reservas as r
+		join denver.clientes as c on r.reserva_cliente_tipo_documento_id+r.reserva_cliente_pasaporte_nro=c.cliente_tipo_documento_id+c.cliente_pasaporte_nro
+		join denver.tipo_documentos td on td.tipo_documento_id = c.cliente_tipo_documento_id
+	WHERE
+		r.reserva_codigo = @nro_reserva
+	ORDER BY
+		c.cliente_apellido, c.cliente_nombre
+END
+GO
+
+
+CREATE PROCEDURE denver.obtener_detalle_reserva 
+	@nro_reserva numeric(18,0)
+AS
+BEGIN
+	SELECT
+		rh.reserva_habitaciones_fecha_inicio as "Fecha Entrada", rh.reserva_habitaciones_fecha_fin as "Fecha Salida",th.tipo_habitacion_descripcion as "Tipo Habitacion", reg.regimen_descripcion as "Regimen", rh.reserva_habitaciones_precio as "Precio"
+	FROM
+		denver.reservas_habitaciones as rh
+		join denver.tipo_habitaciones as th on rh.reserva_habitaciones_tipo_habitacion_id = th.tipo_habitacion_id
+		join denver.regimenes as reg on reg.regimen_id = rh.reserva_habitaciones_regimen_id
+	WHERE
+		rh.reserva_habitaciones_reserva_codigo = @nro_reserva
+END
+GO
+
+CREATE PROCEDURE denver.confirmar_checkin 
+	@nro_reserva numeric(18,0),
+	@estadia_cliente_tipo_documento_id smallint,
+	@estadia_cliente_pasaporte_nro numeric(18,0),
+	@estadia_fecha_inicio datetime,
+	@estadia_fecha_fin datetime,
+	@estadia_hotel_id smallint,
+	@estadia_usuario_user nvarchar(50)
+AS
+BEGIN
+
+  INSERT INTO denver.estadias (estadia_cliente_tipo_documento_id,estadia_cliente_pasaporte_nro,estadia_fecha_inicio,estadia_cant_noches,estadia_fecha_fin,estadia_hotel_id,estadia_reserva_codigo,estadia_usuario_user,estadia_created) VALUES (@estadia_cliente_tipo_documento_id, @estadia_cliente_pasaporte_nro,@estadia_fecha_inicio,DATEDIFF(day, @estadia_fecha_inicio, @estadia_fecha_fin),@estadia_fecha_fin,@estadia_hotel_id,@nro_reserva,@estadia_usuario_user,GETDATE())
+
+END
+GO
+
+
