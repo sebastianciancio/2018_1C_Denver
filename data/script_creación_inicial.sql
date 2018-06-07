@@ -304,7 +304,7 @@ CREATE TABLE [denver].[reservas](
       [reserva_motivo_cancelacion] [ntext] NULL,
       [reserva_fecha_cancelacion] [datetime] NULL,
       [reserva_usuario_user_cancelacion] [nvarchar](50) NULL,
-      [reserva_created] [nchar](10) NULL,      
+      [reserva_created] [datetime] NULL,     
  CONSTRAINT [PK_reservas] PRIMARY KEY CLUSTERED 
 (
       [reserva_codigo] ASC

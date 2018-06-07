@@ -202,7 +202,7 @@
             this.btn_buscar.Location = new System.Drawing.Point(166, 19);
             this.btn_buscar.Name = "btn_buscar";
             this.btn_buscar.Size = new System.Drawing.Size(377, 25);
-            this.btn_buscar.TabIndex = 34;
+            this.btn_buscar.TabIndex = 6;
             this.btn_buscar.Text = "Buscar Pasajero";
             this.btn_buscar.UseVisualStyleBackColor = false;
             this.btn_buscar.Click += new System.EventHandler(this.btn_buscar_Click);
@@ -309,9 +309,10 @@
             this.btn_confirmar_reserva.Location = new System.Drawing.Point(252, 85);
             this.btn_confirmar_reserva.Name = "btn_confirmar_reserva";
             this.btn_confirmar_reserva.Size = new System.Drawing.Size(202, 23);
-            this.btn_confirmar_reserva.TabIndex = 6;
+            this.btn_confirmar_reserva.TabIndex = 7;
             this.btn_confirmar_reserva.Text = "Confirmar Reserva";
             this.btn_confirmar_reserva.UseVisualStyleBackColor = false;
+            this.btn_confirmar_reserva.Click += new System.EventHandler(this.btn_confirmar_reserva_Click);
             // 
             // Reserva
             // 

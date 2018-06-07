@@ -22,6 +22,7 @@ namespace FrbaHotel
         public string cliente_nombre;
         public int cliente_dni;
         public string cliente_tipo_documento;
+        public int cliente_tipo_documento_id;
 
         public Cliente()
         {
@@ -171,6 +172,7 @@ namespace FrbaHotel
             accesoSistema.ClienteSeleccionado.cliente_nombre = row.Cells[3].Value.ToString();
             accesoSistema.ClienteSeleccionado.cliente_dni = Convert.ToInt32(row.Cells[1].Value.ToString());
             accesoSistema.ClienteSeleccionado.cliente_tipo_documento = row.Cells[0].Value.ToString();
+            accesoSistema.ClienteSeleccionado.cliente_tipo_documento_id = Convert.ToInt32(row.Cells[5].Value.ToString());
 
             // Deshabilito la seleccion de Clientes
             accesoSistema.habilitarSeleccionCliente = false;

@@ -112,17 +112,49 @@ namespace FrbaHotel
                 }
 
                 txt_reserva_total.Text = "$" + total_reserva;
-
-
-                
-
             }
         }
 
-        // Si se cambio la seleccion de la reserva
+        // Si se cambio la seleccion de la reserva, actualizo el Total
         private void dg_disponibilidad_SelectionChanged(object sender, EventArgs e)
         {
             Reserva_Activated(sender, e);
+        }
+
+        private void btn_confirmar_reserva_Click(object sender, EventArgs e)
+        {
+
+            SqlCommand cmd = new SqlCommand("denver.crear_reserva", db.Connection);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.AddWithValue("@reserva_fecha_inicio", SqlDbType.DateTime).Value = fecha_desde.Value;
+            cmd.Parameters.AddWithValue("@reserva_fecha_fin", SqlDbType.DateTime).Value = fecha_hasta.Value;
+            cmd.Parameters.AddWithValue("@reserva_cliente_tipo_documento_id", SqlDbType.Int).Value = Convert.ToInt32(accesoSistema.ClienteSeleccionado.cliente_tipo_documento_id);
+            cmd.Parameters.AddWithValue("@reserva_cliente_pasaporte_nro", SqlDbType.Int).Value = Convert.ToInt32(accesoSistema.ClienteSeleccionado.cliente_dni);
+            cmd.Parameters.AddWithValue("@reserva_hotel_id", SqlDbType.Int).Value = Convert.ToInt32(accesoSistema.HotelIdActual);
+            cmd.Parameters.AddWithValue("@reserva_usuario_user", SqlDbType.VarChar).Value = accesoSistema.UsuarioLogueado.Id;
+            cmd.Parameters.AddWithValue("@reserva_estado_id", SqlDbType.Int).Value = 1;
+            cmd.Parameters.AddWithValue("@nro_reserva", SqlDbType.Int).Direction = ParameterDirection.Output;
+
+            // Ejecuto el SP
+            cmd.ExecuteNonQuery();
+
+            // Muestro el Nro de Reserva
+            DialogResult result = MessageBox.Show("Reserva Nro.: " + cmd.Parameters["@nro_reserva"].Value.ToString(), "Confirmacion de Reserva",
+                     MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            // Reseteo los datos
+            dg_disponibilidad.Visible = false;
+            Container_disponibilidad.Visible = false;
+            Container_pasajero.Visible = false;
+            Container_Detalle_Reserva.Visible = false;
+            accesoSistema.habilitarSeleccionCliente = false;
+
+            accesoSistema.ClienteSeleccionado.cliente_apellido = "";
+            accesoSistema.ClienteSeleccionado.cliente_nombre = "";
+            accesoSistema.ClienteSeleccionado.cliente_dni = 0;
+            accesoSistema.ClienteSeleccionado.cliente_tipo_documento = "";
+            accesoSistema.ClienteSeleccionado.cliente_tipo_documento_id = 0;
         }
     }
 }

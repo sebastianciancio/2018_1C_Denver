@@ -75,6 +75,8 @@ if EXISTS (SELECT * FROM sys.objects  WHERE name = 'obtener_disponibilidad' AND 
 	DROP PROCEDURE [denver].[obtener_disponibilidad]	
 if EXISTS (SELECT * FROM sys.objects  WHERE name = 'cant_pasajeros_tipo_habitacion' AND type IN (N'FN'))
 	DROP FUNCTION [denver].[cant_pasajeros_tipo_habitacion]
+if EXISTS (SELECT * FROM sys.objects  WHERE name = 'crear_reserva' AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [denver].[crear_reserva]	
 GO
 
 
@@ -93,7 +95,7 @@ BEGIN
 	SET NOCOUNT ON;  
 
 	SELECT 
-		tipo_documentos.tipo_documento_nombre AS Tipo_Doc , cliente_pasaporte_nro AS Pasaporte, cliente_apellido AS Apellido, cliente_nombre AS Nombre, cliente_email AS Email
+		tipo_documentos.tipo_documento_nombre AS Tipo_Doc , cliente_pasaporte_nro AS Pasaporte, cliente_apellido AS Apellido, cliente_nombre AS Nombre, cliente_email AS Email, tipo_documentos.tipo_documento_id
 	FROM 
 		clientes  
 		INNER JOIN tipo_documentos ON cliente_tipo_documento_id = tipo_documento_id 
@@ -749,3 +751,23 @@ BEGIN
 	END)
 END
 GO
+
+CREATE PROCEDURE denver.crear_reserva 
+	@reserva_fecha_inicio datetime,
+	@reserva_fecha_fin datetime,
+	@reserva_cliente_tipo_documento_id smallint,
+	@reserva_cliente_pasaporte_nro numeric(18,0),
+	@reserva_hotel_id smallint,
+	@reserva_usuario_user nvarchar(50),
+	@reserva_estado_id smallint,
+	@nro_reserva numeric(18,0) OUTPUT
+AS
+BEGIN
+	declare @next_id numeric(18,0) = (SELECT TOP 1 reserva_codigo FROM denver.reservas ORDER BY reserva_codigo DESC)+1
+
+	insert into denver.reservas (reserva_codigo,reserva_fecha_inicio,reserva_fecha_fin,reserva_cant_noches,reserva_cliente_tipo_documento_id,reserva_cliente_pasaporte_nro,reserva_hotel_id,reserva_usuario_user,reserva_estado_id,reserva_created) values (@next_id,@reserva_fecha_inicio,@reserva_fecha_fin,DATEDIFF(day, @reserva_fecha_inicio, @reserva_fecha_fin),@reserva_cliente_tipo_documento_id,@reserva_cliente_pasaporte_nro,@reserva_hotel_id,@reserva_usuario_user,@reserva_estado_id, GETDATE())
+
+	SELECT @nro_reserva = @next_id
+END
+GO
+
