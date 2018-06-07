@@ -32,15 +32,15 @@
             this.btn_eliminar = new System.Windows.Forms.Button();
             this.btn_modif = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.cmb_hotel = new System.Windows.Forms.ComboBox();
             this.txb_nombre = new System.Windows.Forms.TextBox();
             this.txb_apellido = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.LBLnombre = new System.Windows.Forms.Label();
             this.btn_buscar = new System.Windows.Forms.Button();
             this.lbl_apellido = new System.Windows.Forms.Label();
             this.dgv_tablaCliente = new System.Windows.Forms.DataGridView();
             this.btt_add_usuario = new System.Windows.Forms.Button();
-            this.cmb_hotel = new System.Windows.Forms.ComboBox();
-            this.label1 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_tablaCliente)).BeginInit();
             this.SuspendLayout();
@@ -64,6 +64,7 @@
             this.btn_modif.Text = "Modificar";
             this.btn_modif.UseVisualStyleBackColor = true;
             this.btn_modif.Visible = false;
+            this.btn_modif.Click += new System.EventHandler(this.btn_modif_Click);
             // 
             // groupBox1
             // 
@@ -81,6 +82,15 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Buscador";
             // 
+            // cmb_hotel
+            // 
+            this.cmb_hotel.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmb_hotel.FormattingEnabled = true;
+            this.cmb_hotel.Location = new System.Drawing.Point(322, 34);
+            this.cmb_hotel.Name = "cmb_hotel";
+            this.cmb_hotel.Size = new System.Drawing.Size(234, 21);
+            this.cmb_hotel.TabIndex = 12;
+            // 
             // txb_nombre
             // 
             this.txb_nombre.Location = new System.Drawing.Point(31, 35);
@@ -96,6 +106,15 @@
             this.txb_apellido.Name = "txb_apellido";
             this.txb_apellido.Size = new System.Drawing.Size(143, 20);
             this.txb_apellido.TabIndex = 1;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(319, 13);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(32, 13);
+            this.label1.TabIndex = 11;
+            this.label1.Text = "Hotel";
             // 
             // LBLnombre
             // 
@@ -146,24 +165,7 @@
             this.btt_add_usuario.TabIndex = 15;
             this.btt_add_usuario.Text = ".";
             this.btt_add_usuario.UseVisualStyleBackColor = true;
-            // 
-            // cmb_hotel
-            // 
-            this.cmb_hotel.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmb_hotel.FormattingEnabled = true;
-            this.cmb_hotel.Location = new System.Drawing.Point(322, 34);
-            this.cmb_hotel.Name = "cmb_hotel";
-            this.cmb_hotel.Size = new System.Drawing.Size(234, 21);
-            this.cmb_hotel.TabIndex = 12;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(319, 13);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(32, 13);
-            this.label1.TabIndex = 11;
-            this.label1.Text = "Hotel";
+            this.btt_add_usuario.Click += new System.EventHandler(this.btt_add_usuario_Click);
             // 
             // Usuarios_buscador
             // 
