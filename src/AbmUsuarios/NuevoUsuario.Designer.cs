@@ -115,6 +115,7 @@
             // 
             // cmb_rol
             // 
+            this.cmb_rol.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmb_rol.FormattingEnabled = true;
             this.cmb_rol.Location = new System.Drawing.Point(301, 13);
             this.cmb_rol.Name = "cmb_rol";
@@ -170,6 +171,7 @@
             // 
             // cmb_hoteles
             // 
+            this.cmb_hoteles.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmb_hoteles.FormattingEnabled = true;
             this.cmb_hoteles.Location = new System.Drawing.Point(222, 266);
             this.cmb_hoteles.Name = "cmb_hoteles";

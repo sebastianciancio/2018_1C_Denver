@@ -20,18 +20,23 @@ namespace FrbaHotel.AbmUsuarios
             InitializeComponent();
             Combos.cargarComboHotel(cmb_hoteles);
             Combos.cargarComboTipoDocumento(cmb_tipoDoc);
+            Combos.cargarComboRoles(cmb_rol);
         }
 
         private void txb_pas_TextChanged(object sender, EventArgs e)
         {
-            SqlCommand cmd = new SqlCommand("dbo.cargar_cliente", db.Connection);
-            cmd.CommandType = CommandType.StoredProcedure;
+            SqlDataAdapter sda = new SqlDataAdapter("SELECT denver.existe_usuario ('" + txb_user.Text + "')", db.Connection);
+            DataTable dt = new DataTable();
+            sda.Fill(dt);
 
-            cmd.Parameters.AddWithValue("@usuario_user", SqlDbType.VarChar).Value = txb_user.Text;
-
-            //Necesito que me devuelva true or false.
-            // si es true
-            // lbl_userRepetido.VISIBBLE = TRUE;
+            // Si existe
+            if (Convert.ToInt32(dt.Rows[0][0]) == 1)
+            {
+                lbl_userRepetido.Visible = true;
+            }
+            else {
+                lbl_userRepetido.Visible = false;
+            }
         }
 
     }

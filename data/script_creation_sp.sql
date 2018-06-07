@@ -675,7 +675,7 @@ BEGIN
 		denver.roles AS r
 		JOIN denver.usuarios_roles AS ur ON  r.rol_nombre = ur.usuario_rol_rol_nombre
 	WHERE
-		ur.usuario_rol_usuario_user = ISNULL(@usuario_user, ur.usuario_rol_usuario_user)
+		ur.usuario_rol_usuario_user = ISNULL(@usuario_user, ur.usuario_rol_usuario_user) AND r.rol_activo = 'S'
 	GROUP BY
 		r.rol_nombre
 	ORDER BY 
