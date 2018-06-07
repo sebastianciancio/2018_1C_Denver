@@ -22,5 +22,19 @@ namespace FrbaHotel.AbmUsuarios
             // Cargo los combos
             Combos.cargarComboHotel(cmb_hotel);
         }
+
+        private void btn_modif_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btt_add_usuario_Click(object sender, EventArgs e)
+        {
+            Hide();
+            AbmUsuarios.NuevoUsuario frm = new AbmUsuarios.NuevoUsuario();
+
+            frm.Show();
+
+        }
     }
 }

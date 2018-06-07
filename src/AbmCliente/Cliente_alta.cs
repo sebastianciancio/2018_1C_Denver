@@ -66,10 +66,5 @@ namespace FrbaHotel.AbmCliente
         {
             Close();
         }
-
-
-
-  
-
     }
 }

@@ -37,7 +37,9 @@ namespace FrbaHotel.AbmRol
 
         private void btn_modificar_Click(object sender, EventArgs e)
         {
-
+            Hide();
+            AbmRol.ModificarRol frm = new AbmRol.ModificarRol();
+            frm.Show();
         }
 
         private void btn_nuevo_Click(object sender, EventArgs e)
