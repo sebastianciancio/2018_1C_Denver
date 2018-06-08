@@ -29,16 +29,18 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.cmb_anio = new System.Windows.Forms.ComboBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.cmb_trimestre = new System.Windows.Forms.ComboBox();
+            this.btn_consultar = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.cmb_tipo_reporte = new System.Windows.Forms.ComboBox();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.btn_consultar = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
+            this.cmb_trimestre = new System.Windows.Forms.ComboBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.cmb_anio = new System.Windows.Forms.ComboBox();
+            this.Container_reporte = new System.Windows.Forms.GroupBox();
+            this.dg_reporte = new System.Windows.Forms.DataGridView();
             this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this.Container_reporte.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dg_reporte)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -53,46 +55,20 @@
             this.groupBox1.Controls.Add(this.cmb_anio);
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(765, 83);
+            this.groupBox1.Size = new System.Drawing.Size(765, 80);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Consulta";
             // 
-            // cmb_anio
+            // btn_consultar
             // 
-            this.cmb_anio.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmb_anio.FormattingEnabled = true;
-            this.cmb_anio.Location = new System.Drawing.Point(59, 40);
-            this.cmb_anio.Name = "cmb_anio";
-            this.cmb_anio.Size = new System.Drawing.Size(81, 21);
-            this.cmb_anio.TabIndex = 0;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(27, 43);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(26, 13);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "Año";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(151, 43);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(50, 13);
-            this.label2.TabIndex = 3;
-            this.label2.Text = "Trimestre";
-            // 
-            // cmb_trimestre
-            // 
-            this.cmb_trimestre.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmb_trimestre.FormattingEnabled = true;
-            this.cmb_trimestre.Location = new System.Drawing.Point(206, 40);
-            this.cmb_trimestre.Name = "cmb_trimestre";
-            this.cmb_trimestre.Size = new System.Drawing.Size(81, 21);
-            this.cmb_trimestre.TabIndex = 2;
+            this.btn_consultar.Location = new System.Drawing.Point(667, 38);
+            this.btn_consultar.Name = "btn_consultar";
+            this.btn_consultar.Size = new System.Drawing.Size(75, 23);
+            this.btn_consultar.TabIndex = 6;
+            this.btn_consultar.Text = "Consultar";
+            this.btn_consultar.UseVisualStyleBackColor = true;
+            this.btn_consultar.Click += new System.EventHandler(this.btn_consultar_Click);
             // 
             // label3
             // 
@@ -112,22 +88,65 @@
             this.cmb_tipo_reporte.Size = new System.Drawing.Size(272, 21);
             this.cmb_tipo_reporte.TabIndex = 4;
             // 
-            // dataGridView1
+            // label2
             // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(12, 101);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(765, 419);
-            this.dataGridView1.TabIndex = 1;
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(151, 43);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(50, 13);
+            this.label2.TabIndex = 3;
+            this.label2.Text = "Trimestre";
             // 
-            // btn_consultar
+            // cmb_trimestre
             // 
-            this.btn_consultar.Location = new System.Drawing.Point(667, 38);
-            this.btn_consultar.Name = "btn_consultar";
-            this.btn_consultar.Size = new System.Drawing.Size(75, 23);
-            this.btn_consultar.TabIndex = 6;
-            this.btn_consultar.Text = "Consultar";
-            this.btn_consultar.UseVisualStyleBackColor = true;
+            this.cmb_trimestre.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmb_trimestre.FormattingEnabled = true;
+            this.cmb_trimestre.Location = new System.Drawing.Point(206, 40);
+            this.cmb_trimestre.Name = "cmb_trimestre";
+            this.cmb_trimestre.Size = new System.Drawing.Size(81, 21);
+            this.cmb_trimestre.TabIndex = 2;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(27, 43);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(26, 13);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "Año";
+            // 
+            // cmb_anio
+            // 
+            this.cmb_anio.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmb_anio.FormattingEnabled = true;
+            this.cmb_anio.Location = new System.Drawing.Point(59, 40);
+            this.cmb_anio.Name = "cmb_anio";
+            this.cmb_anio.Size = new System.Drawing.Size(81, 21);
+            this.cmb_anio.TabIndex = 0;
+            // 
+            // Container_reporte
+            // 
+            this.Container_reporte.Controls.Add(this.dg_reporte);
+            this.Container_reporte.Location = new System.Drawing.Point(12, 98);
+            this.Container_reporte.Name = "Container_reporte";
+            this.Container_reporte.Size = new System.Drawing.Size(765, 422);
+            this.Container_reporte.TabIndex = 7;
+            this.Container_reporte.TabStop = false;
+            this.Container_reporte.Text = "Reporte";
+            this.Container_reporte.Visible = false;
+            // 
+            // dg_reporte
+            // 
+            this.dg_reporte.AllowUserToAddRows = false;
+            this.dg_reporte.AllowUserToDeleteRows = false;
+            this.dg_reporte.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dg_reporte.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dg_reporte.Location = new System.Drawing.Point(6, 21);
+            this.dg_reporte.Name = "dg_reporte";
+            this.dg_reporte.ReadOnly = true;
+            this.dg_reporte.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dg_reporte.Size = new System.Drawing.Size(753, 387);
+            this.dg_reporte.TabIndex = 1;
             // 
             // Listados
             // 
@@ -135,14 +154,15 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(789, 532);
-            this.Controls.Add(this.dataGridView1);
+            this.Controls.Add(this.Container_reporte);
             this.Controls.Add(this.groupBox1);
             this.Name = "Listados";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Listados";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            this.Container_reporte.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dg_reporte)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -158,6 +178,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox cmb_anio;
         private System.Windows.Forms.Button btn_consultar;
-        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.GroupBox Container_reporte;
+        private System.Windows.Forms.DataGridView dg_reporte;
     }
 }

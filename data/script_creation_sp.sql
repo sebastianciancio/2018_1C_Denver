@@ -87,7 +87,18 @@ if EXISTS (SELECT * FROM sys.objects  WHERE name = 'obtener_detalle_reserva' AND
 	DROP PROCEDURE [denver].[obtener_detalle_reserva]	
 if EXISTS (SELECT * FROM sys.objects  WHERE name = 'confirmar_checkin' AND type IN (N'P', N'PC'))
 	DROP PROCEDURE [denver].[confirmar_checkin]	
-
+if EXISTS (SELECT * FROM sys.objects  WHERE name = 'cambiar_estado_reserva' AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [denver].[cambiar_estado_reserva]	
+if EXISTS (SELECT * FROM sys.objects  WHERE name = 'listado1' AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [denver].[listado1]	
+if EXISTS (SELECT * FROM sys.objects  WHERE name = 'listado2' AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [denver].[listado2]	
+if EXISTS (SELECT * FROM sys.objects  WHERE name = 'listado3' AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [denver].[listado3]	
+if EXISTS (SELECT * FROM sys.objects  WHERE name = 'listado4' AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [denver].[listado4]	
+if EXISTS (SELECT * FROM sys.objects  WHERE name = 'listado5' AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [denver].[listado5]	
 GO
 
 
@@ -818,7 +829,7 @@ BEGIN
 		join denver.clientes as c on r.reserva_cliente_tipo_documento_id+r.reserva_cliente_pasaporte_nro=c.cliente_tipo_documento_id+c.cliente_pasaporte_nro
 		join denver.tipo_documentos td on td.tipo_documento_id = c.cliente_tipo_documento_id
 	WHERE
-		r.reserva_codigo = @nro_reserva
+		r.reserva_codigo = @nro_reserva AND r.reserva_estado_id IN (1, 2)
 	ORDER BY
 		c.cliente_apellido, c.cliente_nombre
 END
@@ -832,13 +843,29 @@ BEGIN
 	SELECT
 		rh.reserva_habitaciones_fecha_inicio as "Fecha Entrada", rh.reserva_habitaciones_fecha_fin as "Fecha Salida",th.tipo_habitacion_descripcion as "Tipo Habitacion", reg.regimen_descripcion as "Regimen", rh.reserva_habitaciones_precio as "Precio"
 	FROM
-		denver.reservas_habitaciones as rh
+		denver.reservas as r
+		join denver.reservas_habitaciones as rh ON r.reserva_codigo = rh.reserva_habitaciones_reserva_codigo
 		join denver.tipo_habitaciones as th on rh.reserva_habitaciones_tipo_habitacion_id = th.tipo_habitacion_id
 		join denver.regimenes as reg on reg.regimen_id = rh.reserva_habitaciones_regimen_id
 	WHERE
-		rh.reserva_habitaciones_reserva_codigo = @nro_reserva
+		r.reserva_codigo = @nro_reserva AND r.reserva_estado_id IN (1, 2)
 END
 GO
+
+CREATE PROCEDURE denver.cambiar_estado_reserva 
+	@nro_reserva numeric(18,0),
+	@nuevo_estado smallint
+AS
+BEGIN
+	UPDATE
+		reservas
+	SET
+		reserva_estado_id = @nuevo_estado
+	WHERE
+		reserva_codigo = @nro_reserva
+END
+GO
+
 
 CREATE PROCEDURE denver.confirmar_checkin 
 	@nro_reserva numeric(18,0),
@@ -853,7 +880,123 @@ BEGIN
 
   INSERT INTO denver.estadias (estadia_cliente_tipo_documento_id,estadia_cliente_pasaporte_nro,estadia_fecha_inicio,estadia_cant_noches,estadia_fecha_fin,estadia_hotel_id,estadia_reserva_codigo,estadia_usuario_user,estadia_created) VALUES (@estadia_cliente_tipo_documento_id, @estadia_cliente_pasaporte_nro,@estadia_fecha_inicio,DATEDIFF(day, @estadia_fecha_inicio, @estadia_fecha_fin),@estadia_fecha_fin,@estadia_hotel_id,@nro_reserva,@estadia_usuario_user,GETDATE())
 
+  -- cambio el estado de la reserva
+  exec denver.cambiar_estado_reserva @nro_reserva, 6
+
 END
 GO
 
+-- Hoteles con mayor cantidad de reservas canceladas
+CREATE PROCEDURE denver.listado1 
+	@anio smallint,
+	@trimestre smallint
+AS
+BEGIN
+	DECLARE @meses varchar(50);
 
+
+	if (@trimestre = 1) set @meses = '(1,2,3)';
+	if (@trimestre = 2) set @meses = '(4,5,6)';
+	if (@trimestre = 3) set @meses = '(7,8,9)';
+	if (@trimestre = 4) set @meses = '(10,11,12)';
+
+	select
+		h.hotel_nombre as Hotel, count(*) as "Total Reservas Canceladas"
+	from
+		denver.reservas as r
+		join denver.hoteles as h on r.reserva_hotel_id = h.hotel_id
+	where
+		r.reserva_estado_id IN (3,4,5)
+		AND MONTH(r.reserva_fecha_inicio) IN (@meses) AND year(r.reserva_fecha_inicio) = @anio
+		AND MONTH(r.reserva_fecha_fin) IN (@meses) AND year(r.reserva_fecha_fin) = @anio
+	group by
+		h.hotel_nombre
+	order by
+		count(*) DESc
+
+END
+GO
+
+-- Hoteles con mayor cantidad de consumibles facturados
+CREATE PROCEDURE denver.listado2
+	@anio int,
+	@trimestre int
+AS
+BEGIN
+	select
+		h.hotel_nombre as Hotel, count(*) as "Total Reservas Canceladas"
+	from
+		denver.reservas as r
+		join denver.hoteles as h on r.reserva_hotel_id = h.hotel_id
+	where
+		r.reserva_estado_id IN (1,3,4,5)
+	group by
+		h.hotel_nombre
+	order by
+		count(*) DESc
+
+END
+GO
+
+-- Hoteles con mayor cantidad de días fuera de servicio
+CREATE PROCEDURE denver.listado3
+	@anio int,
+	@trimestre int
+AS
+BEGIN
+	select
+		h.hotel_nombre as Hotel, count(*) as "Total Reservas Canceladas"
+	from
+		denver.reservas as r
+		join denver.hoteles as h on r.reserva_hotel_id = h.hotel_id
+	where
+		r.reserva_estado_id IN (1,3,4,5)
+	group by
+		h.hotel_nombre
+	order by
+		count(*) DESc
+
+END
+GO
+
+-- Habitaciones con mayor cantidad de días y veces que fueron ocupados
+CREATE PROCEDURE denver.listado4
+	@anio int,
+	@trimestre int
+AS
+BEGIN
+	select
+		h.hotel_nombre as Hotel, count(*) as "Total Reservas Canceladas"
+	from
+		denver.reservas as r
+		join denver.hoteles as h on r.reserva_hotel_id = h.hotel_id
+	where
+		r.reserva_estado_id IN (1,3,4,5)
+	group by
+		h.hotel_nombre
+	order by
+		count(*) DESc
+
+END
+GO
+
+-- Cliente con mayor cantidad de puntos
+CREATE PROCEDURE denver.listado5
+	@anio int,
+	@trimestre int
+AS
+BEGIN
+	select
+		h.hotel_nombre as Hotel, count(*) as "Total Reservas Canceladas"
+	from
+		denver.reservas as r
+		join denver.hoteles as h on r.reserva_hotel_id = h.hotel_id
+	where
+		r.reserva_estado_id IN (1,3,4,5)
+	group by
+		h.hotel_nombre
+	order by
+		count(*) DESc
+
+END
+GO

@@ -37,6 +37,8 @@ namespace FrbaHotel
 
             cmd.Parameters.AddWithValue("@nro_reserva", SqlDbType.Int).Value = Convert.ToInt32(nro_reserva.Text);
 
+            dt_pasajeros.Clear();
+
             // Creo el DataTable para obtener los resultados del SP
             using (var da = new SqlDataAdapter(cmd))
             {
@@ -82,7 +84,6 @@ namespace FrbaHotel
 
                 Container_estadia.Visible = false;
                 Container_pasajero.Visible = false;
-
             }
         }
 

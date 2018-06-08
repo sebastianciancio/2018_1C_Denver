@@ -39,9 +39,9 @@
             this.Container_estadia = new System.Windows.Forms.GroupBox();
             this.dg_estadia = new System.Windows.Forms.DataGridView();
             this.Container_pasajero = new System.Windows.Forms.GroupBox();
+            this.btn_confirmar_checkin = new System.Windows.Forms.Button();
             this.dg_pasajeros = new System.Windows.Forms.DataGridView();
             this.btn_agregar_pax = new System.Windows.Forms.Button();
-            this.btn_confirmar_checkin = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.Container_estadia.SuspendLayout();
@@ -163,6 +163,17 @@
             this.Container_pasajero.Text = "Pasajero";
             this.Container_pasajero.Visible = false;
             // 
+            // btn_confirmar_checkin
+            // 
+            this.btn_confirmar_checkin.BackColor = System.Drawing.Color.Lime;
+            this.btn_confirmar_checkin.Location = new System.Drawing.Point(259, 236);
+            this.btn_confirmar_checkin.Name = "btn_confirmar_checkin";
+            this.btn_confirmar_checkin.Size = new System.Drawing.Size(182, 25);
+            this.btn_confirmar_checkin.TabIndex = 7;
+            this.btn_confirmar_checkin.Text = "Confirmar Check/In";
+            this.btn_confirmar_checkin.UseVisualStyleBackColor = false;
+            this.btn_confirmar_checkin.Click += new System.EventHandler(this.btn_confirmar_checkin_Click);
+            // 
             // dg_pasajeros
             // 
             this.dg_pasajeros.AllowUserToAddRows = false;
@@ -185,17 +196,6 @@
             this.btn_agregar_pax.Text = "Agregar Pasajeros";
             this.btn_agregar_pax.UseVisualStyleBackColor = false;
             this.btn_agregar_pax.Click += new System.EventHandler(this.btn_agregar_pax_Click);
-            // 
-            // btn_confirmar_checkin
-            // 
-            this.btn_confirmar_checkin.BackColor = System.Drawing.Color.Lime;
-            this.btn_confirmar_checkin.Location = new System.Drawing.Point(259, 236);
-            this.btn_confirmar_checkin.Name = "btn_confirmar_checkin";
-            this.btn_confirmar_checkin.Size = new System.Drawing.Size(182, 25);
-            this.btn_confirmar_checkin.TabIndex = 7;
-            this.btn_confirmar_checkin.Text = "Confirmar Check/In";
-            this.btn_confirmar_checkin.UseVisualStyleBackColor = false;
-            this.btn_confirmar_checkin.Click += new System.EventHandler(this.btn_confirmar_checkin_Click);
             // 
             // Estadia
             // 
