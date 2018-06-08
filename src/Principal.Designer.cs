@@ -42,6 +42,7 @@
             this.label_usuario_logueado = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.btn_mantenimiento = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -104,7 +105,7 @@
             // btn_reserva
             // 
             this.btn_reserva.BackColor = System.Drawing.Color.Lime;
-            this.btn_reserva.Location = new System.Drawing.Point(114, 23);
+            this.btn_reserva.Location = new System.Drawing.Point(30, 23);
             this.btn_reserva.Name = "btn_reserva";
             this.btn_reserva.Size = new System.Drawing.Size(142, 76);
             this.btn_reserva.TabIndex = 5;
@@ -115,7 +116,7 @@
             // btn_check
             // 
             this.btn_check.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
-            this.btn_check.Location = new System.Drawing.Point(265, 23);
+            this.btn_check.Location = new System.Drawing.Point(181, 23);
             this.btn_check.Name = "btn_check";
             this.btn_check.Size = new System.Drawing.Size(142, 76);
             this.btn_check.TabIndex = 7;
@@ -126,7 +127,7 @@
             // btn_facturar
             // 
             this.btn_facturar.BackColor = System.Drawing.Color.Lime;
-            this.btn_facturar.Location = new System.Drawing.Point(557, 23);
+            this.btn_facturar.Location = new System.Drawing.Point(473, 23);
             this.btn_facturar.Name = "btn_facturar";
             this.btn_facturar.Size = new System.Drawing.Size(142, 76);
             this.btn_facturar.TabIndex = 8;
@@ -137,7 +138,7 @@
             // btn_listados
             // 
             this.btn_listados.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.btn_listados.Location = new System.Drawing.Point(703, 23);
+            this.btn_listados.Location = new System.Drawing.Point(793, 23);
             this.btn_listados.Name = "btn_listados";
             this.btn_listados.Size = new System.Drawing.Size(142, 76);
             this.btn_listados.TabIndex = 9;
@@ -148,7 +149,7 @@
             // btn_consumibles
             // 
             this.btn_consumibles.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
-            this.btn_consumibles.Location = new System.Drawing.Point(411, 23);
+            this.btn_consumibles.Location = new System.Drawing.Point(327, 23);
             this.btn_consumibles.Name = "btn_consumibles";
             this.btn_consumibles.Size = new System.Drawing.Size(142, 76);
             this.btn_consumibles.TabIndex = 10;
@@ -185,6 +186,7 @@
             // groupBox1
             // 
             this.groupBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.groupBox1.Controls.Add(this.btn_mantenimiento);
             this.groupBox1.Controls.Add(this.btn_listados);
             this.groupBox1.Controls.Add(this.btn_reserva);
             this.groupBox1.Controls.Add(this.btn_check);
@@ -214,6 +216,17 @@
             this.groupBox2.TabIndex = 15;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Administración Interna";
+            // 
+            // btn_mantenimiento
+            // 
+            this.btn_mantenimiento.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btn_mantenimiento.Location = new System.Drawing.Point(646, 23);
+            this.btn_mantenimiento.Name = "btn_mantenimiento";
+            this.btn_mantenimiento.Size = new System.Drawing.Size(142, 76);
+            this.btn_mantenimiento.TabIndex = 11;
+            this.btn_mantenimiento.Text = "Mantenimientos";
+            this.btn_mantenimiento.UseVisualStyleBackColor = false;
+            this.btn_mantenimiento.Click += new System.EventHandler(this.btn_mantenimiento_Click);
             // 
             // Principal
             // 
@@ -252,6 +265,7 @@
         private System.Windows.Forms.Label label_usuario_logueado;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.Button btn_mantenimiento;
     }
 }
 
