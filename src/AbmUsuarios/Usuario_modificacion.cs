@@ -11,37 +11,52 @@ using System.Data.SqlClient;
 
 namespace FrbaHotel.AbmUsuarios
 {
-    public partial class NuevoUsuario : Form
+    public partial class Usuario_modificacion : Form
     {
+        public string user;
         private DataBase db;
-        public NuevoUsuario()
+        public Usuario_modificacion()
         {
             db = DataBase.GetInstance();
             InitializeComponent();
-            Combos.cargarComboTipoDocumento(cmb_tipoDoc);
-            Combos.cargarComboRoles(cmb_rol);
         }
 
-        private void txb_pas_TextChanged(object sender, EventArgs e)
+        private void Usuario_modificacion_Load(object sender, EventArgs e)
         {
-            SqlDataAdapter sda = new SqlDataAdapter("SELECT denver.existe_usuario ('" + txb_user.Text + "')", db.Connection);
+            SqlCommand cmd = new SqlCommand("dbo.buscar_usuario", db.Connection);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+
+            cmd.Parameters.AddWithValue("@user", SqlDbType.VarChar).Value = user;
+
+            // Creo el DataTable para obtener los resultados del SP
             DataTable dt = new DataTable();
-            sda.Fill(dt);
-            
-           
-            // Si existe
-            if (Convert.ToInt32(dt.Rows[0][0]) == 1)
+
+            using (var da = new SqlDataAdapter(cmd))
             {
-                lbl_userRepetido.Visible = true;
+                da.Fill(dt);
             }
-            else {
-                lbl_userRepetido.Visible = false;
-            }
+
+            //Accedo a lo que encontre en la BD
+            DataRow row = dt.Rows[0];
+
+            //Mando los datos al form Modificar_cliente
+            txb_user.Text = user;
+
+            //cmb_tipoDoc.SelectedValue = row["usuario_tipo_documento_id"].ToString();
+            txb_numDni.Text = row["usuari_numero_documento"].ToString();
+            txb_apellido.Text = row["usuario_apellido"].ToString();
+            txb_nombre.Text = row["usuario_nombre"].ToString();
+            txb_mail.Text = row["usuario_email"].ToString();
+            txb_calle.Text = row["usuario_direccion"].ToString();
+            txb_telefono.Text = row["usuario_telefono"].ToString();
+            
+
         }
 
         private void btn_guardar_Click(object sender, EventArgs e)
         {
-            SqlCommand cmd = new SqlCommand("dbo.cargar_usuario", db.Connection);
+            SqlCommand cmd = new SqlCommand("dbo.modificar_usuario", db.Connection);
             cmd.CommandType = CommandType.StoredProcedure;
 
             cmd.Parameters.AddWithValue("@usuario_user", SqlDbType.VarChar).Value = txb_user.Text;
@@ -60,63 +75,7 @@ namespace FrbaHotel.AbmUsuarios
 
             Close();
 
-            MessageBox.Show("Se ha cargado el Usuario " + txb_user.Text , "Mensaje");
-
-        }
-
-        private void btn_volver_Click(object sender, EventArgs e)
-        {
-            Close();
-        }
-
-        private void label11_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label10_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label7_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void groupBox1_Enter(object sender, EventArgs e)
-        {
-
-        }
-
-        private void lbl_userRepetido_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void cmb_rol_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label3_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label2_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void txb_user_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-
+            MessageBox.Show("Se ha cargado el Usuario " + txb_user.Text, "Mensaje");
         }
     }
 }

@@ -387,7 +387,9 @@ CREATE PROCEDURE [denver].[cargar_usuario]
 	@usuario_email nvarchar(255),
 	@usuario_telefono nvarchar(255),
 	@usuario_direccion nvarchar(255),
-	@usuario_fecha_nac datetime
+	@usuario_fecha_nac datetime,
+	@usuario_rol nvarchar(255)
+--  @usuario_hotel nvarchar(255)
 AS
 BEGIN
 	SET NOCOUNT ON;  
@@ -404,7 +406,8 @@ BEGIN
 		usuario_fecha_nac,
 		usuario_activo,
 		usuario_login_fallidos,
-		usuario_created)
+		usuario_created
+		)
 	VALUES(
 		@usuario_user,
 		@usuario_pass,
@@ -418,7 +421,18 @@ BEGIN
 		@usuario_fecha_nac,
 		'S',
 		0,
-		GETDATE())
+		GETDATE()) 
+
+		INSERT INTO [denver].[usuarios_roles](
+			usuario_rol_usuario_user,
+			usuario_rol_rol_nombre,
+			usuario_rol_created
+			)
+		VALUES (
+		 @usuario_user,
+		 @usuario_rol,
+		 GETDATE())
+
 END
 GO
 

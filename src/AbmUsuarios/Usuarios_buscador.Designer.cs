@@ -39,10 +39,10 @@
             this.LBLnombre = new System.Windows.Forms.Label();
             this.btn_buscar = new System.Windows.Forms.Button();
             this.lbl_apellido = new System.Windows.Forms.Label();
-            this.dgv_tablaCliente = new System.Windows.Forms.DataGridView();
+            this.dgv_tablaUsuario = new System.Windows.Forms.DataGridView();
             this.btt_add_usuario = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgv_tablaCliente)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_tablaUsuario)).BeginInit();
             this.SuspendLayout();
             // 
             // btn_eliminar
@@ -54,6 +54,7 @@
             this.btn_eliminar.Text = "Eliminar";
             this.btn_eliminar.UseVisualStyleBackColor = true;
             this.btn_eliminar.Visible = false;
+            this.btn_eliminar.Click += new System.EventHandler(this.btn_eliminar_Click);
             // 
             // btn_modif
             // 
@@ -143,18 +144,18 @@
             this.lbl_apellido.TabIndex = 6;
             this.lbl_apellido.Text = "Apellido";
             // 
-            // dgv_tablaCliente
+            // dgv_tablaUsuario
             // 
-            this.dgv_tablaCliente.AllowUserToDeleteRows = false;
-            this.dgv_tablaCliente.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgv_tablaCliente.Location = new System.Drawing.Point(11, 113);
-            this.dgv_tablaCliente.MultiSelect = false;
-            this.dgv_tablaCliente.Name = "dgv_tablaCliente";
-            this.dgv_tablaCliente.ReadOnly = true;
-            this.dgv_tablaCliente.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgv_tablaCliente.Size = new System.Drawing.Size(694, 287);
-            this.dgv_tablaCliente.TabIndex = 13;
-            this.dgv_tablaCliente.Visible = false;
+            this.dgv_tablaUsuario.AllowUserToDeleteRows = false;
+            this.dgv_tablaUsuario.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgv_tablaUsuario.Location = new System.Drawing.Point(11, 113);
+            this.dgv_tablaUsuario.MultiSelect = false;
+            this.dgv_tablaUsuario.Name = "dgv_tablaUsuario";
+            this.dgv_tablaUsuario.ReadOnly = true;
+            this.dgv_tablaUsuario.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgv_tablaUsuario.Size = new System.Drawing.Size(694, 287);
+            this.dgv_tablaUsuario.TabIndex = 13;
+            this.dgv_tablaUsuario.Visible = false;
             // 
             // btt_add_usuario
             // 
@@ -177,12 +178,12 @@
             this.Controls.Add(this.btn_modif);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.btt_add_usuario);
-            this.Controls.Add(this.dgv_tablaCliente);
+            this.Controls.Add(this.dgv_tablaUsuario);
             this.Name = "Usuarios_buscador";
             this.Text = "Usuarios";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgv_tablaCliente)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_tablaUsuario)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -198,7 +199,7 @@
         private System.Windows.Forms.Button btn_buscar;
         private System.Windows.Forms.Label lbl_apellido;
         private System.Windows.Forms.Button btt_add_usuario;
-        private System.Windows.Forms.DataGridView dgv_tablaCliente;
+        private System.Windows.Forms.DataGridView dgv_tablaUsuario;
         private System.Windows.Forms.ComboBox cmb_hotel;
         private System.Windows.Forms.Label label1;
     }
