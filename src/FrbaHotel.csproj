@@ -123,6 +123,12 @@
     <Compile Include="AbmUsuarios\Usuarios_buscador.Designer.cs">
       <DependentUpon>Usuarios_buscador.cs</DependentUpon>
     </Compile>
+    <Compile Include="AbmUsuarios\Usuario_modificacion.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmUsuarios\Usuario_modificacion.Designer.cs">
+      <DependentUpon>Usuario_modificacion.cs</DependentUpon>
+    </Compile>
     <Compile Include="accesoSistema.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -244,6 +250,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AbmUsuarios\Usuarios_buscador.resx">
       <DependentUpon>Usuarios_buscador.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AbmUsuarios\Usuario_modificacion.resx">
+      <DependentUpon>Usuario_modificacion.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="accesoSistema.resx">
       <DependentUpon>accesoSistema.cs</DependentUpon>
