@@ -42,7 +42,6 @@
             this.label_usuario_logueado = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.btn_mantenimiento = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -186,7 +185,6 @@
             // groupBox1
             // 
             this.groupBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.groupBox1.Controls.Add(this.btn_mantenimiento);
             this.groupBox1.Controls.Add(this.btn_listados);
             this.groupBox1.Controls.Add(this.btn_reserva);
             this.groupBox1.Controls.Add(this.btn_check);
@@ -216,17 +214,6 @@
             this.groupBox2.TabIndex = 15;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Administración Interna";
-            // 
-            // btn_mantenimiento
-            // 
-            this.btn_mantenimiento.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.btn_mantenimiento.Location = new System.Drawing.Point(646, 23);
-            this.btn_mantenimiento.Name = "btn_mantenimiento";
-            this.btn_mantenimiento.Size = new System.Drawing.Size(142, 76);
-            this.btn_mantenimiento.TabIndex = 11;
-            this.btn_mantenimiento.Text = "Mantenimientos";
-            this.btn_mantenimiento.UseVisualStyleBackColor = false;
-            this.btn_mantenimiento.Click += new System.EventHandler(this.btn_mantenimiento_Click);
             // 
             // Principal
             // 
@@ -265,7 +252,6 @@
         private System.Windows.Forms.Label label_usuario_logueado;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.Button btn_mantenimiento;
     }
 }
 

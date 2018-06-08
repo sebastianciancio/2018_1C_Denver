@@ -120,11 +120,6 @@ namespace FrbaHotel
             frm.Show();
         }
 
-        private void btn_mantenimiento_Click(object sender, EventArgs e)
-        {
-            Mantenimientos frm = new Mantenimientos();
-            frm.Show();
-        }
 
 
     }

@@ -155,12 +155,6 @@
     <Compile Include="Facturar\Facturar.Designer.cs">
       <DependentUpon>Facturar.cs</DependentUpon>
     </Compile>
-    <Compile Include="Mantenimiento\Mantenimientos.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Mantenimiento\Mantenimientos.Designer.cs">
-      <DependentUpon>Mantenimientos.cs</DependentUpon>
-    </Compile>
     <Compile Include="Principal.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -268,9 +262,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ListadoEstadistico\Listados.resx">
       <DependentUpon>Listados.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Mantenimiento\Mantenimientos.resx">
-      <DependentUpon>Mantenimientos.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Principal.resx">
       <DependentUpon>Principal.cs</DependentUpon>

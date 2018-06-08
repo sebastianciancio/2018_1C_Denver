@@ -99,6 +99,9 @@ if EXISTS (SELECT * FROM sys.objects  WHERE name = 'listado4' AND type IN (N'P',
 	DROP PROCEDURE [denver].[listado4]	
 if EXISTS (SELECT * FROM sys.objects  WHERE name = 'listado5' AND type IN (N'P', N'PC'))
 	DROP PROCEDURE [denver].[listado5]	
+if EXISTS (SELECT * FROM sys.objects  WHERE name = 'ocupar_disponibilidad' AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [denver].[ocupar_disponibilidad]	
+
 GO
 
 
@@ -727,16 +730,16 @@ BEGIN
 	begin
 
 
-	insert into denver.disponibilidades (disponibilidad_hotel_id, disponibilidad_habitacion_nro, disponibilidad_tipo_habitacion_id, disponibilidad_ocupado, disponibilidad_fecha) 
-	(
-		SELECT
-			ho.hotel_id, hab.habitacion_nro, th.tipo_habitacion_id, 0, @fecha_actual
-		FROM 
-		denver.habitaciones AS hab
-		join denver.hoteles as ho on ho.hotel_id = hab.habitacion_hotel_id
-		join denver.tipo_habitaciones as th on ho.hotel_id = hab.habitacion_hotel_id
-	)
-		set @fecha_actual = dateadd(day, 1, @fecha_actual)
+		insert into denver.disponibilidades (disponibilidad_hotel_id, disponibilidad_habitacion_nro, disponibilidad_tipo_habitacion_id, disponibilidad_ocupado, disponibilidad_fecha) 
+		(
+			SELECT
+				ho.hotel_id, hab.habitacion_nro, th.tipo_habitacion_id, 0, @fecha_actual
+			FROM 
+			denver.habitaciones AS hab
+			join denver.hoteles as ho on ho.hotel_id = hab.habitacion_hotel_id
+			join denver.tipo_habitaciones as th on ho.hotel_id = hab.habitacion_hotel_id
+		)
+			set @fecha_actual = dateadd(day, 1, @fecha_actual)
 	end
 END
 GO
@@ -855,7 +858,7 @@ CREATE PROCEDURE denver.obtener_detalle_reserva
 AS
 BEGIN
 	SELECT
-		rh.reserva_habitaciones_fecha_inicio as "Fecha Entrada", rh.reserva_habitaciones_fecha_fin as "Fecha Salida",th.tipo_habitacion_descripcion as "Tipo Habitacion", reg.regimen_descripcion as "Regimen", rh.reserva_habitaciones_precio as "Precio"
+		rh.reserva_habitaciones_fecha_inicio as "Fecha Entrada", rh.reserva_habitaciones_fecha_fin as "Fecha Salida",th.tipo_habitacion_descripcion as "Tipo Habitacion", reg.regimen_descripcion as "Regimen", rh.reserva_habitaciones_precio as "Precio", rh.reserva_habitacion_nro as "Habitacion", th.tipo_habitacion_id
 	FROM
 		denver.reservas as r
 		join denver.reservas_habitaciones as rh ON r.reserva_codigo = rh.reserva_habitaciones_reserva_codigo
@@ -1012,5 +1015,24 @@ BEGIN
 	order by
 		count(*) DESc
 
+END
+GO
+
+CREATE PROCEDURE denver.ocupar_disponibilidad
+	@habitacion_nro numeric(18,0),
+	@tipo_habitacion as numeric(18,0),
+	@hotel_id smallint,
+	@fecha_ocupacion datetime
+AS
+BEGIN
+	UPDATE 
+		denver.disponibilidades
+	SET 
+		disponibilidad_ocupado = 1
+	where
+		disponibilidad_hotel_id = @hotel_id and
+		disponibilidad_habitacion_nro = @habitacion_nro and
+		disponibilidad_tipo_habitacion_id = @tipo_habitacion and
+		disponibilidad_fecha = @fecha_ocupacion
 END
 GO

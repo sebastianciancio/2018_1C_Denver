@@ -67,6 +67,8 @@ namespace FrbaHotel
             // Cargo la Grilla con los datos obtenidos
             dg_estadia.DataSource = dt_detalle_reserva;
 
+            // Oculto Columnas del Resultado
+            dg_estadia.Columns[6].Visible = false;
 
             // Si hay Registros
             if (dg_estadia.RowCount > 0)
@@ -144,6 +146,30 @@ namespace FrbaHotel
 
                 // Ejecuto el SP
                 cmd.ExecuteNonQuery();
+            }
+
+            // Bloqueo las disponibilidades para las fechas de la estadia
+
+            DateTime fecha_sin_hora;
+            while (fecha_desde <= fecha_hasta)
+            {
+                for (var indice = 0; indice < dg_estadia.Rows.Count; indice++)
+                {
+                    cmd = new SqlCommand("denver.ocupar_disponibilidad", db.Connection);
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    fecha_sin_hora = new DateTime(fecha_desde.Year, fecha_desde.Month, fecha_desde.Day);
+
+                    cmd.Parameters.AddWithValue("@fecha_ocupacion", SqlDbType.DateTime).Value = fecha_sin_hora;
+                    cmd.Parameters.AddWithValue("@habitacion_nro", SqlDbType.Int).Value = Convert.ToInt32(dg_estadia.Rows[indice].Cells[5].Value);
+                    cmd.Parameters.AddWithValue("@tipo_habitacion", SqlDbType.Int).Value = Convert.ToInt32(dg_estadia.Rows[indice].Cells[6].Value);
+                    cmd.Parameters.AddWithValue("@hotel_id", SqlDbType.Int).Value = Convert.ToInt32(accesoSistema.HotelIdActual);
+
+                    // Ejecuto el SP
+                    cmd.ExecuteNonQuery();
+                }
+                // Incremento la fecha
+                fecha_desde = fecha_desde.AddDays(1);
             }
 
             // Confirmo la Estadia
