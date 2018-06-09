@@ -101,9 +101,9 @@ if EXISTS (SELECT * FROM sys.objects  WHERE name = 'listado5' AND type IN (N'P',
 	DROP PROCEDURE [denver].[listado5]	
 if EXISTS (SELECT * FROM sys.objects  WHERE name = 'ocupar_disponibilidad' AND type IN (N'P', N'PC'))
 	DROP PROCEDURE [denver].[ocupar_disponibilidad]	
-
+if EXISTS (SELECT * FROM sys.objects  WHERE name = 'obtener_consumos' AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [denver].[obtener_consumos]	
 GO
-
 
 /*  --------------------------------------------------------------------------------
 CREACION DE  LOS SP
@@ -668,12 +668,6 @@ GO
 
 
 
-
-
-
-
-
-
 CREATE PROCEDURE denver.obtener_consumibles
 AS
 BEGIN
@@ -1036,3 +1030,35 @@ BEGIN
 		disponibilidad_fecha = @fecha_ocupacion
 END
 GO
+
+CREATE PROCEDURE denver.obtener_consumos
+	@habitacion_nro numeric(18,0),
+	@hotel_id smallint
+AS
+BEGIN
+	declare @nro_reserva numeric(18,0)
+	declare @cliente_tipo_doc int
+	declare @cliente_nro_doc int
+
+	select
+		@nro_reserva = r.reserva_codigo, @cliente_tipo_doc = r.reserva_cliente_tipo_documento_id, @cliente_nro_doc = r.reserva_cliente_pasaporte_nro
+	from
+		denver.reservas as r
+		join reservas_habitaciones as rh on rh.reserva_habitaciones_reserva_codigo = r.reserva_codigo
+	where
+		rh.reserva_habitacion_nro = @habitacion_nro and r.reserva_hotel_id = @hotel_id;
+
+
+	select
+		cc.consumible_cliente_fecha_consumo as "Fecha Consumo", c.consumible_descripcion as "Consumo", c.consumible_id
+	from
+		denver.consumibles_clientes as cc
+		join denver.consumibles as c on cc.consumible_cliente_consumible_id = c.consumible_id
+	where
+		cc.consumible_cliente_tipo_documento_id = @cliente_tipo_doc AND cc.consumible_cliente_pasaporte_nro = @cliente_nro_doc and cc.consumible_cliente_reserva_codigo = @nro_reserva
+	order by
+		cc.consumible_cliente_fecha_consumo, c.consumible_descripcion
+
+END
+GO
+

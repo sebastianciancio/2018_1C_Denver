@@ -214,12 +214,11 @@ namespace FrbaHotel
             reader = cmd.ExecuteReader();
 
             DataTable dt = new DataTable();
-            dt.Columns.Add("habitacion_nro", typeof(string));
-            dt.Columns.Add("habitacion_detalle", typeof(string));
+            dt.Columns.Add("habitacion_nro", typeof(int));
             dt.Load(reader);
 
             combo.ValueMember = "habitacion_nro";
-            combo.DisplayMember = "habitacion_detalle";
+            combo.DisplayMember = "habitacion_nro";
             combo.DataSource = dt;
 
             if (agregarTodos)
