@@ -139,6 +139,8 @@
             this.btn_confirmar.TabIndex = 9;
             this.btn_confirmar.Text = "Confirmar Consumos Nuevos";
             this.btn_confirmar.UseVisualStyleBackColor = false;
+            this.btn_confirmar.Visible = false;
+            this.btn_confirmar.Click += new System.EventHandler(this.btn_confirmar_Click);
             // 
             // Container_consumos
             // 
@@ -162,7 +164,6 @@
             this.dg_consumos.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dg_consumos.Size = new System.Drawing.Size(374, 341);
             this.dg_consumos.TabIndex = 1;
-            this.dg_consumos.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dg_consumos_CellContentClick);
             // 
             // Container_consumos_nuevos
             // 

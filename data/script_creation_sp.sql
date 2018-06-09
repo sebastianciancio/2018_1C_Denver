@@ -103,7 +103,10 @@ if EXISTS (SELECT * FROM sys.objects  WHERE name = 'ocupar_disponibilidad' AND t
 	DROP PROCEDURE [denver].[ocupar_disponibilidad]	
 if EXISTS (SELECT * FROM sys.objects  WHERE name = 'obtener_consumos' AND type IN (N'P', N'PC'))
 	DROP PROCEDURE [denver].[obtener_consumos]	
+if EXISTS (SELECT * FROM sys.objects  WHERE name = 'registrar_consumos' AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [denver].[registrar_consumos]		
 GO
+
 
 /*  --------------------------------------------------------------------------------
 CREACION DE  LOS SP
@@ -1033,10 +1036,10 @@ GO
 
 CREATE PROCEDURE denver.obtener_consumos
 	@habitacion_nro numeric(18,0),
-	@hotel_id smallint
+	@hotel_id smallint,
+	@nro_reserva numeric(18,0) OUTPUT
 AS
 BEGIN
-	declare @nro_reserva numeric(18,0)
 	declare @cliente_tipo_doc int
 	declare @cliente_nro_doc int
 
@@ -1059,6 +1062,30 @@ BEGIN
 	order by
 		cc.consumible_cliente_fecha_consumo, c.consumible_descripcion
 
+END
+GO
+
+CREATE PROCEDURE denver.registrar_consumos
+	@consumible_id numeric(18,0),
+	@fecha_consumo datetime,
+	@habitacion_nro numeric(18,0),
+	@hotel_id smallint
+AS
+BEGIN
+	declare @nro_reserva numeric(18,0)
+	declare @cliente_tipo_doc int
+	declare @cliente_nro_doc int
+
+	select
+		@nro_reserva = r.reserva_codigo, @cliente_tipo_doc = r.reserva_cliente_tipo_documento_id, @cliente_nro_doc = r.reserva_cliente_pasaporte_nro
+	from
+		denver.reservas as r
+		join reservas_habitaciones as rh on rh.reserva_habitaciones_reserva_codigo = r.reserva_codigo
+	where
+		rh.reserva_habitacion_nro = @habitacion_nro and r.reserva_hotel_id = @hotel_id;
+
+
+	insert into denver.consumibles_clientes (consumible_cliente_consumible_id,consumible_cliente_tipo_documento_id,consumible_cliente_pasaporte_nro,consumible_cliente_fecha_consumo,consumible_cliente_reserva_codigo) values (@consumible_id,@cliente_tipo_doc,@cliente_nro_doc, @fecha_consumo, @nro_reserva)
 END
 GO
 
