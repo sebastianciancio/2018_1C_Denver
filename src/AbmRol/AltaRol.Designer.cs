@@ -64,7 +64,7 @@
             "ABM Reservas",
             "ABM Hoteles",
             "ABM Habitacion"});
-            this.clb_funcionalidades.Location = new System.Drawing.Point(26, 90);
+            this.clb_funcionalidades.Location = new System.Drawing.Point(26, 87);
             this.clb_funcionalidades.Name = "clb_funcionalidades";
             this.clb_funcionalidades.Size = new System.Drawing.Size(206, 94);
             this.clb_funcionalidades.TabIndex = 2;

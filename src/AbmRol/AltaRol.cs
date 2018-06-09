@@ -23,10 +23,11 @@ namespace FrbaHotel.AbmRol
 
         private void btn_guardar_Click(object sender, EventArgs e)
         {
-            if (txb_nombre.Text == "" ) {
+           
+            if (Validacion.esInicial(txb_nombre.Text)){
                 MessageBox.Show("Debe ingresar el nombre del nuevo Rol", "Error");
             }
-            if (clb_funcionalidades.SelectedItems.Count == 0)
+            if (Validacion.checkListVacia(clb_funcionalidades))
             {
                 MessageBox.Show("Debe seleccionar almenos una funcionalidad", "Error");
             }
