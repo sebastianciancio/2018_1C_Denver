@@ -28,7 +28,7 @@ namespace FrbaHotel.AbmCliente
 
         private void btn_cli_new_guardar_Click(object sender, EventArgs e)
         {
-            SqlCommand cmd = new SqlCommand("dbo.cargar_cliente", db.Connection);
+            SqlCommand cmd = new SqlCommand("denver.cargar_cliente", db.Connection);
             cmd.CommandType = CommandType.StoredProcedure;
 
             cmd.Parameters.AddWithValue("@cliente_tipo_documento", SqlDbType.Int).Value = cmb_cli_new_tip_doc.SelectedValue;

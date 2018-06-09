@@ -55,7 +55,7 @@ namespace FrbaHotel
         {
             SqlCommand cmd = new SqlCommand("denver.obtener_tipo_habitaciones", DataBase.GetInstance().Connection);
             cmd.CommandType = CommandType.StoredProcedure;
-            SqlDataReader reader;            
+            SqlDataReader reader;
 
             reader = cmd.ExecuteReader();
 
@@ -230,7 +230,7 @@ namespace FrbaHotel
         {
             SqlCommand cmd = new SqlCommand("denver.obtener_consumibles", DataBase.GetInstance().Connection);
             cmd.CommandType = CommandType.StoredProcedure;
-            SqlDataReader reader;            
+            SqlDataReader reader;
 
             reader = cmd.ExecuteReader();
 
@@ -252,7 +252,7 @@ namespace FrbaHotel
         {
             SqlCommand cmd = new SqlCommand("denver.obtener_roles", DataBase.GetInstance().Connection);
             cmd.CommandType = CommandType.StoredProcedure;
-            SqlDataReader reader;            
+            SqlDataReader reader;
 
             reader = cmd.ExecuteReader();
 
@@ -268,5 +268,19 @@ namespace FrbaHotel
                 agregarTodosCombo(combo, dt);
 
         }
+   /*     public static void cargarCheckedlist(CheckedListBox list, bool agregarTodos = true)
+        {
+            SqlCommand cmd = new SqlCommand("denver.obtener_funcionalidades", DataBase.GetInstance().Connection);
+            cmd.CommandType = CommandType.StoredProcedure;
+            SqlDataReader reader;
+
+            reader = cmd.ExecuteReader();
+
+            DataTable dt = new DataTable();
+     
+            dt.Load(reader);
+
+            list.DataSource = dt;
+        }*/
     }
 }

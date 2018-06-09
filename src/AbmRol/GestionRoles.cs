@@ -39,6 +39,12 @@ namespace FrbaHotel.AbmRol
         {
             Hide();
             AbmRol.ModificarRol frm = new AbmRol.ModificarRol();
+            
+            DataGridViewRow row = dgv_roles.CurrentRow;
+
+            string rol = row.Cells[0].Value.ToString();
+
+            frm.rol = rol;
             frm.Show();
         }
 

@@ -803,6 +803,29 @@ INSERT INTO denver.funcionalidades (funcionalidad_nombre, funcionalidad_created)
 INSERT INTO denver.funcionalidades (funcionalidad_nombre, funcionalidad_created) VALUES ('LISTADO ESTADÍSTICO', GETDATE());
 GO
 
+/****** funcionalidades por rol  ******/
+INSERT INTO denver.roles_funcionalidades (rol_funcionalidad_rol_nombre, rol_funcionalidad_funcionalidad_id) VALUES ('ADMINISTRADOR', 1);
+INSERT INTO denver.roles_funcionalidades (rol_funcionalidad_rol_nombre, rol_funcionalidad_funcionalidad_id) VALUES ('ADMINISTRADOR', 2);
+INSERT INTO denver.roles_funcionalidades (rol_funcionalidad_rol_nombre, rol_funcionalidad_funcionalidad_id) VALUES ('ADMINISTRADOR', 3);
+INSERT INTO denver.roles_funcionalidades (rol_funcionalidad_rol_nombre, rol_funcionalidad_funcionalidad_id) VALUES ('ADMINISTRADOR', 4);
+INSERT INTO denver.roles_funcionalidades (rol_funcionalidad_rol_nombre, rol_funcionalidad_funcionalidad_id) VALUES ('ADMINISTRADOR', 5);
+INSERT INTO denver.roles_funcionalidades (rol_funcionalidad_rol_nombre, rol_funcionalidad_funcionalidad_id) VALUES ('ADMINISTRADOR', 6);
+INSERT INTO denver.roles_funcionalidades (rol_funcionalidad_rol_nombre, rol_funcionalidad_funcionalidad_id) VALUES ('ADMINISTRADOR', 7);
+INSERT INTO denver.roles_funcionalidades (rol_funcionalidad_rol_nombre, rol_funcionalidad_funcionalidad_id) VALUES ('ADMINISTRADOR', 8);
+INSERT INTO denver.roles_funcionalidades (rol_funcionalidad_rol_nombre, rol_funcionalidad_funcionalidad_id) VALUES ('ADMINISTRADOR', 9);
+INSERT INTO denver.roles_funcionalidades (rol_funcionalidad_rol_nombre, rol_funcionalidad_funcionalidad_id) VALUES ('ADMINISTRADOR', 10);
+INSERT INTO denver.roles_funcionalidades (rol_funcionalidad_rol_nombre, rol_funcionalidad_funcionalidad_id) VALUES ('ADMINISTRADOR', 11);
+INSERT INTO denver.roles_funcionalidades (rol_funcionalidad_rol_nombre, rol_funcionalidad_funcionalidad_id) VALUES ('ADMINISTRADOR', 12);
+INSERT INTO denver.roles_funcionalidades (rol_funcionalidad_rol_nombre, rol_funcionalidad_funcionalidad_id) VALUES ('GUEST', 7);
+INSERT INTO denver.roles_funcionalidades (rol_funcionalidad_rol_nombre, rol_funcionalidad_funcionalidad_id) VALUES ('RECEPCIONISTA', 3);
+INSERT INTO denver.roles_funcionalidades (rol_funcionalidad_rol_nombre, rol_funcionalidad_funcionalidad_id) VALUES ('RECEPCIONISTA', 7);
+INSERT INTO denver.roles_funcionalidades (rol_funcionalidad_rol_nombre, rol_funcionalidad_funcionalidad_id) VALUES ('RECEPCIONISTA', 8);
+INSERT INTO denver.roles_funcionalidades (rol_funcionalidad_rol_nombre, rol_funcionalidad_funcionalidad_id) VALUES ('RECEPCIONISTA', 9);
+INSERT INTO denver.roles_funcionalidades (rol_funcionalidad_rol_nombre, rol_funcionalidad_funcionalidad_id) VALUES ('RECEPCIONISTA', 10);
+INSERT INTO denver.roles_funcionalidades (rol_funcionalidad_rol_nombre, rol_funcionalidad_funcionalidad_id) VALUES ('RECEPCIONISTA', 11);
+GO
+
+
 /****** CLIENTES ******/
 /*
 EXISTEN REGISTROS CON PASAPORTES DUPLICADOS Y PERTENECIENTES A PERSONAS DIFERENTES. SE EXCLUYERON. TAMBIEN SE PUSO COMO EMAIL EL NRO DE PASAPORTE 

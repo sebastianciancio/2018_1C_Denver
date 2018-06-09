@@ -28,17 +28,17 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
-            this.button5 = new System.Windows.Forms.Button();
+            this.btn_clientes = new System.Windows.Forms.Button();
+            this.btn_roles = new System.Windows.Forms.Button();
+            this.btn_usurios = new System.Windows.Forms.Button();
+            this.btn_hoteles = new System.Windows.Forms.Button();
+            this.btn_habitaciones = new System.Windows.Forms.Button();
             this.btn_reserva = new System.Windows.Forms.Button();
             this.btn_check = new System.Windows.Forms.Button();
             this.btn_facturar = new System.Windows.Forms.Button();
             this.btn_listados = new System.Windows.Forms.Button();
             this.btn_consumibles = new System.Windows.Forms.Button();
-            this.button11 = new System.Windows.Forms.Button();
+            this.btn_estadia = new System.Windows.Forms.Button();
             this.label_usuario_logueado = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
@@ -46,60 +46,65 @@
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
-            // button1
+            // btn_clientes
             // 
-            this.button1.BackColor = System.Drawing.Color.Silver;
-            this.button1.Location = new System.Drawing.Point(337, 37);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(140, 76);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "Clientes";
-            this.button1.UseVisualStyleBackColor = false;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.btn_clientes.BackColor = System.Drawing.Color.Silver;
+            this.btn_clientes.Location = new System.Drawing.Point(337, 37);
+            this.btn_clientes.Name = "btn_clientes";
+            this.btn_clientes.Size = new System.Drawing.Size(140, 76);
+            this.btn_clientes.TabIndex = 0;
+            this.btn_clientes.Text = "Clientes";
+            this.btn_clientes.UseVisualStyleBackColor = false;
+            this.btn_clientes.Visible = false;
+            this.btn_clientes.Click += new System.EventHandler(this.button1_Click);
             // 
-            // button2
+            // btn_roles
             // 
-            this.button2.BackColor = System.Drawing.Color.Silver;
-            this.button2.Location = new System.Drawing.Point(35, 37);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(145, 76);
-            this.button2.TabIndex = 1;
-            this.button2.Text = "Roles";
-            this.button2.UseVisualStyleBackColor = false;
-            this.button2.Click += new System.EventHandler(this.roles_Click);
+            this.btn_roles.BackColor = System.Drawing.Color.Silver;
+            this.btn_roles.Location = new System.Drawing.Point(35, 37);
+            this.btn_roles.Name = "btn_roles";
+            this.btn_roles.Size = new System.Drawing.Size(145, 76);
+            this.btn_roles.TabIndex = 1;
+            this.btn_roles.Text = "Roles";
+            this.btn_roles.UseVisualStyleBackColor = false;
+            this.btn_roles.Visible = false;
+            this.btn_roles.Click += new System.EventHandler(this.roles_Click);
             // 
-            // button3
+            // btn_usurios
             // 
-            this.button3.BackColor = System.Drawing.Color.Silver;
-            this.button3.Location = new System.Drawing.Point(186, 37);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(145, 76);
-            this.button3.TabIndex = 2;
-            this.button3.Text = "Usuarios";
-            this.button3.UseVisualStyleBackColor = false;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
+            this.btn_usurios.BackColor = System.Drawing.Color.Silver;
+            this.btn_usurios.Location = new System.Drawing.Point(186, 38);
+            this.btn_usurios.Name = "btn_usurios";
+            this.btn_usurios.Size = new System.Drawing.Size(145, 76);
+            this.btn_usurios.TabIndex = 2;
+            this.btn_usurios.Text = "Usuarios";
+            this.btn_usurios.UseVisualStyleBackColor = false;
+            this.btn_usurios.Visible = false;
+            this.btn_usurios.Click += new System.EventHandler(this.button3_Click);
             // 
-            // button4
+            // btn_hoteles
             // 
-            this.button4.BackColor = System.Drawing.Color.Silver;
-            this.button4.Location = new System.Drawing.Point(483, 37);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(140, 76);
-            this.button4.TabIndex = 3;
-            this.button4.Text = "Hoteles";
-            this.button4.UseVisualStyleBackColor = false;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
+            this.btn_hoteles.BackColor = System.Drawing.Color.Silver;
+            this.btn_hoteles.Location = new System.Drawing.Point(483, 37);
+            this.btn_hoteles.Name = "btn_hoteles";
+            this.btn_hoteles.Size = new System.Drawing.Size(140, 76);
+            this.btn_hoteles.TabIndex = 3;
+            this.btn_hoteles.Text = "Hoteles";
+            this.btn_hoteles.UseVisualStyleBackColor = false;
+            this.btn_hoteles.Visible = false;
+            this.btn_hoteles.Click += new System.EventHandler(this.button4_Click);
             // 
-            // button5
+            // btn_habitaciones
             // 
-            this.button5.BackColor = System.Drawing.Color.Silver;
-            this.button5.Location = new System.Drawing.Point(629, 37);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(140, 76);
-            this.button5.TabIndex = 4;
-            this.button5.Text = "Habitaciones";
-            this.button5.UseVisualStyleBackColor = false;
-            this.button5.Click += new System.EventHandler(this.button5_Click);
+            this.btn_habitaciones.BackColor = System.Drawing.Color.Silver;
+            this.btn_habitaciones.Location = new System.Drawing.Point(629, 37);
+            this.btn_habitaciones.Name = "btn_habitaciones";
+            this.btn_habitaciones.Size = new System.Drawing.Size(140, 76);
+            this.btn_habitaciones.TabIndex = 4;
+            this.btn_habitaciones.Text = "Habitaciones";
+            this.btn_habitaciones.UseVisualStyleBackColor = false;
+            this.btn_habitaciones.Visible = false;
+            this.btn_habitaciones.Click += new System.EventHandler(this.button5_Click);
             // 
             // btn_reserva
             // 
@@ -110,6 +115,7 @@
             this.btn_reserva.TabIndex = 5;
             this.btn_reserva.Text = "Reservas";
             this.btn_reserva.UseVisualStyleBackColor = false;
+            this.btn_reserva.Visible = false;
             this.btn_reserva.Click += new System.EventHandler(this.button6_Click);
             // 
             // btn_check
@@ -121,6 +127,7 @@
             this.btn_check.TabIndex = 7;
             this.btn_check.Text = "Check-In / Check-Out";
             this.btn_check.UseVisualStyleBackColor = false;
+            this.btn_check.Visible = false;
             this.btn_check.Click += new System.EventHandler(this.btn_check_Click);
             // 
             // btn_facturar
@@ -132,6 +139,7 @@
             this.btn_facturar.TabIndex = 8;
             this.btn_facturar.Text = "Facturar";
             this.btn_facturar.UseVisualStyleBackColor = false;
+            this.btn_facturar.Visible = false;
             this.btn_facturar.Click += new System.EventHandler(this.btn_facturar_Click);
             // 
             // btn_listados
@@ -143,6 +151,7 @@
             this.btn_listados.TabIndex = 9;
             this.btn_listados.Text = "Listados";
             this.btn_listados.UseVisualStyleBackColor = false;
+            this.btn_listados.Visible = false;
             this.btn_listados.Click += new System.EventHandler(this.button9_Click);
             // 
             // btn_consumibles
@@ -154,18 +163,20 @@
             this.btn_consumibles.TabIndex = 10;
             this.btn_consumibles.Text = "Registrar Consumibles";
             this.btn_consumibles.UseVisualStyleBackColor = false;
+            this.btn_consumibles.Visible = false;
             this.btn_consumibles.Click += new System.EventHandler(this.btn_consumibles_Click);
             // 
-            // button11
+            // btn_estadia
             // 
-            this.button11.BackColor = System.Drawing.Color.Silver;
-            this.button11.Location = new System.Drawing.Point(775, 37);
-            this.button11.Name = "button11";
-            this.button11.Size = new System.Drawing.Size(140, 76);
-            this.button11.TabIndex = 12;
-            this.button11.Text = "Régimen Estadía";
-            this.button11.UseVisualStyleBackColor = false;
-            this.button11.Click += new System.EventHandler(this.button11_Click);
+            this.btn_estadia.BackColor = System.Drawing.Color.Silver;
+            this.btn_estadia.Location = new System.Drawing.Point(775, 37);
+            this.btn_estadia.Name = "btn_estadia";
+            this.btn_estadia.Size = new System.Drawing.Size(140, 76);
+            this.btn_estadia.TabIndex = 12;
+            this.btn_estadia.Text = "Régimen Estadía";
+            this.btn_estadia.UseVisualStyleBackColor = false;
+            this.btn_estadia.Visible = false;
+            this.btn_estadia.Click += new System.EventHandler(this.button11_Click);
             // 
             // label_usuario_logueado
             // 
@@ -201,12 +212,12 @@
             // groupBox2
             // 
             this.groupBox2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
-            this.groupBox2.Controls.Add(this.button3);
-            this.groupBox2.Controls.Add(this.button1);
-            this.groupBox2.Controls.Add(this.button2);
-            this.groupBox2.Controls.Add(this.button11);
-            this.groupBox2.Controls.Add(this.button4);
-            this.groupBox2.Controls.Add(this.button5);
+            this.groupBox2.Controls.Add(this.btn_usurios);
+            this.groupBox2.Controls.Add(this.btn_clientes);
+            this.groupBox2.Controls.Add(this.btn_roles);
+            this.groupBox2.Controls.Add(this.btn_estadia);
+            this.groupBox2.Controls.Add(this.btn_hoteles);
+            this.groupBox2.Controls.Add(this.btn_habitaciones);
             this.groupBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox2.Location = new System.Drawing.Point(12, 210);
             this.groupBox2.Name = "groupBox2";
@@ -229,6 +240,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Cadena Denver - Sistema de Gestión";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Principal_FormClosing);
+            this.Load += new System.EventHandler(this.Principal_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -238,17 +250,17 @@
 
         #endregion
 
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Button btn_clientes;
+        private System.Windows.Forms.Button btn_roles;
+        private System.Windows.Forms.Button btn_usurios;
+        private System.Windows.Forms.Button btn_hoteles;
+        private System.Windows.Forms.Button btn_habitaciones;
         private System.Windows.Forms.Button btn_reserva;
         private System.Windows.Forms.Button btn_check;
         private System.Windows.Forms.Button btn_facturar;
         private System.Windows.Forms.Button btn_listados;
         private System.Windows.Forms.Button btn_consumibles;
-        private System.Windows.Forms.Button button11;
+        private System.Windows.Forms.Button btn_estadia;
         private System.Windows.Forms.Label label_usuario_logueado;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox2;

@@ -54,25 +54,30 @@
             // 
             // clb_funcionalidades
             // 
+            this.clb_funcionalidades.CheckOnClick = true;
             this.clb_funcionalidades.FormattingEnabled = true;
             this.clb_funcionalidades.Items.AddRange(new object[] {
-            "Administracion Interna",
-            "Operaciones",
-            "ABM Clientes",
-            "ABM Roles",
-            "ABM Usuarios",
-            "ABM Reservas",
-            "ABM Hoteles",
-            "ABM Habitacion"});
-            this.clb_funcionalidades.Location = new System.Drawing.Point(26, 87);
+            "ABM DE ROL",
+            "ABM DE USUARIO",
+            "ABM DE CLIENTE",
+            "ABM DE HOTEL",
+            "ABM DE HABITACIÓN",
+            "ABM RÉGIMEN DE ESTADÍA",
+            "GENERAR O MODIFICAR UN RESERVA",
+            "CANCELAR RESERVA",
+            "REGISTRAR ESTADÍA ",
+            "REGISTRAR CONSUMIBLES",
+            "FACTURAR ESTADÍA",
+            "LISTADO ESTADÍSTICO"});
+            this.clb_funcionalidades.Location = new System.Drawing.Point(26, 93);
             this.clb_funcionalidades.Name = "clb_funcionalidades";
-            this.clb_funcionalidades.Size = new System.Drawing.Size(206, 94);
+            this.clb_funcionalidades.Size = new System.Drawing.Size(222, 184);
             this.clb_funcionalidades.TabIndex = 2;
             // 
             // lbl_fun
             // 
             this.lbl_fun.AutoSize = true;
-            this.lbl_fun.Location = new System.Drawing.Point(26, 71);
+            this.lbl_fun.Location = new System.Drawing.Point(23, 71);
             this.lbl_fun.Name = "lbl_fun";
             this.lbl_fun.Size = new System.Drawing.Size(84, 13);
             this.lbl_fun.TabIndex = 3;
@@ -80,7 +85,7 @@
             // 
             // btn_guardar
             // 
-            this.btn_guardar.Location = new System.Drawing.Point(82, 205);
+            this.btn_guardar.Location = new System.Drawing.Point(74, 299);
             this.btn_guardar.Name = "btn_guardar";
             this.btn_guardar.Size = new System.Drawing.Size(111, 32);
             this.btn_guardar.TabIndex = 4;
@@ -91,7 +96,7 @@
             // btn_volver
             // 
             this.btn_volver.Image = global::FrbaHotel.Properties.Resources.volver;
-            this.btn_volver.Location = new System.Drawing.Point(237, 220);
+            this.btn_volver.Location = new System.Drawing.Point(254, 302);
             this.btn_volver.Name = "btn_volver";
             this.btn_volver.Size = new System.Drawing.Size(35, 29);
             this.btn_volver.TabIndex = 6;
@@ -102,7 +107,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 261);
+            this.ClientSize = new System.Drawing.Size(301, 343);
             this.Controls.Add(this.btn_volver);
             this.Controls.Add(this.btn_guardar);
             this.Controls.Add(this.lbl_fun);
@@ -110,6 +115,7 @@
             this.Controls.Add(this.txb_nombre);
             this.Controls.Add(this.lbl_nombre);
             this.Name = "AltaRol";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Nuevo Rol";
             this.ResumeLayout(false);
             this.PerformLayout();

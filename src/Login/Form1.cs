@@ -39,7 +39,7 @@ namespace FrbaHotel
 
         private void btn_acceder_Click(object sender, EventArgs e)
         {
-            SqlDataAdapter sda = new SqlDataAdapter("SELECT count(*), usuario_apellido, usuario_nombre, usuario_user, usuario_login_fallidos, denver.cant_roles_usuario(usuario_user) FROM denver.usuarios AS u JOIN denver.usuarios_hoteles AS uh ON u.usuario_user = uh.usuario_usuario_user WHERE u.usuario_user = UPPER('" + login_usuario.Text + "') AND u.usuario_pass = HASHBYTES('SHA2_256',UPPER('" + login_password.Text + "')) AND uh.usuario_hotel_id = '" + cmb_hotel.SelectedValue + "' AND u.usuario_activo = 'S' GROUP BY usuario_apellido, usuario_nombre, usuario_user, usuario_login_fallidos;", db.Connection);
+            SqlDataAdapter sda = new SqlDataAdapter("SELECT count(*), usuario_apellido, usuario_nombre, usuario_user, usuario_login_fallidos, denver.cant_roles_usuario(usuario_user), usuario_rol_rol_nombre AS rol FROM denver.usuarios AS u JOIN denver.usuarios_hoteles AS uh ON u.usuario_user = uh.usuario_usuario_user JOIN denver.usuarios_roles AS r ON u.usuario_user = r.usuario_rol_usuario_user WHERE u.usuario_user = UPPER('" + login_usuario.Text + "') AND u.usuario_pass = HASHBYTES('SHA2_256',UPPER('" + login_password.Text + "')) AND uh.usuario_hotel_id = '" + cmb_hotel.SelectedValue + "' AND u.usuario_activo = 'S' GROUP BY usuario_apellido, usuario_nombre, usuario_user, usuario_login_fallidos, usuario_rol_rol_nombre;", db.Connection);
             DataTable dt = new DataTable();
             sda.Fill(dt);
 
@@ -55,6 +55,7 @@ namespace FrbaHotel
                     accesoSistema.UsuarioLogueado.Apellido = dt.Rows[0][1].ToString();
                     accesoSistema.UsuarioLogueado.Nombre = dt.Rows[0][2].ToString();
                     accesoSistema.UsuarioLogueado.Id = dt.Rows[0][3].ToString();
+                    accesoSistema.UsuarioLogueado.Rol = dt.Rows[0][6].ToString();
                     accesoSistema.HotelIdActual = Convert.ToInt32(cmb_hotel.SelectedValue);
                     accesoSistema.HotelNombreActual = cmb_hotel.Text;
 

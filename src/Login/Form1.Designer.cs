@@ -31,6 +31,8 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.cmb_rol = new System.Windows.Forms.ComboBox();
             this.lab_rol = new System.Windows.Forms.Label();
+            this.cmb_hotel = new System.Windows.Forms.ComboBox();
+            this.label3 = new System.Windows.Forms.Label();
             this.login_password = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.login_usuario = new System.Windows.Forms.TextBox();
@@ -38,8 +40,6 @@
             this.btn_acceder = new System.Windows.Forms.Button();
             this.btn_salir = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.cmb_hotel = new System.Windows.Forms.ComboBox();
-            this.label3 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
@@ -83,6 +83,24 @@
             this.lab_rol.Text = "Rol";
             this.lab_rol.Visible = false;
             // 
+            // cmb_hotel
+            // 
+            this.cmb_hotel.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmb_hotel.FormattingEnabled = true;
+            this.cmb_hotel.Location = new System.Drawing.Point(92, 24);
+            this.cmb_hotel.Name = "cmb_hotel";
+            this.cmb_hotel.Size = new System.Drawing.Size(235, 21);
+            this.cmb_hotel.TabIndex = 1;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(26, 27);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(32, 13);
+            this.label3.TabIndex = 7;
+            this.label3.Text = "Hotel";
+            // 
             // login_password
             // 
             this.login_password.Location = new System.Drawing.Point(92, 93);
@@ -90,6 +108,7 @@
             this.login_password.PasswordChar = '*';
             this.login_password.Size = new System.Drawing.Size(174, 20);
             this.login_password.TabIndex = 3;
+            this.login_password.Text = "admin";
             this.login_password.UseSystemPasswordChar = true;
             // 
             // label2
@@ -107,6 +126,7 @@
             this.login_usuario.Name = "login_usuario";
             this.login_usuario.Size = new System.Drawing.Size(174, 20);
             this.login_usuario.TabIndex = 2;
+            this.login_usuario.Text = "admin";
             // 
             // label1
             // 
@@ -152,24 +172,6 @@
             this.pictureBox1.TabIndex = 4;
             this.pictureBox1.TabStop = false;
             this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
-            // 
-            // cmb_hotel
-            // 
-            this.cmb_hotel.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmb_hotel.FormattingEnabled = true;
-            this.cmb_hotel.Location = new System.Drawing.Point(92, 24);
-            this.cmb_hotel.Name = "cmb_hotel";
-            this.cmb_hotel.Size = new System.Drawing.Size(235, 21);
-            this.cmb_hotel.TabIndex = 1;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(26, 27);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(32, 13);
-            this.label3.TabIndex = 7;
-            this.label3.Text = "Hotel";
             // 
             // Login
             // 

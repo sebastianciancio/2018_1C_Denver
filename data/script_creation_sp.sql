@@ -104,7 +104,19 @@ if EXISTS (SELECT * FROM sys.objects  WHERE name = 'ocupar_disponibilidad' AND t
 if EXISTS (SELECT * FROM sys.objects  WHERE name = 'obtener_consumos' AND type IN (N'P', N'PC'))
 	DROP PROCEDURE [denver].[obtener_consumos]	
 if EXISTS (SELECT * FROM sys.objects  WHERE name = 'registrar_consumos' AND type IN (N'P', N'PC'))
-	DROP PROCEDURE [denver].[registrar_consumos]		
+	DROP PROCEDURE [denver].[registrar_consumos]
+	if EXISTS (SELECT * FROM sys.objects  WHERE name = 'crear_rol' AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [denver].[crear_rol]	
+if EXISTS (SELECT * FROM sys.objects  WHERE name = 'modificar_rol' AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [denver].[modificar_rol]		
+if EXISTS (SELECT * FROM sys.objects  WHERE name = 'crear_rol_funcionalidad' AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [denver].[crear_rol_funcionalidad]	
+if EXISTS (SELECT * FROM sys.objects  WHERE name = 'funcionalidades_rol' AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [denver].[funcionalidades_rol]	
+if EXISTS (SELECT * FROM sys.objects  WHERE name = 'existe_rol' AND type IN (N'FN'))
+	DROP FUNCTION [denver].[existe_rol]
+--if EXISTS (SELECT * FROM sys.objects  WHERE name = 'obtener_funcionalidades' AND type IN (N'P', N'PC'))
+--	DROP PROCEDURE [denver].[obtener_funcionalidades]	
 GO
 
 
@@ -1089,3 +1101,84 @@ BEGIN
 END
 GO
 
+CREATE PROCEDURE [denver].[crear_rol]    
+	@rol nvarchar(255)
+AS   
+BEGIN 
+	
+	SET NOCOUNT ON;  
+	INSERT INTO [denver].[roles](
+	    rol_nombre,
+		rol_activo,
+		rol_created
+		)
+		values(
+		@rol,
+		'S',
+		GETDATE())
+
+	
+
+END
+GO
+
+CREATE PROCEDURE [denver].[modificar_rol]    
+	@rol nvarchar(255)
+AS   
+BEGIN 
+	-- SET NOCOUNT ON added to prevent extra result sets from interfering with SELECT statements.
+	SET NOCOUNT ON;  
+
+	SELECT rol_funcionalidad_rol_nombre AS ROL,  rol_funcionalidad_funcionalidad_id AS FUNCIONALIDAD
+	FROM roles_funcionalidades
+	WHERE  rol_funcionalidad_rol_nombre = @rol;
+END
+GO
+
+CREATE PROCEDURE [denver].[crear_rol_funcionalidad]    
+	@rol nvarchar(255),
+	@rol_funcionalidad smallint
+AS   
+BEGIN 
+	
+	SET NOCOUNT ON;  
+	INSERT INTO [denver].[roles_funcionalidades](
+	    rol_funcionalidad_rol_nombre,
+		rol_funcionalidad_funcionalidad_id
+		)
+		values(
+		@rol,
+		@rol_funcionalidad
+		)
+END
+GO
+
+CREATE PROCEDURE [denver].[funcionalidades_rol]    
+	@usuario_rol nvarchar(255)
+AS   
+BEGIN 
+	
+	SET NOCOUNT ON;  
+
+    SELECT rol_funcionalidad_funcionalidad_id AS Permiso
+	  FROM roles_funcionalidades
+	   WHERE rol_funcionalidad_rol_nombre = @usuario_rol
+END
+GO
+
+CREATE FUNCTION denver.existe_rol (@rol nvarchar(50))
+RETURNS int
+AS
+BEGIN
+	RETURN (SELECT count(*) FROM denver.usuarios WHERE usuario_user = @rol)
+
+END
+GO
+--CREATE PROCEDURE denver.obtener_funcionalidades
+--AS
+--BEGIN
+--	SET NOCOUNT ON;
+--	SELECT funcionalidad_nombre 
+--	  FROM denver.funcionalidades
+--END
+--GO

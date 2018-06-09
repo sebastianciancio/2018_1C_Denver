@@ -13,6 +13,7 @@ namespace FrbaHotel.AbmRol
 {
     public partial class ModificarRol : Form
     {
+        public string rol;
         private DataBase db;
         public ModificarRol()
         {
@@ -25,13 +26,23 @@ namespace FrbaHotel.AbmRol
             SqlCommand cmd = new SqlCommand("denver.buscar_rol", db.Connection);
             cmd.CommandType = CommandType.StoredProcedure;
 
+            cmd.Parameters.AddWithValue("@rol", SqlDbType.VarChar).Value = rol;
+
             DataTable dt = new DataTable();
 
             using (var da = new SqlDataAdapter(cmd))
             {
                 da.Fill(dt);
             }
-            // necesito ver la estructura de SQL
+
+            txb_nombre.Text = rol;
+
+
+        }
+
+        private void btn_guardar_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

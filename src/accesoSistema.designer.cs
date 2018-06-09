@@ -71,6 +71,7 @@
             this.btn_volver.Name = "btn_volver";
             this.btn_volver.Size = new System.Drawing.Size(63, 56);
             this.btn_volver.TabIndex = 4;
+            this.btn_volver.Text = "c";
             this.btn_volver.UseVisualStyleBackColor = true;
             this.btn_volver.Visible = false;
             this.btn_volver.Click += new System.EventHandler(this.btn_volver_Click);
