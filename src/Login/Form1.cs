@@ -74,7 +74,22 @@ namespace FrbaHotel
                     // Si tiene solo 1 Rol
                     if (dt.Rows[0][5].ToString() == "1")
                     {
-                        // TODO
+
+                        cmd = new SqlCommand("denver.obtener_roles", db.Connection);
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        cmd.Parameters.AddWithValue("@usuario_user", SqlDbType.VarChar).Value = login_usuario.Text;
+
+                        DataTable dt2 = new DataTable();
+
+                        using (var da = new SqlDataAdapter(cmd))
+                        {
+                            da.Fill(dt2);
+                        }
+
+                        // Guardo el Rol del Usuario Logueado
+                        accesoSistema.UsuarioLogueado.Rol = dt2.Rows[0][0].ToString();
+
                     }
                     else // Si tiene mas de un Rol
                     {

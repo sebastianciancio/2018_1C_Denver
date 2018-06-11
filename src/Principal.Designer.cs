@@ -42,6 +42,7 @@
             this.label_usuario_logueado = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.label_rol_usuario_logueado = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -189,7 +190,7 @@
             this.label_usuario_logueado.Name = "label_usuario_logueado";
             this.label_usuario_logueado.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.label_usuario_logueado.Size = new System.Drawing.Size(128, 20);
-            this.label_usuario_logueado.TabIndex = 13;
+            this.label_usuario_logueado.TabIndex = 2;
             this.label_usuario_logueado.Text = "usuario_logueado";
             this.label_usuario_logueado.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
@@ -226,12 +227,28 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Administración Interna";
             // 
+            // label_rol_usuario_logueado
+            // 
+            this.label_rol_usuario_logueado.AutoSize = true;
+            this.label_rol_usuario_logueado.BackColor = System.Drawing.Color.Silver;
+            this.label_rol_usuario_logueado.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.label_rol_usuario_logueado.Dock = System.Windows.Forms.DockStyle.Right;
+            this.label_rol_usuario_logueado.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label_rol_usuario_logueado.Location = new System.Drawing.Point(686, 0);
+            this.label_rol_usuario_logueado.Name = "label_rol_usuario_logueado";
+            this.label_rol_usuario_logueado.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.label_rol_usuario_logueado.Size = new System.Drawing.Size(153, 20);
+            this.label_rol_usuario_logueado.TabIndex = 1;
+            this.label_rol_usuario_logueado.Text = "rol_usuario_logueado";
+            this.label_rol_usuario_logueado.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
             // Principal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(967, 354);
+            this.Controls.Add(this.label_rol_usuario_logueado);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.label_usuario_logueado);
@@ -264,6 +281,7 @@
         private System.Windows.Forms.Label label_usuario_logueado;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.Label label_rol_usuario_logueado;
     }
 }
 

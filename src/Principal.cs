@@ -22,7 +22,7 @@ namespace FrbaHotel
             // Muestro el Usuario Logueado
             this.label_usuario_logueado.Text = accesoSistema.UsuarioLogueado.Apellido + " " + accesoSistema.UsuarioLogueado.Nombre + " - " + accesoSistema.HotelNombreActual;
 
-            
+            label_rol_usuario_logueado.Text = accesoSistema.UsuarioLogueado.Rol;
         }
 
         private void button1_Click(object sender, EventArgs e)
