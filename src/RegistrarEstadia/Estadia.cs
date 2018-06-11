@@ -70,8 +70,8 @@ namespace FrbaHotel
             // Oculto Columnas del Resultado
             dg_estadia.Columns[6].Visible = false;
 
-            // Si hay Registros
-            if (dg_estadia.RowCount > 0)
+            // Si hay Registros y el estado no es cancelado ni confimado
+            if (dg_estadia.RowCount > 0 & Convert.ToInt32(dg_estadia.Rows[0].Cells[7].Value) <= 2)
             {
                 fecha_desde = Convert.ToDateTime(dg_estadia.Rows[0].Cells[0].Value);
                 fecha_hasta = Convert.ToDateTime(dg_estadia.Rows[0].Cells[1].Value);
@@ -149,7 +149,6 @@ namespace FrbaHotel
             }
 
             // Bloqueo las disponibilidades para las fechas de la estadia
-
             DateTime fecha_sin_hora;
             while (fecha_desde <= fecha_hasta)
             {
@@ -186,6 +185,88 @@ namespace FrbaHotel
             accesoSistema.ClienteSeleccionado.cliente_dni = 0;
             accesoSistema.ClienteSeleccionado.cliente_tipo_documento = "";
             accesoSistema.ClienteSeleccionado.cliente_tipo_documento_id = 0;
+
+        }
+
+        private void btn_checkout_Click(object sender, EventArgs e)
+        {
+            SqlCommand cmd;
+
+            // Cargo el detalle de la reserva
+            cmd = new SqlCommand("denver.obtener_detalle_reserva", db.Connection);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.AddWithValue("@habitacion_nro", SqlDbType.Int).Value = Convert.ToInt32(cmb_habitacion.Text);
+
+            // Creo el DataTable para obtener los resultados del SP
+            DataTable dt_detalle_reserva = new DataTable();
+            using (var da2 = new SqlDataAdapter(cmd))
+            {
+                da2.Fill(dt_detalle_reserva);
+            }
+
+            // Cargo la Grilla con los datos obtenidos
+            dg_estadia.DataSource = dt_detalle_reserva;
+
+
+            // Si hay Registros
+            if (dg_estadia.RowCount > 0)
+            {
+
+                // Oculto Columnas del Resultado
+                dg_estadia.Columns[6].Visible = false;
+                dg_estadia.Columns[7].Visible = false;
+
+
+                fecha_desde = Convert.ToDateTime(dg_estadia.Rows[0].Cells[0].Value);
+                fecha_hasta = Convert.ToDateTime(dg_estadia.Rows[0].Cells[1].Value);
+
+                // Muestro los objetos ocultos
+                Container_estadia.Visible = true;
+                btn_confirmar_checkout.Visible = true;
+                Container_pasajero.Visible = false;
+            }
+            else
+            {
+                DialogResult result = MessageBox.Show("No se encontraron Estadias activas", "Check/Out", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                Container_estadia.Visible = false;
+                Container_pasajero.Visible = false;
+                btn_confirmar_checkout.Visible = false;
+            }
+
+        }
+
+        private void btn_confirmar_checkout_Click(object sender, EventArgs e)
+        {
+            SqlCommand cmd;
+
+            // Libero las disponibilidades para las fechas de la estadia
+            DateTime fecha_sin_hora;
+            while (fecha_desde <= fecha_hasta)
+            {
+                for (var indice = 0; indice < dg_estadia.Rows.Count; indice++)
+                {
+                    cmd = new SqlCommand("denver.liberar_disponibilidad", db.Connection);
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    fecha_sin_hora = new DateTime(fecha_desde.Year, fecha_desde.Month, fecha_desde.Day);
+
+                    cmd.Parameters.AddWithValue("@fecha_ocupacion", SqlDbType.DateTime).Value = fecha_sin_hora;
+                    cmd.Parameters.AddWithValue("@habitacion_nro", SqlDbType.Int).Value = Convert.ToInt32(dg_estadia.Rows[indice].Cells[5].Value);
+                    cmd.Parameters.AddWithValue("@tipo_habitacion", SqlDbType.Int).Value = Convert.ToInt32(dg_estadia.Rows[indice].Cells[6].Value);
+                    cmd.Parameters.AddWithValue("@hotel_id", SqlDbType.Int).Value = Convert.ToInt32(accesoSistema.HotelIdActual);
+
+                    // Ejecuto el SP
+                    cmd.ExecuteNonQuery();
+                }
+                // Incremento la fecha
+                fecha_desde = fecha_desde.AddDays(1);
+            }
+
+            // Confirmo la Estadia
+            DialogResult result = MessageBox.Show("Check-Out confirmado", "Confirmacion",
+                     MessageBoxButtons.OK, MessageBoxIcon.Information);
 
         }
     }

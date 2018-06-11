@@ -69,6 +69,8 @@ namespace FrbaHotel
             // Muestro los objetos ocultos
             dgv_tablaCliente.Visible = true;
 
+            // Oculto Columnas del Resultado
+            dgv_tablaCliente.Columns[6].Visible = false;
 
             // Si solo es para seleccionar clientes, por ej. Reservas
             if (accesoSistema.habilitarSeleccionCliente)
@@ -172,7 +174,7 @@ namespace FrbaHotel
             accesoSistema.ClienteSeleccionado.cliente_nombre = row.Cells[3].Value.ToString();
             accesoSistema.ClienteSeleccionado.cliente_dni = Convert.ToInt32(row.Cells[1].Value.ToString());
             accesoSistema.ClienteSeleccionado.cliente_tipo_documento = row.Cells[0].Value.ToString();
-            accesoSistema.ClienteSeleccionado.cliente_tipo_documento_id = Convert.ToInt32(row.Cells[5].Value.ToString());
+            accesoSistema.ClienteSeleccionado.cliente_tipo_documento_id = Convert.ToInt32(row.Cells[6].Value.ToString());
 
             // Deshabilito la seleccion de Clientes
             accesoSistema.habilitarSeleccionCliente = false;

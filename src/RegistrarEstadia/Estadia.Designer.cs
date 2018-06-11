@@ -42,6 +42,7 @@
             this.btn_confirmar_checkin = new System.Windows.Forms.Button();
             this.dg_pasajeros = new System.Windows.Forms.DataGridView();
             this.btn_agregar_pax = new System.Windows.Forms.Button();
+            this.btn_confirmar_checkout = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.Container_estadia.SuspendLayout();
@@ -108,6 +109,7 @@
             this.btn_checkout.TabIndex = 7;
             this.btn_checkout.Text = "Buscar";
             this.btn_checkout.UseVisualStyleBackColor = true;
+            this.btn_checkout.Click += new System.EventHandler(this.btn_checkout_Click);
             // 
             // cmb_habitacion
             // 
@@ -129,6 +131,7 @@
             // 
             // Container_estadia
             // 
+            this.Container_estadia.Controls.Add(this.btn_confirmar_checkout);
             this.Container_estadia.Controls.Add(this.dg_estadia);
             this.Container_estadia.Location = new System.Drawing.Point(12, 82);
             this.Container_estadia.Name = "Container_estadia";
@@ -197,6 +200,18 @@
             this.btn_agregar_pax.UseVisualStyleBackColor = false;
             this.btn_agregar_pax.Click += new System.EventHandler(this.btn_agregar_pax_Click);
             // 
+            // btn_confirmar_checkout
+            // 
+            this.btn_confirmar_checkout.BackColor = System.Drawing.Color.Lime;
+            this.btn_confirmar_checkout.Location = new System.Drawing.Point(259, 160);
+            this.btn_confirmar_checkout.Name = "btn_confirmar_checkout";
+            this.btn_confirmar_checkout.Size = new System.Drawing.Size(182, 25);
+            this.btn_confirmar_checkout.TabIndex = 8;
+            this.btn_confirmar_checkout.Text = "Confirmar Check/Out";
+            this.btn_confirmar_checkout.UseVisualStyleBackColor = false;
+            this.btn_confirmar_checkout.Visible = false;
+            this.btn_confirmar_checkout.Click += new System.EventHandler(this.btn_confirmar_checkout_Click);
+            // 
             // Estadia
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -238,5 +253,6 @@
         private System.Windows.Forms.DataGridView dg_pasajeros;
         private System.Windows.Forms.Button btn_agregar_pax;
         private System.Windows.Forms.Button btn_confirmar_checkin;
+        private System.Windows.Forms.Button btn_confirmar_checkout;
     }
 }

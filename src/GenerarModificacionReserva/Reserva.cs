@@ -33,11 +33,20 @@ namespace FrbaHotel
             SqlCommand cmd = new SqlCommand("denver.obtener_disponibilidad", db.Connection);
             cmd.CommandType = CommandType.StoredProcedure;
 
+            DateTime fecha_sin_hora = new DateTime();
+
             if (fecha_desde.Text != "")
-                cmd.Parameters.AddWithValue("@fecha_desde", SqlDbType.DateTime).Value = fecha_desde.Value;
+            {
+                fecha_sin_hora = new DateTime(Convert.ToDateTime(fecha_desde.Value).Year, Convert.ToDateTime(fecha_desde.Value).Month, Convert.ToDateTime(fecha_desde.Value).Day);
+                cmd.Parameters.AddWithValue("@fecha_desde", SqlDbType.DateTime).Value = fecha_sin_hora;
+            }
 
             if (fecha_hasta.Text != "")
-                cmd.Parameters.AddWithValue("@fecha_hasta", SqlDbType.DateTime).Value = fecha_hasta.Value;
+            {
+                fecha_sin_hora = new DateTime(Convert.ToDateTime(fecha_hasta.Value).Year, Convert.ToDateTime(fecha_hasta.Value).Month, Convert.ToDateTime(fecha_hasta.Value).Day);
+                cmd.Parameters.AddWithValue("@fecha_hasta", SqlDbType.DateTime).Value = fecha_sin_hora;
+            }
+
 
             if (cmb_tipo_hab.SelectedValue.ToString().CompareTo("0") > 0)
             //if (cmb_tipo_hab.SelectedIndex > 0)
