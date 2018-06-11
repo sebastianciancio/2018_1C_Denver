@@ -410,7 +410,7 @@ GO
 
 CREATE PROCEDURE [denver].[cargar_usuario]
 	@usuario_user nvarchar(50),
-	@usuario_pass nvarchar(50),
+	@usuario_pass varchar(50),
 	@usuario_nombre nvarchar(255),
 	@usuario_apellido nvarchar(255),
 	@usuario_tipo_documento_id smallint,
@@ -469,8 +469,8 @@ BEGIN
 			 usuario_usuario_user
 			 )
 			 VALUES (
-			 @usuario_user,
-			 @usuario_hotel)
+			 @usuario_hotel,
+			 @usuario_user)
 
 
 END

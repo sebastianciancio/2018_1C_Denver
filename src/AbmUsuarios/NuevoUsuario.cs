@@ -49,7 +49,7 @@ namespace FrbaHotel.AbmUsuarios
 
                 cmd.Parameters.AddWithValue("@usuario_user", SqlDbType.VarChar).Value = txb_user.Text;
                 cmd.Parameters.AddWithValue("@usuario_pass", SqlDbType.VarChar).Value = txb_pas.Text;
-                cmd.Parameters.AddWithValue("@usuario_tipo_documento_id", SqlDbType.Int).Value = cmb_tipoDoc.SelectedValue;
+                cmd.Parameters.AddWithValue("@usuario_tipo_documento_id", SqlDbType.Int).Value = Convert.ToInt32(cmb_tipoDoc.SelectedValue);
                 cmd.Parameters.AddWithValue("@usuario_nro_documento", SqlDbType.VarChar).Value = txb_numDni.Text;
                 cmd.Parameters.AddWithValue("@usuario_apellido", SqlDbType.VarChar).Value = txb_apellido.Text;
                 cmd.Parameters.AddWithValue("@usuario_nombre", SqlDbType.VarChar).Value = txb_nombre.Text;
@@ -58,13 +58,15 @@ namespace FrbaHotel.AbmUsuarios
                 cmd.Parameters.AddWithValue("@usuario_direccion", SqlDbType.VarChar).Value = txb_calle.Text;
                 cmd.Parameters.AddWithValue("@usuario_telefono", SqlDbType.VarChar).Value = txb_telefono.Text;
                 cmd.Parameters.AddWithValue("@usuario_rol", SqlDbType.VarChar).Value = cmb_rol.SelectedValue;
-                cmd.Parameters.AddWithValue("@usuario_hotel", SqlDbType.Int).Value = accesoSistema.HotelIdActual;
+                cmd.Parameters.AddWithValue("@usuario_hotel", SqlDbType.Int).Value = Convert.ToInt32(accesoSistema.HotelIdActual);
 
                 cmd.ExecuteNonQuery();
 
 
 
                 MessageBox.Show("Se ha cargado el Usuario " + txb_user.Text, "Mensaje");
+                this.Close();
+
 
             } else {
                 MessageBox.Show("Debe completar todos los campos obligatorios", "Advertencia");
@@ -79,14 +81,14 @@ namespace FrbaHotel.AbmUsuarios
 
         private bool validarFormulario()
         {
-            return (Validacion.esInicial(txb_user.Text) &
-                    Validacion.esInicial(txb_pas.Text) &
-                    Validacion.esInicial(txb_apellido.Text) &
-                    Validacion.esInicial(txb_nombre.Text) &
-                    Validacion.esInicial(txb_mail.Text) &
-                    Validacion.esInicial(txb_calle.Text) &
-                    Validacion.esInicial(txb_telefono.Text)&
-                    Validacion.esInicial(cmb_nacimiento.Value.ToString()));
+            return (!Validacion.esInicial(txb_user.Text) &
+                    !Validacion.esInicial(txb_pas.Text) &
+                    !Validacion.esInicial(txb_apellido.Text) &
+                    !Validacion.esInicial(txb_nombre.Text) &
+                    !Validacion.esInicial(txb_mail.Text) &
+                    !Validacion.esInicial(txb_calle.Text) &
+                    !Validacion.esInicial(txb_telefono.Text) &
+                    !Validacion.esInicial(cmb_nacimiento.Value.ToString()));
 
         }
 
