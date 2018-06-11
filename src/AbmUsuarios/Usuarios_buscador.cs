@@ -40,7 +40,7 @@ namespace FrbaHotel.AbmUsuarios
 
         private void btt_add_usuario_Click(object sender, EventArgs e)
         {
-            Hide();
+            
             AbmUsuarios.NuevoUsuario frm = new AbmUsuarios.NuevoUsuario();
 
             frm.Show();
@@ -70,12 +70,12 @@ namespace FrbaHotel.AbmUsuarios
 
                     //paso los parametros al SP
                     cmd.Parameters.AddWithValue("@usuario_user", SqlDbType.VarChar).Value = user;
-           
+
                     // Ejecuto el SP
                     cmd.ExecuteNonQuery();
 
                     // Muestro resultado de la operacion
-                    MessageBox.Show("Se ha eliminado el Usuario " + user , "Mensaje");
+                    MessageBox.Show("Se ha eliminado el Usuario " + user, "Mensaje");
 
                     dgv_tablaUsuario.Visible = false;
 
@@ -87,8 +87,58 @@ namespace FrbaHotel.AbmUsuarios
 
         private void btn_buscar_Click(object sender, EventArgs e)
         {
+            SqlCommand cmd = new SqlCommand("denver.buscar_usuario", db.Connection);
+            cmd.CommandType = CommandType.StoredProcedure;
 
+
+            cmd.Parameters.AddWithValue("@usuario_nombre", SqlDbType.VarChar).Value = txb_nombre.Text;
+
+            cmd.Parameters.AddWithValue("@usuario_apellido", SqlDbType.VarChar).Value = txb_apellido.Text;
+
+            cmd.Parameters.AddWithValue("@hotel", SqlDbType.Int).Value = Convert.ToInt32(cmb_hotel.SelectedValue);
+
+            // Creo el DataTable para obtener los resultados del SP
+            DataTable dt = new DataTable();
+
+            using (var da = new SqlDataAdapter(cmd))
+            {
+                da.Fill(dt);
+            }
+
+
+            // Cargo la Grilla con los datos obtenidos
+            dgv_tablaUsuario.DataSource = dt;
+            dgv_tablaUsuario.Visible = true;
+
+            if (Convert.ToInt32(cmb_hotel.SelectedValue) != accesoSistema.HotelIdActual)
+            {
+                dgv_tablaUsuario.Enabled = false;
+                btn_eliminar.Enabled = false;
+                btn_modif.Enabled = false;
+                btn_eliminar.Visible = true;
+                btn_modif.Visible = true;
+
+                btn_agregar.Visible = true;
+            }
+            else {
+                btn_eliminar.Enabled = true;
+                btn_modif.Enabled = true;
+                btn_eliminar.Visible = true;
+                btn_modif.Visible = true;
+
+                btn_agregar.Visible = false;
+
+            }
         }
 
+        private void help_crear_Popup(object sender, PopupEventArgs e)
+        {
+            // help_crear.Tag = "El usuario seleccionado se habilitara en su hotel de logueo";        }
+        }
+
+        private void Usuarios_buscador_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

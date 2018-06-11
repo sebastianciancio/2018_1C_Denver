@@ -76,7 +76,6 @@
             this.label1.Size = new System.Drawing.Size(61, 13);
             this.label1.TabIndex = 0;
             this.label1.Text = "Username :";
-            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // txb_user
             // 
@@ -84,21 +83,19 @@
             this.txb_user.Name = "txb_user";
             this.txb_user.Size = new System.Drawing.Size(118, 20);
             this.txb_user.TabIndex = 1;
-            this.txb_user.TextChanged += new System.EventHandler(this.txb_user_TextChanged);
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(14, 59);
+            this.label2.Location = new System.Drawing.Point(14, 65);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(56, 13);
             this.label2.TabIndex = 2;
             this.label2.Text = "Password:";
-            this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
             // txb_pas
             // 
-            this.txb_pas.Location = new System.Drawing.Point(81, 56);
+            this.txb_pas.Location = new System.Drawing.Point(81, 62);
             this.txb_pas.Name = "txb_pas";
             this.txb_pas.Size = new System.Drawing.Size(118, 20);
             this.txb_pas.TabIndex = 3;
@@ -112,7 +109,6 @@
             this.label3.Size = new System.Drawing.Size(70, 13);
             this.label3.TabIndex = 4;
             this.label3.Text = "Rol Asignado";
-            this.label3.Click += new System.EventHandler(this.label3_Click);
             // 
             // cmb_rol
             // 
@@ -122,7 +118,6 @@
             this.cmb_rol.Name = "cmb_rol";
             this.cmb_rol.Size = new System.Drawing.Size(114, 21);
             this.cmb_rol.TabIndex = 5;
-            this.cmb_rol.SelectedIndexChanged += new System.EventHandler(this.cmb_rol_SelectedIndexChanged);
             // 
             // lbl_userRepetido
             // 
@@ -134,7 +129,6 @@
             this.lbl_userRepetido.TabIndex = 6;
             this.lbl_userRepetido.Text = "El usuario ingresado ya existe en la base, por favor ingrese un nuevo usuario";
             this.lbl_userRepetido.Visible = false;
-            this.lbl_userRepetido.Click += new System.EventHandler(this.lbl_userRepetido_Click);
             // 
             // groupBox1
             // 
@@ -168,7 +162,6 @@
             this.groupBox1.TabIndex = 8;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Datos de la persona";
-            this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
             // 
             // label13
             // 
@@ -397,18 +390,16 @@
             this.label7.Size = new System.Drawing.Size(11, 13);
             this.label7.TabIndex = 149;
             this.label7.Text = "*";
-            this.label7.Click += new System.EventHandler(this.label7_Click);
             // 
             // label10
             // 
             this.label10.AutoSize = true;
             this.label10.ForeColor = System.Drawing.Color.Red;
-            this.label10.Location = new System.Drawing.Point(64, 59);
+            this.label10.Location = new System.Drawing.Point(64, 65);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(11, 13);
             this.label10.TabIndex = 150;
             this.label10.Text = "*";
-            this.label10.Click += new System.EventHandler(this.label10_Click);
             // 
             // label11
             // 
@@ -419,7 +410,6 @@
             this.label11.Size = new System.Drawing.Size(11, 13);
             this.label11.TabIndex = 151;
             this.label11.Text = "*";
-            this.label11.Click += new System.EventHandler(this.label11_Click);
             // 
             // btn_guardar
             // 
@@ -445,6 +435,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
             this.ClientSize = new System.Drawing.Size(439, 445);
             this.Controls.Add(this.btn_volver);
             this.Controls.Add(this.btn_guardar);
@@ -460,6 +451,7 @@
             this.Controls.Add(this.txb_user);
             this.Controls.Add(this.label1);
             this.Name = "NuevoUsuario";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Crear Usuario";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();

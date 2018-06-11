@@ -23,11 +23,11 @@ namespace FrbaHotel.AbmUsuarios
 
         private void Usuario_modificacion_Load(object sender, EventArgs e)
         {
-            SqlCommand cmd = new SqlCommand("dbo.buscar_usuario", db.Connection);
+            SqlCommand cmd = new SqlCommand("denver.buscar_usuario_completo", db.Connection);
             cmd.CommandType = CommandType.StoredProcedure;
 
 
-            cmd.Parameters.AddWithValue("@user", SqlDbType.VarChar).Value = user;
+            cmd.Parameters.AddWithValue("@usuario_nombre", SqlDbType.VarChar).Value = user;
 
             // Creo el DataTable para obtener los resultados del SP
             DataTable dt = new DataTable();
@@ -44,14 +44,19 @@ namespace FrbaHotel.AbmUsuarios
             txb_user.Text = user;
 
             //cmb_tipoDoc.SelectedValue = row["usuario_tipo_documento_id"].ToString();
-            txb_numDni.Text = row["usuari_numero_documento"].ToString();
+            txb_numDni.Text = row["usuario_nro_documento"].ToString();
             txb_apellido.Text = row["usuario_apellido"].ToString();
             txb_nombre.Text = row["usuario_nombre"].ToString();
             txb_mail.Text = row["usuario_email"].ToString();
             txb_calle.Text = row["usuario_direccion"].ToString();
             txb_telefono.Text = row["usuario_telefono"].ToString();
+            if (row["usuario_tipo_documento_id"].ToString() != "")
+            {
+                cmb_tipoDoc.SelectedValue = Convert.ToInt32(row["usuario_tipo_documento_id"]);
+            }
+            if (row["usuario_fecha_nac"].ToString() != "")
+            { cmb_nacimiento.Value = Convert.ToDateTime(row["usuario_fecha_nac"]); }
             
-
         }
 
         private void btn_guardar_Click(object sender, EventArgs e)

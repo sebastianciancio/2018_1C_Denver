@@ -23,7 +23,7 @@ namespace FrbaHotel.AbmRol
 
         private void GestionRoles_Load(object sender, EventArgs e)
         {
-            SqlCommand cmd = new SqlCommand("denver.obtener_roles", db.Connection);
+            SqlCommand cmd = new SqlCommand("denver.cargar_tabla_roles", db.Connection);
             cmd.CommandType = CommandType.StoredProcedure;
 
             DataTable dt = new DataTable();
@@ -33,18 +33,30 @@ namespace FrbaHotel.AbmRol
                 da.Fill(dt);
             }
             dgv_roles.DataSource = dt;
+
+            foreach (DataGridViewRow row in dgv_roles.Rows){
+                if (row.Cells[1].Value.ToString()  == "ACTIVO")
+                { row.DefaultCellStyle.BackColor = Color.LightBlue; }
+                
+                else {
+                    row.DefaultCellStyle.BackColor = Color.Aquamarine;
+                }
+           
+            }
+   
         }
 
         private void btn_modificar_Click(object sender, EventArgs e)
         {
             Hide();
-            AbmRol.ModificarRol frm = new AbmRol.ModificarRol();
+            AbmRol.Modificar_rol frm = new AbmRol.Modificar_rol();
             
+
             DataGridViewRow row = dgv_roles.CurrentRow;
 
             string rol = row.Cells[0].Value.ToString();
-
-            frm.rol = rol;
+            frm.txb_nombre.Text = rol;
+            frm.modRol = rol;
             frm.Show();
         }
 
@@ -61,7 +73,37 @@ namespace FrbaHotel.AbmRol
             Close();
         }
 
+        private void btn_eliminar_Click(object sender, EventArgs e)
+        {
+            SqlCommand cmd = new SqlCommand("denver.actualizar_estado_rol", db.Connection);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            //Levanto la linea seleccionada
+            DataGridViewRow row = dgv_roles.CurrentRow;
+
+            // Si existen datos
+            if (row != null)
+            {
+                    string estado; 
+                    string rol = row.Cells[0].Value.ToString();
+                     if (row.Cells[1].Value.ToString() == "ACTIVO")
+                            {  estado = "N"; } else {  estado = "S"; };
+                    //paso los parametros al SP
+                    cmd.Parameters.AddWithValue("@rol_nombre", SqlDbType.VarChar).Value = rol;
+                    cmd.Parameters.AddWithValue("@rol_estado", SqlDbType.VarChar).Value = estado;
+                    // Ejecuto el SP
+                    cmd.ExecuteNonQuery();
+
+                    // Muestro resultado de la operacion
+                    MessageBox.Show("El rol " + rol +  " se actualizo con exito", "Mensaje");
+
+                    this.GestionRoles_Load(null, null);
+
+                }
+            }
+        }
 
 
-    }
-}
+
+                }
+

@@ -105,11 +105,11 @@
     <Compile Include="AbmRol\GestionRoles.Designer.cs">
       <DependentUpon>GestionRoles.cs</DependentUpon>
     </Compile>
-    <Compile Include="AbmRol\ModificarRol.cs">
+    <Compile Include="AbmRol\Modificar_rol.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AbmRol\ModificarRol.Designer.cs">
-      <DependentUpon>ModificarRol.cs</DependentUpon>
+    <Compile Include="AbmRol\Modificar_rol.Designer.cs">
+      <DependentUpon>Modificar_rol.cs</DependentUpon>
     </Compile>
     <Compile Include="AbmUsuarios\NuevoUsuario.cs">
       <SubType>Form</SubType>
@@ -237,8 +237,8 @@
     <EmbeddedResource Include="AbmRol\GestionRoles.resx">
       <DependentUpon>GestionRoles.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="AbmRol\ModificarRol.resx">
-      <DependentUpon>ModificarRol.cs</DependentUpon>
+    <EmbeddedResource Include="AbmRol\Modificar_rol.resx">
+      <DependentUpon>Modificar_rol.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="AbmUsuarios\NuevoUsuario.resx">
       <DependentUpon>NuevoUsuario.cs</DependentUpon>
@@ -309,10 +309,12 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Config.txt" />
     <None Include="Resources\volver.png" />
     <None Include="Resources\login.jpg" />
     <None Include="Resources\hotel.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Config.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -33,8 +33,8 @@ if EXISTS (SELECT * FROM sys.objects  WHERE name = 'eliminar_regimen' AND type I
 	DROP PROCEDURE [denver].[eliminar_regimen]
 if EXISTS (SELECT * FROM sys.objects  WHERE name = 'cargar_rol' AND type IN (N'P', N'PC'))
 	DROP PROCEDURE [denver].[cargar_rol]
-if EXISTS (SELECT * FROM sys.objects  WHERE name = 'eliminar_rol' AND type IN (N'P', N'PC'))
-	DROP PROCEDURE [denver].[eliminar_rol] 
+if EXISTS (SELECT * FROM sys.objects  WHERE name = 'actualizar_estado_rol' AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [denver].[actualizar_estado_rol] 
 if EXISTS (SELECT * FROM sys.objects  WHERE name = 'cargar_usuario' AND type IN (N'P', N'PC'))
 	DROP PROCEDURE [denver].[cargar_usuario] 
 if EXISTS (SELECT * FROM sys.objects  WHERE name = 'eliminar_usuario' AND type IN (N'P', N'PC'))
@@ -115,8 +115,19 @@ if EXISTS (SELECT * FROM sys.objects  WHERE name = 'funcionalidades_rol' AND typ
 	DROP PROCEDURE [denver].[funcionalidades_rol]	
 if EXISTS (SELECT * FROM sys.objects  WHERE name = 'existe_rol' AND type IN (N'FN'))
 	DROP FUNCTION [denver].[existe_rol]
---if EXISTS (SELECT * FROM sys.objects  WHERE name = 'obtener_funcionalidades' AND type IN (N'P', N'PC'))
---	DROP PROCEDURE [denver].[obtener_funcionalidades]	
+if EXISTS (SELECT * FROM sys.objects  WHERE name = 'obtener_funcionalidades' AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [denver].[obtener_funcionalidades]
+if EXISTS (SELECT * FROM sys.objects  WHERE name = 'buscar_funcionalidades_rol' AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [denver].[buscar_funcionalidades_rol]	
+if EXISTS (SELECT * FROM sys.objects  WHERE name = 'eliminar_rol_completo' AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [denver].[eliminar_rol_completo]	
+if EXISTS (SELECT * FROM sys.objects  WHERE name = 'cargar_tabla_roles' AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [denver].[cargar_tabla_roles]
+if EXISTS (SELECT * FROM sys.objects  WHERE name = 'buscar_usuario' AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [denver].[buscar_usuario]
+if EXISTS (SELECT * FROM sys.objects  WHERE name = 'buscar_usuario_completo' AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [denver].[buscar_usuario_completo]
+
 GO
 
 
@@ -381,16 +392,17 @@ BEGIN
 END
 GO
 
+	
 
-CREATE PROCEDURE [denver].[eliminar_rol]
-	@rol_nombre nvarchar(255)
+CREATE PROCEDURE [denver].[actualizar_estado_rol]
+	@rol_nombre nvarchar(255),
+	@rol_estado char
 AS
 BEGIN
 	SET NOCOUNT ON;  
 	UPDATE [denver].[roles]
-		SET rol_activo = 'N'
-	WHERE
-		@rol_nombre = rol_nombre
+		SET rol_activo = @rol_estado
+		WHERE @rol_nombre = rol_nombre
 END
 GO
 
@@ -406,8 +418,8 @@ CREATE PROCEDURE [denver].[cargar_usuario]
 	@usuario_telefono nvarchar(255),
 	@usuario_direccion nvarchar(255),
 	@usuario_fecha_nac datetime,
-	@usuario_rol nvarchar(255)
---  @usuario_hotel nvarchar(255)
+	@usuario_rol nvarchar(255),
+    @usuario_hotel smallint
 AS
 BEGIN
 	SET NOCOUNT ON;  
@@ -428,7 +440,7 @@ BEGIN
 		)
 	VALUES(
 		@usuario_user,
-		@usuario_pass,
+		HASHBYTES('SHA2_256',@usuario_pass),
 		@usuario_nombre,
 		@usuario_apellido,
 		@usuario_tipo_documento_id,
@@ -450,6 +462,15 @@ BEGIN
 		 @usuario_user,
 		 @usuario_rol,
 		 GETDATE())
+
+		 INSERT INTO [denver].[usuarios_hoteles](
+		     usuario_hotel_id,
+			 usuario_usuario_user
+			 )
+			 VALUES (
+			 @usuario_user,
+			 @usuario_hotel)
+
 
 END
 GO
@@ -1136,7 +1157,7 @@ END
 GO
 
 CREATE PROCEDURE [denver].[crear_rol_funcionalidad]    
-	@rol nvarchar(255),
+	@rol_nombre nvarchar(255),
 	@rol_funcionalidad smallint
 AS   
 BEGIN 
@@ -1147,7 +1168,7 @@ BEGIN
 		rol_funcionalidad_funcionalidad_id
 		)
 		values(
-		@rol,
+		@rol_nombre,
 		@rol_funcionalidad
 		)
 END
@@ -1174,11 +1195,85 @@ BEGIN
 
 END
 GO
---CREATE PROCEDURE denver.obtener_funcionalidades
---AS
---BEGIN
---	SET NOCOUNT ON;
---	SELECT funcionalidad_nombre 
---	  FROM denver.funcionalidades
---END
---GO
+CREATE PROCEDURE denver.obtener_funcionalidades
+AS
+BEGIN
+	SET NOCOUNT ON;
+	SELECT funcionalidad_nombre 
+	  FROM denver.funcionalidades
+END
+GO
+
+CREATE PROCEDURE [denver].[buscar_funcionalidades_rol]
+@rol_nombre nvarchar(255)
+AS
+BEGIN
+	SET NOCOUNT ON;
+	SELECT rol_funcionalidad_funcionalidad_id
+	  FROM denver.roles_funcionalidades
+		WHERE rol_funcionalidad_rol_nombre = @rol_nombre
+
+END
+GO
+
+CREATE PROCEDURE [denver].[eliminar_rol_completo]
+	@rol nvarchar(255),
+	@rol_nuevo nvarchar(255)
+AS
+BEGIN
+	SET NOCOUNT ON;  
+	
+    DELETE FROM denver.roles_funcionalidades WHERE rol_funcionalidad_rol_nombre = @rol;
+
+	UPDATE denver.usuarios_roles
+	 SET usuario_rol_rol_nombre = @rol_nuevo
+	  WHERE usuario_rol_rol_nombre = @rol ;
+
+	DELETE FROM denver.roles WHERE rol_nombre = @rol 
+
+
+END
+GO
+
+CREATE PROCEDURE [denver].[cargar_tabla_roles]
+AS
+BEGIN
+	SET NOCOUNT ON;
+	SELECT rol_nombre AS Roles, CASE WHEN rol_activo = 'S' THEN 'ACTIVO' ELSE 'INACTIVO' END AS Estado  
+	  FROM denver.roles
+
+END
+GO
+
+CREATE PROCEDURE [denver].[buscar_usuario]    
+	@usuario_nombre nvarchar(255) = NULL ,
+	@usuario_apellido nvarchar(255) = NULL,
+	@hotel int = NULL 
+AS   
+BEGIN 
+	-- SET NOCOUNT ON added to prevent extra result sets from interfering with SELECT statements.
+	SET NOCOUNT ON;  
+
+	SELECT a.usuario_user AS Usuario, a.usuario_nombre AS Nombre, a.usuario_apellido AS Apellido, a.usuario_tipo_documento_id AS 'Tipo DNI',
+	a.usuario_nro_documento AS DNI , a.usuario_email AS Mail, a.usuario_telefono AS Tel
+		FROM 
+		denver.usuarios AS a
+		INNER JOIN denver.usuarios_hoteles AS b ON a.usuario_user = b.usuario_usuario_user  
+	WHERE  a.usuario_nombre LIKE '%' + ISNULL(@usuario_nombre, usuario_nombre) + '%'
+		AND a.usuario_apellido LIKE '%' + ISNULL(@usuario_apellido, usuario_apellido) + '%'
+		AND b.usuario_hotel_id = @hotel 
+END
+GO
+
+CREATE PROCEDURE [denver].[buscar_usuario_completo]    
+	@usuario_nombre nvarchar(255) = NULL 
+AS   
+BEGIN 
+	-- SET NOCOUNT ON added to prevent extra result sets from interfering with SELECT statements.
+	SET NOCOUNT ON;  
+
+	SELECT *
+		FROM denver.usuarios AS a 
+		WHERE  a.usuario_nombre LIKE '%' + ISNULL(@usuario_nombre, usuario_nombre) + '%'
+END
+GO

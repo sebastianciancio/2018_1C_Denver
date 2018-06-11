@@ -40,7 +40,7 @@ namespace FrbaHotel
             sda.Fill(dt);
             
             // Si existe
-            return Convert.ToInt32(dt.Rows[0][0]) == 0;
+            return Convert.ToInt32(dt.Rows[0][0]) == 1;
         }
     }
 }

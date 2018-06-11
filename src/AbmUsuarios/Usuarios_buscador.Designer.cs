@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Usuarios_buscador));
             this.btn_eliminar = new System.Windows.Forms.Button();
             this.btn_modif = new System.Windows.Forms.Button();
@@ -41,6 +42,8 @@
             this.lbl_apellido = new System.Windows.Forms.Label();
             this.dgv_tablaUsuario = new System.Windows.Forms.DataGridView();
             this.btt_add_usuario = new System.Windows.Forms.Button();
+            this.btn_agregar = new System.Windows.Forms.Button();
+            this.help_crear = new System.Windows.Forms.ToolTip(this.components);
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_tablaUsuario)).BeginInit();
             this.SuspendLayout();
@@ -169,19 +172,39 @@
             this.btt_add_usuario.UseVisualStyleBackColor = true;
             this.btt_add_usuario.Click += new System.EventHandler(this.btt_add_usuario_Click);
             // 
+            // btn_agregar
+            // 
+            this.btn_agregar.Location = new System.Drawing.Point(722, 240);
+            this.btn_agregar.Name = "btn_agregar";
+            this.btn_agregar.Size = new System.Drawing.Size(86, 26);
+            this.btn_agregar.TabIndex = 18;
+            this.btn_agregar.Text = "Agregar";
+            this.btn_agregar.UseVisualStyleBackColor = true;
+            this.btn_agregar.Visible = false;
+            // 
+            // help_crear
+            // 
+            this.help_crear.IsBalloon = true;
+            this.help_crear.Tag = "El usuario seleccionado se habilitara en su hotel de logueo";
+            this.help_crear.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
+            this.help_crear.Popup += new System.Windows.Forms.PopupEventHandler(this.help_crear_Popup);
+            // 
             // Usuarios_buscador
             // 
             this.AcceptButton = this.btn_buscar;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(819, 412);
+            this.Controls.Add(this.btn_agregar);
             this.Controls.Add(this.btn_eliminar);
             this.Controls.Add(this.btn_modif);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.btt_add_usuario);
             this.Controls.Add(this.dgv_tablaUsuario);
             this.Name = "Usuarios_buscador";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Usuarios";
+            this.Load += new System.EventHandler(this.Usuarios_buscador_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_tablaUsuario)).EndInit();
@@ -203,5 +226,7 @@
         private System.Windows.Forms.DataGridView dgv_tablaUsuario;
         private System.Windows.Forms.ComboBox cmb_hotel;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button btn_agregar;
+        private System.Windows.Forms.ToolTip help_crear;
     }
 }

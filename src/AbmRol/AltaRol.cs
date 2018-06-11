@@ -18,7 +18,6 @@ namespace FrbaHotel.AbmRol
         public AltaRol()
         {
             db = DataBase.GetInstance();
-            //Combos.cargarCheckedlist(clb_funcionalidades);
             InitializeComponent();
         }
 
@@ -44,18 +43,20 @@ namespace FrbaHotel.AbmRol
                 cmd.Parameters.AddWithValue("@rol", SqlDbType.VarChar).Value = txb_nombre.Text;
                 cmd.ExecuteNonQuery();
 
-                SqlCommand cmd2 = new SqlCommand("denver.crear_rol_funcionalidad", db.Connection);
-                cmd2.Parameters.AddWithValue("@rol", SqlDbType.VarChar).Value = txb_nombre.Text;
-
+                int sum;
                 for (int i = 0; i < clb_funcionalidades.CheckedIndices.Count; i++)
                 {
                    // int selection = clb_funcionalidades.CheckedIndices[i];
-
-                    cmd2.Parameters.AddWithValue("@id_funcionlidad", SqlDbType.Int).Value = clb_funcionalidades.CheckedIndices[i];
+                  SqlCommand cmd2 = new SqlCommand("denver.crear_rol_funcionalidad", db.Connection);
+                    cmd2.CommandType = CommandType.StoredProcedure;
+                    cmd2.Parameters.AddWithValue("@rol_nombre", SqlDbType.VarChar).Value = txb_nombre.Text;
+                    sum = clb_funcionalidades.CheckedIndices[i] + 1;
+                    cmd2.Parameters.AddWithValue("@rol_funcionalidad", SqlDbType.SmallInt).Value = sum;
                     cmd2.ExecuteNonQuery();
                 }
 
-
+                MessageBox.Show("El rol " + txb_nombre.Text + " se creo correctamente", "Mensaje");
+                Close();
             }
         }
 
@@ -64,6 +65,33 @@ namespace FrbaHotel.AbmRol
             Close();
         }
 
+        private void AltaRol_Load(object sender, EventArgs e)
+        {
+            //clb_funcionalidades.Items[0] = true;
+            SqlCommand cmd = new SqlCommand("denver.obtener_funcionalidades", DataBase.GetInstance().Connection);
+            cmd.CommandType = CommandType.StoredProcedure;
+           
 
+            DataTable dt = new DataTable();
+
+            using (var da = new SqlDataAdapter(cmd))
+            {
+                da.Fill(dt);
+            }
+
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+               
+                    clb_funcionalidades.Items.Add(dt.Rows[i][0], false);
+                
+            }
+             
+            
+        }
+
+        private void clb_funcionalidades_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

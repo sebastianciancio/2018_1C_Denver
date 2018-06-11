@@ -27,8 +27,7 @@ namespace FrbaHotel.AbmUsuarios
             SqlDataAdapter sda = new SqlDataAdapter("SELECT denver.existe_usuario ('" + txb_user.Text + "')", db.Connection);
             DataTable dt = new DataTable();
             sda.Fill(dt);
-            
-           
+
             // Si existe
             if (Convert.ToInt32(dt.Rows[0][0]) == 1)
             {
@@ -41,82 +40,56 @@ namespace FrbaHotel.AbmUsuarios
 
         private void btn_guardar_Click(object sender, EventArgs e)
         {
-            SqlCommand cmd = new SqlCommand("dbo.cargar_usuario", db.Connection);
-            cmd.CommandType = CommandType.StoredProcedure;
+            
+            if (validarFormulario())
+            {
+                SqlCommand cmd = new SqlCommand("denver.cargar_usuario", db.Connection);
+                cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.AddWithValue("@usuario_user", SqlDbType.VarChar).Value = txb_user.Text;
-            cmd.Parameters.AddWithValue("@usuario_pass", SqlDbType.VarChar).Value = txb_pas.Text;
-            cmd.Parameters.AddWithValue("@usuario_tipo_documento_id", SqlDbType.Int).Value = cmb_tipoDoc.SelectedValue;
-            cmd.Parameters.AddWithValue("@usuario_nro_documento", SqlDbType.Int).Value = Convert.ToInt32(txb_numDni.Text);
-            cmd.Parameters.AddWithValue("@usuario_apellido", SqlDbType.VarChar).Value = txb_apellido.Text;
-            cmd.Parameters.AddWithValue("@usuario_nombre", SqlDbType.VarChar).Value = txb_nombre.Text;
-            cmd.Parameters.AddWithValue("@usuario_fecha_nac", SqlDbType.DateTime).Value = "";
-            cmd.Parameters.AddWithValue("@usuario_email", SqlDbType.VarChar).Value = txb_mail.Text;
-            cmd.Parameters.AddWithValue("@usuario_direccion", SqlDbType.VarChar).Value = txb_calle.Text;
-            cmd.Parameters.AddWithValue("@usuario_telefono", SqlDbType.VarChar).Value = txb_telefono.Text;
-            cmd.Parameters.AddWithValue("@usuario_rol", SqlDbType.VarChar).Value = cmb_rol.SelectedValue;
 
-            cmd.ExecuteNonQuery();
+                cmd.Parameters.AddWithValue("@usuario_user", SqlDbType.VarChar).Value = txb_user.Text;
+                cmd.Parameters.AddWithValue("@usuario_pass", SqlDbType.VarChar).Value = txb_pas.Text;
+                cmd.Parameters.AddWithValue("@usuario_tipo_documento_id", SqlDbType.Int).Value = cmb_tipoDoc.SelectedValue;
+                cmd.Parameters.AddWithValue("@usuario_nro_documento", SqlDbType.VarChar).Value = txb_numDni.Text;
+                cmd.Parameters.AddWithValue("@usuario_apellido", SqlDbType.VarChar).Value = txb_apellido.Text;
+                cmd.Parameters.AddWithValue("@usuario_nombre", SqlDbType.VarChar).Value = txb_nombre.Text;
+                cmd.Parameters.AddWithValue("@usuario_fecha_nac", SqlDbType.DateTime).Value = cmb_nacimiento.Value;
+                cmd.Parameters.AddWithValue("@usuario_email", SqlDbType.VarChar).Value = txb_mail.Text;
+                cmd.Parameters.AddWithValue("@usuario_direccion", SqlDbType.VarChar).Value = txb_calle.Text;
+                cmd.Parameters.AddWithValue("@usuario_telefono", SqlDbType.VarChar).Value = txb_telefono.Text;
+                cmd.Parameters.AddWithValue("@usuario_rol", SqlDbType.VarChar).Value = cmb_rol.SelectedValue;
+                cmd.Parameters.AddWithValue("@usuario_hotel", SqlDbType.Int).Value = accesoSistema.HotelIdActual;
 
-            Close();
+                cmd.ExecuteNonQuery();
 
-            MessageBox.Show("Se ha cargado el Usuario " + txb_user.Text , "Mensaje");
+
+
+                MessageBox.Show("Se ha cargado el Usuario " + txb_user.Text, "Mensaje");
+
+            } else {
+                MessageBox.Show("Debe completar todos los campos obligatorios", "Advertencia");
+            }
 
         }
 
         private void btn_volver_Click(object sender, EventArgs e)
         {
-            Close();
+            this.Close();
         }
 
-        private void label11_Click(object sender, EventArgs e)
+        private bool validarFormulario()
         {
+            return (Validacion.esInicial(txb_user.Text) &
+                    Validacion.esInicial(txb_pas.Text) &
+                    Validacion.esInicial(txb_apellido.Text) &
+                    Validacion.esInicial(txb_nombre.Text) &
+                    Validacion.esInicial(txb_mail.Text) &
+                    Validacion.esInicial(txb_calle.Text) &
+                    Validacion.esInicial(txb_telefono.Text)&
+                    Validacion.esInicial(cmb_nacimiento.Value.ToString()));
 
         }
 
-        private void label10_Click(object sender, EventArgs e)
-        {
 
-        }
-
-        private void label7_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void groupBox1_Enter(object sender, EventArgs e)
-        {
-
-        }
-
-        private void lbl_userRepetido_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void cmb_rol_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label3_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label2_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void txb_user_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
     }
 }
