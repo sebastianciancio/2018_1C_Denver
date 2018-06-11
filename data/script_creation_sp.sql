@@ -127,7 +127,8 @@ if EXISTS (SELECT * FROM sys.objects  WHERE name = 'buscar_usuario' AND type IN 
 	DROP PROCEDURE [denver].[buscar_usuario]
 if EXISTS (SELECT * FROM sys.objects  WHERE name = 'buscar_usuario_completo' AND type IN (N'P', N'PC'))
 	DROP PROCEDURE [denver].[buscar_usuario_completo]
-
+if EXISTS (SELECT * FROM sys.objects  WHERE name = 'loguin' AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [denver].[loguin]
 GO
 
 
@@ -179,7 +180,7 @@ BEGIN
 
 	DECLARE @tipo_documento_id smallint ;
 
-	SELECT @tipo_documento_id = TIPO_DOCUMENTO_ID FROM dbo.tipo_documentos
+	SELECT @tipo_documento_id = TIPO_DOCUMENTO_ID FROM denver.tipo_documentos
 		WHERE tipo_documento_nombre = @cliente_tipo_documento ;
 
 	INSERT INTO clientes(
@@ -225,7 +226,7 @@ BEGIN
 
 	DECLARE @tip_doc smallint ;
 
-	SELECT @tip_doc = TIPO_DOCUMENTO_ID FROM dbo.tipo_documentos
+	SELECT @tip_doc = TIPO_DOCUMENTO_ID FROM denver.tipo_documentos
 		WHERE tipo_documento_nombre = @cliente_tipo_documento_id ;
 
 	UPDATE [denver].[clientes]
@@ -527,7 +528,7 @@ BEGIN
 
 	DECLARE @tipo_documento_id smallint ;
 
-	SELECT @tipo_documento_id = TIPO_DOCUMENTO_ID FROM dbo.tipo_documentos
+	SELECT @tipo_documento_id = TIPO_DOCUMENTO_ID FROM denver.tipo_documentos
 		WHERE tipo_documento_nombre = @cliente_tipo_documento ;
 
 
@@ -1277,3 +1278,26 @@ BEGIN
 		WHERE  a.usuario_nombre LIKE '%' + ISNULL(@usuario_nombre, usuario_nombre) + '%'
 END
 GO
+
+CREATE PROCEDURE denver.loguin
+	@usuario_user nvarchar(50),
+	@usuario_pass varchar(50),
+	@hotel_id smallint
+AS   
+BEGIN 
+
+	SELECT count(*), usuario_apellido, usuario_nombre, usuario_user, usuario_login_fallidos, denver.cant_roles_usuario(usuario_user), usuario_rol_rol_nombre AS rol 
+	FROM 
+		denver.usuarios AS u 
+		JOIN denver.usuarios_hoteles AS uh ON u.usuario_user = uh.usuario_usuario_user 
+		JOIN denver.usuarios_roles AS r ON u.usuario_user = r.usuario_rol_usuario_user 
+	WHERE 
+		u.usuario_user = UPPER(@usuario_user) AND 
+		u.usuario_pass = HASHBYTES('SHA2_256',UPPER(@usuario_pass)) AND 
+		uh.usuario_hotel_id = @hotel_id AND 
+		u.usuario_activo = 'S' 
+	GROUP BY 
+		usuario_apellido, usuario_nombre, usuario_user, usuario_login_fallidos, usuario_rol_rol_nombre;;
+END
+GO
+

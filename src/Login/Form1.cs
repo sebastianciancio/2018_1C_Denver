@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel;
+using System.Data.SqlClient;
 
 namespace FrbaHotel
 {
@@ -39,9 +40,20 @@ namespace FrbaHotel
 
         private void btn_acceder_Click(object sender, EventArgs e)
         {
-            SqlDataAdapter sda = new SqlDataAdapter("SELECT count(*), usuario_apellido, usuario_nombre, usuario_user, usuario_login_fallidos, denver.cant_roles_usuario(usuario_user), usuario_rol_rol_nombre AS rol FROM denver.usuarios AS u JOIN denver.usuarios_hoteles AS uh ON u.usuario_user = uh.usuario_usuario_user JOIN denver.usuarios_roles AS r ON u.usuario_user = r.usuario_rol_usuario_user WHERE u.usuario_user = UPPER('" + login_usuario.Text + "') AND u.usuario_pass = HASHBYTES('SHA2_256',UPPER('" + login_password.Text + "')) AND uh.usuario_hotel_id = '" + cmb_hotel.SelectedValue + "' AND u.usuario_activo = 'S' GROUP BY usuario_apellido, usuario_nombre, usuario_user, usuario_login_fallidos, usuario_rol_rol_nombre;", db.Connection);
+            SqlCommand cmd;
+            cmd = new SqlCommand("denver.loguin", db.Connection);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.AddWithValue("@usuario_user", SqlDbType.VarChar).Value = login_usuario.Text;
+            cmd.Parameters.AddWithValue("@usuario_pass", SqlDbType.VarChar).Value = login_password.Text;
+            cmd.Parameters.AddWithValue("@hotel_id", SqlDbType.Int).Value = Convert.ToInt32(cmb_hotel.SelectedValue);
+
             DataTable dt = new DataTable();
-            sda.Fill(dt);
+
+            using (var da = new SqlDataAdapter(cmd))
+            {
+                da.Fill(dt);
+            }
 
             if (dt.Rows.Count == 1)
             {
@@ -72,7 +84,7 @@ namespace FrbaHotel
                     
 
                     // Reseteo los intentos fallidos
-                    SqlCommand cmd = new SqlCommand("denver.reset_intentos_loguin_fallidos", db.Connection);
+                    cmd = new SqlCommand("denver.reset_intentos_loguin_fallidos", db.Connection);
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@usuario_user", SqlDbType.VarChar).Value = login_usuario.Text;
                     cmd.ExecuteNonQuery();
@@ -87,7 +99,7 @@ namespace FrbaHotel
                     MessageBox.Show("Usuario bloqueado por más de 3 intentos fallidos.", "Mensaje");
 
                     // Bloqueo al Usuario
-                    SqlCommand cmd = new SqlCommand("denver.inhabilitar_usuario", db.Connection);
+                    cmd = new SqlCommand("denver.inhabilitar_usuario", db.Connection);
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@usuario_user", SqlDbType.VarChar).Value = login_usuario.Text;
                     cmd.ExecuteNonQuery();
@@ -99,7 +111,7 @@ namespace FrbaHotel
                 MessageBox.Show("Acceso no permitido.", "Mensaje");
 
                 // Incremento los Intentos Fallidos
-                SqlCommand cmd = new SqlCommand("denver.marcar_intentos_loguin_fallidos", db.Connection);
+                cmd = new SqlCommand("denver.marcar_intentos_loguin_fallidos", db.Connection);
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@usuario_user", SqlDbType.VarChar).Value = login_usuario.Text;
                 cmd.ExecuteNonQuery();

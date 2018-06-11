@@ -33,7 +33,7 @@ namespace FrbaHotel.AbmCliente
         private void Cliente_modificacion_Load(object sender, EventArgs e)
         {
             //
-            SqlCommand cmd = new SqlCommand("dbo.buscar_cliente_completo", db.Connection);
+            SqlCommand cmd = new SqlCommand("denver.buscar_cliente_completo", db.Connection);
             cmd.CommandType = CommandType.StoredProcedure;
 
 
@@ -70,7 +70,7 @@ namespace FrbaHotel.AbmCliente
 
         private void btn_cli_mod_guardar_Click(object sender, EventArgs e)
         {
-            SqlCommand cmd = new SqlCommand("dbo.modificar_cliente", db.Connection);
+            SqlCommand cmd = new SqlCommand("denver.modificar_cliente", db.Connection);
             cmd.CommandType = CommandType.StoredProcedure;
 
             cmd.Parameters.AddWithValue("@cliente_tipo_documento", SqlDbType.VarChar).Value = txb_cli_mod_doc.Text;

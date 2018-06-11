@@ -374,7 +374,7 @@ GO
 
 CREATE TABLE [denver].[usuarios](
       [usuario_user] [nvarchar](50) NOT NULL,
-      [usuario_pass] [nvarchar](50) NULL,
+      [usuario_pass] [binary](32) NULL,
       [usuario_apellido] [nvarchar](255) NULL,      
       [usuario_nombre] [nvarchar](255) NULL,
       [usuario_tipo_documento_id] [smallint] NULL,
