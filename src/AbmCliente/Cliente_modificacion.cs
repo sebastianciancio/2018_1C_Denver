@@ -33,7 +33,7 @@ namespace FrbaHotel.AbmCliente
         private void Cliente_modificacion_Load(object sender, EventArgs e)
         {
             //
-            SqlCommand cmd = new SqlCommand("dbo.buscar_cliente_completo", db.Connection);
+            SqlCommand cmd = new SqlCommand("denver.buscar_cliente_completo", db.Connection);
             cmd.CommandType = CommandType.StoredProcedure;
 
 
@@ -52,12 +52,15 @@ namespace FrbaHotel.AbmCliente
             DataRow row = dt.Rows[0];
 
             //Mando los datos al form Modificar_cliente
-            txb_cli_mod_doc.Text = tipoDocumento;
+            txb_tipoDoc.Text = tipoDocumento;
             txb_cli_mod_dni.Text = nroDocumento;
 
             txb_cli_mod_apellidos.Text    = row["cliente_apellido"].ToString();
             txb_cli_mod_nombres.Text      = row["cliente_nombre"].ToString();
-           // cmb_cli_mod_fec_nac.Value =  row["cliente_fecha_nac"].;
+            if(row["cliente_fecha_nac"].ToString() != "")
+            {
+                cmb_cli_mod_fec_nac.Value = Convert.ToDateTime(row["cliente_fecha_nac"]);
+            };
             txb_cli_mod_mail.Text         = row["cliente_email"].ToString();
             txb_cli_mod_calle.Text        = row["cliente_dom_calle"].ToString();
             txb_cli_mod_nro.Text          = row["cliente_dom_nro"].ToString();
@@ -73,7 +76,7 @@ namespace FrbaHotel.AbmCliente
             SqlCommand cmd = new SqlCommand("dbo.modificar_cliente", db.Connection);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.AddWithValue("@cliente_tipo_documento", SqlDbType.VarChar).Value = txb_cli_mod_doc.Text;
+            cmd.Parameters.AddWithValue("@cliente_tipo_documento", SqlDbType.VarChar).Value = txb_tipoDoc.Text;
             cmd.Parameters.AddWithValue("@cliente_pasaporte_nro", SqlDbType.Int).Value = Convert.ToInt32(txb_cli_mod_dni.Text);
             cmd.Parameters.AddWithValue("@cliente_apellido", SqlDbType.VarChar).Value = txb_cli_mod_apellidos.Text;
             cmd.Parameters.AddWithValue("@cliente_nombre", SqlDbType.VarChar).Value = txb_cli_mod_nombres.Text;

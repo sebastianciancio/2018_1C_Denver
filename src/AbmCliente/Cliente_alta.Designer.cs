@@ -46,10 +46,7 @@
             this.lbl_cli_mod_piso = new System.Windows.Forms.Label();
             this.txb_cli_new_nro = new System.Windows.Forms.TextBox();
             this.lbl_cli_mod_numero = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.txb_cli_new_cp = new System.Windows.Forms.TextBox();
-            this.lbl_cli_mod_cp = new System.Windows.Forms.Label();
             this.txb_cli_new_calle = new System.Windows.Forms.TextBox();
             this.lbl_cli_mod_direccion = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -178,7 +175,7 @@
             // 
             this.label6.AutoSize = true;
             this.label6.ForeColor = System.Drawing.Color.Red;
-            this.label6.Location = new System.Drawing.Point(148, 275);
+            this.label6.Location = new System.Drawing.Point(67, 275);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(11, 13);
             this.label6.TabIndex = 78;
@@ -186,7 +183,7 @@
             // 
             // txb_cli_new_localidad
             // 
-            this.txb_cli_new_localidad.Location = new System.Drawing.Point(96, 291);
+            this.txb_cli_new_localidad.Location = new System.Drawing.Point(15, 291);
             this.txb_cli_new_localidad.Name = "txb_cli_new_localidad";
             this.txb_cli_new_localidad.Size = new System.Drawing.Size(114, 20);
             this.txb_cli_new_localidad.TabIndex = 77;
@@ -194,7 +191,7 @@
             // lbl_cli_mod_localidad
             // 
             this.lbl_cli_mod_localidad.AutoSize = true;
-            this.lbl_cli_mod_localidad.Location = new System.Drawing.Point(93, 275);
+            this.lbl_cli_mod_localidad.Location = new System.Drawing.Point(12, 275);
             this.lbl_cli_mod_localidad.Name = "lbl_cli_mod_localidad";
             this.lbl_cli_mod_localidad.Size = new System.Drawing.Size(53, 13);
             this.lbl_cli_mod_localidad.TabIndex = 76;
@@ -232,16 +229,6 @@
             this.lbl_cli_mod_numero.TabIndex = 72;
             this.lbl_cli_mod_numero.Text = "Número";
             // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.ForeColor = System.Drawing.Color.Red;
-            this.label5.Location = new System.Drawing.Point(67, 275);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(11, 13);
-            this.label5.TabIndex = 71;
-            this.label5.Text = "*";
-            // 
             // label4
             // 
             this.label4.AutoSize = true;
@@ -251,22 +238,6 @@
             this.label4.Size = new System.Drawing.Size(11, 13);
             this.label4.TabIndex = 70;
             this.label4.Text = "*";
-            // 
-            // txb_cli_new_cp
-            // 
-            this.txb_cli_new_cp.Location = new System.Drawing.Point(12, 291);
-            this.txb_cli_new_cp.Name = "txb_cli_new_cp";
-            this.txb_cli_new_cp.Size = new System.Drawing.Size(49, 20);
-            this.txb_cli_new_cp.TabIndex = 69;
-            // 
-            // lbl_cli_mod_cp
-            // 
-            this.lbl_cli_mod_cp.AutoSize = true;
-            this.lbl_cli_mod_cp.Location = new System.Drawing.Point(9, 275);
-            this.lbl_cli_mod_cp.Name = "lbl_cli_mod_cp";
-            this.lbl_cli_mod_cp.Size = new System.Drawing.Size(61, 13);
-            this.lbl_cli_mod_cp.TabIndex = 68;
-            this.lbl_cli_mod_cp.Text = "Cod. Postal";
             // 
             // txb_cli_new_calle
             // 
@@ -503,10 +474,7 @@
             this.Controls.Add(this.lbl_cli_mod_piso);
             this.Controls.Add(this.txb_cli_new_nro);
             this.Controls.Add(this.lbl_cli_mod_numero);
-            this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
-            this.Controls.Add(this.txb_cli_new_cp);
-            this.Controls.Add(this.lbl_cli_mod_cp);
             this.Controls.Add(this.txb_cli_new_calle);
             this.Controls.Add(this.lbl_cli_mod_direccion);
             this.Controls.Add(this.label3);
@@ -548,10 +516,7 @@
         private System.Windows.Forms.Label lbl_cli_mod_piso;
         private System.Windows.Forms.TextBox txb_cli_new_nro;
         private System.Windows.Forms.Label lbl_cli_mod_numero;
-        private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox txb_cli_new_cp;
-        private System.Windows.Forms.Label lbl_cli_mod_cp;
         private System.Windows.Forms.TextBox txb_cli_new_calle;
         private System.Windows.Forms.Label lbl_cli_mod_direccion;
         private System.Windows.Forms.Label label3;

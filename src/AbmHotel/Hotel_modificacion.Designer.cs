@@ -56,6 +56,9 @@
             this.cmb_regimenes = new System.Windows.Forms.ComboBox();
             this.btn__volver = new System.Windows.Forms.Button();
             this.btn_guardar = new System.Windows.Forms.Button();
+            this.label6 = new System.Windows.Forms.Label();
+            this.txb_nro = new System.Windows.Forms.TextBox();
+            this.lbl_nro = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label12
@@ -67,7 +70,6 @@
             this.label12.Size = new System.Drawing.Size(11, 13);
             this.label12.TabIndex = 89;
             this.label12.Text = "*";
-
             // 
             // label10
             // 
@@ -78,7 +80,6 @@
             this.label10.Size = new System.Drawing.Size(11, 13);
             this.label10.TabIndex = 88;
             this.label10.Text = "*";
-
             // 
             // txb_mail
             // 
@@ -87,7 +88,6 @@
             this.txb_mail.Name = "txb_mail";
             this.txb_mail.Size = new System.Drawing.Size(210, 20);
             this.txb_mail.TabIndex = 86;
-
             // 
             // lbl_mail
             // 
@@ -98,7 +98,6 @@
             this.lbl_mail.Size = new System.Drawing.Size(26, 13);
             this.lbl_mail.TabIndex = 87;
             this.lbl_mail.Text = "Mail";
-
             // 
             // txb_telefono
             // 
@@ -106,7 +105,6 @@
             this.txb_telefono.Name = "txb_telefono";
             this.txb_telefono.Size = new System.Drawing.Size(134, 20);
             this.txb_telefono.TabIndex = 85;
-
             // 
             // lbl_telefono
             // 
@@ -116,36 +114,32 @@
             this.lbl_telefono.Size = new System.Drawing.Size(49, 13);
             this.lbl_telefono.TabIndex = 84;
             this.lbl_telefono.Text = "Telefono";
-
             // 
             // label7
             // 
             this.label7.AutoSize = true;
             this.label7.ForeColor = System.Drawing.Color.Red;
-            this.label7.Location = new System.Drawing.Point(339, 111);
+            this.label7.Location = new System.Drawing.Point(83, 155);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(11, 13);
             this.label7.TabIndex = 83;
             this.label7.Text = "*";
-
             // 
             // txb_ciudad
             // 
-            this.txb_ciudad.Location = new System.Drawing.Point(279, 127);
+            this.txb_ciudad.Location = new System.Drawing.Point(23, 171);
             this.txb_ciudad.Name = "txb_ciudad";
             this.txb_ciudad.Size = new System.Drawing.Size(150, 20);
             this.txb_ciudad.TabIndex = 82;
-
             // 
             // lbl_ciudad
             // 
             this.lbl_ciudad.AutoSize = true;
-            this.lbl_ciudad.Location = new System.Drawing.Point(277, 111);
+            this.lbl_ciudad.Location = new System.Drawing.Point(21, 155);
             this.lbl_ciudad.Name = "lbl_ciudad";
             this.lbl_ciudad.Size = new System.Drawing.Size(40, 13);
             this.lbl_ciudad.TabIndex = 81;
             this.lbl_ciudad.Text = "Ciudad";
-
             // 
             // label4
             // 
@@ -156,7 +150,6 @@
             this.label4.Size = new System.Drawing.Size(11, 13);
             this.label4.TabIndex = 72;
             this.label4.Text = "*";
-
             // 
             // txb_calle
             // 
@@ -164,7 +157,6 @@
             this.txb_calle.Name = "txb_calle";
             this.txb_calle.Size = new System.Drawing.Size(241, 20);
             this.txb_calle.TabIndex = 69;
-
             // 
             // lbl_direccion
             // 
@@ -174,7 +166,6 @@
             this.lbl_direccion.Size = new System.Drawing.Size(52, 13);
             this.lbl_direccion.TabIndex = 68;
             this.lbl_direccion.Text = "Dirección";
-
             // 
             // label3
             // 
@@ -185,7 +176,6 @@
             this.label3.Size = new System.Drawing.Size(11, 13);
             this.label3.TabIndex = 67;
             this.label3.Text = "*";
-
             // 
             // lbl_asterisco
             // 
@@ -252,7 +242,7 @@
             this.cmb_estrellas.Name = "cmb_estrellas";
             this.cmb_estrellas.Size = new System.Drawing.Size(79, 21);
             this.cmb_estrellas.TabIndex = 91;
-           
+            // 
             // label1
             // 
             this.label1.AutoSize = true;
@@ -267,7 +257,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.ForeColor = System.Drawing.Color.Red;
-            this.label2.Location = new System.Drawing.Point(53, 155);
+            this.label2.Location = new System.Drawing.Point(285, 155);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(11, 13);
             this.label2.TabIndex = 95;
@@ -275,7 +265,7 @@
             // 
             // txb_pais
             // 
-            this.txb_pais.Location = new System.Drawing.Point(23, 171);
+            this.txb_pais.Location = new System.Drawing.Point(255, 171);
             this.txb_pais.Name = "txb_pais";
             this.txb_pais.Size = new System.Drawing.Size(150, 20);
             this.txb_pais.TabIndex = 94;
@@ -283,7 +273,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(21, 155);
+            this.label5.Location = new System.Drawing.Point(253, 155);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(27, 13);
             this.label5.TabIndex = 93;
@@ -309,7 +299,7 @@
             this.cmb_regimenes.Name = "cmb_regimenes";
             this.cmb_regimenes.Size = new System.Drawing.Size(141, 21);
             this.cmb_regimenes.TabIndex = 97;
-            
+            // 
             // btn__volver
             // 
             this.btn__volver.Location = new System.Drawing.Point(316, 242);
@@ -330,11 +320,40 @@
             this.btn_guardar.UseVisualStyleBackColor = true;
             this.btn_guardar.Click += new System.EventHandler(this.btn_guardar_Click);
             // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.ForeColor = System.Drawing.Color.Red;
+            this.label6.Location = new System.Drawing.Point(356, 111);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(11, 13);
+            this.label6.TabIndex = 133;
+            this.label6.Text = "*";
+            // 
+            // txb_nro
+            // 
+            this.txb_nro.Location = new System.Drawing.Point(316, 127);
+            this.txb_nro.Name = "txb_nro";
+            this.txb_nro.Size = new System.Drawing.Size(67, 20);
+            this.txb_nro.TabIndex = 132;
+            // 
+            // lbl_nro
+            // 
+            this.lbl_nro.AutoSize = true;
+            this.lbl_nro.Location = new System.Drawing.Point(313, 111);
+            this.lbl_nro.Name = "lbl_nro";
+            this.lbl_nro.Size = new System.Drawing.Size(44, 13);
+            this.lbl_nro.TabIndex = 131;
+            this.lbl_nro.Text = "Número";
+            // 
             // Hotel_modificacion
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(441, 279);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.txb_nro);
+            this.Controls.Add(this.lbl_nro);
             this.Controls.Add(this.btn__volver);
             this.Controls.Add(this.btn_guardar);
             this.Controls.Add(this.cmb_regimenes);
@@ -365,6 +384,7 @@
             this.Controls.Add(this.lbl_nombre);
             this.Name = "Hotel_modificacion";
             this.Text = "Modficar Hotel";
+            this.Load += new System.EventHandler(this.Hotel_modificacion_Load_1);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -400,6 +420,8 @@
         private System.Windows.Forms.ComboBox cmb_regimenes;
         private System.Windows.Forms.Button btn__volver;
         private System.Windows.Forms.Button btn_guardar;
-
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.TextBox txb_nro;
+        private System.Windows.Forms.Label lbl_nro;
     }
 }
