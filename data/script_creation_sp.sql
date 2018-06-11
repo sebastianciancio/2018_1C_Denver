@@ -147,8 +147,8 @@ BEGIN
 	SET NOCOUNT ON;  
 
 	SELECT 
-		tipo_documentos.tipo_documento_nombre AS Tipo_Doc , cliente_pasaporte_nro AS Pasaporte, cliente_apellido AS Apellido, cliente_nombre AS Nombre, cliente_email AS Email, tipo_documentos.tipo_documento_id
-	FROM 
+		tipo_documentos.tipo_documento_nombre AS Tipo_Doc , cliente_pasaporte_nro AS Pasaporte, cliente_apellido AS Apellido, cliente_nombre AS Nombre, cliente_email AS Email, cliente_dom_calle AS Direccion
+			FROM 
 		clientes  
 		INNER JOIN tipo_documentos ON cliente_tipo_documento_id = tipo_documento_id 
 	WHERE cliente_apellido LIKE '%' + ISNULL(@cliente_apellido, cliente_apellido) + '%'

@@ -223,6 +223,7 @@
             this.Controls.Add(this.btt_add_client);
             this.Controls.Add(this.dgv_tablaCliente);
             this.Name = "Cliente";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Clientes";
             ((System.ComponentModel.ISupportInitialize)(this.dgv_tablaCliente)).EndInit();
             this.groupBox1.ResumeLayout(false);
