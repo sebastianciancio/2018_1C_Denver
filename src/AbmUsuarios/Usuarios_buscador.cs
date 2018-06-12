@@ -20,7 +20,7 @@ namespace FrbaHotel.AbmUsuarios
             InitializeComponent();
 
             // Cargo los combos
-            Combos.cargarComboHotel(cmb_hotel);
+            Combos.cargarComboHotel(cmb_hotel, true);
         }
 
         private void btn_modif_Click(object sender, EventArgs e)
@@ -40,7 +40,7 @@ namespace FrbaHotel.AbmUsuarios
 
         private void btt_add_usuario_Click(object sender, EventArgs e)
         {
-            
+
             AbmUsuarios.NuevoUsuario frm = new AbmUsuarios.NuevoUsuario();
 
             frm.Show();
@@ -112,7 +112,7 @@ namespace FrbaHotel.AbmUsuarios
 
             if (Convert.ToInt32(cmb_hotel.SelectedValue) != accesoSistema.HotelIdActual)
             {
-                dgv_tablaUsuario.Enabled = false;
+                // dgv_tablaUsuario.Enabled = false;
                 btn_eliminar.Enabled = false;
                 btn_modif.Enabled = false;
                 btn_eliminar.Visible = true;
@@ -120,7 +120,8 @@ namespace FrbaHotel.AbmUsuarios
 
                 btn_agregar.Visible = true;
             }
-            else {
+            else
+            {
                 btn_eliminar.Enabled = true;
                 btn_modif.Enabled = true;
                 btn_eliminar.Visible = true;
@@ -139,6 +140,33 @@ namespace FrbaHotel.AbmUsuarios
         private void Usuarios_buscador_Load(object sender, EventArgs e)
         {
 
+        }
+
+        private void btn_agregar_Click(object sender, EventArgs e)
+        {
+            DataGridViewRow row = dgv_tablaUsuario.CurrentRow;
+
+            string user = row.Cells[0].Value.ToString();
+
+            //Paso el valor de las claves al nuevo formulario de modificación
+            //para poder consultar la base de datos y traer los campos que se quieran modificar
+            DialogResult result = MessageBox.Show("Desea agregar el usuario " + user + " a al hotel" + accesoSistema.HotelNombreActual + "?", "Confirmar",
+                     MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (result == DialogResult.Yes)
+            {
+                SqlCommand cmd = new SqlCommand("denver.cargar_usuario_hotel", db.Connection);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+
+                cmd.Parameters.AddWithValue("@usuario_nombre", SqlDbType.VarChar).Value = user;
+
+                cmd.Parameters.AddWithValue("@usuario_hotel", SqlDbType.VarChar).Value = accesoSistema.HotelIdActual;
+
+                cmd.ExecuteNonQuery();
+
+                MessageBox.Show("El usuario se agregó correctamente al hotel", "Mensaje");
+            }
         }
     }
 }

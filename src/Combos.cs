@@ -118,7 +118,7 @@ namespace FrbaHotel
 
         }
 
-        public static void cargarComboHotel(ComboBox combo, bool agregarTodos = false)
+        public static void cargarComboHotel(ComboBox combo, bool agregarTodos)
         {
             SqlCommand cmd = new SqlCommand("denver.obtener_hoteles", DataBase.GetInstance().Connection);
             cmd.CommandType = CommandType.StoredProcedure;

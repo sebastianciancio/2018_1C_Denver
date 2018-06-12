@@ -20,7 +20,7 @@ namespace FrbaHotel
             InitializeComponent();
 
             // Cargo los combos
-            Combos.cargarComboHotel(cmb_hotel);
+            Combos.cargarComboHotel(cmb_hotel, false);
             Combos.cargarComboHabitacion(accesoSistema.HotelIdActual,cmb_habitacion);
 
         }

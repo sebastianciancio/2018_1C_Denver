@@ -20,7 +20,7 @@ namespace FrbaHotel.AbmHabitacion
             InitializeComponent();
 
             // Cargo los combos
-            Combos.cargarComboHotel(cmb_hotel);
+            Combos.cargarComboHotel(cmb_hotel, false);
         }
     }
 }

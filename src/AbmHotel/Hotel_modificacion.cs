@@ -15,38 +15,16 @@ namespace FrbaHotel.AbmHotel
     public partial class Hotel_modificacion : Form
     {
         private DataBase db;
-        public string hotel_id;
+        public string hotel_nombre;
+        public string hotel_ciudad;
+        public string hotel_mail;
+        public string hotel_pais_id;
         public Hotel_modificacion()
         {
             InitializeComponent();
             db = DataBase.GetInstance();
         }
 
-        private void Hotel_modificacion_Load(object sender, EventArgs e)
-        {
-
-            
-            //
-            SqlCommand cmd = new SqlCommand("dbo.buscar_hotel_completo", db.Connection);
-            cmd.CommandType = CommandType.StoredProcedure;
-
-
-            cmd.Parameters.AddWithValue("@hotel_id", SqlDbType.Int).Value = hotel_id;
-
-            // Creo el DataTable para obtener los resultados del SP
-            DataTable dt = new DataTable();
-
-            using (var da = new SqlDataAdapter(cmd))
-            {
-                da.Fill(dt);
-            }
-
-            //Accedo a lo que encontre en la BD
-            DataRow row = dt.Rows[0];
-
-            //Mando los datos al form Modificar_cliente
-           
-    }
 
         private void btn_guardar_Click(object sender, EventArgs e)
         {
@@ -81,8 +59,11 @@ namespace FrbaHotel.AbmHotel
             cmd.CommandType = CommandType.StoredProcedure;
 
 
-            cmd.Parameters.AddWithValue("@hotel_id", SqlDbType.VarChar).Value = hotel_id;
-
+            cmd.Parameters.AddWithValue("@hotel_nombre", SqlDbType.Int).Value = hotel_nombre;
+            cmd.Parameters.AddWithValue("@hotel_mail", SqlDbType.Int).Value = hotel_mail;
+            cmd.Parameters.AddWithValue("@hotel_pais_id", SqlDbType.Int).Value = hotel_pais_id;
+            cmd.Parameters.AddWithValue("@hotel_ciudad", SqlDbType.Int).Value = hotel_ciudad;
+            // Creo el DataTable para obtener los resultados del SP
             // Creo el DataTable para obtener los resultados del SP
             DataTable dt = new DataTable();
 
@@ -96,13 +77,14 @@ namespace FrbaHotel.AbmHotel
             
 
             txb_nombre.Text = row["hotel_nombre"].ToString();
-            txb_calle.Text = row["otel_calle"].ToString();
+            txb_calle.Text = row["hotel_calle"].ToString();
             txb_nro.Text = row["hotel_nro_calle"].ToString();
             txb_ciudad.Text = row["hotel_ciudad"].ToString();
             txb_pais.Text = row["hotel_pais"].ToString();
             txb_mail.Text = row["Hotel_mail"].ToString();
             txb_telefono.Text = row["hotel_telefono"].ToString();
             cmb_estrellas.SelectedValue = Convert.ToInt32(row["hotel_estrellas"]);
+            cmb_regimenes.SelectedValue = row["hotel_regimen"].ToString()
 
         }
     }

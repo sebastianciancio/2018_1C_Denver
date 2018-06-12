@@ -20,7 +20,7 @@ namespace FrbaHotel
             InitializeComponent();
 
             // Cargo los Combos
-            Combos.cargarComboHotel(cmb_hotel);
+            Combos.cargarComboHotel(cmb_hotel,false);
         }
 
         private void groupBox1_Enter(object sender, EventArgs e)

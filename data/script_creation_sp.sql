@@ -19,6 +19,8 @@ if EXISTS (SELECT * FROM sys.objects  WHERE name = 'cargar_cliente' AND type IN 
 	DROP PROCEDURE [denver].[cargar_cliente]
 if EXISTS (SELECT * FROM sys.objects  WHERE name = 'eliminar_cliente' AND type IN (N'P', N'PC'))
 	DROP PROCEDURE [denver].[eliminar_cliente]
+if EXISTS (SELECT * FROM sys.objects  WHERE name = 'buscar_hotel_completo' AND type IN (N'P', N'PC'))
+     DROP PROCEDURE [denver].[buscar_hotel_completo]
 if EXISTS (SELECT * FROM sys.objects  WHERE name = 'cargar_hotel' AND type IN (N'P', N'PC'))
 	DROP PROCEDURE [denver].[cargar_hotel]
 if EXISTS (SELECT * FROM sys.objects  WHERE name = 'eliminar_hotel' AND type IN (N'P', N'PC'))
@@ -248,11 +250,14 @@ CREATE PROCEDURE [denver].[cargar_hotel]
 	@hotel_nro_calle numeric(18,0),
 	@hotel_estrellas numeric(18,0),
 	@hotel_ciudad nvarchar(255),
-	@hotel_pais_id smallint
+	@hotel_pais_id smallint,
+	@hotel_regimen smallint
 AS
 BEGIN
 	
 	SET NOCOUNT ON;  
+
+	DECLARE @hotel_id smallint;
 
 	INSERT INTO [denver].[hoteles](
 		hotel_calle,
@@ -280,6 +285,20 @@ BEGIN
 		@hotel_pais_id,
 		'S'
 )
+	SELECT @hotel_id = hotel_id
+	FROM denver.hoteles
+	WHERE hotel_nombre = @hotel_nombre
+	  AND hotel_calle = @hotel_calle
+	  AND hotel_ciudad = @hotel_ciudad
+	  AND hotel_email = @hotel_email
+	  AND hotel_estrellas = @hotel_estrellas;
+
+    INSERT INTO	denver.hoteles_regimenes (
+				hotel_regimen_hotel_id,
+				hotel_regimen_regimen_id )
+				VALUES (
+				@hotel_id,
+				@hotel_regimen)
 END
 GO
 
@@ -1348,3 +1367,23 @@ BEGIN
 END
 GO
 
+CREATE PROCEDURE [denver].[buscar_hotel_completo]    
+	@hotel_nombre nvarchar(255) = NULL ,
+	@hotel_ciudad nvarchar(255) = NULL,
+	@hotel_pais_id smallint = NULL, 
+	@hotel_mail nvarchar(255) = NULL
+AS   
+BEGIN 
+	-- SET NOCOUNT ON added to prevent extra result sets from interfering with SELECT statements.
+	SET NOCOUNT ON;  
+
+	SELECT hotel_nombre , hotel_calle, hotel_nro_calle, hotel_ciudad, hotel_pais_id,
+		   hotel_email, hotel_telefono , hotel_estrellas, hotel_regimen_regimen_id
+	FROM 
+		hoteles
+		join hoteles_regimenes p on hotel_id = p.hotel_regimen_hotel_id
+	 WHERE hotel_nombre = @hotel_nombre
+		AND hotel_ciudad = @hotel_ciudad
+		AND hotel_pais_id = @hotel_pais_id 
+		AND hotel_email = @hotel_mail ;
+END

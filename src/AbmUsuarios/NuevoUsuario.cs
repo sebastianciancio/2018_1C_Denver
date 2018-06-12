@@ -92,6 +92,9 @@ namespace FrbaHotel.AbmUsuarios
 
         }
 
+        private void NuevoUsuario_Load(object sender, EventArgs e)
+        {
 
+        }
     }
 }
