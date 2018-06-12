@@ -61,6 +61,7 @@ namespace FrbaHotel.AbmHotel
             btn_baja.Visible = true;
             btn_modif.Visible = true;
             dgv_tablaHotel.Visible = true;
+            dgv_tablaHotel.Columns[6].Visible = false;
         }
 
         private void btn_modif_Click(object sender, EventArgs e)
@@ -70,6 +71,7 @@ namespace FrbaHotel.AbmHotel
 
             //por el numero obtiene la columna
             // Obtenés El ID del hotel
+            string hotel_id = row.Cells[6].Value.ToString();
             string hotel_nombre = row.Cells[0].Value.ToString();
             string hotel_ciudad = row.Cells[1].Value.ToString();
             string hotel_pais_id = row.Cells[2].Value.ToString();
@@ -124,7 +126,10 @@ namespace FrbaHotel.AbmHotel
             }
 
         }
-        }
+
+
+       
+    } 
 
 
     }
