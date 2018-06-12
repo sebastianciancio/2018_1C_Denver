@@ -50,15 +50,16 @@
             this.cmb_estrellas = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.txb_pais = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.lbl_regimenes = new System.Windows.Forms.Label();
-            this.cmb_regimenes = new System.Windows.Forms.ComboBox();
             this.btn__volver = new System.Windows.Forms.Button();
             this.btn_guardar = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
             this.txb_nro = new System.Windows.Forms.TextBox();
             this.lbl_nro = new System.Windows.Forms.Label();
+            this.cmb_pais = new System.Windows.Forms.ComboBox();
+            this.cmb_regimenes = new System.Windows.Forms.ComboBox();
+            this.label8 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label12
@@ -233,6 +234,7 @@
             // 
             this.cmb_estrellas.FormattingEnabled = true;
             this.cmb_estrellas.Items.AddRange(new object[] {
+            "0",
             "1",
             "2",
             "3",
@@ -263,13 +265,6 @@
             this.label2.TabIndex = 95;
             this.label2.Text = "*";
             // 
-            // txb_pais
-            // 
-            this.txb_pais.Location = new System.Drawing.Point(255, 171);
-            this.txb_pais.Name = "txb_pais";
-            this.txb_pais.Size = new System.Drawing.Size(150, 20);
-            this.txb_pais.TabIndex = 94;
-            // 
             // label5
             // 
             this.label5.AutoSize = true;
@@ -287,18 +282,6 @@
             this.lbl_regimenes.Size = new System.Drawing.Size(104, 13);
             this.lbl_regimenes.TabIndex = 96;
             this.lbl_regimenes.Text = "Tipos de Regimenes";
-            // 
-            // cmb_regimenes
-            // 
-            this.cmb_regimenes.FormattingEnabled = true;
-            this.cmb_regimenes.Items.AddRange(new object[] {
-            "All inclusive",
-            "Pensión completa",
-            "Solo desayuno"});
-            this.cmb_regimenes.Location = new System.Drawing.Point(255, 210);
-            this.cmb_regimenes.Name = "cmb_regimenes";
-            this.cmb_regimenes.Size = new System.Drawing.Size(141, 21);
-            this.cmb_regimenes.TabIndex = 97;
             // 
             // btn__volver
             // 
@@ -346,20 +329,53 @@
             this.lbl_nro.TabIndex = 131;
             this.lbl_nro.Text = "Número";
             // 
+            // cmb_pais
+            // 
+            this.cmb_pais.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmb_pais.FormattingEnabled = true;
+            this.cmb_pais.Location = new System.Drawing.Point(256, 170);
+            this.cmb_pais.Name = "cmb_pais";
+            this.cmb_pais.Size = new System.Drawing.Size(140, 21);
+            this.cmb_pais.TabIndex = 136;
+            // 
+            // cmb_regimenes
+            // 
+            this.cmb_regimenes.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmb_regimenes.FormattingEnabled = true;
+            this.cmb_regimenes.Items.AddRange(new object[] {
+            "All inclusive",
+            "Pensión completa",
+            "Solo desayuno"});
+            this.cmb_regimenes.Location = new System.Drawing.Point(255, 215);
+            this.cmb_regimenes.Name = "cmb_regimenes";
+            this.cmb_regimenes.Size = new System.Drawing.Size(141, 21);
+            this.cmb_regimenes.TabIndex = 137;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.ForeColor = System.Drawing.Color.Red;
+            this.label8.Location = new System.Drawing.Point(362, 194);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(11, 13);
+            this.label8.TabIndex = 138;
+            this.label8.Text = "*";
+            // 
             // Hotel_modificacion
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(441, 279);
+            this.Controls.Add(this.label8);
+            this.Controls.Add(this.cmb_regimenes);
+            this.Controls.Add(this.cmb_pais);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.txb_nro);
             this.Controls.Add(this.lbl_nro);
             this.Controls.Add(this.btn__volver);
             this.Controls.Add(this.btn_guardar);
-            this.Controls.Add(this.cmb_regimenes);
             this.Controls.Add(this.lbl_regimenes);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.txb_pais);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.cmb_estrellas);
@@ -414,14 +430,15 @@
         private System.Windows.Forms.ComboBox cmb_estrellas;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox txb_pais;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label lbl_regimenes;
-        private System.Windows.Forms.ComboBox cmb_regimenes;
         private System.Windows.Forms.Button btn__volver;
         private System.Windows.Forms.Button btn_guardar;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox txb_nro;
         private System.Windows.Forms.Label lbl_nro;
+        private System.Windows.Forms.ComboBox cmb_pais;
+        private System.Windows.Forms.ComboBox cmb_regimenes;
+        private System.Windows.Forms.Label label8;
     }
 }

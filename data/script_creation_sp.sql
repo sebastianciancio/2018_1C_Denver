@@ -19,12 +19,12 @@ if EXISTS (SELECT * FROM sys.objects  WHERE name = 'cargar_cliente' AND type IN 
 	DROP PROCEDURE [denver].[cargar_cliente]
 if EXISTS (SELECT * FROM sys.objects  WHERE name = 'eliminar_cliente' AND type IN (N'P', N'PC'))
 	DROP PROCEDURE [denver].[eliminar_cliente]
+	if EXISTS (SELECT * FROM sys.objects  WHERE name = 'eliminar_hotel' AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [denver].[eliminar_hotel]
 if EXISTS (SELECT * FROM sys.objects  WHERE name = 'buscar_hotel_completo' AND type IN (N'P', N'PC'))
      DROP PROCEDURE [denver].[buscar_hotel_completo]
 if EXISTS (SELECT * FROM sys.objects  WHERE name = 'cargar_hotel' AND type IN (N'P', N'PC'))
 	DROP PROCEDURE [denver].[cargar_hotel]
-if EXISTS (SELECT * FROM sys.objects  WHERE name = 'eliminar_hotel' AND type IN (N'P', N'PC'))
-	DROP PROCEDURE [denver].[eliminar_hotel]
 if EXISTS (SELECT * FROM sys.objects  WHERE name = 'cargar_habitacion' AND type IN (N'P', N'PC'))
 	DROP PROCEDURE [denver].[cargar_habitacion]
 if EXISTS (SELECT * FROM sys.objects  WHERE name = 'eliminar_habitacion' AND type IN (N'P', N'PC'))
@@ -137,6 +137,8 @@ if EXISTS (SELECT * FROM sys.objects  WHERE name = 'loguin' AND type IN (N'P', N
 	DROP PROCEDURE [denver].[loguin]
 if EXISTS (SELECT * FROM sys.objects  WHERE name = 'obtener_facturable' AND type IN (N'P', N'PC'))
 	DROP PROCEDURE [denver].[obtener_facturable]
+if EXISTS (SELECT * FROM sys.objects  WHERE name = 'modificar_hotel' AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [denver].[modificar_hotel]
 GO
 
 
@@ -592,7 +594,8 @@ BEGIN
 		WHERE pais_nombre = @pais_nombre; 
 	END
 
-	SELECT hotel_nombre AS Nombre, hotel_ciudad AS Ciudad, p.pais_nombre AS Pais, hotel_email AS Email, hotel_estrellas AS Estrellas
+	SELECT hotel_nombre AS Nombre,hotel_estrellas AS Estrellas, p.pais_nombre AS Pais, hotel_ciudad AS Ciudad, hotel_ciudad AS Ciudad,
+		   hotel_email AS Email, hotel_id 
 	FROM 
 		hoteles
 		join paises p on hotel_pais_id = p.pais_id
@@ -1397,7 +1400,7 @@ GO
 CREATE PROCEDURE [denver].[buscar_hotel_completo]    
 	@hotel_nombre nvarchar(255) = NULL ,
 	@hotel_ciudad nvarchar(255) = NULL,
-	@hotel_pais_id smallint = NULL, 
+	@hotel_pais nvarchar(255) = NULL, 
 	@hotel_mail nvarchar(255) = NULL
 AS   
 BEGIN 
@@ -1407,12 +1410,36 @@ BEGIN
 	SELECT hotel_nombre , hotel_calle, hotel_nro_calle, hotel_ciudad, hotel_pais_id,
 		   hotel_email, hotel_telefono , hotel_estrellas, hotel_regimen_regimen_id
 	FROM 
-		hoteles
-		join hoteles_regimenes p on hotel_id = p.hotel_regimen_hotel_id
+		denver.hoteles
+		join denver.hoteles_regimenes p on hotel_id = p.hotel_regimen_hotel_id
+		join denver.paises on hotel_pais_id = paises.pais_id
 	 WHERE hotel_nombre = @hotel_nombre
-		AND hotel_ciudad = @hotel_ciudad
-		AND hotel_pais_id = @hotel_pais_id 
-		AND hotel_email = @hotel_mail ;
+		AND hotel_ciudad = @hotel_ciudad 
+		AND hotel_email = @hotel_mail
+		AND pais_nombre = @hotel_pais;
+END
+GO
+
+CREATE PROCEDURE [denver].[modificar_hotel]
+	@hotel_id smallint,
+	@hotel_nombre nvarchar,
+	@hotel_mail nvarchar,
+	@hotel_telefono nvarchar,
+	@hotel_direccion nvarchar,
+	@hotel_estrellas nvarchar,
+	@hotel_ciudad nvarchar,
+	@hotel_pais nvarchar,
+	@hotel_regimenes nvarchar,
+	@hotel_creacion nvarchar
+
+AS
+BEGIN
+	SET NOCOUNT ON;  
+
+	--UPDATE [denver].[hoteles]
+
+	--WHERE 
+ 
 END
 GO
 
@@ -1486,4 +1513,3 @@ BEGIN
 
 END
 GO
-

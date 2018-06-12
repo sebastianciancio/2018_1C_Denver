@@ -41,8 +41,8 @@
             this.btn_new_hotel = new System.Windows.Forms.Button();
             this.combo_pais = new System.Windows.Forms.ComboBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.btn_eliminar = new System.Windows.Forms.Button();
             this.cmb_hotel = new System.Windows.Forms.ComboBox();
+            this.btn_eliminar = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_tablaHotel)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -190,6 +190,15 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Buscador";
             // 
+            // cmb_hotel
+            // 
+            this.cmb_hotel.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmb_hotel.FormattingEnabled = true;
+            this.cmb_hotel.Location = new System.Drawing.Point(52, 19);
+            this.cmb_hotel.Name = "cmb_hotel";
+            this.cmb_hotel.Size = new System.Drawing.Size(234, 21);
+            this.cmb_hotel.TabIndex = 134;
+            // 
             // btn_eliminar
             // 
             this.btn_eliminar.Location = new System.Drawing.Point(592, 199);
@@ -200,15 +209,6 @@
             this.btn_eliminar.UseVisualStyleBackColor = true;
             this.btn_eliminar.Visible = false;
             this.btn_eliminar.Click += new System.EventHandler(this.btn_eliminar_Click);
-            // 
-            // cmb_hotel
-            // 
-            this.cmb_hotel.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmb_hotel.FormattingEnabled = true;
-            this.cmb_hotel.Location = new System.Drawing.Point(52, 19);
-            this.cmb_hotel.Name = "cmb_hotel";
-            this.cmb_hotel.Size = new System.Drawing.Size(234, 21);
-            this.cmb_hotel.TabIndex = 134;
             // 
             // BuscarHotel
             // 
