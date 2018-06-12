@@ -69,6 +69,8 @@ if EXISTS (SELECT * FROM sys.objects  WHERE name = 'obtener_tipo_habitaciones' A
 	DROP PROCEDURE [denver].[obtener_tipo_habitaciones]
 if EXISTS (SELECT * FROM sys.objects  WHERE name = 'obtener_paises' AND type IN (N'P', N'PC'))
 	DROP PROCEDURE [denver].[obtener_paises]
+if EXISTS (SELECT * FROM sys.objects  WHERE name = 'obtener_formas_pago' AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [denver].[obtener_formas_pago]	
 if EXISTS (SELECT * FROM sys.objects  WHERE name = 'obtener_roles' AND type IN (N'P', N'PC'))
 	DROP PROCEDURE [denver].[obtener_roles]
 if EXISTS (SELECT * FROM sys.objects  WHERE name = 'habilitar_disponibilidad' AND type IN (N'P', N'PC'))
@@ -133,6 +135,8 @@ if EXISTS (SELECT * FROM sys.objects  WHERE name = 'buscar_usuario_completo' AND
 	DROP PROCEDURE [denver].[buscar_usuario_completo]
 if EXISTS (SELECT * FROM sys.objects  WHERE name = 'loguin' AND type IN (N'P', N'PC'))
 	DROP PROCEDURE [denver].[loguin]
+if EXISTS (SELECT * FROM sys.objects  WHERE name = 'obtener_facturable' AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [denver].[obtener_facturable]
 GO
 
 
@@ -746,6 +750,14 @@ BEGIN
 END
 GO
 
+CREATE PROCEDURE denver.obtener_formas_pago
+AS
+BEGIN
+	SET NOCOUNT ON;
+	SELECT forma_pago_id, forma_pago_nombre FROM denver.formas_pago ORDER BY forma_pago_nombre
+END
+GO
+
 CREATE PROCEDURE denver.obtener_roles
 	@usuario_user nvarchar(50) = NULL
 AS
@@ -905,7 +917,8 @@ GO
 
 CREATE PROCEDURE denver.obtener_detalle_reserva 
 	@nro_reserva numeric(18,0) = NULL,
-	@habitacion_nro numeric(18,0) = NULL
+	@habitacion_nro numeric(18,0) = NULL,
+	@chechout char(1) = NULL
 AS
 BEGIN
 	declare @nro_reserva_aux numeric(18,0);
@@ -913,15 +926,33 @@ BEGIN
 	-- Usado en el checkin
 	IF(@nro_reserva IS NOT NULL)
 	begin
-		SELECT
-			rh.reserva_habitaciones_fecha_inicio as "Fecha Entrada", rh.reserva_habitaciones_fecha_fin as "Fecha Salida",th.tipo_habitacion_descripcion as "Tipo Habitacion", reg.regimen_descripcion as "Regimen", rh.reserva_habitaciones_precio as "Precio", rh.reserva_habitacion_nro as "Habitacion", th.tipo_habitacion_id, r.reserva_estado_id
-		FROM
-			denver.reservas as r
-			join denver.reservas_habitaciones as rh ON r.reserva_codigo = rh.reserva_habitaciones_reserva_codigo
-			join denver.tipo_habitaciones as th on rh.reserva_habitaciones_tipo_habitacion_id = th.tipo_habitacion_id
-			join denver.regimenes as reg on reg.regimen_id = rh.reserva_habitaciones_regimen_id
-		WHERE
-			r.reserva_codigo = @nro_reserva;
+
+		if (@chechout IS NULL)
+		begin
+			SELECT
+				rh.reserva_habitaciones_fecha_inicio as "Fecha Entrada", rh.reserva_habitaciones_fecha_fin as "Fecha Salida",th.tipo_habitacion_descripcion as "Tipo Habitacion", reg.regimen_descripcion as "Regimen", rh.reserva_habitaciones_precio*rh.reserva_habitaciones_cant_noches as "Precio", rh.reserva_habitacion_nro as "Habitacion", th.tipo_habitacion_id, r.reserva_estado_id
+			FROM
+				denver.reservas as r
+				join denver.reservas_habitaciones as rh ON r.reserva_codigo = rh.reserva_habitaciones_reserva_codigo
+				join denver.tipo_habitaciones as th on rh.reserva_habitaciones_tipo_habitacion_id = th.tipo_habitacion_id
+				join denver.regimenes as reg on reg.regimen_id = rh.reserva_habitaciones_regimen_id
+			WHERE
+				r.reserva_codigo = @nro_reserva;
+		end
+		else
+		begin
+			SELECT distinct
+				rh.reserva_habitaciones_fecha_inicio as "Fecha Entrada", rh.reserva_habitaciones_fecha_fin as "Fecha Salida",th.tipo_habitacion_descripcion as "Tipo Habitacion", reg.regimen_descripcion as "Regimen", rh.reserva_habitaciones_precio*rh.reserva_habitaciones_cant_noches as "Precio", rh.reserva_habitacion_nro as "Habitacion", th.tipo_habitacion_id, r.reserva_estado_id
+			FROM
+				denver.reservas as r
+				join denver.reservas_habitaciones as rh ON r.reserva_codigo = rh.reserva_habitaciones_reserva_codigo
+				join denver.tipo_habitaciones as th on rh.reserva_habitaciones_tipo_habitacion_id = th.tipo_habitacion_id
+				join denver.regimenes as reg on reg.regimen_id = rh.reserva_habitaciones_regimen_id
+				join denver.disponibilidades as d on d.disponibilidad_fecha between rh.reserva_habitaciones_fecha_inicio and rh.reserva_habitaciones_fecha_fin and d.disponibilidad_habitacion_nro = rh.reserva_habitacion_nro and d.disponibilidad_hotel_id = r.reserva_hotel_id and d.disponibilidad_tipo_habitacion_id = th.tipo_habitacion_id
+			WHERE
+				r.reserva_codigo =  @nro_reserva and d.disponibilidad_ocupado = 1;
+		end
+
 	end
 
 	-- Usado en el checkout
@@ -937,7 +968,7 @@ BEGIN
 		WHERE
 			rh.reserva_habitacion_nro = @habitacion_nro AND r.reserva_estado_id IN (6);
 
-		exec denver.obtener_detalle_reserva @nro_reserva_aux;
+		exec denver.obtener_detalle_reserva @nro_reserva_aux, NULL, 'S';
 	end
 
 END
@@ -1383,3 +1414,76 @@ BEGIN
 		AND hotel_pais_id = @hotel_pais_id 
 		AND hotel_email = @hotel_mail ;
 END
+GO
+
+CREATE PROCEDURE denver.obtener_facturable
+	@fecha_salida datetime,
+	@tipo_documento numeric(18,0),
+	@nro_documento numeric(18,0),
+	@hotel_id smallint,
+	@total_factura numeric(18,0) OUTPUT
+AS
+BEGIN
+	declare @nro_reserva numeric(18,0);
+	declare @total_consumo numeric(18,0) = 0;	
+	declare @total_estadia numeric(18,0) = 0;	
+
+	-- obtengo nro_reserva
+	select
+		@nro_reserva = r.reserva_codigo
+	from
+		denver.reservas as r
+	where
+		r.reserva_cliente_tipo_documento_id = @tipo_documento and r.reserva_cliente_pasaporte_nro = @nro_documento and r.reserva_hotel_id = @hotel_id and @fecha_salida between r.reserva_fecha_inicio and r.reserva_fecha_fin;
+
+	-- detalle de consumibles
+	select
+		c.consumible_descripcion as "Descripcion", c.consumible_precio as "Precio"
+	from
+		denver.consumibles_clientes as cc
+		join denver.consumibles as c on cc.consumible_cliente_consumible_id = c.consumible_id
+	where
+		cc.consumible_cliente_reserva_codigo = @nro_reserva
+
+	union all
+
+	-- detalle del hospedaje
+	SELECT
+		'Estadia desde el '+convert(varchar(50),rh.reserva_habitaciones_fecha_inicio,103)+' hasta '+convert(varchar(50),rh.reserva_habitaciones_fecha_fin,103)+' en '+th.tipo_habitacion_descripcion+' y '+reg.regimen_descripcion as "Descripcion", rh.reserva_habitaciones_precio * denver.cant_pasajeros_tipo_habitacion(th.tipo_habitacion_id) as "Precio"
+	FROM
+		denver.reservas as r
+		join denver.reservas_habitaciones as rh ON r.reserva_codigo = rh.reserva_habitaciones_reserva_codigo
+		join denver.tipo_habitaciones as th on rh.reserva_habitaciones_tipo_habitacion_id = th.tipo_habitacion_id
+		join denver.regimenes as reg on reg.regimen_id = rh.reserva_habitaciones_regimen_id
+	WHERE
+		r.reserva_codigo = @nro_reserva;
+
+
+	-- Calculo el total de consumos
+	select
+		@total_consumo = sum(c.consumible_precio)
+	from
+		denver.consumibles_clientes as cc
+		join denver.consumibles as c on cc.consumible_cliente_consumible_id = c.consumible_id
+	where
+		cc.consumible_cliente_reserva_codigo = @nro_reserva
+
+	-- Calculo el total de la estadia
+	SELECT
+		@total_estadia = sum(rh.reserva_habitaciones_precio * denver.cant_pasajeros_tipo_habitacion(th.tipo_habitacion_id))
+	FROM
+		denver.reservas as r
+		join denver.reservas_habitaciones as rh ON r.reserva_codigo = rh.reserva_habitaciones_reserva_codigo
+		join denver.tipo_habitaciones as th on rh.reserva_habitaciones_tipo_habitacion_id = th.tipo_habitacion_id
+		join denver.regimenes as reg on reg.regimen_id = rh.reserva_habitaciones_regimen_id
+	WHERE
+		r.reserva_codigo = @nro_reserva;
+
+	-- Calculo el total a facturar
+	SET @total_factura = @total_estadia + @total_consumo;
+
+
+
+END
+GO
+

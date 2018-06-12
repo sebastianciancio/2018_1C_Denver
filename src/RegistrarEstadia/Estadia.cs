@@ -69,6 +69,7 @@ namespace FrbaHotel
 
             // Oculto Columnas del Resultado
             dg_estadia.Columns[6].Visible = false;
+            dg_estadia.Columns[7].Visible = false;
 
             // Si hay Registros 
             if (dg_estadia.RowCount > 0)
@@ -159,7 +160,7 @@ namespace FrbaHotel
 
             // Bloqueo las disponibilidades para las fechas de la estadia
             DateTime fecha_sin_hora;
-            while (fecha_desde <= fecha_hasta.AddMilliseconds(1000))
+            while (fecha_desde <= fecha_hasta.AddMilliseconds(5000))
             {
                 for (var indice = 0; indice < dg_estadia.Rows.Count; indice++)
                 {
