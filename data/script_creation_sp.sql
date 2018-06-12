@@ -807,6 +807,8 @@ BEGIN
 		and r.regimen_activo = 'S'
 	group by 
 		d.disponibilidad_habitacion_nro, th.tipo_habitacion_descripcion, r.regimen_descripcion, r.regimen_precio, th.tipo_habitacion_id, r.regimen_id
+	having
+		count(*) = DATEDIFF(DAY,@fecha_desde,@fecha_hasta)+1		
 END
 GO
 
@@ -893,6 +895,7 @@ AS
 BEGIN
 	declare @nro_reserva_aux numeric(18,0);
 
+	-- Usado en el checkin
 	IF(@nro_reserva IS NOT NULL)
 	begin
 		SELECT
@@ -906,6 +909,7 @@ BEGIN
 			r.reserva_codigo = @nro_reserva;
 	end
 
+	-- Usado en el checkout
 	IF(@habitacion_nro IS NOT NULL)
 	begin
 		SELECT

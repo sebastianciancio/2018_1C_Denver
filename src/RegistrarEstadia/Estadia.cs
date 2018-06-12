@@ -70,15 +70,24 @@ namespace FrbaHotel
             // Oculto Columnas del Resultado
             dg_estadia.Columns[6].Visible = false;
 
-            // Si hay Registros y el estado no es cancelado ni confimado
-            if (dg_estadia.RowCount > 0 & Convert.ToInt32(dg_estadia.Rows[0].Cells[7].Value) <= 2)
+            // Si hay Registros 
+            if (dg_estadia.RowCount > 0)
             {
-                fecha_desde = Convert.ToDateTime(dg_estadia.Rows[0].Cells[0].Value);
-                fecha_hasta = Convert.ToDateTime(dg_estadia.Rows[0].Cells[1].Value);
+                // Si el estado no es cancelado ni confimado
+                if (Convert.ToInt32(dg_estadia.Rows[0].Cells[7].Value) <= 2)
+                {
+                    fecha_desde = Convert.ToDateTime(dg_estadia.Rows[0].Cells[0].Value);
+                    fecha_hasta = Convert.ToDateTime(dg_estadia.Rows[0].Cells[1].Value);
 
-                // Muestro los objetos ocultos
-                Container_estadia.Visible = true;
-                Container_pasajero.Visible = true;
+                    // Muestro los objetos ocultos
+                    Container_estadia.Visible = true;
+                    Container_pasajero.Visible = true;
+                }
+                else
+                {
+                    DialogResult result = MessageBox.Show("La Reserva se encuentra Confirmada o Cancelada", "Check/In", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+
             }
             else
             {
@@ -150,7 +159,7 @@ namespace FrbaHotel
 
             // Bloqueo las disponibilidades para las fechas de la estadia
             DateTime fecha_sin_hora;
-            while (fecha_desde <= fecha_hasta)
+            while (fecha_desde <= fecha_hasta.AddMilliseconds(1000))
             {
                 for (var indice = 0; indice < dg_estadia.Rows.Count; indice++)
                 {
@@ -213,6 +222,7 @@ namespace FrbaHotel
             if (dg_estadia.RowCount > 0)
             {
 
+
                 // Oculto Columnas del Resultado
                 dg_estadia.Columns[6].Visible = false;
                 dg_estadia.Columns[7].Visible = false;
@@ -243,7 +253,7 @@ namespace FrbaHotel
 
             // Libero las disponibilidades para las fechas de la estadia
             DateTime fecha_sin_hora;
-            while (fecha_desde <= fecha_hasta)
+            while (fecha_desde <= fecha_hasta.AddMilliseconds(1000))
             {
                 for (var indice = 0; indice < dg_estadia.Rows.Count; indice++)
                 {
@@ -267,6 +277,10 @@ namespace FrbaHotel
             // Confirmo la Estadia
             DialogResult result = MessageBox.Show("Check-Out confirmado", "Confirmacion",
                      MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            Container_estadia.Visible = false;
+            Container_pasajero.Visible = false;
+            btn_confirmar_checkout.Visible = false;
 
         }
     }
