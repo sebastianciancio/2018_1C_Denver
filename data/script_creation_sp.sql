@@ -285,13 +285,9 @@ BEGIN
 		@hotel_pais_id,
 		'S'
 )
-	SELECT @hotel_id = hotel_id
-	FROM denver.hoteles
-	WHERE hotel_nombre = @hotel_nombre
-	  AND hotel_calle = @hotel_calle
-	  AND hotel_ciudad = @hotel_ciudad
-	  AND hotel_email = @hotel_email
-	  AND hotel_estrellas = @hotel_estrellas;
+
+	  SELECT TOP 1 @hotel_id = HOTEL_ID 
+	    FROM denver.hoteles ORDER BY hotel_id DESC
 
     INSERT INTO	denver.hoteles_regimenes (
 				hotel_regimen_hotel_id,

@@ -59,10 +59,10 @@ namespace FrbaHotel.AbmHotel
             cmd.CommandType = CommandType.StoredProcedure;
 
 
-            cmd.Parameters.AddWithValue("@hotel_nombre", SqlDbType.Int).Value = hotel_nombre;
-            cmd.Parameters.AddWithValue("@hotel_mail", SqlDbType.Int).Value = hotel_mail;
+            cmd.Parameters.AddWithValue("@hotel_nombre", SqlDbType.VarChar).Value = hotel_nombre;
+            cmd.Parameters.AddWithValue("@hotel_mail", SqlDbType.VarChar).Value = hotel_mail;
             cmd.Parameters.AddWithValue("@hotel_pais_id", SqlDbType.Int).Value = hotel_pais_id;
-            cmd.Parameters.AddWithValue("@hotel_ciudad", SqlDbType.Int).Value = hotel_ciudad;
+            cmd.Parameters.AddWithValue("@hotel_ciudad", SqlDbType.VarChar).Value = hotel_ciudad;
             // Creo el DataTable para obtener los resultados del SP
             // Creo el DataTable para obtener los resultados del SP
             DataTable dt = new DataTable();
@@ -84,7 +84,7 @@ namespace FrbaHotel.AbmHotel
             txb_mail.Text = row["Hotel_mail"].ToString();
             txb_telefono.Text = row["hotel_telefono"].ToString();
             cmb_estrellas.SelectedValue = Convert.ToInt32(row["hotel_estrellas"]);
-            cmb_regimenes.SelectedValue = row["hotel_regimen"].ToString()
+            cmb_regimenes.SelectedValue = row["hotel_regimen"].ToString();
 
         }
     }
