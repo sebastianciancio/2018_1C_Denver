@@ -78,7 +78,6 @@
             this.btn_baja.TabIndex = 11;
             this.btn_baja.Text = "Baja";
             this.btn_baja.UseVisualStyleBackColor = true;
-            this.btn_baja.UseWaitCursor = true;
             this.btn_baja.Visible = false;
             this.btn_baja.Click += new System.EventHandler(this.btn_baja_Click);
             // 
@@ -222,6 +221,7 @@
             this.Controls.Add(this.btn_modif);
             this.Controls.Add(this.dgv_tablaHotel);
             this.Name = "BuscarHotel";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "buscarHotel";
             ((System.ComponentModel.ISupportInitialize)(this.dgv_tablaHotel)).EndInit();
             this.groupBox1.ResumeLayout(false);

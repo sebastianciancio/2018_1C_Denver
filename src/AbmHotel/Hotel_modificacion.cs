@@ -15,10 +15,6 @@ namespace FrbaHotel.AbmHotel
     public partial class Hotel_modificacion : Form
     {
         private DataBase db;
-        public string hotel_nombre;
-        public string hotel_ciudad;
-        public string hotel_mail;
-        public string hotel_pais_id;
         public string hotel_id;
         public Hotel_modificacion()
         {
@@ -37,13 +33,13 @@ namespace FrbaHotel.AbmHotel
             cmd.CommandType = CommandType.StoredProcedure;
 
             cmd.Parameters.AddWithValue("@hotel_id", SqlDbType.Int).Value = Convert.ToInt32(hotel_id);
-            cmd.Parameters.AddWithValue("@hotel_nombre", SqlDbType.VarChar).Value = txb_nombre.Text;
-            cmd.Parameters.AddWithValue("@hotel_mail", SqlDbType.VarChar).Value = txb_mail.Text;
-            cmd.Parameters.AddWithValue("@hotel_telefono", SqlDbType.VarChar).Value = txb_telefono.Text;
-            cmd.Parameters.AddWithValue("@hotel_direccion", SqlDbType.VarChar).Value = txb_calle.Text;
+            cmd.Parameters.AddWithValue("@hotel_nombre", SqlDbType.NVarChar).Value = txb_nombre.Text;
+            cmd.Parameters.AddWithValue("@hotel_mail", SqlDbType.NVarChar).Value = txb_mail.Text;
+            cmd.Parameters.AddWithValue("@hotel_telefono", SqlDbType.NVarChar).Value = txb_telefono.Text;
+            cmd.Parameters.AddWithValue("@hotel_direccion", SqlDbType.NVarChar).Value = txb_calle.Text;
             cmd.Parameters.AddWithValue("@hotel_estrellas", SqlDbType.Int).Value = Convert.ToInt32(cmb_estrellas.Text);
-            cmd.Parameters.AddWithValue("@hotel_ciudad", SqlDbType.VarChar).Value = txb_ciudad.Text;
-            cmd.Parameters.AddWithValue("@hotel_pais", SqlDbType.VarChar).Value = cmb_pais;
+            cmd.Parameters.AddWithValue("@hotel_ciudad", SqlDbType.NVarChar).Value = txb_ciudad.Text;
+            cmd.Parameters.AddWithValue("@hotel_pais", SqlDbType.Int).Value = cmb_pais.SelectedValue;
             //levanta el ID
             cmd.Parameters.AddWithValue("@hotel_regimenes", SqlDbType.Int).Value = cmb_regimenes.SelectedValue;
             cmd.Parameters.AddWithValue("@hotel_creacion", SqlDbType.Int).Value = Convert.ToDateTime(cmb_creacion.Value);
@@ -52,6 +48,7 @@ namespace FrbaHotel.AbmHotel
             cmd.ExecuteNonQuery();
 
             MessageBox.Show("El hotel " + txb_nombre.Text + " se modificó correctamente", "Mensaje");
+            Close();
         }
 
         private void btn__volver_Click(object sender, EventArgs e)
@@ -64,11 +61,7 @@ namespace FrbaHotel.AbmHotel
             SqlCommand cmd = new SqlCommand("denver.buscar_hotel_completo", db.Connection);
             cmd.CommandType = CommandType.StoredProcedure;
 
-
-            cmd.Parameters.AddWithValue("@hotel_nombre", SqlDbType.VarChar).Value = hotel_nombre;
-            cmd.Parameters.AddWithValue("@hotel_mail", SqlDbType.VarChar).Value = hotel_mail;
-            cmd.Parameters.AddWithValue("@hotel_pais", SqlDbType.VarChar).Value = hotel_pais_id;
-            cmd.Parameters.AddWithValue("@hotel_ciudad", SqlDbType.VarChar).Value = hotel_ciudad;
+            cmd.Parameters.AddWithValue("@hotel_id", SqlDbType.Int).Value = Convert.ToInt32(hotel_id);
 
             DataTable dt = new DataTable();
 
@@ -88,7 +81,7 @@ namespace FrbaHotel.AbmHotel
             cmb_pais.SelectedValue = row["hotel_pais_id"].ToString();
             txb_mail.Text = row["hotel_email"].ToString();
             txb_telefono.Text = row["hotel_telefono"].ToString();
-            cmb_estrellas.SelectedValue = Convert.ToInt32(row["hotel_estrellas"]);
+            cmb_estrellas.Text = row["hotel_estrellas"].ToString();
             cmb_regimenes.SelectedValue = row["hotel_regimen_regimen_id"].ToString();
 
         }

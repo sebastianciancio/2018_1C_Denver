@@ -610,22 +610,35 @@ CREATE PROCEDURE [denver].[baja_hotel]
 AS   
 BEGIN 
 	-- SET NOCOUNT ON added to prevent extra result sets from interfering with SELECT statements.
+	DECLARE @cont int;
 	SET NOCOUNT ON;  
+	SELECT @cont = count(*) from denver.reservas
+	WHERE reserva_fecha_inicio BETWEEN  @fecha_inicio AND @fecha_fin
+	   OR reserva_fecha_fin    BETWEEN  @fecha_inicio AND @fecha_fin
 
-INSERT INTO [denver].[mantenimientos](
-		mantenimiento_hotel_id,
-		mantenimiento_fecha_desde,
-		mantenimiento_fecha_hasta,
-		mantenimiento_motivo,
-		mantenimiento_created
-)
-	VALUES(
-		@id_hotel,
-		@fecha_inicio,
-		@fecha_fin,
-		@motivo,
-		GETDATE());
+	   if @cont = 0 
+	   begin
 
+		INSERT INTO [denver].[mantenimientos](
+				mantenimiento_hotel_id,
+				mantenimiento_fecha_desde,
+				mantenimiento_fecha_hasta,
+				mantenimiento_motivo,
+				mantenimiento_created
+	             	)
+			VALUES(
+				@id_hotel,
+				@fecha_inicio,
+				@fecha_fin,
+				@motivo,
+				GETDATE());
+end
+	  --if @cont > 0
+		--RAISERROR('Hay reservas activas para la fecha seleccionada'); 
+	    
+	  
+	
+		 
 END
 GO
 
@@ -1367,10 +1380,8 @@ END
 GO
 
 CREATE PROCEDURE [denver].[buscar_hotel_completo]    
-	@hotel_nombre nvarchar(255) = NULL ,
-	@hotel_ciudad nvarchar(255) = NULL,
-	@hotel_pais nvarchar(255) = NULL, 
-	@hotel_mail nvarchar(255) = NULL
+	@hotel_id smallint
+
 AS   
 BEGIN 
 	-- SET NOCOUNT ON added to prevent extra result sets from interfering with SELECT statements.
@@ -1381,33 +1392,45 @@ BEGIN
 	FROM 
 		denver.hoteles
 		join denver.hoteles_regimenes p on hotel_id = p.hotel_regimen_hotel_id
-		join denver.paises on hotel_pais_id = paises.pais_id
-	 WHERE hotel_nombre = @hotel_nombre
-		AND hotel_ciudad = @hotel_ciudad 
-		AND hotel_email = @hotel_mail
-		AND pais_nombre = @hotel_pais;
+	 WHERE hotel_id = @hotel_id	
+
 END
 GO
 
 CREATE PROCEDURE [denver].[modificar_hotel]
 	@hotel_id smallint,
-	@hotel_nombre nvarchar,
-	@hotel_mail nvarchar,
-	@hotel_telefono nvarchar,
-	@hotel_direccion nvarchar,
-	@hotel_estrellas nvarchar,
-	@hotel_ciudad nvarchar,
-	@hotel_pais nvarchar,
-	@hotel_regimenes nvarchar,
-	@hotel_creacion nvarchar
+	@hotel_nombre nvarchar(255),
+	@hotel_mail nvarchar(255),
+	@hotel_telefono nvarchar(255),
+	@hotel_direccion nvarchar(255),
+	@hotel_estrellas smallint,
+	@hotel_ciudad nvarchar(255),
+	@hotel_pais smallint,
+	@hotel_regimenes smallint,
+	@hotel_creacion datetime
 
 AS
 BEGIN
 	SET NOCOUNT ON;  
 
-	--UPDATE [denver].[hoteles]
-
-	--WHERE 
+	UPDATE [denver].[hoteles]
+	SET
+	hotel_nombre = @hotel_nombre,
+	hotel_email = @hotel_mail,
+	hotel_telefono = @hotel_telefono,
+	hotel_calle = @hotel_direccion,
+	hotel_estrellas = @hotel_estrellas,
+	hotel_ciudad = @hotel_ciudad,
+	hotel_pais_id = @hotel_pais,
+	hotel_created = @hotel_creacion
+	
+	WHERE
+	hotel_id = @hotel_id 
  
+	UPDATE [denver].[hoteles_regimenes]
+	SET
+	hotel_regimen_regimen_id = @hotel_regimenes
+	WHERE hotel_regimen_hotel_id = @hotel_id
+
 END
 GO

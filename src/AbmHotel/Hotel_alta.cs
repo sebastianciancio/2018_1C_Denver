@@ -38,7 +38,7 @@ namespace FrbaHotel.AbmHotel
             cmd.Parameters.AddWithValue("@hotel_estrellas", SqlDbType.SmallInt).Value = Convert.ToInt32(cmb_estrellas.Text);
             cmd.Parameters.AddWithValue("@hotel_ciudad", SqlDbType.VarChar).Value = txb_ciudad.Text;
             cmd.Parameters.AddWithValue("@hotel_pais_id", SqlDbType.SmallInt).Value = combo_pais.SelectedValue;
-        //    cmd.Parameters.AddWithValue("@hotel_regimenes", SqlDbType.VarChar).Value = cmb_regimenes.Text;
+            cmd.Parameters.AddWithValue("@hotel_regimen", SqlDbType.VarChar).Value = cmb_regimenes.SelectedValue;
 
 
 
