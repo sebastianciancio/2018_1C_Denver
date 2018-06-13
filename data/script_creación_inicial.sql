@@ -996,7 +996,6 @@ WHERE
 GO
 
 
-
 /****** CONSUMIBLES_CLIENTES ******/
 INSERT INTO denver.consumibles_clientes
 (consumible_cliente_consumible_id, consumible_cliente_pasaporte_nro, consumible_cliente_tipo_documento_id, consumible_cliente_fecha_consumo, consumible_cliente_reserva_codigo)
@@ -1009,5 +1008,32 @@ WHERE
       88559381,89094646,90135406,91296720,95744921)
 GROUP BY
       Consumible_Codigo, Cliente_Pasaporte_Nro
+)
+GO
+
+
+/****** FACTURA ******/
+insert into denver.facturas (factura_nro, factura_fecha, factura_total, factura_forma_pago_id, factura_cliente_tipo_documento, factura_pasaporte_nro, [factura_created])
+(
+SELECT distinct Factura_Nro,Factura_Fecha,Factura_Total,1,1,Cliente_Pasaporte_Nro, Factura_Fecha 
+FROM gd_esquema.Maestra 
+where Factura_Nro is not null AND  Cliente_Pasaporte_Nro NOT IN(5833450,8573690,9616602,10968810,13197523,17144724,17993372,19944671,25170042,27682640,28333918,28766839,33462772,33467493,40407965,41118734,49848816,52451739,56505775,58145810,58685660,
+59187942,59790782,65047886,69110399,72231403,74872928, 74899834,75898906,82103542,82337502,83630142,85044064,87591511,
+88559381,89094646,90135406,91296720,95744921)
+)      
+GO
+
+/* 73 facturas excluidas */
+/****** FACTURA_ITEM ******/
+insert into denver.facturas_items (factura_item_nro, factura_item_cant, factura_item_monto, factura_consumible_id, factura_reserva_codigo)
+(
+SELECT 
+      Factura_Nro, Item_Factura_Cantidad, Item_Factura_Monto, Consumible_Codigo, Reserva_Codigo
+FROM [gd_esquema].[Maestra]
+  where [Factura_Nro] is not null and [Consumible_Codigo] is not null and [Reserva_Codigo] is not null and Factura_Nro not in (SELECT distinct Factura_Nro
+FROM gd_esquema.Maestra 
+where Factura_Nro is not null AND  Cliente_Pasaporte_Nro IN(5833450,8573690,9616602,10968810,13197523,17144724,17993372,19944671,25170042,27682640,28333918,28766839,33462772,33467493,40407965,41118734,49848816,52451739,56505775,58145810,58685660,
+59187942,59790782,65047886,69110399,72231403,74872928, 74899834,75898906,82103542,82337502,83630142,85044064,87591511,
+88559381,89094646,90135406,91296720,95744921))
 )
 GO

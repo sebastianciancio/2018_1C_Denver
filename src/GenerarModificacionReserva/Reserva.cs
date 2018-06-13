@@ -120,7 +120,7 @@ namespace FrbaHotel
                 for (var indice = 0; indice < row.Count;indice++ )
                 {
                     // Precio x dia x hab * cant pasajeros x hab * dias alojamiento
-                    total_reserva += Convert.ToInt32(row[indice].Cells[4].Value) * Convert.ToInt32(row[indice].Cells[3].Value) * (fecha_hasta.Value - fecha_desde.Value).Days;
+                    total_reserva += Convert.ToInt32(row[indice].Cells[4].Value) * Convert.ToInt32(row[indice].Cells[3].Value) * ((fecha_hasta.Value - fecha_desde.Value).Days+1);
                 }
 
                 txt_reserva_total.Text = "$" + total_reserva;

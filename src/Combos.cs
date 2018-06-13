@@ -51,6 +51,29 @@ namespace FrbaHotel
 
         }
 
+        public static void cargarComboFormaPago(ComboBox combo, bool agregarTodos = false)
+        {
+            SqlCommand cmd = new SqlCommand("denver.obtener_formas_pago", DataBase.GetInstance().Connection);
+            cmd.CommandType = CommandType.StoredProcedure;
+            SqlDataReader reader;
+
+            reader = cmd.ExecuteReader();
+
+            DataTable dt = new DataTable();
+            dt.Columns.Add("forma_pago_id", typeof(int));
+            dt.Columns.Add("forma_pago_nombre", typeof(string));
+            dt.Load(reader);
+
+            combo.ValueMember = "forma_pago_id";
+            combo.DisplayMember = "forma_pago_nombre";
+            combo.DataSource = dt;
+
+            if (agregarTodos)
+                agregarTodosCombo(combo, dt);
+
+        }
+
+
         public static void cargarComboTipoHabitacion(ComboBox combo, bool agregarTodos = false)
         {
             SqlCommand cmd = new SqlCommand("denver.obtener_tipo_habitaciones", DataBase.GetInstance().Connection);
