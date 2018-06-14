@@ -189,6 +189,7 @@
             // txb_calle
             // 
             this.txb_calle.Location = new System.Drawing.Point(4, 220);
+            this.txb_calle.MaxLength = 255;
             this.txb_calle.Name = "txb_calle";
             this.txb_calle.Size = new System.Drawing.Size(241, 20);
             this.txb_calle.TabIndex = 159;
@@ -243,6 +244,7 @@
             // txb_telefono
             // 
             this.txb_telefono.Location = new System.Drawing.Point(6, 173);
+            this.txb_telefono.MaxLength = 255;
             this.txb_telefono.Name = "txb_telefono";
             this.txb_telefono.Size = new System.Drawing.Size(134, 20);
             this.txb_telefono.TabIndex = 153;
@@ -311,6 +313,7 @@
             // txb_apellido
             // 
             this.txb_apellido.Location = new System.Drawing.Point(4, 132);
+            this.txb_apellido.MaxLength = 255;
             this.txb_apellido.Name = "txb_apellido";
             this.txb_apellido.Size = new System.Drawing.Size(323, 20);
             this.txb_apellido.TabIndex = 143;
@@ -327,6 +330,7 @@
             // txb_nombre
             // 
             this.txb_nombre.Location = new System.Drawing.Point(6, 82);
+            this.txb_nombre.MaxLength = 255;
             this.txb_nombre.Name = "txb_nombre";
             this.txb_nombre.Size = new System.Drawing.Size(323, 20);
             this.txb_nombre.TabIndex = 141;
@@ -344,7 +348,7 @@
             // 
             this.txb_numDni.ImeMode = System.Windows.Forms.ImeMode.On;
             this.txb_numDni.Location = new System.Drawing.Point(230, 26);
-            this.txb_numDni.MaxLength = 15;
+            this.txb_numDni.MaxLength = 255;
             this.txb_numDni.Name = "txb_numDni";
             this.txb_numDni.Size = new System.Drawing.Size(92, 20);
             this.txb_numDni.TabIndex = 139;
@@ -388,6 +392,7 @@
             // txb_pas
             // 
             this.txb_pas.Location = new System.Drawing.Point(136, 51);
+            this.txb_pas.MaxLength = 32;
             this.txb_pas.Name = "txb_pas";
             this.txb_pas.Size = new System.Drawing.Size(118, 20);
             this.txb_pas.TabIndex = 157;

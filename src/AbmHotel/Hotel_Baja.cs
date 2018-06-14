@@ -22,7 +22,48 @@ namespace FrbaHotel.AbmHotel
         }
         private void Hotel_Baja_Load(object sender, EventArgs e)
         {
-            SqlCommand cmd = new SqlCommand("dbo.buscar_hotel_completo", db.Connection);
+
+
+        }
+
+        private void btn_volver_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void btn_guardar_Click(object sender, EventArgs e)
+        {
+            SqlCommand cmd = new SqlCommand("denver.baja_hotel", db.Connection);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.AddWithValue("@id_hotel", SqlDbType.Int).Value = id_hotel;
+
+            cmd.Parameters.AddWithValue("@fecha_inicio", SqlDbType.DateTime).Value = dtp_inicio.Value;
+            cmd.Parameters.AddWithValue("@fecha_fin", SqlDbType.DateTime).Value = dtp_fin.Value;
+
+            cmd.Parameters.AddWithValue("@motivo", SqlDbType.VarChar).Value = cmb_motivo.SelectedValue;
+
+            cmd.ExecuteNonQuery();
+
+            SqlDataAdapter sda = new SqlDataAdapter("SELECT denver.hotel_en_mantenimiento ('" + id_hotel + "')", db.Connection);
+            DataTable dt = new DataTable();
+            sda.Fill(dt);
+
+            // Si esta en mantenimiento
+            if (Convert.ToInt32(dt.Rows[0][0]) == 1)
+            {
+                MessageBox.Show("El hotel " + txb_nombre.Text + " se dio de baja correctamente", "Mensaje");
+                Close();
+            }
+            else {
+                MessageBox.Show("El hotel tiene reservas activas entre el " + dtp_inicio.Value + " y " + dtp_fin.Value , "Error");
+                 } 
+
+        }
+
+        private void Hotel_Baja_Load_1(object sender, EventArgs e)
+        {
+            SqlCommand cmd = new SqlCommand("denver.buscar_hotel_completo", db.Connection);
             cmd.CommandType = CommandType.StoredProcedure;
 
 
@@ -37,30 +78,6 @@ namespace FrbaHotel.AbmHotel
             DataRow row = dt.Rows[0];
 
             txb_nombre.Text = row["hotel_nombre"].ToString();
-
-        }
-
-        private void btn_volver_Click(object sender, EventArgs e)
-        {
-            Close();
-        }
-
-        private void btn_guardar_Click(object sender, EventArgs e)
-        {
-            SqlCommand cmd = new SqlCommand("dbo.baja_hotel", db.Connection);
-            cmd.CommandType = CommandType.StoredProcedure;
-
-            cmd.Parameters.AddWithValue("@id_hotel", SqlDbType.Int).Value = id_hotel;
-
-            cmd.Parameters.AddWithValue("@fecha_inicio", SqlDbType.DateTime).Value = dtp_inicio.Value;
-            cmd.Parameters.AddWithValue("@id_hotel", SqlDbType.DateTime).Value = dtp_fin.Value;
-
-            cmd.Parameters.AddWithValue("@motivo", SqlDbType.VarChar).Value = cmb_motivo.SelectedValue;
-
-            cmd.ExecuteNonQuery();
-
-            MessageBox.Show("El hotel " + txb_nombre.Text + " se dio de baja correctamente", "Mensaje");
-
         }
     }
 }

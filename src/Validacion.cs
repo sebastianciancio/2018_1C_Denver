@@ -35,7 +35,7 @@ namespace FrbaHotel
         }
 
         public static bool rolExistente(string texto){
-            SqlDataAdapter sda = new SqlDataAdapter("SELECT denver.existe_usuario ('" + texto + "')", DataBase.GetInstance().Connection);
+            SqlDataAdapter sda = new SqlDataAdapter("SELECT denver.existe_rol ('" + texto + "')", DataBase.GetInstance().Connection);
             DataTable dt = new DataTable();
             sda.Fill(dt);
             

@@ -64,6 +64,9 @@
             this.label8 = new System.Windows.Forms.Label();
             this.txb_cli_mod_dpto = new System.Windows.Forms.TextBox();
             this.txb_tipoDoc = new System.Windows.Forms.TextBox();
+            this.combo_pais = new System.Windows.Forms.ComboBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // lbl_mod_cl_t_dni
@@ -106,6 +109,7 @@
             // txb_cli_mod_nombres
             // 
             this.txb_cli_mod_nombres.Location = new System.Drawing.Point(18, 84);
+            this.txb_cli_mod_nombres.MaxLength = 255;
             this.txb_cli_mod_nombres.Name = "txb_cli_mod_nombres";
             this.txb_cli_mod_nombres.Size = new System.Drawing.Size(323, 20);
             this.txb_cli_mod_nombres.TabIndex = 6;
@@ -122,6 +126,7 @@
             // txb_cli_mod_apellidos
             // 
             this.txb_cli_mod_apellidos.Location = new System.Drawing.Point(18, 134);
+            this.txb_cli_mod_apellidos.MaxLength = 255;
             this.txb_cli_mod_apellidos.Name = "txb_cli_mod_apellidos";
             this.txb_cli_mod_apellidos.Size = new System.Drawing.Size(323, 20);
             this.txb_cli_mod_apellidos.TabIndex = 8;
@@ -185,6 +190,7 @@
             // txb_cli_mod_calle
             // 
             this.txb_cli_mod_calle.Location = new System.Drawing.Point(18, 235);
+            this.txb_cli_mod_calle.MaxLength = 255;
             this.txb_cli_mod_calle.Name = "txb_cli_mod_calle";
             this.txb_cli_mod_calle.Size = new System.Drawing.Size(241, 20);
             this.txb_cli_mod_calle.TabIndex = 15;
@@ -211,6 +217,7 @@
             // txb_cli_mod_nro
             // 
             this.txb_cli_mod_nro.Location = new System.Drawing.Point(274, 235);
+            this.txb_cli_mod_nro.MaxLength = 255;
             this.txb_cli_mod_nro.Name = "txb_cli_mod_nro";
             this.txb_cli_mod_nro.Size = new System.Drawing.Size(50, 20);
             this.txb_cli_mod_nro.TabIndex = 21;
@@ -227,6 +234,7 @@
             // txb_cli_mod_piso
             // 
             this.txb_cli_mod_piso.Location = new System.Drawing.Point(343, 235);
+            this.txb_cli_mod_piso.MaxLength = 18;
             this.txb_cli_mod_piso.Name = "txb_cli_mod_piso";
             this.txb_cli_mod_piso.Size = new System.Drawing.Size(24, 20);
             this.txb_cli_mod_piso.TabIndex = 23;
@@ -243,6 +251,7 @@
             // txb_cli_mod_localidad
             // 
             this.txb_cli_mod_localidad.Location = new System.Drawing.Point(18, 279);
+            this.txb_cli_mod_localidad.MaxLength = 255;
             this.txb_cli_mod_localidad.Name = "txb_cli_mod_localidad";
             this.txb_cli_mod_localidad.Size = new System.Drawing.Size(114, 20);
             this.txb_cli_mod_localidad.TabIndex = 25;
@@ -269,6 +278,7 @@
             // txb_cli_mod_nacionalidad
             // 
             this.txb_cli_mod_nacionalidad.Location = new System.Drawing.Point(234, 279);
+            this.txb_cli_mod_nacionalidad.MaxLength = 255;
             this.txb_cli_mod_nacionalidad.Name = "txb_cli_mod_nacionalidad";
             this.txb_cli_mod_nacionalidad.Size = new System.Drawing.Size(150, 20);
             this.txb_cli_mod_nacionalidad.TabIndex = 28;
@@ -295,6 +305,7 @@
             // txb_cli_mod_telefono
             // 
             this.txb_cli_mod_telefono.Location = new System.Drawing.Point(18, 326);
+            this.txb_cli_mod_telefono.MaxLength = 50;
             this.txb_cli_mod_telefono.Name = "txb_cli_mod_telefono";
             this.txb_cli_mod_telefono.Size = new System.Drawing.Size(134, 20);
             this.txb_cli_mod_telefono.TabIndex = 31;
@@ -369,6 +380,7 @@
             // txb_cli_mod_dpto
             // 
             this.txb_cli_mod_dpto.Location = new System.Drawing.Point(383, 235);
+            this.txb_cli_mod_dpto.MaxLength = 50;
             this.txb_cli_mod_dpto.Name = "txb_cli_mod_dpto";
             this.txb_cli_mod_dpto.Size = new System.Drawing.Size(24, 20);
             this.txb_cli_mod_dpto.TabIndex = 54;
@@ -383,11 +395,48 @@
             this.txb_tipoDoc.Size = new System.Drawing.Size(123, 20);
             this.txb_tipoDoc.TabIndex = 55;
             // 
+            // combo_pais
+            // 
+            this.combo_pais.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.combo_pais.FormattingEnabled = true;
+            this.combo_pais.Items.AddRange(new object[] {
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"});
+            this.combo_pais.Location = new System.Drawing.Point(243, 180);
+            this.combo_pais.Name = "combo_pais";
+            this.combo_pais.Size = new System.Drawing.Size(167, 21);
+            this.combo_pais.TabIndex = 135;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.ForeColor = System.Drawing.Color.Red;
+            this.label5.Location = new System.Drawing.Point(272, 164);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(11, 13);
+            this.label5.TabIndex = 134;
+            this.label5.Text = "*";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(240, 164);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(27, 13);
+            this.label9.TabIndex = 133;
+            this.label9.Text = "Pais";
+            // 
             // Cliente_modificacion
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(419, 437);
+            this.Controls.Add(this.combo_pais);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.label9);
             this.Controls.Add(this.txb_tipoDoc);
             this.Controls.Add(this.txb_cli_mod_dpto);
             this.Controls.Add(this.label8);
@@ -471,5 +520,8 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.TextBox txb_cli_mod_dpto;
         private System.Windows.Forms.TextBox txb_tipoDoc;
+        private System.Windows.Forms.ComboBox combo_pais;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label9;
     }
 }

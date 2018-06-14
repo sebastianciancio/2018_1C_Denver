@@ -95,7 +95,8 @@ namespace FrbaHotel.AbmUsuarios
 
             cmd.Parameters.AddWithValue("@usuario_apellido", SqlDbType.VarChar).Value = txb_apellido.Text;
 
-            cmd.Parameters.AddWithValue("@hotel", SqlDbType.Int).Value = Convert.ToInt32(cmb_hotel.SelectedValue);
+            if (cmb_hotel.SelectedValue.ToString().CompareTo("0") > 0)
+                cmd.Parameters.AddWithValue("@hotel", SqlDbType.Int).Value = Convert.ToInt32(cmb_hotel.SelectedValue);
 
             // Creo el DataTable para obtener los resultados del SP
             DataTable dt = new DataTable();
@@ -150,7 +151,7 @@ namespace FrbaHotel.AbmUsuarios
 
             //Paso el valor de las claves al nuevo formulario de modificación
             //para poder consultar la base de datos y traer los campos que se quieran modificar
-            DialogResult result = MessageBox.Show("Desea agregar el usuario " + user + " a al hotel" + accesoSistema.HotelNombreActual + "?", "Confirmar",
+            DialogResult result = MessageBox.Show("Desea agregar el usuario " + user + " al hotel " + accesoSistema.HotelNombreActual + "?", "Confirmar",
                      MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
             if (result == DialogResult.Yes)
@@ -161,7 +162,7 @@ namespace FrbaHotel.AbmUsuarios
 
                 cmd.Parameters.AddWithValue("@usuario_nombre", SqlDbType.VarChar).Value = user;
 
-                cmd.Parameters.AddWithValue("@usuario_hotel", SqlDbType.VarChar).Value = accesoSistema.HotelIdActual;
+                cmd.Parameters.AddWithValue("@usuario_hotel", SqlDbType.Int).Value = accesoSistema.HotelIdActual;
 
                 cmd.ExecuteNonQuery();
 

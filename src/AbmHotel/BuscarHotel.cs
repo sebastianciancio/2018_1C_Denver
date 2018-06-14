@@ -74,7 +74,7 @@ namespace FrbaHotel.AbmHotel
             string hotel_id = row.Cells[6].Value.ToString();
             //Paso el valor de las claves al nuevo formulario de modificación
             //para poder consultar la base de datos y traer los campos que se quieran modificar
-            frm.hotel_id = @hotel_id;
+            frm.hotel_id = hotel_id;
             frm.Show();
         }
 

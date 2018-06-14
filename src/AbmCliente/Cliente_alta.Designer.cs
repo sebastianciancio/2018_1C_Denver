@@ -132,6 +132,7 @@
             // txb_cli_new_telefono
             // 
             this.txb_cli_new_telefono.Location = new System.Drawing.Point(15, 380);
+            this.txb_cli_new_telefono.MaxLength = 50;
             this.txb_cli_new_telefono.Name = "txb_cli_new_telefono";
             this.txb_cli_new_telefono.Size = new System.Drawing.Size(134, 20);
             this.txb_cli_new_telefono.TabIndex = 83;
@@ -158,6 +159,7 @@
             // txb_cli_new_nacionalidad
             // 
             this.txb_cli_new_nacionalidad.Location = new System.Drawing.Point(228, 291);
+            this.txb_cli_new_nacionalidad.MaxLength = 255;
             this.txb_cli_new_nacionalidad.Name = "txb_cli_new_nacionalidad";
             this.txb_cli_new_nacionalidad.Size = new System.Drawing.Size(150, 20);
             this.txb_cli_new_nacionalidad.TabIndex = 80;
@@ -184,6 +186,7 @@
             // txb_cli_new_localidad
             // 
             this.txb_cli_new_localidad.Location = new System.Drawing.Point(15, 291);
+            this.txb_cli_new_localidad.MaxLength = 255;
             this.txb_cli_new_localidad.Name = "txb_cli_new_localidad";
             this.txb_cli_new_localidad.Size = new System.Drawing.Size(114, 20);
             this.txb_cli_new_localidad.TabIndex = 77;
@@ -200,6 +203,7 @@
             // txb_cli_new_piso
             // 
             this.txb_cli_new_piso.Location = new System.Drawing.Point(337, 247);
+            this.txb_cli_new_piso.MaxLength = 18;
             this.txb_cli_new_piso.Name = "txb_cli_new_piso";
             this.txb_cli_new_piso.Size = new System.Drawing.Size(24, 20);
             this.txb_cli_new_piso.TabIndex = 75;
@@ -216,9 +220,11 @@
             // txb_cli_new_nro
             // 
             this.txb_cli_new_nro.Location = new System.Drawing.Point(268, 247);
+            this.txb_cli_new_nro.MaxLength = 255;
             this.txb_cli_new_nro.Name = "txb_cli_new_nro";
             this.txb_cli_new_nro.Size = new System.Drawing.Size(50, 20);
             this.txb_cli_new_nro.TabIndex = 73;
+            this.txb_cli_new_nro.TextChanged += new System.EventHandler(this.txb_cli_new_nro_TextChanged);
             // 
             // lbl_cli_mod_numero
             // 
@@ -242,6 +248,7 @@
             // txb_cli_new_calle
             // 
             this.txb_cli_new_calle.Location = new System.Drawing.Point(12, 247);
+            this.txb_cli_new_calle.MaxLength = 255;
             this.txb_cli_new_calle.Name = "txb_cli_new_calle";
             this.txb_cli_new_calle.Size = new System.Drawing.Size(241, 20);
             this.txb_cli_new_calle.TabIndex = 67;
@@ -251,9 +258,9 @@
             this.lbl_cli_mod_direccion.AutoSize = true;
             this.lbl_cli_mod_direccion.Location = new System.Drawing.Point(9, 231);
             this.lbl_cli_mod_direccion.Name = "lbl_cli_mod_direccion";
-            this.lbl_cli_mod_direccion.Size = new System.Drawing.Size(52, 13);
+            this.lbl_cli_mod_direccion.Size = new System.Drawing.Size(30, 13);
             this.lbl_cli_mod_direccion.TabIndex = 66;
-            this.lbl_cli_mod_direccion.Text = "Dirección";
+            this.lbl_cli_mod_direccion.Text = "Calle";
             // 
             // label3
             // 
@@ -305,6 +312,7 @@
             // txb_cli_new_apellidos
             // 
             this.txb_cli_new_apellidos.Location = new System.Drawing.Point(12, 146);
+            this.txb_cli_new_apellidos.MaxLength = 255;
             this.txb_cli_new_apellidos.Name = "txb_cli_new_apellidos";
             this.txb_cli_new_apellidos.Size = new System.Drawing.Size(323, 20);
             this.txb_cli_new_apellidos.TabIndex = 60;
@@ -321,6 +329,7 @@
             // txb_cli_new_nombres
             // 
             this.txb_cli_new_nombres.Location = new System.Drawing.Point(12, 96);
+            this.txb_cli_new_nombres.MaxLength = 255;
             this.txb_cli_new_nombres.Name = "txb_cli_new_nombres";
             this.txb_cli_new_nombres.Size = new System.Drawing.Size(323, 20);
             this.txb_cli_new_nombres.TabIndex = 58;
@@ -338,7 +347,7 @@
             // 
             this.txb_cl_new_dni.ImeMode = System.Windows.Forms.ImeMode.On;
             this.txb_cl_new_dni.Location = new System.Drawing.Point(228, 40);
-            this.txb_cl_new_dni.MaxLength = 15;
+            this.txb_cl_new_dni.MaxLength = 18;
             this.txb_cl_new_dni.Name = "txb_cl_new_dni";
             this.txb_cl_new_dni.Size = new System.Drawing.Size(92, 20);
             this.txb_cl_new_dni.TabIndex = 55;
@@ -384,6 +393,7 @@
             // txb_cli_new_dpto
             // 
             this.txb_cli_new_dpto.Location = new System.Drawing.Point(377, 247);
+            this.txb_cli_new_dpto.MaxLength = 50;
             this.txb_cli_new_dpto.Name = "txb_cli_new_dpto";
             this.txb_cli_new_dpto.Size = new System.Drawing.Size(24, 20);
             this.txb_cli_new_dpto.TabIndex = 93;
@@ -490,7 +500,9 @@
             this.Controls.Add(this.lbl_cl_mod_dni);
             this.Controls.Add(this.lbl_mod_cl_t_dni);
             this.Name = "Cliente_alta";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Nuevo Cliente";
+            this.Load += new System.EventHandler(this.Cliente_alta_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

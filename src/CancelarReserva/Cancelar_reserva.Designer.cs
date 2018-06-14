@@ -77,6 +77,7 @@
             this.btn_canc_rec_confirm.TabIndex = 4;
             this.btn_canc_rec_confirm.Text = "Confirmar \r\nCancelacion";
             this.btn_canc_rec_confirm.UseVisualStyleBackColor = true;
+            this.btn_canc_rec_confirm.Click += new System.EventHandler(this.btn_canc_rec_confirm_Click);
             // 
             // btn_canc_res_volver
             // 
@@ -87,7 +88,7 @@
             this.btn_canc_res_volver.Text = "Volver";
             this.btn_canc_res_volver.UseVisualStyleBackColor = true;
             // 
-            // Form1
+            // Cancelar_reserva
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -98,7 +99,7 @@
             this.Controls.Add(this.lbl_canc_res_motivo);
             this.Controls.Add(this.txb_canc_rec_codigo);
             this.Controls.Add(this.label1);
-            this.Name = "Form1";
+            this.Name = "Cancelar_reserva";
             this.Text = "Cancelar Reserva";
             this.ResumeLayout(false);
             this.PerformLayout();

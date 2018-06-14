@@ -56,11 +56,12 @@ namespace FrbaHotel.AbmUsuarios
             }
             if (row["usuario_fecha_nac"].ToString() != "")
             { cmb_nacimiento.Value = Convert.ToDateTime(row["usuario_fecha_nac"]); }
-            
+
         }
 
         private void btn_guardar_Click(object sender, EventArgs e)
         {
+            if (validarFormulario()) { 
             SqlCommand cmd = new SqlCommand("dbo.modificar_usuario", db.Connection);
             cmd.CommandType = CommandType.StoredProcedure;
 
@@ -82,5 +83,22 @@ namespace FrbaHotel.AbmUsuarios
 
             MessageBox.Show("Se ha cargado el Usuario " + txb_user.Text, "Mensaje");
         }
-    }
+         else {
+                    MessageBox.Show("Debe completar todos los campos obligatorios", "Advertencia");
+                } }
+
+        private bool validarFormulario()
+        {
+            return (!Validacion.esInicial(txb_user.Text) &
+                    !Validacion.esInicial(txb_pas.Text) &
+                    !Validacion.esInicial(txb_apellido.Text) &
+                    !Validacion.esInicial(txb_nombre.Text) &
+                    !Validacion.esInicial(txb_mail.Text) &
+                    !Validacion.esInicial(txb_calle.Text) &
+                    !Validacion.esInicial(txb_telefono.Text) &
+                    !Validacion.esInicial(cmb_nacimiento.Value.ToString()));
+
+        }
+  }
+    
 }

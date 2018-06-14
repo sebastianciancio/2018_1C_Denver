@@ -23,6 +23,7 @@ namespace FrbaHotel.AbmCliente
         {
             InitializeComponent();
             db = DataBase.GetInstance();
+            Combos.cargarComboPais(combo_pais);
         }
 
         private void fontDialog1_Apply(object sender, EventArgs e)
@@ -73,39 +74,56 @@ namespace FrbaHotel.AbmCliente
 
         private void btn_cli_mod_guardar_Click(object sender, EventArgs e)
         {
-            SqlCommand cmd = new SqlCommand("denver.modificar_cliente", db.Connection);
-            cmd.CommandType = CommandType.StoredProcedure;
+            if (validarFormulario())
+            {
+                SqlCommand cmd = new SqlCommand("denver.modificar_cliente", db.Connection);
+                cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.AddWithValue("@cliente_tipo_documento", SqlDbType.VarChar).Value = txb_tipoDoc.Text;
-            cmd.Parameters.AddWithValue("@cliente_pasaporte_nro", SqlDbType.Int).Value = Convert.ToInt32(txb_cli_mod_dni.Text);
-            cmd.Parameters.AddWithValue("@cliente_apellido", SqlDbType.VarChar).Value = txb_cli_mod_apellidos.Text;
-            cmd.Parameters.AddWithValue("@cliente_nombre", SqlDbType.VarChar).Value = txb_cli_mod_nombres.Text;
-            cmd.Parameters.AddWithValue("@cliente_fecha_nac", SqlDbType.DateTime).Value = "";
-            cmd.Parameters.AddWithValue("@cliente_email", SqlDbType.VarChar).Value = txb_cli_mod_mail.Text;
-            cmd.Parameters.AddWithValue("@cliente_dom_calle", SqlDbType.VarChar).Value = txb_cli_mod_calle.Text;
-            cmd.Parameters.AddWithValue("@cliente_dom_nro", SqlDbType.VarChar).Value = txb_cli_mod_nro.Text;
-            cmd.Parameters.AddWithValue("@cliente_piso", SqlDbType.Int).Value = Convert.ToInt32(txb_cli_mod_piso.Text);
-            cmd.Parameters.AddWithValue("@cliente_dpto", SqlDbType.VarChar).Value = txb_cli_mod_dpto.Text;
-            cmd.Parameters.AddWithValue("@cliente_dom_localidad", SqlDbType.VarChar).Value = txb_cli_mod_localidad.Text;
-            cmd.Parameters.AddWithValue("@cliente_telefono", SqlDbType.VarChar).Value = txb_cli_mod_telefono.Text;
-            cmd.Parameters.AddWithValue("@cliente_nacionalidad", SqlDbType.VarChar).Value = txb_cli_mod_nacionalidad.Text;
-            cmd.Parameters.AddWithValue("@cliente_pais_id", SqlDbType.SmallInt).Value = Convert.ToInt32("1");
+                cmd.Parameters.AddWithValue("@cliente_tipo_documento", SqlDbType.VarChar).Value = txb_tipoDoc.Text;
+                cmd.Parameters.AddWithValue("@cliente_pasaporte_nro", SqlDbType.Int).Value = Convert.ToInt32(txb_cli_mod_dni.Text);
+                cmd.Parameters.AddWithValue("@cliente_apellido", SqlDbType.VarChar).Value = txb_cli_mod_apellidos.Text;
+                cmd.Parameters.AddWithValue("@cliente_nombre", SqlDbType.VarChar).Value = txb_cli_mod_nombres.Text;
+                cmd.Parameters.AddWithValue("@cliente_fecha_nac", SqlDbType.DateTime).Value = Convert.ToDateTime(cmb_cli_mod_fec_nac.Value);
+                cmd.Parameters.AddWithValue("@cliente_email", SqlDbType.VarChar).Value = txb_cli_mod_mail.Text;
+                cmd.Parameters.AddWithValue("@cliente_dom_calle", SqlDbType.VarChar).Value = txb_cli_mod_calle.Text;
+                cmd.Parameters.AddWithValue("@cliente_dom_nro", SqlDbType.VarChar).Value = txb_cli_mod_nro.Text;
+                cmd.Parameters.AddWithValue("@cliente_piso", SqlDbType.Int).Value = Convert.ToInt32(txb_cli_mod_piso.Text);
+                cmd.Parameters.AddWithValue("@cliente_dpto", SqlDbType.VarChar).Value = txb_cli_mod_dpto.Text;
+                cmd.Parameters.AddWithValue("@cliente_dom_localidad", SqlDbType.VarChar).Value = txb_cli_mod_localidad.Text;
+                cmd.Parameters.AddWithValue("@cliente_telefono", SqlDbType.VarChar).Value = txb_cli_mod_telefono.Text;
+                cmd.Parameters.AddWithValue("@cliente_nacionalidad", SqlDbType.VarChar).Value = txb_cli_mod_nacionalidad.Text;
+                cmd.Parameters.AddWithValue("@cliente_pais_id", SqlDbType.SmallInt).Value = Convert.ToInt32(combo_pais.SelectedValue);
 
-            cmd.ExecuteNonQuery();
+                cmd.ExecuteNonQuery();
 
-            // Cierro la Ventana
-            Close();
+                // Cierro la Ventana
+                Close();
 
-            // Muestro resultado de la operacion
-            MessageBox.Show("Se ha modificado el cliente " + txb_cli_mod_apellidos.Text + " " + txb_cli_mod_nombres.Text, "Mensaje");
+                // Muestro resultado de la operacion
+                MessageBox.Show("Se ha modificado el cliente " + txb_cli_mod_apellidos.Text + " " + txb_cli_mod_nombres.Text, "Mensaje");
+            }
+            else
+            {
+                MessageBox.Show("Debe ingresar todos los campos obligatorios", "Mensaje");
+            }
         }
 
-        private void btn_cli_mod_volver_Click(object sender, EventArgs e)
+
+    private void btn_cli_mod_volver_Click(object sender, EventArgs e)
         {
             Close();
         }
 
+        private bool validarFormulario()
+        {
+            return (!Validacion.esInicial(txb_cli_mod_apellidos.Text) &
+                    !Validacion.esInicial(txb_cli_mod_nombres.Text) &
+                    !Validacion.esInicial(txb_cli_mod_mail.Text) &
+                    !Validacion.esInicial(txb_cli_mod_nacionalidad.Text) &
+                    !Validacion.esInicial(txb_cli_mod_localidad.Text) &
+                    !Validacion.esInicial(txb_cli_mod_telefono.Text));
 
+        }
 
 
     }

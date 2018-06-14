@@ -54,7 +54,7 @@
             this.txb_nombre.Location = new System.Drawing.Point(16, 45);
             this.txb_nombre.Name = "txb_nombre";
             this.txb_nombre.ReadOnly = true;
-            this.txb_nombre.Size = new System.Drawing.Size(155, 20);
+            this.txb_nombre.Size = new System.Drawing.Size(228, 20);
             this.txb_nombre.TabIndex = 1;
             // 
             // lbl_inicio
@@ -97,7 +97,7 @@
             this.cmb_motivo.Items.AddRange(new object[] {
             "Reformas",
             "Ampliaciones"});
-            this.cmb_motivo.Location = new System.Drawing.Point(21, 175);
+            this.cmb_motivo.Location = new System.Drawing.Point(21, 184);
             this.cmb_motivo.Name = "cmb_motivo";
             this.cmb_motivo.Size = new System.Drawing.Size(219, 21);
             this.cmb_motivo.TabIndex = 6;
@@ -147,7 +147,9 @@
             this.Controls.Add(this.txb_nombre);
             this.Controls.Add(this.lbl_nombre);
             this.Name = "Hotel_Baja";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Baja Hotel";
+            this.Load += new System.EventHandler(this.Hotel_Baja_Load_1);
             this.ResumeLayout(false);
             this.PerformLayout();
 

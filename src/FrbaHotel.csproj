@@ -63,6 +63,18 @@
     <Compile Include="AbmHabitacion\Habitaciones_buscador.Designer.cs">
       <DependentUpon>Habitaciones_buscador.cs</DependentUpon>
     </Compile>
+    <Compile Include="AbmHabitacion\Habitacion_alta.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmHabitacion\Habitacion_alta.Designer.cs">
+      <DependentUpon>Habitacion_alta.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AbmHabitacion\Habitacion_modificar.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmHabitacion\Habitacion_modificar.Designer.cs">
+      <DependentUpon>Habitacion_modificar.cs</DependentUpon>
+    </Compile>
     <Compile Include="AbmHotel\BuscarHotel.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -93,22 +105,22 @@
     <Compile Include="AbmRegimen\Regimen_buscador.Designer.cs">
       <DependentUpon>Regimen_buscador.cs</DependentUpon>
     </Compile>
-    <Compile Include="AbmRol\AltaRol.cs">
+    <Compile Include="AbmRegimen\AbmRol\AltaRol.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AbmRol\AltaRol.Designer.cs">
+    <Compile Include="AbmRegimen\AbmRol\AltaRol.Designer.cs">
       <DependentUpon>AltaRol.cs</DependentUpon>
     </Compile>
-    <Compile Include="AbmRol\GestionRoles.cs">
+    <Compile Include="AbmRegimen\AbmRol\GestionRoles.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AbmRol\GestionRoles.Designer.cs">
+    <Compile Include="AbmRegimen\AbmRol\GestionRoles.Designer.cs">
       <DependentUpon>GestionRoles.cs</DependentUpon>
     </Compile>
-    <Compile Include="AbmRol\Modificar_rol.cs">
+    <Compile Include="AbmRegimen\AbmRol\Modificar_rol.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AbmRol\Modificar_rol.Designer.cs">
+    <Compile Include="AbmRegimen\AbmRol\Modificar_rol.Designer.cs">
       <DependentUpon>Modificar_rol.cs</DependentUpon>
     </Compile>
     <Compile Include="AbmUsuarios\NuevoUsuario.cs">
@@ -216,6 +228,12 @@
     <EmbeddedResource Include="AbmHabitacion\Habitaciones_buscador.resx">
       <DependentUpon>Habitaciones_buscador.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="AbmHabitacion\Habitacion_alta.resx">
+      <DependentUpon>Habitacion_alta.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AbmHabitacion\Habitacion_modificar.resx">
+      <DependentUpon>Habitacion_modificar.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="AbmHotel\buscarHotel.resx">
       <DependentUpon>BuscarHotel.cs</DependentUpon>
     </EmbeddedResource>
@@ -231,13 +249,13 @@
     <EmbeddedResource Include="AbmRegimen\Regimen_buscador.resx">
       <DependentUpon>Regimen_buscador.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="AbmRol\AltaRol.resx">
+    <EmbeddedResource Include="AbmRegimen\AbmRol\AltaRol.resx">
       <DependentUpon>AltaRol.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="AbmRol\GestionRoles.resx">
+    <EmbeddedResource Include="AbmRegimen\AbmRol\GestionRoles.resx">
       <DependentUpon>GestionRoles.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="AbmRol\Modificar_rol.resx">
+    <EmbeddedResource Include="AbmRegimen\AbmRol\Modificar_rol.resx">
       <DependentUpon>Modificar_rol.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="AbmUsuarios\NuevoUsuario.resx">

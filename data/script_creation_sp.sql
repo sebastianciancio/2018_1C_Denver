@@ -29,6 +29,8 @@ if EXISTS (SELECT * FROM sys.objects  WHERE name = 'cargar_habitacion' AND type 
 	DROP PROCEDURE [denver].[cargar_habitacion]
 if EXISTS (SELECT * FROM sys.objects  WHERE name = 'eliminar_habitacion' AND type IN (N'P', N'PC'))
 	DROP PROCEDURE [denver].[eliminar_habitacion]
+if EXISTS (SELECT * FROM sys.objects  WHERE name = 'alta_habitacion' AND type IN (N'P', N'PC'))
+    DROP PROCEDURE [denver].[alta_habitacion]
 if EXISTS (SELECT * FROM sys.objects  WHERE name = 'cargar_regimen' AND type IN (N'P', N'PC'))
 	DROP PROCEDURE [denver].[cargar_regimen] 
 if EXISTS (SELECT * FROM sys.objects  WHERE name = 'eliminar_regimen' AND type IN (N'P', N'PC'))
@@ -139,8 +141,22 @@ if EXISTS (SELECT * FROM sys.objects  WHERE name = 'obtener_facturable' AND type
 	DROP PROCEDURE [denver].[obtener_facturable]
 if EXISTS (SELECT * FROM sys.objects  WHERE name = 'modificar_hotel' AND type IN (N'P', N'PC'))
 	DROP PROCEDURE [denver].[modificar_hotel]
+if EXISTS (SELECT * FROM sys.objects  WHERE name = 'hotel_en_mantenimiento' AND type IN (N'FN'))
+	DROP FUNCTION [denver].[hotel_en_mantenimiento]
+if EXISTS (SELECT * FROM sys.objects  WHERE name = 'buscar_habitacion' AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [denver].[buscar_habitacion]
+if EXISTS (SELECT * FROM sys.objects  WHERE name = 'buscar_habitacion_completa' AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [denver].[buscar_habitacion_completa]
+if EXISTS (SELECT * FROM sys.objects  WHERE name = 'buscar_reserva_hab_hotel' AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [denver].[buscar_reserva_hab_hotel]
+if EXISTS (SELECT * FROM sys.objects  WHERE name = 'modificar_habitacion' AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [denver].[modificar_habitacion]
+	
+if EXISTS (SELECT * FROM sys.objects  WHERE name = 'existe_habitacion_hotel' AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [denver].[existe_habitacion_hotel]
+if EXISTS (SELECT * FROM sys.objects  WHERE name = 'cargar_usuario_hotel' AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [denver].[cargar_usuario_hotel]
 GO
-
 
 /*  --------------------------------------------------------------------------------
 CREACION DE  LOS SP
@@ -257,7 +273,8 @@ CREATE PROCEDURE [denver].[cargar_hotel]
 	@hotel_estrellas numeric(18,0),
 	@hotel_ciudad nvarchar(255),
 	@hotel_pais_id smallint,
-	@hotel_regimen smallint
+	@hotel_regimen smallint,
+	@user_creador nvarchar(50)
 AS
 BEGIN
 	
@@ -301,6 +318,13 @@ BEGIN
 				VALUES (
 				@hotel_id,
 				@hotel_regimen)
+
+	INSERT INTO denver.usuarios_hoteles (
+				usuario_hotel_id,
+				usuario_usuario_user)
+				VALUES (
+				 @hotel_id,
+				 @user_creador)
 END
 GO
 
@@ -334,6 +358,7 @@ BEGIN
 	habitacion_frente,
 	habitacion_tipo_habitacion_id,
 	habitacion_descripcion,
+	habitacion_hotel_id,
 	habitacion_activa,
 	habitacion_created)
 	VALUES(
@@ -342,6 +367,7 @@ BEGIN
 	@habitacion_frente,
 	@habitacion_tipo_habitacion_id,
 	@habitacion_descripcion,
+	@habitacion_hotel_id,
 	'S',
 	GETDATE())
 END
@@ -362,6 +388,19 @@ BEGIN
 END
 GO
 
+CREATE PROCEDURE [denver].[alta_habitacion]
+	@habitacion_nro numeric(18,0),
+	@habitacion_hotel_id smallint
+AS
+BEGIN
+	SET NOCOUNT ON;  
+	UPDATE [denver].[habitaciones]
+		SET habitacion_activa = 'S'
+	WHERE
+		@habitacion_hotel_id = habitacion_hotel_id AND
+		@habitacion_nro = habitacion_nro
+END
+GO
 
 CREATE PROCEDURE [denver].[cargar_regimen]
 	@regimen_id numeric(18,0),
@@ -597,8 +636,8 @@ BEGIN
 	SELECT hotel_nombre AS Nombre,hotel_estrellas AS Estrellas, p.pais_nombre AS Pais, hotel_ciudad AS Ciudad, hotel_ciudad AS Ciudad,
 		   hotel_email AS Email, hotel_id 
 	FROM 
-		hoteles
-		join paises p on hotel_pais_id = p.pais_id
+		denver.hoteles
+		join denver.paises p on hotel_pais_id = p.pais_id
 	 WHERE hotel_nombre LIKE '%' + ISNULL(@hotel_nombre, hotel_nombre) + '%'
 		AND hotel_ciudad LIKE '%' + ISNULL(@hotel_ciudad, hotel_ciudad) + '%'
 		AND hotel_pais_id = ISNULL(@pais_id, hotel_pais_id) 
@@ -617,11 +656,12 @@ BEGIN
 	DECLARE @cont int;
 	SET NOCOUNT ON;  
 	SELECT @cont = count(*) from denver.reservas
-	WHERE reserva_fecha_inicio BETWEEN  @fecha_inicio AND @fecha_fin
-	   OR reserva_fecha_fin    BETWEEN  @fecha_inicio AND @fecha_fin
+	WHERE( reserva_fecha_inicio BETWEEN  @fecha_inicio AND @fecha_fin
+	    OR reserva_fecha_fin    BETWEEN  @fecha_inicio AND @fecha_fin )
+	   AND reserva_hotel_id = @id_hotel 
 
-	   if @cont = 0 
-	   begin
+	   IF (@cont = 0) 
+	   BEGIN
 
 		INSERT INTO [denver].[mantenimientos](
 				mantenimiento_hotel_id,
@@ -636,9 +676,9 @@ BEGIN
 				@fecha_fin,
 				@motivo,
 				GETDATE());
-end
-	  --if @cont > 0
-		--RAISERROR('Hay reservas activas para la fecha seleccionada'); 
+		END
+
+ 
 	    
 	  
 	
@@ -1301,7 +1341,7 @@ CREATE FUNCTION denver.existe_rol (@rol nvarchar(50))
 RETURNS int
 AS
 BEGIN
-	RETURN (SELECT count(*) FROM denver.usuarios WHERE usuario_user = @rol)
+	RETURN (SELECT count(*) FROM denver.roles WHERE rol_nombre = @rol)
 
 END
 GO
@@ -1371,7 +1411,7 @@ BEGIN
 		INNER JOIN denver.usuarios_hoteles AS b ON a.usuario_user = b.usuario_usuario_user  
 	WHERE  a.usuario_nombre LIKE '%' + ISNULL(@usuario_nombre, usuario_nombre) + '%'
 		AND a.usuario_apellido LIKE '%' + ISNULL(@usuario_apellido, usuario_apellido) + '%'
-		AND b.usuario_hotel_id = @hotel 
+		AND b.usuario_hotel_id = ISNULL(@hotel, usuario_hotel_id) 
 END
 GO
 
@@ -1532,6 +1572,136 @@ BEGIN
 	-- Calculo el total a facturar
 	SET @total_factura = @total_estadia + @total_consumo;
 
+
+
+END
+GO
+
+CREATE FUNCTION denver.hotel_en_mantenimiento (@hotel_id smallint)
+RETURNS int
+AS
+BEGIN
+	RETURN (SELECT count(*) FROM denver.hoteles WHERE hotel_id = @hotel_id
+												  AND hotel_activo = 'N' )
+
+END
+GO
+
+CREATE PROCEDURE denver.buscar_habitacion
+	@hotel_nombre smallint = NULL ,
+	@hab_numero numeric(18,0) = NULL,
+	@hab_piso numeric(18,0) = NULL
+AS   
+BEGIN 
+	-- SET NOCOUNT ON added to prevent extra result sets from interfering with SELECT statements.
+	SET NOCOUNT ON;  
+	 
+	 SELECT habitacion_nro AS Numero, habitacion_piso AS Piso, CASE WHEN habitacion_frente = 'S' THEN 'SI' ELSE 'NO' END AS 'Con Vista',
+		hotel_nombre AS Hotel, tipo_habitacion_descripcion AS Descripcion, hotel_id , habitacion_activa
+		FROM 
+		denver.habitaciones h JOIN denver.tipo_habitaciones t ON h.habitacion_tipo_habitacion_id = t.tipo_habitacion_id
+		JOIN denver.hoteles o ON h.habitacion_hotel_id = o.hotel_id		
+	    
+		WHERE --hotel_nombre LIKE '%' + ISNULL(@hotel_nombre, hotel_nombre) + '%'
+			habitacion_hotel_id = ISNULL(@hotel_nombre, habitacion_hotel_id) 
+		AND habitacion_nro = ISNULL(@hab_numero, habitacion_nro) 
+		AND habitacion_piso = ISNULL(@hab_piso, habitacion_piso) ;
+END		
+GO
+
+CREATE PROCEDURE denver.buscar_habitacion_completa
+	@hotel_id smallint = NULL ,
+	@hab_nro numeric(18,0) = NULL
+	
+AS   
+BEGIN 
+	-- SET NOCOUNT ON added to prevent extra result sets from interfering with SELECT statements.
+	SET NOCOUNT ON;  
+	 
+	 SELECT * FROM denver.habitaciones 
+	  WHERE habitacion_nro = @hab_nro
+	   AND  habitacion_hotel_id = @hotel_id
+END		
+GO
+
+CREATE PROCEDURE [denver].[modificar_habitacion]
+	@habitacion_nro numeric(18,0),
+	@habitacion_piso numeric(18,0),
+	@habitacion_frente nvarchar(50),
+	@habitacion_hotel_id smallint,
+	@habitacion_descripcion ntext
+AS
+BEGIN
+	SET NOCOUNT ON;  
+	INSERT INTO habitaciones(
+	habitacion_nro,
+	habitacion_piso,
+	habitacion_frente,
+	habitacion_descripcion,
+	habitacion_hotel_id,
+	habitacion_activa,
+	habitacion_created)
+	VALUES(
+	@habitacion_nro,
+	@habitacion_piso,
+	@habitacion_frente,
+	@habitacion_descripcion,
+	@habitacion_hotel_id,
+	'S',
+	GETDATE())
+END
+GO
+
+CREATE PROCEDURE denver.buscar_reserva_hab_hotel
+	@habitacion_nro numeric(18,0),
+	@hotel_id smallint
+	
+AS   
+BEGIN 
+	-- SET NOCOUNT ON added to prevent extra result sets from interfering with SELECT statements.
+	SET NOCOUNT ON;  
+	 
+	 SELECT * FROM denver.reservas_habitaciones h
+			join denver.reservas r on  h.reserva_habitaciones_reserva_codigo = r.reserva_codigo
+			 
+		WHERE (reserva_estado_id = 1 or reserva_estado_id = 2)
+		  AND reserva_habitacion_nro = @habitacion_nro
+		  AND reserva_hotel_id = @hotel_id 
+
+END		
+GO
+
+CREATE PROCEDURE denver.existe_habitacion_hotel
+	@habitacion_nro numeric(18,0),
+	@hotel_id smallint
+	
+AS   
+BEGIN 
+	-- SET NOCOUNT ON added to prevent extra result sets from interfering with SELECT statements.
+	SET NOCOUNT ON;  
+	 
+	 SELECT * FROM denver.habitaciones 
+		WHERE habitacion_nro = @habitacion_nro
+		  AND habitacion_hotel_id = @hotel_id 
+
+END		
+GO
+
+CREATE PROCEDURE denver.cargar_usuario_hotel
+	@usuario_nombre nvarchar(50),
+	@usuario_hotel smallint
+	
+AS   
+BEGIN 
+
+		 INSERT INTO [denver].[usuarios_hoteles](
+		     usuario_usuario_user,
+			 usuario_hotel_id
+			 
+			 )
+			 VALUES (
+			 @usuario_nombre,
+			 @usuario_hotel)
 
 
 END

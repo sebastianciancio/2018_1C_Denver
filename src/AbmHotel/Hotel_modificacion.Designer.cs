@@ -38,7 +38,6 @@
             this.txb_ciudad = new System.Windows.Forms.TextBox();
             this.lbl_ciudad = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.txb_calle = new System.Windows.Forms.TextBox();
             this.lbl_direccion = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.lbl_asterisco = new System.Windows.Forms.Label();
@@ -60,6 +59,7 @@
             this.cmb_pais = new System.Windows.Forms.ComboBox();
             this.cmb_regimenes = new System.Windows.Forms.ComboBox();
             this.label8 = new System.Windows.Forms.Label();
+            this.txb_calle = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // label12
@@ -103,6 +103,7 @@
             // txb_telefono
             // 
             this.txb_telefono.Location = new System.Drawing.Point(255, 79);
+            this.txb_telefono.MaxLength = 255;
             this.txb_telefono.Name = "txb_telefono";
             this.txb_telefono.Size = new System.Drawing.Size(134, 20);
             this.txb_telefono.TabIndex = 85;
@@ -129,6 +130,7 @@
             // txb_ciudad
             // 
             this.txb_ciudad.Location = new System.Drawing.Point(23, 171);
+            this.txb_ciudad.MaxLength = 255;
             this.txb_ciudad.Name = "txb_ciudad";
             this.txb_ciudad.Size = new System.Drawing.Size(150, 20);
             this.txb_ciudad.TabIndex = 82;
@@ -151,13 +153,6 @@
             this.label4.Size = new System.Drawing.Size(11, 13);
             this.label4.TabIndex = 72;
             this.label4.Text = "*";
-            // 
-            // txb_calle
-            // 
-            this.txb_calle.Location = new System.Drawing.Point(23, 127);
-            this.txb_calle.Name = "txb_calle";
-            this.txb_calle.Size = new System.Drawing.Size(241, 20);
-            this.txb_calle.TabIndex = 69;
             // 
             // lbl_direccion
             // 
@@ -208,6 +203,7 @@
             // txb_nombre
             // 
             this.txb_nombre.Location = new System.Drawing.Point(23, 28);
+            this.txb_nombre.MaxLength = 255;
             this.txb_nombre.Name = "txb_nombre";
             this.txb_nombre.Size = new System.Drawing.Size(210, 20);
             this.txb_nombre.TabIndex = 60;
@@ -316,6 +312,7 @@
             // txb_nro
             // 
             this.txb_nro.Location = new System.Drawing.Point(316, 127);
+            this.txb_nro.MaxLength = 255;
             this.txb_nro.Name = "txb_nro";
             this.txb_nro.Size = new System.Drawing.Size(67, 20);
             this.txb_nro.TabIndex = 132;
@@ -361,6 +358,14 @@
             this.label8.TabIndex = 138;
             this.label8.Text = "*";
             // 
+            // txb_calle
+            // 
+            this.txb_calle.Location = new System.Drawing.Point(23, 127);
+            this.txb_calle.MaxLength = 255;
+            this.txb_calle.Name = "txb_calle";
+            this.txb_calle.Size = new System.Drawing.Size(241, 20);
+            this.txb_calle.TabIndex = 69;
+            // 
             // Hotel_modificacion
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -399,6 +404,7 @@
             this.Controls.Add(this.txb_nombre);
             this.Controls.Add(this.lbl_nombre);
             this.Name = "Hotel_modificacion";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Modficar Hotel";
             this.Load += new System.EventHandler(this.Hotel_modificacion_Load_1);
             this.ResumeLayout(false);
@@ -418,7 +424,6 @@
         private System.Windows.Forms.TextBox txb_ciudad;
         private System.Windows.Forms.Label lbl_ciudad;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox txb_calle;
         private System.Windows.Forms.Label lbl_direccion;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label lbl_asterisco;
@@ -440,5 +445,6 @@
         private System.Windows.Forms.ComboBox cmb_pais;
         private System.Windows.Forms.ComboBox cmb_regimenes;
         private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.TextBox txb_calle;
     }
 }

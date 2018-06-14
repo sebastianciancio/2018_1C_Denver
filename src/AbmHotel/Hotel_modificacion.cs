@@ -22,33 +22,35 @@ namespace FrbaHotel.AbmHotel
             db = DataBase.GetInstance();
             Combos.cargarComboPais(cmb_pais, true);
             Combos.cargarComboTipoRegimen(cmb_regimenes, false);
-            
+
         }
 
 
         private void btn_guardar_Click(object sender, EventArgs e)
         {
-            
-            SqlCommand cmd = new SqlCommand("denver.modificar_hotel", db.Connection);
-            cmd.CommandType = CommandType.StoredProcedure;
+            if (validarFormulario())
+            {
+                SqlCommand cmd = new SqlCommand("denver.modificar_hotel", db.Connection);
+                cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.AddWithValue("@hotel_id", SqlDbType.Int).Value = Convert.ToInt32(hotel_id);
-            cmd.Parameters.AddWithValue("@hotel_nombre", SqlDbType.NVarChar).Value = txb_nombre.Text;
-            cmd.Parameters.AddWithValue("@hotel_mail", SqlDbType.NVarChar).Value = txb_mail.Text;
-            cmd.Parameters.AddWithValue("@hotel_telefono", SqlDbType.NVarChar).Value = txb_telefono.Text;
-            cmd.Parameters.AddWithValue("@hotel_direccion", SqlDbType.NVarChar).Value = txb_calle.Text;
-            cmd.Parameters.AddWithValue("@hotel_estrellas", SqlDbType.Int).Value = Convert.ToInt32(cmb_estrellas.Text);
-            cmd.Parameters.AddWithValue("@hotel_ciudad", SqlDbType.NVarChar).Value = txb_ciudad.Text;
-            cmd.Parameters.AddWithValue("@hotel_pais", SqlDbType.Int).Value = cmb_pais.SelectedValue;
-            //levanta el ID
-            cmd.Parameters.AddWithValue("@hotel_regimenes", SqlDbType.Int).Value = cmb_regimenes.SelectedValue;
-            cmd.Parameters.AddWithValue("@hotel_creacion", SqlDbType.Int).Value = Convert.ToDateTime(cmb_creacion.Value);
+                cmd.Parameters.AddWithValue("@hotel_id", SqlDbType.Int).Value = Convert.ToInt32(hotel_id);
+                cmd.Parameters.AddWithValue("@hotel_nombre", SqlDbType.NVarChar).Value = txb_nombre.Text;
+                cmd.Parameters.AddWithValue("@hotel_mail", SqlDbType.NVarChar).Value = txb_mail.Text;
+                cmd.Parameters.AddWithValue("@hotel_telefono", SqlDbType.NVarChar).Value = txb_telefono.Text;
+                cmd.Parameters.AddWithValue("@hotel_direccion", SqlDbType.NVarChar).Value = txb_calle.Text;
+                cmd.Parameters.AddWithValue("@hotel_estrellas", SqlDbType.Int).Value = Convert.ToInt32(cmb_estrellas.Text);
+                cmd.Parameters.AddWithValue("@hotel_ciudad", SqlDbType.NVarChar).Value = txb_ciudad.Text;
+                cmd.Parameters.AddWithValue("@hotel_pais", SqlDbType.Int).Value = cmb_pais.SelectedValue;
+                //levanta el ID
+                cmd.Parameters.AddWithValue("@hotel_regimenes", SqlDbType.Int).Value = cmb_regimenes.SelectedValue;
+                cmd.Parameters.AddWithValue("@hotel_creacion", SqlDbType.Int).Value = Convert.ToDateTime(cmb_creacion.Value);
 
 
-            cmd.ExecuteNonQuery();
+                cmd.ExecuteNonQuery();
 
-            MessageBox.Show("El hotel " + txb_nombre.Text + " se modificó correctamente", "Mensaje");
-            Close();
+                MessageBox.Show("El hotel " + txb_nombre.Text + " se modificó correctamente", "Mensaje");
+                Close();
+            } else { }
         }
 
         private void btn__volver_Click(object sender, EventArgs e)
@@ -72,7 +74,7 @@ namespace FrbaHotel.AbmHotel
 
             //Accedo a lo que encontre en la BD
             DataRow row = dt.Rows[0];
-            
+
 
             txb_nombre.Text = row["hotel_nombre"].ToString();
             txb_calle.Text = row["hotel_calle"].ToString();
@@ -87,5 +89,15 @@ namespace FrbaHotel.AbmHotel
         }
 
 
-    }
-    }
+
+        private bool validarFormulario()
+        {
+            return (!Validacion.esInicial(txb_nombre.Text) &
+                    !Validacion.esInicial(txb_mail.Text) &
+                    !Validacion.esInicial(txb_telefono.Text) &
+                    !Validacion.esInicial(txb_calle.Text) &
+                    !Validacion.esInicial(txb_nro.Text) &
+                    !Validacion.esInicial(txb_ciudad.Text));
+    
+        }
+    } }

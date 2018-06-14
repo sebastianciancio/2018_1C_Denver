@@ -48,6 +48,7 @@
             // txb_nombre
             // 
             this.txb_nombre.Location = new System.Drawing.Point(23, 36);
+            this.txb_nombre.MaxLength = 255;
             this.txb_nombre.Name = "txb_nombre";
             this.txb_nombre.Size = new System.Drawing.Size(209, 20);
             this.txb_nombre.TabIndex = 1;

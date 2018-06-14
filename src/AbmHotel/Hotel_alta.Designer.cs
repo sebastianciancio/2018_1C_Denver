@@ -188,6 +188,7 @@
             // txb_telefono
             // 
             this.txb_telefono.Location = new System.Drawing.Point(247, 89);
+            this.txb_telefono.MaxLength = 255;
             this.txb_telefono.Name = "txb_telefono";
             this.txb_telefono.Size = new System.Drawing.Size(134, 20);
             this.txb_telefono.TabIndex = 113;
@@ -214,6 +215,7 @@
             // txb_ciudad
             // 
             this.txb_ciudad.Location = new System.Drawing.Point(271, 137);
+            this.txb_ciudad.MaxLength = 255;
             this.txb_ciudad.Name = "txb_ciudad";
             this.txb_ciudad.Size = new System.Drawing.Size(150, 20);
             this.txb_ciudad.TabIndex = 110;
@@ -240,6 +242,7 @@
             // txb_calle
             // 
             this.txb_calle.Location = new System.Drawing.Point(15, 137);
+            this.txb_calle.MaxLength = 255;
             this.txb_calle.Name = "txb_calle";
             this.txb_calle.Size = new System.Drawing.Size(150, 20);
             this.txb_calle.TabIndex = 107;
@@ -266,6 +269,7 @@
             // txb_nombre
             // 
             this.txb_nombre.Location = new System.Drawing.Point(15, 38);
+            this.txb_nombre.MaxLength = 255;
             this.txb_nombre.Name = "txb_nombre";
             this.txb_nombre.Size = new System.Drawing.Size(210, 20);
             this.txb_nombre.TabIndex = 101;
@@ -291,6 +295,7 @@
             // txb_nro
             // 
             this.txb_nro.Location = new System.Drawing.Point(174, 137);
+            this.txb_nro.MaxLength = 18;
             this.txb_nro.Name = "txb_nro";
             this.txb_nro.Size = new System.Drawing.Size(67, 20);
             this.txb_nro.TabIndex = 129;
@@ -354,6 +359,7 @@
             this.Controls.Add(this.txb_nombre);
             this.Controls.Add(this.lbl_nombre);
             this.Name = "Hotel_alta";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Hotel_alta";
             this.ResumeLayout(false);
             this.PerformLayout();

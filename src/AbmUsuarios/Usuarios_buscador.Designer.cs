@@ -41,9 +41,9 @@
             this.btn_buscar = new System.Windows.Forms.Button();
             this.lbl_apellido = new System.Windows.Forms.Label();
             this.dgv_tablaUsuario = new System.Windows.Forms.DataGridView();
-            this.btt_add_usuario = new System.Windows.Forms.Button();
             this.btn_agregar = new System.Windows.Forms.Button();
             this.help_crear = new System.Windows.Forms.ToolTip(this.components);
+            this.btt_add_usuario = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_tablaUsuario)).BeginInit();
             this.SuspendLayout();
@@ -133,7 +133,7 @@
             // 
             this.btn_buscar.Location = new System.Drawing.Point(568, 32);
             this.btn_buscar.Name = "btn_buscar";
-            this.btn_buscar.Size = new System.Drawing.Size(120, 25);
+            this.btn_buscar.Size = new System.Drawing.Size(120, 23);
             this.btn_buscar.TabIndex = 3;
             this.btn_buscar.Text = "Buscar";
             this.btn_buscar.UseVisualStyleBackColor = true;
@@ -150,6 +150,7 @@
             // 
             // dgv_tablaUsuario
             // 
+            this.dgv_tablaUsuario.AllowUserToAddRows = false;
             this.dgv_tablaUsuario.AllowUserToDeleteRows = false;
             this.dgv_tablaUsuario.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgv_tablaUsuario.Location = new System.Drawing.Point(11, 113);
@@ -160,17 +161,6 @@
             this.dgv_tablaUsuario.Size = new System.Drawing.Size(694, 287);
             this.dgv_tablaUsuario.TabIndex = 13;
             this.dgv_tablaUsuario.Visible = false;
-            // 
-            // btt_add_usuario
-            // 
-            this.btt_add_usuario.Image = ((System.Drawing.Image)(resources.GetObject("btt_add_usuario.Image")));
-            this.btt_add_usuario.Location = new System.Drawing.Point(12, 23);
-            this.btt_add_usuario.Name = "btt_add_usuario";
-            this.btt_add_usuario.Size = new System.Drawing.Size(82, 64);
-            this.btt_add_usuario.TabIndex = 15;
-            this.btt_add_usuario.Text = ".";
-            this.btt_add_usuario.UseVisualStyleBackColor = true;
-            this.btt_add_usuario.Click += new System.EventHandler(this.btt_add_usuario_Click);
             // 
             // btn_agregar
             // 
@@ -189,6 +179,17 @@
             this.help_crear.Tag = "El usuario seleccionado se habilitara en su hotel de logueo";
             this.help_crear.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
             this.help_crear.Popup += new System.Windows.Forms.PopupEventHandler(this.help_crear_Popup);
+            // 
+            // btt_add_usuario
+            // 
+            this.btt_add_usuario.Image = ((System.Drawing.Image)(resources.GetObject("btt_add_usuario.Image")));
+            this.btt_add_usuario.Location = new System.Drawing.Point(12, 23);
+            this.btt_add_usuario.Name = "btt_add_usuario";
+            this.btt_add_usuario.Size = new System.Drawing.Size(82, 64);
+            this.btt_add_usuario.TabIndex = 15;
+            this.btt_add_usuario.Text = ".";
+            this.btt_add_usuario.UseVisualStyleBackColor = true;
+            this.btt_add_usuario.Click += new System.EventHandler(this.btt_add_usuario_Click);
             // 
             // Usuarios_buscador
             // 
