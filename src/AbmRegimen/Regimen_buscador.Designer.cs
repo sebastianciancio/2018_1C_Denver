@@ -37,14 +37,15 @@
             this.label1 = new System.Windows.Forms.Label();
             this.LBLnombre = new System.Windows.Forms.Label();
             this.btn_buscar = new System.Windows.Forms.Button();
-            this.dgv_tablaCliente = new System.Windows.Forms.DataGridView();
+            this.dgv_regimen = new System.Windows.Forms.DataGridView();
             this.btt_add_usuario = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgv_tablaCliente)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_regimen)).BeginInit();
             this.SuspendLayout();
             // 
             // btn_eliminar
             // 
+            this.btn_eliminar.Enabled = false;
             this.btn_eliminar.Location = new System.Drawing.Point(721, 186);
             this.btn_eliminar.Name = "btn_eliminar";
             this.btn_eliminar.Size = new System.Drawing.Size(86, 26);
@@ -55,6 +56,7 @@
             // 
             // btn_modif
             // 
+            this.btn_modif.Enabled = false;
             this.btn_modif.Location = new System.Drawing.Point(719, 129);
             this.btn_modif.Name = "btn_modif";
             this.btn_modif.Size = new System.Drawing.Size(88, 29);
@@ -89,7 +91,7 @@
             // txb_nombre
             // 
             this.txb_nombre.Location = new System.Drawing.Point(13, 41);
-            this.txb_nombre.MaxLength = 100;
+            this.txb_nombre.MaxLength = 255;
             this.txb_nombre.Name = "txb_nombre";
             this.txb_nombre.Size = new System.Drawing.Size(378, 20);
             this.txb_nombre.TabIndex = 0;
@@ -121,19 +123,21 @@
             this.btn_buscar.TabIndex = 3;
             this.btn_buscar.Text = "Buscar";
             this.btn_buscar.UseVisualStyleBackColor = true;
+            this.btn_buscar.Click += new System.EventHandler(this.btn_buscar_Click);
             // 
-            // dgv_tablaCliente
+            // dgv_regimen
             // 
-            this.dgv_tablaCliente.AllowUserToDeleteRows = false;
-            this.dgv_tablaCliente.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgv_tablaCliente.Location = new System.Drawing.Point(11, 113);
-            this.dgv_tablaCliente.MultiSelect = false;
-            this.dgv_tablaCliente.Name = "dgv_tablaCliente";
-            this.dgv_tablaCliente.ReadOnly = true;
-            this.dgv_tablaCliente.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgv_tablaCliente.Size = new System.Drawing.Size(694, 287);
-            this.dgv_tablaCliente.TabIndex = 18;
-            this.dgv_tablaCliente.Visible = false;
+            this.dgv_regimen.AllowUserToAddRows = false;
+            this.dgv_regimen.AllowUserToDeleteRows = false;
+            this.dgv_regimen.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgv_regimen.Location = new System.Drawing.Point(11, 113);
+            this.dgv_regimen.MultiSelect = false;
+            this.dgv_regimen.Name = "dgv_regimen";
+            this.dgv_regimen.ReadOnly = true;
+            this.dgv_regimen.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgv_regimen.Size = new System.Drawing.Size(694, 287);
+            this.dgv_regimen.TabIndex = 18;
+            this.dgv_regimen.Visible = false;
             // 
             // btt_add_usuario
             // 
@@ -144,6 +148,7 @@
             this.btt_add_usuario.TabIndex = 20;
             this.btt_add_usuario.Text = ".";
             this.btt_add_usuario.UseVisualStyleBackColor = true;
+            this.btt_add_usuario.Click += new System.EventHandler(this.btt_add_usuario_Click);
             // 
             // Regimen_buscador
             // 
@@ -154,12 +159,12 @@
             this.Controls.Add(this.btn_modif);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.btt_add_usuario);
-            this.Controls.Add(this.dgv_tablaCliente);
+            this.Controls.Add(this.dgv_regimen);
             this.Name = "Regimen_buscador";
             this.Text = "Regimen";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgv_tablaCliente)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_regimen)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -175,6 +180,6 @@
         private System.Windows.Forms.Label LBLnombre;
         private System.Windows.Forms.Button btn_buscar;
         private System.Windows.Forms.Button btt_add_usuario;
-        private System.Windows.Forms.DataGridView dgv_tablaCliente;
+        private System.Windows.Forms.DataGridView dgv_regimen;
     }
 }

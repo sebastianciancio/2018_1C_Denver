@@ -150,12 +150,17 @@ if EXISTS (SELECT * FROM sys.objects  WHERE name = 'buscar_habitacion_completa' 
 if EXISTS (SELECT * FROM sys.objects  WHERE name = 'buscar_reserva_hab_hotel' AND type IN (N'P', N'PC'))
 	DROP PROCEDURE [denver].[buscar_reserva_hab_hotel]
 if EXISTS (SELECT * FROM sys.objects  WHERE name = 'modificar_habitacion' AND type IN (N'P', N'PC'))
-	DROP PROCEDURE [denver].[modificar_habitacion]
-	
+	DROP PROCEDURE [denver].[modificar_habitacion]	
 if EXISTS (SELECT * FROM sys.objects  WHERE name = 'existe_habitacion_hotel' AND type IN (N'P', N'PC'))
 	DROP PROCEDURE [denver].[existe_habitacion_hotel]
 if EXISTS (SELECT * FROM sys.objects  WHERE name = 'cargar_usuario_hotel' AND type IN (N'P', N'PC'))
 	DROP PROCEDURE [denver].[cargar_usuario_hotel]
+if EXISTS (SELECT * FROM sys.objects  WHERE name = 'buscar_regimen' AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [denver].[buscar_regimen]
+if EXISTS (SELECT * FROM sys.objects  WHERE name = 'alta_regimen' AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [denver].[alta_regimen]
+
+
 GO
 
 /*  --------------------------------------------------------------------------------
@@ -1704,5 +1709,49 @@ BEGIN
 			 @usuario_hotel)
 
 
+END
+GO
+
+CREATE PROCEDURE [denver].[buscar_regimen]    
+	@nombre_regimen nvarchar(255) = NULL ,
+	@estado nvarchar = NULL
+	
+AS	 
+BEGIN 
+	-- SET NOCOUNT ON added to prevent extra result sets from interfering with SELECT statements.
+	SET NOCOUNT ON;  
+	
+	SELECT  regimen_descripcion AS Nombre, regimen_precio AS 'Precio U$S',
+			CASE  WHEN regimen_activo = 'S' THEN 'ACTIVO' ELSE 'INACTIVO' END AS Estado 
+	FROM 
+		denver.regimenes
+	  WHERE regimen_descripcion LIKE '%' + ISNULL(@nombre_regimen, regimen_descripcion) + '%'
+		AND regimen_activo = ISNULL(@estado, regimen_activo);
+END
+GO
+
+CREATE PROCEDURE [denver].[alta_regimen]    
+	@nombre_regimen nvarchar(255) ,
+	@estado nvarchar,
+	@precio numeric(18,2)
+	
+AS	 
+BEGIN 
+	-- SET NOCOUNT ON added to prevent extra result sets from interfering with SELECT statements.
+	SET NOCOUNT ON;  
+	
+	INSERT INTO denver.regimenes(
+	regimen_descripcion,
+	regimen_precio,
+	regimen_activo,
+	regimen_created)
+	Values (
+	@nombre_regimen,
+	@estado,
+	@precio,
+	GETDATE())
+
+
+	
 END
 GO
