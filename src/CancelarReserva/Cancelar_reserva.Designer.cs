@@ -47,6 +47,7 @@
             // 
             // txb_canc_rec_codigo
             // 
+            this.txb_canc_rec_codigo.Enabled = false;
             this.txb_canc_rec_codigo.Location = new System.Drawing.Point(127, 22);
             this.txb_canc_rec_codigo.Name = "txb_canc_rec_codigo";
             this.txb_canc_rec_codigo.Size = new System.Drawing.Size(119, 20);
@@ -87,6 +88,7 @@
             this.btn_canc_res_volver.TabIndex = 5;
             this.btn_canc_res_volver.Text = "Volver";
             this.btn_canc_res_volver.UseVisualStyleBackColor = true;
+            this.btn_canc_res_volver.Click += new System.EventHandler(this.btn_canc_res_volver_Click);
             // 
             // Cancelar_reserva
             // 
@@ -100,7 +102,9 @@
             this.Controls.Add(this.txb_canc_rec_codigo);
             this.Controls.Add(this.label1);
             this.Name = "Cancelar_reserva";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Cancelar Reserva";
+            this.Load += new System.EventHandler(this.Cancelar_reserva_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

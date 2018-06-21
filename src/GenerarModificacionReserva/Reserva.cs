@@ -192,5 +192,10 @@ namespace FrbaHotel
             accesoSistema.ClienteSeleccionado.cliente_tipo_documento = "";
             accesoSistema.ClienteSeleccionado.cliente_tipo_documento_id = 0;
         }
+
+        private void btn_volver_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
     }
 }

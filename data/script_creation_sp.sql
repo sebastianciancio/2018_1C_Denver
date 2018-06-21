@@ -159,7 +159,8 @@ if EXISTS (SELECT * FROM sys.objects  WHERE name = 'buscar_regimen' AND type IN 
 	DROP PROCEDURE [denver].[buscar_regimen]
 if EXISTS (SELECT * FROM sys.objects  WHERE name = 'alta_regimen' AND type IN (N'P', N'PC'))
 	DROP PROCEDURE [denver].[alta_regimen]
-
+if EXISTS (SELECT * FROM sys.objects  WHERE name = 'buscar_reserva' AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [denver].[buscar_reserva]
 
 GO
 
@@ -1753,5 +1754,23 @@ BEGIN
 
 
 	
+END
+GO
+
+CREATE PROCEDURE [denver].[buscar_reserva]    
+	@cliente_nro_doc numeric(18,0),
+	@cliente_tipo_doc smallint
+	
+AS	 
+BEGIN 
+	-- SET NOCOUNT ON added to prevent extra resultets from interfering with SELECT statements.
+	SET NOCOUNT ON;  
+	
+	SELECT  reserva_codigo AS 'Cod Reserva', hotel_nombre AS Hotel
+	FROM 
+		denver.reservas a join denver.hoteles b on a.reserva_hotel_id = b.hotel_id 
+	  WHERE reserva_cliente_pasaporte_nro = @cliente_nro_doc
+	    and reserva_cliente_tipo_documento_id = @cliente_tipo_doc
+
 END
 GO

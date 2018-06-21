@@ -279,6 +279,9 @@
     <EmbeddedResource Include="accesoSistema.resx">
       <DependentUpon>accesoSistema.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="CancelarReserva\BuscarReserva.resx">
+      <DependentUpon>BuscarReserva.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="CancelarReserva\Cancelar_reserva.resx">
       <DependentUpon>Cancelar_reserva.cs</DependentUpon>
     </EmbeddedResource>

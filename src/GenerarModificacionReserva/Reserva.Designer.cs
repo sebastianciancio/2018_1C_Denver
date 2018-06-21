@@ -43,6 +43,7 @@
             this.Container_pasajero = new System.Windows.Forms.GroupBox();
             this.btn_buscar = new System.Windows.Forms.Button();
             this.Container_Detalle_Reserva = new System.Windows.Forms.GroupBox();
+            this.btn_confirmar_reserva = new System.Windows.Forms.Button();
             this.txt_reserva_total = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.txt_reserva_habitacion = new System.Windows.Forms.Label();
@@ -51,7 +52,7 @@
             this.txt_reserva_pasajero = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
-            this.btn_confirmar_reserva = new System.Windows.Forms.Button();
+            this.btn_volver = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dg_disponibilidad)).BeginInit();
             this.Container_disponibilidad.SuspendLayout();
@@ -226,6 +227,17 @@
             this.Container_Detalle_Reserva.Text = "Detalle de la Reserva";
             this.Container_Detalle_Reserva.Visible = false;
             // 
+            // btn_confirmar_reserva
+            // 
+            this.btn_confirmar_reserva.BackColor = System.Drawing.Color.Lime;
+            this.btn_confirmar_reserva.Location = new System.Drawing.Point(252, 85);
+            this.btn_confirmar_reserva.Name = "btn_confirmar_reserva";
+            this.btn_confirmar_reserva.Size = new System.Drawing.Size(202, 23);
+            this.btn_confirmar_reserva.TabIndex = 7;
+            this.btn_confirmar_reserva.Text = "Confirmar Reserva";
+            this.btn_confirmar_reserva.UseVisualStyleBackColor = false;
+            this.btn_confirmar_reserva.Click += new System.EventHandler(this.btn_confirmar_reserva_Click);
+            // 
             // txt_reserva_total
             // 
             this.txt_reserva_total.AutoSize = true;
@@ -303,22 +315,22 @@
             this.label7.TabIndex = 14;
             this.label7.Text = "Pasajero:";
             // 
-            // btn_confirmar_reserva
+            // btn_volver
             // 
-            this.btn_confirmar_reserva.BackColor = System.Drawing.Color.Lime;
-            this.btn_confirmar_reserva.Location = new System.Drawing.Point(252, 85);
-            this.btn_confirmar_reserva.Name = "btn_confirmar_reserva";
-            this.btn_confirmar_reserva.Size = new System.Drawing.Size(202, 23);
-            this.btn_confirmar_reserva.TabIndex = 7;
-            this.btn_confirmar_reserva.Text = "Confirmar Reserva";
-            this.btn_confirmar_reserva.UseVisualStyleBackColor = false;
-            this.btn_confirmar_reserva.Click += new System.EventHandler(this.btn_confirmar_reserva_Click);
+            this.btn_volver.Image = global::FrbaHotel.Properties.Resources.volver;
+            this.btn_volver.Location = new System.Drawing.Point(714, 526);
+            this.btn_volver.Name = "btn_volver";
+            this.btn_volver.Size = new System.Drawing.Size(35, 29);
+            this.btn_volver.TabIndex = 36;
+            this.btn_volver.UseVisualStyleBackColor = true;
+            this.btn_volver.Click += new System.EventHandler(this.btn_volver_Click);
             // 
             // Reserva
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(761, 530);
+            this.ClientSize = new System.Drawing.Size(761, 564);
+            this.Controls.Add(this.btn_volver);
             this.Controls.Add(this.Container_Detalle_Reserva);
             this.Controls.Add(this.Container_pasajero);
             this.Controls.Add(this.Container_disponibilidad);
@@ -364,5 +376,6 @@
         private System.Windows.Forms.Label txt_reserva_habitacion;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Button btn_confirmar_reserva;
+        private System.Windows.Forms.Button btn_volver;
     }
 }
