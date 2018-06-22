@@ -161,6 +161,8 @@ if EXISTS (SELECT * FROM sys.objects  WHERE name = 'alta_regimen' AND type IN (N
 	DROP PROCEDURE [denver].[alta_regimen]
 if EXISTS (SELECT * FROM sys.objects  WHERE name = 'buscar_reserva' AND type IN (N'P', N'PC'))
 	DROP PROCEDURE [denver].[buscar_reserva]
+if EXISTS (SELECT * FROM sys.objects  WHERE name = 'cancelar_reserva' AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [denver].[cancelar_reserva]
 
 GO
 
@@ -1771,6 +1773,26 @@ BEGIN
 		denver.reservas a join denver.hoteles b on a.reserva_hotel_id = b.hotel_id 
 	  WHERE reserva_cliente_pasaporte_nro = @cliente_nro_doc
 	    and reserva_cliente_tipo_documento_id = @cliente_tipo_doc
+		and reserva_estado_id NOT IN (3,4)
 
+END
+GO
+
+CREATE PROCEDURE [denver].[cancelar_reserva]
+	@cod_reserva numeric(18,09),
+	@motivo ntext,
+	@user nvarchar(50),
+	@estado smallint
+AS
+BEGIN
+	SET NOCOUNT ON;  
+	UPDATE [denver].[reservas]
+		SET reserva_estado_id = @estado,
+		    reserva_motivo_cancelacion = @motivo,
+			reserva_fecha_cancelacion = GETDATE(),
+			reserva_usuario_user_cancelacion = @user
+
+	WHERE
+		reserva_codigo = @cod_reserva
 END
 GO

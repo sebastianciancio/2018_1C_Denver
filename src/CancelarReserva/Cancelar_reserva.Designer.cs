@@ -31,7 +31,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.txb_canc_rec_codigo = new System.Windows.Forms.TextBox();
             this.lbl_canc_res_motivo = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.txb_motivo = new System.Windows.Forms.TextBox();
             this.btn_canc_rec_confirm = new System.Windows.Forms.Button();
             this.btn_canc_res_volver = new System.Windows.Forms.Button();
             this.SuspendLayout();
@@ -62,13 +62,13 @@
             this.lbl_canc_res_motivo.TabIndex = 2;
             this.lbl_canc_res_motivo.Text = "Motivo de cancelación:";
             // 
-            // textBox1
+            // txb_motivo
             // 
-            this.textBox1.Location = new System.Drawing.Point(15, 70);
-            this.textBox1.Multiline = true;
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(282, 121);
-            this.textBox1.TabIndex = 3;
+            this.txb_motivo.Location = new System.Drawing.Point(15, 70);
+            this.txb_motivo.Multiline = true;
+            this.txb_motivo.Name = "txb_motivo";
+            this.txb_motivo.Size = new System.Drawing.Size(282, 121);
+            this.txb_motivo.TabIndex = 3;
             // 
             // btn_canc_rec_confirm
             // 
@@ -97,7 +97,7 @@
             this.ClientSize = new System.Drawing.Size(311, 261);
             this.Controls.Add(this.btn_canc_res_volver);
             this.Controls.Add(this.btn_canc_rec_confirm);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.txb_motivo);
             this.Controls.Add(this.lbl_canc_res_motivo);
             this.Controls.Add(this.txb_canc_rec_codigo);
             this.Controls.Add(this.label1);
@@ -115,7 +115,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox txb_canc_rec_codigo;
         private System.Windows.Forms.Label lbl_canc_res_motivo;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox txb_motivo;
         private System.Windows.Forms.Button btn_canc_rec_confirm;
         private System.Windows.Forms.Button btn_canc_res_volver;
     }

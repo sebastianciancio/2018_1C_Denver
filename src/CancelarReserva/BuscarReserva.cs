@@ -43,36 +43,47 @@ namespace FrbaHotel.CancelarReserva
 
         private void btn_buscar_Click(object sender, EventArgs e)
         {
-            SqlCommand cmd = new SqlCommand("denver.buscar_reserva", db.Connection);
-            cmd.CommandType = CommandType.StoredProcedure;
-
-            if(txb_dni.Text != "")
-                cmd.Parameters.AddWithValue("@cliente_nro_doc", SqlDbType.Int).Value = Convert.ToInt32(txb_dni.Text);
-
-            if (cmb_tipo_doc.SelectedValue.ToString().CompareTo("0") > 0)
-                cmd.Parameters.AddWithValue("@cliente_tipo_doc", SqlDbType.Int).Value = Convert.ToInt32(cmb_tipo_doc.SelectedValue);
-
-            // Creo el DataTable para obtener los resultados del SP
-            DataTable dt = new DataTable();
-
-            using (var da = new SqlDataAdapter(cmd))
+            if (!Validacion.esInicial(txb_dni.Text))
             {
-                da.Fill(dt);
+                SqlCommand cmd = new SqlCommand("denver.buscar_reserva", db.Connection);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                if (txb_dni.Text != "")
+                    cmd.Parameters.AddWithValue("@cliente_nro_doc", SqlDbType.Int).Value = Convert.ToInt32(txb_dni.Text);
+
+                if (cmb_tipo_doc.SelectedValue.ToString().CompareTo("0") > 0)
+                    cmd.Parameters.AddWithValue("@cliente_tipo_doc", SqlDbType.Int).Value = Convert.ToInt32(cmb_tipo_doc.SelectedValue);
+
+                // Creo el DataTable para obtener los resultados del SP
+                DataTable dt = new DataTable();
+
+                using (var da = new SqlDataAdapter(cmd))
+                {
+                    da.Fill(dt);
+                }
+
+
+                // Cargo la Grilla con los datos obtenidos
+                dgv_reserva.DataSource = dt;
+
+                // Muestro los objetos ocultos
+                dgv_reserva.Visible = true;
+                btn_mod.Visible = true;
+                bt_canc.Visible = true;
             }
-
-
-            // Cargo la Grilla con los datos obtenidos
-            dgv_reserva.DataSource = dt;
-
-            // Muestro los objetos ocultos
-            dgv_reserva.Visible = true;
-            btn_mod.Visible = true;
-            bt_canc.Visible = true;
+            else
+            {
+                MessageBox.Show("El numero de documento es obligatorio", "Mensaje");
+            }
         }
 
         private void btn_mod_Click(object sender, EventArgs e)
         {
-
-        }
+            CancelarReserva.Modificar_reserva frm = new CancelarReserva.Modificar_reserva();
+            DataGridViewRow row = dgv_reserva.CurrentRow;
+            frm.cod_reserva = Convert.ToInt32(row.Cells[0].Value.ToString());
+            frm.Show();
+        
+    }
     }
 }
