@@ -925,12 +925,13 @@ CREATE PROCEDURE denver.crear_reserva
 	@reserva_hotel_id smallint,
 	@reserva_usuario_user nvarchar(50),
 	@reserva_estado_id smallint,
+	@fecha_sistema datetime,
 	@nro_reserva numeric(18,0) OUTPUT
 AS
 BEGIN
 	declare @next_id numeric(18,0) = (SELECT TOP 1 reserva_codigo FROM denver.reservas ORDER BY reserva_codigo DESC)+1
 
-	insert into denver.reservas (reserva_codigo,reserva_fecha_inicio,reserva_fecha_fin,reserva_cant_noches,reserva_cliente_tipo_documento_id,reserva_cliente_pasaporte_nro,reserva_hotel_id,reserva_usuario_user,reserva_estado_id,reserva_created) values (@next_id,@reserva_fecha_inicio,@reserva_fecha_fin,DATEDIFF(day, @reserva_fecha_inicio, @reserva_fecha_fin),@reserva_cliente_tipo_documento_id,@reserva_cliente_pasaporte_nro,@reserva_hotel_id,@reserva_usuario_user,@reserva_estado_id, GETDATE())
+	insert into denver.reservas (reserva_codigo,reserva_fecha_inicio,reserva_fecha_fin,reserva_cant_noches,reserva_cliente_tipo_documento_id,reserva_cliente_pasaporte_nro,reserva_hotel_id,reserva_usuario_user,reserva_estado_id,reserva_created) values (@next_id,@reserva_fecha_inicio,@reserva_fecha_fin,DATEDIFF(day, @reserva_fecha_inicio, @reserva_fecha_fin),@reserva_cliente_tipo_documento_id,@reserva_cliente_pasaporte_nro,@reserva_hotel_id,@reserva_usuario_user,@reserva_estado_id, @fecha_sistema)
 
 	SELECT @nro_reserva = @next_id
 
