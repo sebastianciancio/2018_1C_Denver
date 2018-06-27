@@ -23,6 +23,8 @@ namespace FrbaHotel
             this.label_usuario_logueado.Text = accesoSistema.UsuarioLogueado.Apellido + " " + accesoSistema.UsuarioLogueado.Nombre + " - " + accesoSistema.HotelNombreActual;
 
             label_rol_usuario_logueado.Text = accesoSistema.UsuarioLogueado.Rol;
+
+            this.label_fecha_sistema.Text = accesoSistema.fechaSistema.Day.ToString() + "/" + accesoSistema.fechaSistema.Month.ToString() + "/" + accesoSistema.fechaSistema.Year.ToString();
         }
 
         private void button1_Click(object sender, EventArgs e)

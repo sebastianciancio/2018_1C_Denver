@@ -43,6 +43,7 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.label_rol_usuario_logueado = new System.Windows.Forms.Label();
+            this.label_fecha_sistema = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -242,12 +243,28 @@
             this.label_rol_usuario_logueado.Text = "rol_usuario_logueado";
             this.label_rol_usuario_logueado.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
+            // label_fecha_sistema
+            // 
+            this.label_fecha_sistema.AutoSize = true;
+            this.label_fecha_sistema.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.label_fecha_sistema.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.label_fecha_sistema.Dock = System.Windows.Forms.DockStyle.Left;
+            this.label_fecha_sistema.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label_fecha_sistema.Location = new System.Drawing.Point(0, 0);
+            this.label_fecha_sistema.Name = "label_fecha_sistema";
+            this.label_fecha_sistema.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.label_fecha_sistema.Size = new System.Drawing.Size(46, 20);
+            this.label_fecha_sistema.TabIndex = 16;
+            this.label_fecha_sistema.Text = "fecha";
+            this.label_fecha_sistema.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
             // Principal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(967, 354);
+            this.Controls.Add(this.label_fecha_sistema);
             this.Controls.Add(this.label_rol_usuario_logueado);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
@@ -282,6 +299,7 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Label label_rol_usuario_logueado;
+        private System.Windows.Forms.Label label_fecha_sistema;
     }
 }
 

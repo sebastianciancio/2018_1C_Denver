@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,12 +19,18 @@ namespace FrbaHotel
         static public Usuario UsuarioLogueado = new Usuario();
         static public Cliente ClienteSeleccionado = new Cliente();
         static public bool habilitarSeleccionCliente = false;
+        static public DateTime fechaSistema;
 
         System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(accesoSistema));
 
         public accesoSistema()
         {
             ClienteSeleccionado.cliente_apellido = "";
+
+            // Leo el Archivo de Configuracion y seteo la Hora del Sistema
+            String[] config = File.ReadAllLines("../../Config.txt");
+            fechaSistema = DateTime.Parse(DataBase.GetConfigValue(config[4]));
+
             InitializeComponent();
         }
 
