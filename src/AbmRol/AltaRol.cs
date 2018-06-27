@@ -41,6 +41,8 @@ namespace FrbaHotel.AbmRol
                 cmd.CommandType = CommandType.StoredProcedure;
 
                 cmd.Parameters.AddWithValue("@rol", SqlDbType.VarChar).Value = txb_nombre.Text;
+
+                cmd.Parameters.AddWithValue("@fecha_sistema", SqlDbType.DateTime).Value = accesoSistema.fechaSistema;
                 cmd.ExecuteNonQuery();
 
                 int sum;

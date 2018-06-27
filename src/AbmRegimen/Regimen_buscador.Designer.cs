@@ -39,6 +39,7 @@
             this.btn_buscar = new System.Windows.Forms.Button();
             this.dgv_regimen = new System.Windows.Forms.DataGridView();
             this.btt_add_usuario = new System.Windows.Forms.Button();
+            this.btn_volver = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_regimen)).BeginInit();
             this.SuspendLayout();
@@ -150,17 +151,29 @@
             this.btt_add_usuario.UseVisualStyleBackColor = true;
             this.btt_add_usuario.Click += new System.EventHandler(this.btt_add_usuario_Click);
             // 
+            // btn_volver
+            // 
+            this.btn_volver.Image = global::FrbaHotel.Properties.Resources.volver;
+            this.btn_volver.Location = new System.Drawing.Point(772, 372);
+            this.btn_volver.Name = "btn_volver";
+            this.btn_volver.Size = new System.Drawing.Size(35, 29);
+            this.btn_volver.TabIndex = 23;
+            this.btn_volver.UseVisualStyleBackColor = true;
+            this.btn_volver.Click += new System.EventHandler(this.btn_volver_Click);
+            // 
             // Regimen_buscador
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(819, 413);
+            this.Controls.Add(this.btn_volver);
             this.Controls.Add(this.btn_eliminar);
             this.Controls.Add(this.btn_modif);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.btt_add_usuario);
             this.Controls.Add(this.dgv_regimen);
             this.Name = "Regimen_buscador";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Regimen";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
@@ -181,5 +194,6 @@
         private System.Windows.Forms.Button btn_buscar;
         private System.Windows.Forms.Button btt_add_usuario;
         private System.Windows.Forms.DataGridView dgv_regimen;
+        private System.Windows.Forms.Button btn_volver;
     }
 }

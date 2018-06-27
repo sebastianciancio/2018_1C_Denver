@@ -44,6 +44,7 @@
             this.btn_agregar = new System.Windows.Forms.Button();
             this.help_crear = new System.Windows.Forms.ToolTip(this.components);
             this.btt_add_usuario = new System.Windows.Forms.Button();
+            this.btn_volver = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_tablaUsuario)).BeginInit();
             this.SuspendLayout();
@@ -191,12 +192,23 @@
             this.btt_add_usuario.UseVisualStyleBackColor = true;
             this.btt_add_usuario.Click += new System.EventHandler(this.btt_add_usuario_Click);
             // 
+            // btn_volver
+            // 
+            this.btn_volver.Image = global::FrbaHotel.Properties.Resources.volver;
+            this.btn_volver.Location = new System.Drawing.Point(773, 371);
+            this.btn_volver.Name = "btn_volver";
+            this.btn_volver.Size = new System.Drawing.Size(35, 29);
+            this.btn_volver.TabIndex = 24;
+            this.btn_volver.UseVisualStyleBackColor = true;
+            this.btn_volver.Click += new System.EventHandler(this.btn_volver_Click);
+            // 
             // Usuarios_buscador
             // 
             this.AcceptButton = this.btn_buscar;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(819, 412);
+            this.Controls.Add(this.btn_volver);
             this.Controls.Add(this.btn_agregar);
             this.Controls.Add(this.btn_eliminar);
             this.Controls.Add(this.btn_modif);
@@ -230,5 +242,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btn_agregar;
         private System.Windows.Forms.ToolTip help_crear;
+        private System.Windows.Forms.Button btn_volver;
     }
 }

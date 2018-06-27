@@ -38,10 +38,13 @@ namespace FrbaHotel.AbmRegimen
                 else { cmd.Parameters.AddWithValue("@estado", SqlDbType.VarChar).Value = 'N'; }
                 cmd.Parameters.AddWithValue("@precio", SqlDbType.Decimal).Value = Convert.ToDecimal(txb_precio.Text);
 
-                //dice que no se permite un varchar en numeric
-             //   cmd.ExecuteNonQuery();
+                cmd.Parameters.AddWithValue("@fecha_sistema", SqlDbType.DateTime).Value = accesoSistema.fechaSistema;
+                
+                   cmd.ExecuteNonQuery();
 
-                MessageBox.Show("EL regimen" + txb_nombre.Text + "se creó correctamente", "Mensaje");
+                MessageBox.Show("EL regimen " + txb_nombre.Text + " se creó correctamente", "Mensaje");
+
+                Close();
             }
         }
     }

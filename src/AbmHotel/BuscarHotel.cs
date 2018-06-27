@@ -121,6 +121,10 @@ namespace FrbaHotel.AbmHotel
 
         }
 
+        private void btn_volver_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
     } 
 
 

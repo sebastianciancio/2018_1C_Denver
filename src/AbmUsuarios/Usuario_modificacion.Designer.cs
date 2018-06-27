@@ -441,6 +441,7 @@
             this.Controls.Add(this.txb_user);
             this.Controls.Add(this.label1);
             this.Name = "Usuario_modificacion";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Usuario_modificacion";
             this.Load += new System.EventHandler(this.Usuario_modificacion_Load);
             this.groupBox1.ResumeLayout(false);

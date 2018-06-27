@@ -169,5 +169,10 @@ namespace FrbaHotel.AbmUsuarios
                 MessageBox.Show("El usuario se agregó correctamente al hotel", "Mensaje");
             }
         }
+
+        private void btn_volver_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
     }
 }

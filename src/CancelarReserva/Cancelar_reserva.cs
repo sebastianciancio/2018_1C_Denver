@@ -44,6 +44,7 @@ namespace FrbaHotel.CancelarReserva
             else { cmd.Parameters.AddWithValue("@user", SqlDbType.VarChar).Value = accesoSistema.UsuarioLogueado.Nombre;
                    cmd.Parameters.AddWithValue("@estado", SqlDbType.Int).Value = 3;
             }
+            cmd.Parameters.AddWithValue("@fecha_sistema", SqlDbType.DateTime).Value = accesoSistema.fechaSistema;
 
             cmd.ExecuteNonQuery();
 

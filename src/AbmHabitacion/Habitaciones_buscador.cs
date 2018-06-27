@@ -83,7 +83,7 @@ namespace FrbaHotel.AbmHabitacion
         private void btn_baja_Click(object sender, EventArgs e)
         {
             DataGridViewRow row = dgv_hab.CurrentRow;
-            if (row.Cells[5].Value.ToString() == "N")
+            if (row.Cells[6].Value.ToString() == "N")
             {
                 DialogResult result = MessageBox.Show("Desea dar de alta la habitación?"
                     , "Confirmar habilitación",
@@ -99,7 +99,7 @@ namespace FrbaHotel.AbmHabitacion
 
                     alta.ExecuteNonQuery();
 
-                    MessageBox.Show(" La habilitó la habitación" + row.Cells[0].Value.ToString(), "Mensaje");
+                    MessageBox.Show(" La habilitó la habitación " + row.Cells[0].Value.ToString(), "Mensaje");
 
                     btn_buscar_Click(null, null);
                     

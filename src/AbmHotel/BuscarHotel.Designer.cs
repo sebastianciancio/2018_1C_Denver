@@ -43,6 +43,7 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.cmb_hotel = new System.Windows.Forms.ComboBox();
             this.btn_eliminar = new System.Windows.Forms.Button();
+            this.btn_volver = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_tablaHotel)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -209,11 +210,22 @@
             this.btn_eliminar.Visible = false;
             this.btn_eliminar.Click += new System.EventHandler(this.btn_eliminar_Click);
             // 
+            // btn_volver
+            // 
+            this.btn_volver.Image = global::FrbaHotel.Properties.Resources.volver;
+            this.btn_volver.Location = new System.Drawing.Point(661, 272);
+            this.btn_volver.Name = "btn_volver";
+            this.btn_volver.Size = new System.Drawing.Size(35, 29);
+            this.btn_volver.TabIndex = 136;
+            this.btn_volver.UseVisualStyleBackColor = true;
+            this.btn_volver.Click += new System.EventHandler(this.btn_volver_Click);
+            // 
             // BuscarHotel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(708, 313);
+            this.Controls.Add(this.btn_volver);
             this.Controls.Add(this.btn_eliminar);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.btn_new_hotel);
@@ -247,5 +259,6 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Button btn_eliminar;
         private System.Windows.Forms.ComboBox cmb_hotel;
+        private System.Windows.Forms.Button btn_volver;
     }
 }

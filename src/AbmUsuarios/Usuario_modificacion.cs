@@ -27,7 +27,7 @@ namespace FrbaHotel.AbmUsuarios
             cmd.CommandType = CommandType.StoredProcedure;
 
 
-            cmd.Parameters.AddWithValue("@usuario_nombre", SqlDbType.VarChar).Value = user;
+            cmd.Parameters.AddWithValue("@usuario_user", SqlDbType.VarChar).Value = user;
 
             // Creo el DataTable para obtener los resultados del SP
             DataTable dt = new DataTable();
@@ -54,6 +54,7 @@ namespace FrbaHotel.AbmUsuarios
             {
                 cmb_tipoDoc.SelectedValue = Convert.ToInt32(row["usuario_tipo_documento_id"]);
             }
+            cmb_rol.SelectedValue = row["usuario_rol_rol_nombre"];
             if (row["usuario_fecha_nac"].ToString() != "")
             { cmb_nacimiento.Value = Convert.ToDateTime(row["usuario_fecha_nac"]); }
 

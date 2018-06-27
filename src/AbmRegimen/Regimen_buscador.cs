@@ -53,5 +53,10 @@ namespace FrbaHotel.AbmRegimen
             AbmRegimen.Regimen_alta frm = new AbmRegimen.Regimen_alta();
             frm.Show();
         }
+
+        private void btn_volver_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
     }
 }

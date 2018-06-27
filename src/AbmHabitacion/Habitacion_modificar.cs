@@ -123,8 +123,9 @@ namespace FrbaHotel.AbmHabitacion
                     else { cmd.Parameters.AddWithValue("@habitacion_frente", SqlDbType.VarChar).Value = 'N'; }
                     cmd.Parameters.AddWithValue("@habitacion_hotel_id", SqlDbType.Int).Value = cmb_hotel.SelectedValue;
                     cmd.Parameters.AddWithValue("@habitacion_descripcion", SqlDbType.NText).Value = desc;
+                    cmd.Parameters.AddWithValue("@fecha_sistema", SqlDbType.DateTime).Value = accesoSistema.fechaSistema;
 
-                    cmd.ExecuteNonQuery();
+                cmd.ExecuteNonQuery();
 
                     MessageBox.Show("Se ha modificado la habitación " + hab_nro, "Mensaje");
                 }

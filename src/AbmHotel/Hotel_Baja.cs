@@ -43,6 +43,8 @@ namespace FrbaHotel.AbmHotel
 
             cmd.Parameters.AddWithValue("@motivo", SqlDbType.VarChar).Value = cmb_motivo.SelectedValue;
 
+            cmd.Parameters.AddWithValue("@fecha_sistema", SqlDbType.DateTime).Value = accesoSistema.fechaSistema;
+
             cmd.ExecuteNonQuery();
 
             SqlDataAdapter sda = new SqlDataAdapter("SELECT denver.hotel_en_mantenimiento ('" + id_hotel + "')", db.Connection);

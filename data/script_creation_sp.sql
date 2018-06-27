@@ -19,7 +19,7 @@ if EXISTS (SELECT * FROM sys.objects  WHERE name = 'cargar_cliente' AND type IN 
 	DROP PROCEDURE [denver].[cargar_cliente]
 if EXISTS (SELECT * FROM sys.objects  WHERE name = 'eliminar_cliente' AND type IN (N'P', N'PC'))
 	DROP PROCEDURE [denver].[eliminar_cliente]
-	if EXISTS (SELECT * FROM sys.objects  WHERE name = 'eliminar_hotel' AND type IN (N'P', N'PC'))
+if EXISTS (SELECT * FROM sys.objects  WHERE name = 'eliminar_hotel' AND type IN (N'P', N'PC'))
 	DROP PROCEDURE [denver].[eliminar_hotel]
 if EXISTS (SELECT * FROM sys.objects  WHERE name = 'buscar_hotel_completo' AND type IN (N'P', N'PC'))
      DROP PROCEDURE [denver].[buscar_hotel_completo]
@@ -30,13 +30,9 @@ if EXISTS (SELECT * FROM sys.objects  WHERE name = 'cargar_habitacion' AND type 
 if EXISTS (SELECT * FROM sys.objects  WHERE name = 'eliminar_habitacion' AND type IN (N'P', N'PC'))
 	DROP PROCEDURE [denver].[eliminar_habitacion]
 if EXISTS (SELECT * FROM sys.objects  WHERE name = 'alta_habitacion' AND type IN (N'P', N'PC'))
-    DROP PROCEDURE [denver].[alta_habitacion]
-if EXISTS (SELECT * FROM sys.objects  WHERE name = 'cargar_regimen' AND type IN (N'P', N'PC'))
-	DROP PROCEDURE [denver].[cargar_regimen] 
+    DROP PROCEDURE [denver].[alta_habitacion] 
 if EXISTS (SELECT * FROM sys.objects  WHERE name = 'eliminar_regimen' AND type IN (N'P', N'PC'))
 	DROP PROCEDURE [denver].[eliminar_regimen]
-if EXISTS (SELECT * FROM sys.objects  WHERE name = 'cargar_rol' AND type IN (N'P', N'PC'))
-	DROP PROCEDURE [denver].[cargar_rol]
 if EXISTS (SELECT * FROM sys.objects  WHERE name = 'actualizar_estado_rol' AND type IN (N'P', N'PC'))
 	DROP PROCEDURE [denver].[actualizar_estado_rol] 
 if EXISTS (SELECT * FROM sys.objects  WHERE name = 'cargar_usuario' AND type IN (N'P', N'PC'))
@@ -207,7 +203,8 @@ CREATE PROCEDURE [denver].[cargar_cliente]
 	@cliente_dom_localidad nvarchar(255) = NULL,
 	@cliente_telefono nvarchar(50) = NULL,
 	@cliente_nacionalidad nvarchar(255) = NULL,
-	@cliente_pais_id smallint = NULL
+	@cliente_pais_id smallint = NULL,
+	@fecha_sistema datetime
 AS
 BEGIN
 	SET NOCOUNT ON; 
@@ -244,7 +241,7 @@ BEGIN
 		@cliente_pais_id,
 		@cliente_nacionalidad,
 		@cliente_fecha_nac,
-		GETDATE())
+		@fecha_sistema)
 END
 GO
 
@@ -282,7 +279,8 @@ CREATE PROCEDURE [denver].[cargar_hotel]
 	@hotel_ciudad nvarchar(255),
 	@hotel_pais_id smallint,
 	@hotel_regimen smallint,
-	@user_creador nvarchar(50)
+	@user_creador nvarchar(50),
+	@fecha_sistema datetime
 AS
 BEGIN
 	
@@ -309,7 +307,7 @@ BEGIN
 		@hotel_ciudad,
 		@hotel_estrellas,
 		10,
-		GETDATE(),
+		@fecha_sistema,
 		@hotel_nombre,
 		@hotel_email,
 		@hotel_telefono,
@@ -410,30 +408,6 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE [denver].[cargar_regimen]
-	@regimen_id numeric(18,0),
-	@regimen_descripcion nvarchar(255),
-	@regimen_precio numeric(18,0)
-AS
-BEGIN
-	SET NOCOUNT ON;  
-	INSERT INTO [denver].[regimenes](
-		regimen_id,
-		regimen_descripcion,
-		regimen_precio,
-		regimen_created,
-		regimen_activo
-		)
-	VALUES(
-		@regimen_id,
-		@regimen_descripcion,
-		@regimen_precio,
-		GETDATE(),
-		'S')
-END
-GO
-
-
 CREATE PROCEDURE [denver].[eliminar_regimen]
 	@regimen_id numeric(18,0)
 AS
@@ -446,24 +420,6 @@ BEGIN
 END
 GO
 
-
-CREATE PROCEDURE [denver].[cargar_rol]
-	@rol_nombre nvarchar(255)
-AS
-BEGIN
-	SET NOCOUNT ON;  
-	INSERT INTO [denver].[roles](
-		rol_nombre,
-		rol_activo,
-		rol_created)
-	VALUES(
-		@rol_nombre,
-		'S',
-		GETDATE())
-END
-GO
-
-	
 
 CREATE PROCEDURE [denver].[actualizar_estado_rol]
 	@rol_nombre nvarchar(255),
@@ -490,7 +446,9 @@ CREATE PROCEDURE [denver].[cargar_usuario]
 	@usuario_direccion nvarchar(255),
 	@usuario_fecha_nac datetime,
 	@usuario_rol nvarchar(255),
-    @usuario_hotel smallint
+    @usuario_hotel smallint,
+	@fecha_sistema datetime
+
 AS
 BEGIN
 	SET NOCOUNT ON;  
@@ -522,7 +480,7 @@ BEGIN
 		@usuario_fecha_nac,
 		'S',
 		0,
-		GETDATE()) 
+		@fecha_sistema) 
 
 		INSERT INTO [denver].[usuarios_roles](
 			usuario_rol_usuario_user,
@@ -532,7 +490,7 @@ BEGIN
 		VALUES (
 		 @usuario_user,
 		 @usuario_rol,
-		 GETDATE())
+		 @fecha_sistema)
 
 		 INSERT INTO [denver].[usuarios_hoteles](
 		     usuario_hotel_id,
@@ -657,7 +615,8 @@ CREATE PROCEDURE [denver].[baja_hotel]
 	@id_hotel smallint = NULL ,
 	@fecha_inicio datetime = NULL,
 	@fecha_fin  datetime = NULL, 
-	@motivo nvarchar(255) = NULL
+	@motivo nvarchar(255) = NULL,
+	@fecha_sistema datetime
 AS   
 BEGIN 
 	-- SET NOCOUNT ON added to prevent extra result sets from interfering with SELECT statements.
@@ -683,12 +642,8 @@ BEGIN
 				@fecha_inicio,
 				@fecha_fin,
 				@motivo,
-				GETDATE());
+				@fecha_sistema);
 		END
-
- 
-	    
-	  
 	
 		 
 END
@@ -1282,7 +1237,8 @@ END
 GO
 
 CREATE PROCEDURE [denver].[crear_rol]    
-	@rol nvarchar(255)
+	@rol nvarchar(255),
+	@fecha_sistema datetime
 AS   
 BEGIN 
 	
@@ -1295,7 +1251,7 @@ BEGIN
 		values(
 		@rol,
 		'S',
-		GETDATE())
+		@fecha_sistema)
 
 	
 
@@ -1354,6 +1310,7 @@ BEGIN
 
 END
 GO
+
 CREATE PROCEDURE denver.obtener_funcionalidades
 AS
 BEGIN
@@ -1425,15 +1382,16 @@ END
 GO
 
 CREATE PROCEDURE [denver].[buscar_usuario_completo]    
-	@usuario_nombre nvarchar(255) = NULL 
+	@usuario_user nvarchar(50)
 AS   
 BEGIN 
 	-- SET NOCOUNT ON added to prevent extra result sets from interfering with SELECT statements.
 	SET NOCOUNT ON;  
 
-	SELECT *
-		FROM denver.usuarios AS a 
-		WHERE  a.usuario_nombre LIKE '%' + ISNULL(@usuario_nombre, usuario_nombre) + '%'
+	SELECT a.*,  b.usuario_rol_rol_nombre
+		FROM denver.usuarios AS a JOIN denver.usuarios_roles b 
+		ON a.usuario_user = b.usuario_rol_usuario_user
+		WHERE  a.usuario_user = @usuario_user
 END
 GO
 
@@ -1638,7 +1596,8 @@ CREATE PROCEDURE [denver].[modificar_habitacion]
 	@habitacion_piso numeric(18,0),
 	@habitacion_frente nvarchar(50),
 	@habitacion_hotel_id smallint,
-	@habitacion_descripcion ntext
+	@habitacion_descripcion ntext,
+	@fecha_sistema datetime
 AS
 BEGIN
 	SET NOCOUNT ON;  
@@ -1657,7 +1616,7 @@ BEGIN
 	@habitacion_descripcion,
 	@habitacion_hotel_id,
 	'S',
-	GETDATE())
+	@fecha_sistema)
 END
 GO
 
@@ -1737,7 +1696,8 @@ GO
 CREATE PROCEDURE [denver].[alta_regimen]    
 	@nombre_regimen nvarchar(255) ,
 	@estado nvarchar,
-	@precio numeric(18,2)
+	@precio decimal(18,2),
+	@fecha_sistema datetime
 	
 AS	 
 BEGIN 
@@ -1751,9 +1711,9 @@ BEGIN
 	regimen_created)
 	Values (
 	@nombre_regimen,
-	@estado,
 	@precio,
-	GETDATE())
+	@estado,
+	@fecha_sistema)
 
 
 	
@@ -1783,14 +1743,15 @@ CREATE PROCEDURE [denver].[cancelar_reserva]
 	@cod_reserva numeric(18,09),
 	@motivo ntext,
 	@user nvarchar(50),
-	@estado smallint
+	@estado smallint,
+	@fecha_sistema datetime
 AS
 BEGIN
 	SET NOCOUNT ON;  
 	UPDATE [denver].[reservas]
 		SET reserva_estado_id = @estado,
 		    reserva_motivo_cancelacion = @motivo,
-			reserva_fecha_cancelacion = GETDATE(),
+			reserva_fecha_cancelacion = @fecha_sistema,
 			reserva_usuario_user_cancelacion = @user
 
 	WHERE
