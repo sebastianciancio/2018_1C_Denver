@@ -86,14 +86,5 @@ namespace FrbaHotel.AbmCliente
 
         }
 
-        private void txb_cli_new_nro_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void Cliente_alta_Load(object sender, EventArgs e)
-        {
-
-        }
     }
 }

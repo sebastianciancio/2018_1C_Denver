@@ -79,7 +79,7 @@
             // 
             // txb_user
             // 
-            this.txb_user.Location = new System.Drawing.Point(81, 16);
+            this.txb_user.Location = new System.Drawing.Point(90, 16);
             this.txb_user.MaxLength = 50;
             this.txb_user.Name = "txb_user";
             this.txb_user.Size = new System.Drawing.Size(118, 20);
@@ -133,30 +133,30 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.label13);
-            this.groupBox1.Controls.Add(this.cmb_nacimiento);
-            this.groupBox1.Controls.Add(this.label14);
-            this.groupBox1.Controls.Add(this.label6);
-            this.groupBox1.Controls.Add(this.txb_calle);
-            this.groupBox1.Controls.Add(this.lbl_cli_mod_direccion);
-            this.groupBox1.Controls.Add(this.label12);
-            this.groupBox1.Controls.Add(this.label4);
             this.groupBox1.Controls.Add(this.txb_mail);
-            this.groupBox1.Controls.Add(this.lbl_cli_mod_mail);
+            this.groupBox1.Controls.Add(this.cmb_nacimiento);
+            this.groupBox1.Controls.Add(this.txb_calle);
             this.groupBox1.Controls.Add(this.txb_telefono);
+            this.groupBox1.Controls.Add(this.txb_apellido);
+            this.groupBox1.Controls.Add(this.txb_nombre);
+            this.groupBox1.Controls.Add(this.label14);
+            this.groupBox1.Controls.Add(this.lbl_cli_mod_direccion);
             this.groupBox1.Controls.Add(this.lbl_cli_mod_telefono);
             this.groupBox1.Controls.Add(this.cmb_tipoDoc);
             this.groupBox1.Controls.Add(this.label9);
             this.groupBox1.Controls.Add(this.label8);
-            this.groupBox1.Controls.Add(this.label5);
-            this.groupBox1.Controls.Add(this.lbl_asterisco);
-            this.groupBox1.Controls.Add(this.txb_apellido);
             this.groupBox1.Controls.Add(this.lbl_cli_mod_apellidos);
-            this.groupBox1.Controls.Add(this.txb_nombre);
             this.groupBox1.Controls.Add(this.lbl_cli_mod_nombre);
             this.groupBox1.Controls.Add(this.txb_numDni);
             this.groupBox1.Controls.Add(this.lbl_cl_mod_dni);
             this.groupBox1.Controls.Add(this.lbl_mod_cl_t_dni);
+            this.groupBox1.Controls.Add(this.lbl_asterisco);
+            this.groupBox1.Controls.Add(this.label5);
+            this.groupBox1.Controls.Add(this.label12);
+            this.groupBox1.Controls.Add(this.label6);
+            this.groupBox1.Controls.Add(this.label13);
+            this.groupBox1.Controls.Add(this.lbl_cli_mod_mail);
+            this.groupBox1.Controls.Add(this.label4);
             this.groupBox1.Location = new System.Drawing.Point(11, 96);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(393, 308);
@@ -176,7 +176,7 @@
             // 
             // cmb_nacimiento
             // 
-            this.cmb_nacimiento.Location = new System.Drawing.Point(9, 267);
+            this.cmb_nacimiento.Location = new System.Drawing.Point(4, 267);
             this.cmb_nacimiento.Name = "cmb_nacimiento";
             this.cmb_nacimiento.Size = new System.Drawing.Size(200, 20);
             this.cmb_nacimiento.TabIndex = 162;
@@ -390,7 +390,7 @@
             // 
             this.label7.AutoSize = true;
             this.label7.ForeColor = System.Drawing.Color.Red;
-            this.label7.Location = new System.Drawing.Point(64, 19);
+            this.label7.Location = new System.Drawing.Point(69, 19);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(11, 13);
             this.label7.TabIndex = 149;

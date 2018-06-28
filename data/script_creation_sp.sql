@@ -1042,7 +1042,7 @@ BEGIN
 	if (@trimestre = 3) set @meses = '(7,8,9)';
 	if (@trimestre = 4) set @meses = '(10,11,12)';
 
-	select
+	select TOP 5
 		h.hotel_nombre as Hotel, count(*) as "Total Reservas Canceladas"
 	from
 		denver.reservas as r
@@ -1061,21 +1061,42 @@ GO
 
 -- Hoteles con mayor cantidad de consumibles facturados
 CREATE PROCEDURE denver.listado2
-	@anio int,
-	@trimestre int
+	@anio smallint,
+	@trimestre smallint
 AS
 BEGIN
-	select
-		h.hotel_nombre as Hotel, count(*) as "Total Reservas Canceladas"
-	from
-		denver.reservas as r
-		join denver.hoteles as h on r.reserva_hotel_id = h.hotel_id
-	where
-		r.reserva_estado_id IN (1,3,4,5)
+	--DECLARE @meses varchar(50);
+	CREATE TABLE #trimestre
+    ( mes int)
+
+	if (@trimestre = 1)
+	BEGIN
+	   INSERT INTO #trimestre(mes) VALUES (1), (2), (3);
+     END
+	if (@trimestre = 2)
+	BEGIN
+	   INSERT INTO #trimestre(mes) VALUES (4), (5) , (6);
+     END
+	 	if (@trimestre = 3)
+	BEGIN
+	   INSERT INTO #trimestre(mes) VALUES (7), (8), (9);
+     END
+	 	if (@trimestre = 4)
+	BEGIN
+	   INSERT INTO #trimestre(mes) VALUES (10), (11), (12);
+     END
+
+select top 5 c.hotel_nombre as Hotel, count(*) as "Total Consumibles Facturados"
+ from denver.consumibles_clientes a JOIN denver.reservas b
+ ON a.consumible_cliente_reserva_codigo =  b.reserva_codigo
+ JOIN denver.hoteles c ON c.hotel_id = b.reserva_hotel_id
+   WHERE b.reserva_estado_id IN (1,3,4,5)
+        AND MONTH(b.reserva_fecha_inicio) IN (#trimestre.mes) AND year(b.reserva_fecha_inicio) = @anio
+		AND MONTH(b.reserva_fecha_fin) IN (#trimestre.mes) AND year (b.reserva_fecha_fin) = @anio
 	group by
-		h.hotel_nombre
+		c.hotel_nombre
 	order by
-		count(*) DESc
+		count(*) DESc 
 
 END
 GO

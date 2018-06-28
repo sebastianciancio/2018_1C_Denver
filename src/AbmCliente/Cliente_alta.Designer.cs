@@ -224,7 +224,6 @@
             this.txb_cli_new_nro.Name = "txb_cli_new_nro";
             this.txb_cli_new_nro.Size = new System.Drawing.Size(50, 20);
             this.txb_cli_new_nro.TabIndex = 73;
-            this.txb_cli_new_nro.TextChanged += new System.EventHandler(this.txb_cli_new_nro_TextChanged);
             // 
             // lbl_cli_mod_numero
             // 
@@ -276,7 +275,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.ForeColor = System.Drawing.Color.Red;
-            this.label2.Location = new System.Drawing.Point(64, 130);
+            this.label2.Location = new System.Drawing.Point(62, 130);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(11, 13);
             this.label2.TabIndex = 64;
@@ -458,9 +457,16 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(413, 461);
-            this.Controls.Add(this.cmb_cli_new_tip_doc);
+            this.Controls.Add(this.txb_cli_new_mail);
+            this.Controls.Add(this.txb_cli_new_telefono);
             this.Controls.Add(this.combo_pais);
-            this.Controls.Add(this.label13);
+            this.Controls.Add(this.txb_cli_new_nacionalidad);
+            this.Controls.Add(this.txb_cli_new_localidad);
+            this.Controls.Add(this.cmb_cli_new_fec_nac);
+            this.Controls.Add(this.txb_cli_new_calle);
+            this.Controls.Add(this.txb_cli_new_apellidos);
+            this.Controls.Add(this.txb_cli_new_nombres);
+            this.Controls.Add(this.cmb_cli_new_tip_doc);
             this.Controls.Add(this.label14);
             this.Controls.Add(this.label11);
             this.Controls.Add(this.txb_cli_new_dpto);
@@ -468,41 +474,33 @@
             this.Controls.Add(this.label8);
             this.Controls.Add(this.btn_cli_new_volver);
             this.Controls.Add(this.btn_cli_new_guardar);
-            this.Controls.Add(this.label12);
-            this.Controls.Add(this.label10);
-            this.Controls.Add(this.txb_cli_new_mail);
             this.Controls.Add(this.lbl_cli_mod_mail);
-            this.Controls.Add(this.txb_cli_new_telefono);
             this.Controls.Add(this.lbl_cli_mod_telefono);
-            this.Controls.Add(this.label7);
-            this.Controls.Add(this.txb_cli_new_nacionalidad);
             this.Controls.Add(this.lbl_cli_mod_nacionalidad);
-            this.Controls.Add(this.label6);
-            this.Controls.Add(this.txb_cli_new_localidad);
             this.Controls.Add(this.lbl_cli_mod_localidad);
             this.Controls.Add(this.txb_cli_new_piso);
             this.Controls.Add(this.lbl_cli_mod_piso);
             this.Controls.Add(this.txb_cli_new_nro);
             this.Controls.Add(this.lbl_cli_mod_numero);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.txb_cli_new_calle);
             this.Controls.Add(this.lbl_cli_mod_direccion);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.lbl_asterisco);
-            this.Controls.Add(this.cmb_cli_new_fec_nac);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.txb_cli_new_apellidos);
             this.Controls.Add(this.lbl_cli_mod_apellidos);
-            this.Controls.Add(this.txb_cli_new_nombres);
             this.Controls.Add(this.lbl_cli_mod_nombre);
             this.Controls.Add(this.txb_cl_new_dni);
             this.Controls.Add(this.lbl_cl_mod_dni);
             this.Controls.Add(this.lbl_mod_cl_t_dni);
+            this.Controls.Add(this.lbl_asterisco);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.label7);
+            this.Controls.Add(this.label13);
+            this.Controls.Add(this.label12);
+            this.Controls.Add(this.label10);
             this.Name = "Cliente_alta";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Nuevo Cliente";
-            this.Load += new System.EventHandler(this.Cliente_alta_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
