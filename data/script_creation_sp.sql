@@ -1034,13 +1034,33 @@ CREATE PROCEDURE denver.listado1
 	@trimestre smallint
 AS
 BEGIN
-	DECLARE @meses varchar(50);
+--	DECLARE @meses varchar(50);
 
+--
+--	if (@trimestre = 1) set @meses = '(1,2,3)';
+--	if (@trimestre = 2) set @meses = '(4,5,6)';
+--	if (@trimestre = 3) set @meses = '(7,8,9)';
+--	if (@trimestre = 4) set @meses = '(10,11,12)';
 
-	if (@trimestre = 1) set @meses = '(1,2,3)';
-	if (@trimestre = 2) set @meses = '(4,5,6)';
-	if (@trimestre = 3) set @meses = '(7,8,9)';
-	if (@trimestre = 4) set @meses = '(10,11,12)';
+	CREATE TABLE #trimestre
+    ( mes int)
+
+	if (@trimestre = 1)
+	BEGIN
+	   INSERT INTO #trimestre(mes) VALUES (1), (2), (3);
+     END
+	if (@trimestre = 2)
+	BEGIN
+	   INSERT INTO #trimestre(mes) VALUES (4), (5) , (6);
+     END
+	 	if (@trimestre = 3)
+	BEGIN
+	   INSERT INTO #trimestre(mes) VALUES (7), (8), (9);
+     END
+	 	if (@trimestre = 4)
+	BEGIN
+	   INSERT INTO #trimestre(mes) VALUES (10), (11), (12);
+     END
 
 	select TOP 5
 		h.hotel_nombre as Hotel, count(*) as "Total Reservas Canceladas"
@@ -1049,8 +1069,8 @@ BEGIN
 		join denver.hoteles as h on r.reserva_hotel_id = h.hotel_id
 	where
 		r.reserva_estado_id IN (3,4,5)
-		AND MONTH(r.reserva_fecha_inicio) IN (@meses) AND year(r.reserva_fecha_inicio) = @anio
-		AND MONTH(r.reserva_fecha_fin) IN (@meses) AND year(r.reserva_fecha_fin) = @anio
+		AND MONTH(r.reserva_fecha_inicio) IN (SELECT mes from #trimestre) AND year(r.reserva_fecha_inicio) = @anio
+		AND MONTH(r.reserva_fecha_fin) IN (SELECT mes from #trimestre) AND year(r.reserva_fecha_fin) = @anio
 	group by
 		h.hotel_nombre
 	order by
@@ -1090,9 +1110,9 @@ select top 5 c.hotel_nombre as Hotel, count(*) as "Total Consumibles Facturados"
  from denver.consumibles_clientes a JOIN denver.reservas b
  ON a.consumible_cliente_reserva_codigo =  b.reserva_codigo
  JOIN denver.hoteles c ON c.hotel_id = b.reserva_hotel_id
-   WHERE b.reserva_estado_id IN (1,3,4,5)
-        AND MONTH(b.reserva_fecha_inicio) IN (#trimestre.mes) AND year(b.reserva_fecha_inicio) = @anio
-		AND MONTH(b.reserva_fecha_fin) IN (#trimestre.mes) AND year (b.reserva_fecha_fin) = @anio
+   WHERE b.reserva_estado_id IN (1,2,6)
+        AND MONTH(b.reserva_fecha_inicio) IN (SELECT mes FROM #trimestre) AND year(b.reserva_fecha_inicio) = @anio
+		AND MONTH(b.reserva_fecha_fin) IN (SELECT mes FROM #trimestre) AND year (b.reserva_fecha_fin) = @anio
 	group by
 		c.hotel_nombre
 	order by
@@ -1107,17 +1127,35 @@ CREATE PROCEDURE denver.listado3
 	@trimestre int
 AS
 BEGIN
-	select
-		h.hotel_nombre as Hotel, count(*) as "Total Reservas Canceladas"
-	from
-		denver.reservas as r
-		join denver.hoteles as h on r.reserva_hotel_id = h.hotel_id
-	where
-		r.reserva_estado_id IN (1,3,4,5)
+	CREATE TABLE #trimestre
+    ( mes int)
+
+	if (@trimestre = 1)
+	BEGIN
+	   INSERT INTO #trimestre(mes) VALUES (1), (2), (3);
+     END
+	if (@trimestre = 2)
+	BEGIN
+	   INSERT INTO #trimestre(mes) VALUES (4), (5) , (6);
+     END
+	 	if (@trimestre = 3)
+	BEGIN
+	   INSERT INTO #trimestre(mes) VALUES (7), (8), (9);
+     END
+	 	if (@trimestre = 4)
+	BEGIN
+	   INSERT INTO #trimestre(mes) VALUES (10), (11), (12);
+     END
+
+select top 5 a.hotel_nombre as Hotel, sum(mantenimiento_fecha_hasta - mantenimiento_fecha_desde) as "Dias Fuera de Servicio"
+ from denver.hoteles a JOIN denver.mantenimientos b ON a.hotel_id = b.mantenimiento_hotel_id
+   WHERE MONTH(b.mantenimiento_fecha_desde) IN (SELECT mes FROM #trimestre) AND year(b.mantenimiento_fecha_desde) = @anio
+		AND MONTH(b.mantenimiento_fecha_hasta) IN (SELECT mes FROM #trimestre) AND year (b.mantenimiento_fecha_hasta) = @anio
 	group by
-		h.hotel_nombre
+		hotel_nombre
 	order by
-		count(*) DESc
+		count(*) DESc 
+
 
 END
 GO
@@ -1128,17 +1166,37 @@ CREATE PROCEDURE denver.listado4
 	@trimestre int
 AS
 BEGIN
-	select
-		h.hotel_nombre as Hotel, count(*) as "Total Reservas Canceladas"
-	from
-		denver.reservas as r
-		join denver.hoteles as h on r.reserva_hotel_id = h.hotel_id
-	where
-		r.reserva_estado_id IN (1,3,4,5)
+	CREATE TABLE #trimestre
+    ( mes int)
+
+	if (@trimestre = 1)
+	BEGIN
+	   INSERT INTO #trimestre(mes) VALUES (1), (2), (3);
+     END
+	if (@trimestre = 2)
+	BEGIN
+	   INSERT INTO #trimestre(mes) VALUES (4), (5) , (6);
+     END
+	 	if (@trimestre = 3)
+	BEGIN
+	   INSERT INTO #trimestre(mes) VALUES (7), (8), (9);
+     END
+	 	if (@trimestre = 4)
+	BEGIN
+	   INSERT INTO #trimestre(mes) VALUES (10), (11), (12);
+     END
+
+	select b.reserva_habitacion_nro as [Numero de habitacion], SUM(a.reserva_cant_noches) AS [Dias Ocupados],
+	       COUNT(*) AS [Cantidad de veces ocupada] , hotel_nombre AS [Hotel de pertenencia]
+	from denver.reservas a JOIN denver.reservas_habitaciones b ON a.reserva_codigo = b.reserva_habitaciones_reserva_codigo 	
+		join denver.hoteles as c on a.reserva_hotel_id = c.hotel_id
+	where MONTH(a.reserva_fecha_inicio) IN (SELECT mes FROM #trimestre) AND year(a.reserva_fecha_inicio) = @anio
+		  AND MONTH(a.reserva_fecha_fin) IN (SELECT mes FROM #trimestre) AND year (a.reserva_fecha_fin) = @anio
+		  AND a.reserva_estado_id IN (6)
 	group by
-		h.hotel_nombre
+		reserva_habitacion_nro, hotel_nombre
 	order by
-		count(*) DESc
+		SUM(a.reserva_cant_noches),COUNT(*) DESc
 
 END
 GO
@@ -1149,17 +1207,39 @@ CREATE PROCEDURE denver.listado5
 	@trimestre int
 AS
 BEGIN
-	select
-		h.hotel_nombre as Hotel, count(*) as "Total Reservas Canceladas"
-	from
-		denver.reservas as r
-		join denver.hoteles as h on r.reserva_hotel_id = h.hotel_id
-	where
-		r.reserva_estado_id IN (1,3,4,5)
+	CREATE TABLE #trimestre
+    ( mes int)
+
+	if (@trimestre = 1)
+	BEGIN
+	   INSERT INTO #trimestre(mes) VALUES (1), (2), (3);
+     END
+	if (@trimestre = 2)
+	BEGIN
+	   INSERT INTO #trimestre(mes) VALUES (4), (5) , (6);
+     END
+	 	if (@trimestre = 3)
+	BEGIN
+	   INSERT INTO #trimestre(mes) VALUES (7), (8), (9);
+     END
+	 	if (@trimestre = 4)
+	BEGIN
+	   INSERT INTO #trimestre(mes) VALUES (10), (11), (12);
+     END
+
+	select cliente_apellido AS Apellido, cliente_nombre AS Nombre, 
+	       SUM( (a.reserva_cant_noches*d.reserva_habitaciones_precio)/20 + (c.factura_item_monto * c.factura_item_cant)/10 ) 
+	from denver.reservas a JOIN DENVER.clientes b ON a.reserva_cliente_pasaporte_nro = b.cliente_pasaporte_nro
+	                                             AND a.reserva_cliente_tipo_documento_id = b.cliente_tipo_documento_id
+         JOIN denver.facturas_items c ON  a.reserva_codigo = c.factura_reserva_codigo
+		 JOIN denver.reservas_habitaciones d ON a.reserva_codigo = d.reserva_habitaciones_reserva_codigo
+	where MONTH(a.reserva_fecha_inicio) IN (SELECT mes FROM #trimestre) AND year(a.reserva_fecha_inicio) = @anio
+		AND MONTH(a.reserva_fecha_fin) IN (SELECT mes FROM #trimestre) AND year (a.reserva_fecha_fin) = @anio
+	    AND a.reserva_estado_id IN (6)
 	group by
-		h.hotel_nombre
+		cliente_apellido, cliente_nombre
 	order by
-		count(*) DESc
+		SUM( (a.reserva_cant_noches*d.reserva_habitaciones_precio)/20 + (c.factura_item_monto * c.factura_item_cant)/10 ) DESc
 
 END
 GO
