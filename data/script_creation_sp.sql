@@ -1070,11 +1070,13 @@ BEGIN
 	where
 		r.reserva_estado_id IN (3,4,5)
 		AND MONTH(r.reserva_fecha_inicio) IN (SELECT mes from #trimestre) AND year(r.reserva_fecha_inicio) = @anio
-		AND MONTH(r.reserva_fecha_fin) IN (SELECT mes from #trimestre) AND year(r.reserva_fecha_fin) = @anio
+	--	AND MONTH(r.reserva_fecha_fin) IN (SELECT mes from #trimestre) AND year(r.reserva_fecha_fin) = @anio
 	group by
 		h.hotel_nombre
 	order by
 		count(*) DESc
+
+		DROP TABLE #trimestre
 
 END
 GO
@@ -1112,12 +1114,13 @@ select top 5 c.hotel_nombre as Hotel, count(*) as "Total Consumibles Facturados"
  JOIN denver.hoteles c ON c.hotel_id = b.reserva_hotel_id
    WHERE b.reserva_estado_id IN (1,2,6)
         AND MONTH(b.reserva_fecha_inicio) IN (SELECT mes FROM #trimestre) AND year(b.reserva_fecha_inicio) = @anio
-		AND MONTH(b.reserva_fecha_fin) IN (SELECT mes FROM #trimestre) AND year (b.reserva_fecha_fin) = @anio
+	--	AND MONTH(b.reserva_fecha_fin) IN (SELECT mes FROM #trimestre) AND year (b.reserva_fecha_fin) = @anio
 	group by
 		c.hotel_nombre
 	order by
 		count(*) DESc 
 
+		DROP TABLE #trimestre
 END
 GO
 
@@ -1147,7 +1150,7 @@ BEGIN
 	   INSERT INTO #trimestre(mes) VALUES (10), (11), (12);
      END
 
-select top 5 a.hotel_nombre as Hotel, sum(mantenimiento_fecha_hasta - mantenimiento_fecha_desde) as "Dias Fuera de Servicio"
+select top 5 a.hotel_nombre as Hotel, sum(DateDIFF(dd, mantenimiento_fecha_hasta, mantenimiento_fecha_desde)) as "Dias Fuera de Servicio"
  from denver.hoteles a JOIN denver.mantenimientos b ON a.hotel_id = b.mantenimiento_hotel_id
    WHERE MONTH(b.mantenimiento_fecha_desde) IN (SELECT mes FROM #trimestre) AND year(b.mantenimiento_fecha_desde) = @anio
 		AND MONTH(b.mantenimiento_fecha_hasta) IN (SELECT mes FROM #trimestre) AND year (b.mantenimiento_fecha_hasta) = @anio
@@ -1156,7 +1159,7 @@ select top 5 a.hotel_nombre as Hotel, sum(mantenimiento_fecha_hasta - mantenimie
 	order by
 		count(*) DESc 
 
-
+		DROP TABLE #trimestre
 END
 GO
 
@@ -1191,13 +1194,14 @@ BEGIN
 	from denver.reservas a JOIN denver.reservas_habitaciones b ON a.reserva_codigo = b.reserva_habitaciones_reserva_codigo 	
 		join denver.hoteles as c on a.reserva_hotel_id = c.hotel_id
 	where MONTH(a.reserva_fecha_inicio) IN (SELECT mes FROM #trimestre) AND year(a.reserva_fecha_inicio) = @anio
-		  AND MONTH(a.reserva_fecha_fin) IN (SELECT mes FROM #trimestre) AND year (a.reserva_fecha_fin) = @anio
-		  AND a.reserva_estado_id IN (6)
+	--	  AND MONTH(a.reserva_fecha_fin) IN (SELECT mes FROM #trimestre) AND year (a.reserva_fecha_fin) = @anio
+	--	  AND a.reserva_estado_id IN (6)
 	group by
 		reserva_habitacion_nro, hotel_nombre
 	order by
 		SUM(a.reserva_cant_noches),COUNT(*) DESc
 
+		DROP TABLE #trimestre
 END
 GO
 
@@ -1240,7 +1244,7 @@ BEGIN
 		cliente_apellido, cliente_nombre
 	order by
 		SUM( (a.reserva_cant_noches*d.reserva_habitaciones_precio)/20 + (c.factura_item_monto * c.factura_item_cant)/10 ) DESc
-
+		DROP TABLE #trimestre
 END
 GO
 
