@@ -20,7 +20,7 @@ namespace FrbaHotel.AbmUsuarios
             InitializeComponent();
 
             // Cargo los combos
-            Combos.cargarComboHotel(cmb_hotel, true);
+            Combos.cargarComboHotel(cmb_hotel, false);
         }
 
         private void btn_modif_Click(object sender, EventArgs e)
