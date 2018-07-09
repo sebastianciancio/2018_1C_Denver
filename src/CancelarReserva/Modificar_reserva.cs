@@ -14,6 +14,8 @@ namespace FrbaHotel.CancelarReserva
     {
         public int cod_reserva;
         private DataBase db;
+        public int reserva;
+        //public int idTipoDoc;
         public Modificar_reserva()
         {
             InitializeComponent();
@@ -22,7 +24,13 @@ namespace FrbaHotel.CancelarReserva
 
         private void Modificar_reserva_Load(object sender, EventArgs e)
         {
+            //con el número busco en la BD y cargo la fecha
 
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            
         }
     }
 }

@@ -34,6 +34,7 @@
             this.btn_volver = new System.Windows.Forms.Button();
             this.btn_sistema = new System.Windows.Forms.Button();
             this.btn_reserva = new System.Windows.Forms.Button();
+            this.btn_canc = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btn_nueva
@@ -41,7 +42,7 @@
             this.btn_nueva.Enabled = false;
             this.btn_nueva.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btn_nueva.Font = new System.Drawing.Font("Monotype Corsiva", 15.75F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_nueva.Location = new System.Drawing.Point(171, 57);
+            this.btn_nueva.Location = new System.Drawing.Point(171, 12);
             this.btn_nueva.Name = "btn_nueva";
             this.btn_nueva.Size = new System.Drawing.Size(212, 52);
             this.btn_nueva.TabIndex = 2;
@@ -54,7 +55,7 @@
             // 
             this.btn_modificar.Enabled = false;
             this.btn_modificar.Font = new System.Drawing.Font("Monotype Corsiva", 15.75F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_modificar.Location = new System.Drawing.Point(171, 160);
+            this.btn_modificar.Location = new System.Drawing.Point(171, 89);
             this.btn_modificar.Name = "btn_modificar";
             this.btn_modificar.Size = new System.Drawing.Size(208, 51);
             this.btn_modificar.TabIndex = 3;
@@ -104,6 +105,19 @@
             this.btn_reserva.UseVisualStyleBackColor = false;
             this.btn_reserva.Click += new System.EventHandler(this.btn_reserva_Click);
             // 
+            // btn_canc
+            // 
+            this.btn_canc.Enabled = false;
+            this.btn_canc.Font = new System.Drawing.Font("Monotype Corsiva", 15.75F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_canc.Location = new System.Drawing.Point(171, 169);
+            this.btn_canc.Name = "btn_canc";
+            this.btn_canc.Size = new System.Drawing.Size(208, 51);
+            this.btn_canc.TabIndex = 5;
+            this.btn_canc.Text = "Cancelar Reserva";
+            this.btn_canc.UseVisualStyleBackColor = true;
+            this.btn_canc.Visible = false;
+            this.btn_canc.Click += new System.EventHandler(this.btn_canc_Click);
+            // 
             // accesoSistema
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -115,6 +129,7 @@
             this.Controls.Add(this.btn_nueva);
             this.Controls.Add(this.btn_modificar);
             this.Controls.Add(this.btn_volver);
+            this.Controls.Add(this.btn_canc);
             this.Name = "accesoSistema";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Bienvenidos a Hoteles Denver";
@@ -130,5 +145,6 @@
         private System.Windows.Forms.Button btn_nueva;
         private System.Windows.Forms.Button btn_modificar;
         private System.Windows.Forms.Button btn_volver;
+        private System.Windows.Forms.Button btn_canc;
     }
 }

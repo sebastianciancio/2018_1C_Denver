@@ -1196,6 +1196,8 @@ if EXISTS (SELECT * FROM sys.objects  WHERE name = 'buscar_reserva' AND type IN 
       DROP PROCEDURE [denver].[buscar_reserva]
 if EXISTS (SELECT * FROM sys.objects  WHERE name = 'cancelar_reserva' AND type IN (N'P', N'PC'))
       DROP PROCEDURE [denver].[cancelar_reserva]
+if EXISTS (SELECT * FROM sys.objects  WHERE name = 'existe_reserva' AND type IN (N'FN'))
+      DROP FUNCTION [denver].[existe_reserva]
 
 GO
 
@@ -1869,7 +1871,7 @@ GO
 CREATE PROCEDURE denver.obtener_disponibilidad
       @fecha_desde as datetime,
       @fecha_hasta as datetime,
-      @hotel_id as smallint,
+      @hotel_id as smallint = NULL,
       @tipo_habitacion as numeric(18,0),
       @regimen_id as numeric(18,0) = NULL
 AS
@@ -1883,7 +1885,7 @@ BEGIN
             join denver.tipo_habitaciones as th on th.tipo_habitacion_id = d.disponibilidad_tipo_habitacion_id
       where
             d.disponibilidad_fecha between @fecha_desde and @fecha_hasta
-            and d.disponibilidad_hotel_id = @hotel_id
+            and d.disponibilidad_hotel_id = isnull(@hotel_id, d.disponibilidad_hotel_id)
             and d.disponibilidad_ocupado = 0 
             and d.disponibilidad_tipo_habitacion_id = @tipo_habitacion 
             and hr.hotel_regimen_regimen_id = isnull(@regimen_id,hr.hotel_regimen_regimen_id)
@@ -2863,20 +2865,20 @@ END
 GO
 
 CREATE PROCEDURE [denver].[buscar_reserva]    
-      @cliente_nro_doc numeric(18,0),
-      @cliente_tipo_doc smallint
+@reserva numeric(18,0)
       
 AS     
 BEGIN 
       -- SET NOCOUNT ON added to prevent extra resultets from interfering with SELECT statements.
-      SET NOCOUNT ON;  
-      
-      SELECT  reserva_codigo AS 'Cod Reserva', hotel_nombre AS Hotel
-      FROM 
-            denver.reservas a join denver.hoteles b on a.reserva_hotel_id = b.hotel_id 
-        WHERE reserva_cliente_pasaporte_nro = @cliente_nro_doc
-          and reserva_cliente_tipo_documento_id = @cliente_tipo_doc
-            and reserva_estado_id NOT IN (3,4)
+	SET NOCOUNT ON;  
+	
+	SELECT  reserva_codigo AS 'Cod Reserva', hotel_nombre AS Hotel
+	FROM 
+		denver.reservas a join denver.hoteles b on a.reserva_hotel_id = b.hotel_id 
+	  WHERE reserva_codigo = @reserva
+	    --and reserva_cliente_tipo_documento_id = @cliente_tipo_doc
+		and reserva_estado_id NOT IN (3,4)
+
 
 END
 GO
@@ -2890,13 +2892,46 @@ CREATE PROCEDURE [denver].[cancelar_reserva]
 AS
 BEGIN
       SET NOCOUNT ON;  
+
+	  DECLARE @hotel_id smallint, @habitacion numeric(18,0), @tipo_hab numeric(18,0),
+			  @fecha_inicio datetime, @fecha_fin datetime;
+				
+
       UPDATE [denver].[reservas]
             SET reserva_estado_id = @estado,
                 reserva_motivo_cancelacion = @motivo,
                   reserva_fecha_cancelacion = @fecha_sistema,
                   reserva_usuario_user_cancelacion = @user
-
       WHERE
-            reserva_codigo = @cod_reserva
+            reserva_codigo = @cod_reserva;
+
+      SELECT @hotel_id = a.reserva_hotel_id, @habitacion = b.reserva_habitacion_nro,
+	         @tipo_hab = b.reserva_habitaciones_tipo_habitacion_id, @fecha_inicio = a.reserva_fecha_inicio,
+			 @fecha_fin = a.reserva_fecha_fin
+	   FROM denver.reservas a JOIN denver.reservas_habitaciones b
+	   ON a.reserva_codigo = b.reserva_habitaciones_reserva_codigo
+	   WHERE reserva_codigo = @cod_reserva;
+
+	  UPDATE 
+            denver.disponibilidades
+      SET 
+            disponibilidad_ocupado = 0
+      where
+            disponibilidad_hotel_id = @hotel_id and
+            disponibilidad_habitacion_nro = @habitacion and
+            disponibilidad_tipo_habitacion_id = @tipo_hab and
+            disponibilidad_fecha BETWEEN @fecha_inicio AND @fecha_fin
+
+	    
+END
+GO
+
+CREATE FUNCTION denver.existe_reserva (@reserva numeric(18,0))
+RETURNS int
+AS
+BEGIN
+      RETURN (SELECT count(*) FROM denver.reservas WHERE reserva_codigo = @reserva
+													 AND reserva_estado_id IN (1,2))
+
 END
 GO

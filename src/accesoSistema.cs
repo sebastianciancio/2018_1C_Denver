@@ -36,6 +36,8 @@ namespace FrbaHotel
 
         private void btn_reserva_Click(object sender, EventArgs e)
         {
+            btn_canc.Enabled = true;
+            btn_canc.Visible = true;
 
             btn_reserva.Enabled = false;
             btn_reserva.Visible = false;
@@ -74,6 +76,9 @@ namespace FrbaHotel
 
             btn_volver.Enabled = false;
             btn_volver.Visible = false;
+
+            btn_canc.Enabled = false;
+            btn_canc.Visible = false;
         }
 
         private void btn_sistema_Click(object sender, EventArgs e)
@@ -122,6 +127,12 @@ namespace FrbaHotel
 
             frm.Show();
 
+        }
+
+        private void btn_canc_Click(object sender, EventArgs e)
+        {
+            CancelarReserva.Cancelar_reserva frm = new CancelarReserva.Cancelar_reserva();
+            frm.Show();
         }
     }
 }
