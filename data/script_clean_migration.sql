@@ -1,6 +1,11 @@
-if NOT EXISTS (SELECT * FROM sys.schemas  WHERE name = 'DENVER')
-	--EXEC('CREATE SCHEMA [DENVER] AUTHORIZATION [dbo]') 
-	EXEC('CREATE SCHEMA [DENVER]') 
+USE [GD1C2018]
+GO
+
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
 
 /*  --------------------------------------------------------------------------------
 ELIMINACION DE TODOS LAS CONSTRAINT
@@ -161,6 +166,9 @@ DROP PROCEDURE [DENVER].[alta_regimen]
 DROP PROCEDURE [DENVER].[buscar_reserva]
 DROP PROCEDURE [DENVER].[cancelar_reserva]
 DROP PROCEDURE [DENVER].[modificar_usuario] 
+DROP FUNCTION [DENVER].[existe_reserva]
+DROP PROCEDURE [DENVER].[facturar_encabezado]
+DROP PROCEDURE [DENVER].[facturar_items]
 GO
 
 DROP SCHEMA [DENVER]

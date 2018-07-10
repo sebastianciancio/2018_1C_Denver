@@ -82,6 +82,7 @@ namespace FrbaHotel
             dg_disponibilidad.Columns[4].Visible = false;
             dg_disponibilidad.Columns[5].Visible = false;
             dg_disponibilidad.Columns[6].Visible = false;
+            dg_disponibilidad.Columns[7].Visible = false;
 
             // Muestro los objetos ocultos
             dg_disponibilidad.Visible = true;
@@ -129,7 +130,7 @@ namespace FrbaHotel
                 for (var indice = 0; indice < row.Count;indice++ )
                 {
                     // Precio x dia x hab * cant pasajeros x hab * dias alojamiento
-                    total_reserva += Convert.ToInt32(row[indice].Cells[4].Value) * Convert.ToInt32(row[indice].Cells[3].Value) * ((fecha_hasta.Value - fecha_desde.Value).Days+1);
+                    total_reserva += ((Convert.ToInt32(row[indice].Cells[4].Value) * Convert.ToInt32(row[indice].Cells[3].Value)) + Convert.ToInt32(row[indice].Cells[7].Value)) * ((fecha_hasta.Value - fecha_desde.Value).Days);
                 }
 
                 txt_reserva_total.Text = "$" + total_reserva;
@@ -180,7 +181,7 @@ namespace FrbaHotel
                 cmd.Parameters.AddWithValue("@reserva_regimen_id", SqlDbType.Int).Value = Convert.ToInt32(row[indice].Cells[5].Value);
                 cmd.Parameters.AddWithValue("@reserva_tipo_habitacion_id", SqlDbType.Int).Value = Convert.ToInt32(row[indice].Cells[6].Value);
                 cmd.Parameters.AddWithValue("@reserva_habitacion_nro", SqlDbType.Int).Value = Convert.ToInt32(row[indice].Cells[0].Value);
-                cmd.Parameters.AddWithValue("@reserva_precio_habitacion", SqlDbType.Int).Value = Convert.ToInt32(row[indice].Cells[4].Value)* Convert.ToInt32(row[indice].Cells[3].Value);
+                cmd.Parameters.AddWithValue("@reserva_precio_habitacion", SqlDbType.Int).Value = (Convert.ToInt32(row[indice].Cells[4].Value)* Convert.ToInt32(row[indice].Cells[3].Value)) + Convert.ToInt32(row[indice].Cells[7].Value);
 
                 // Ejecuto el SP
                 cmd.ExecuteNonQuery();

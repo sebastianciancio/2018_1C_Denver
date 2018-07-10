@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.SqlClient;
+using System.Globalization;
 
 namespace FrbaHotel
 {
@@ -77,8 +78,12 @@ namespace FrbaHotel
                 // Si el estado no es cancelado ni confimado
                 if (Convert.ToInt32(dg_estadia.Rows[0].Cells[7].Value) <= 2)
                 {
-                    fecha_desde = Convert.ToDateTime(dg_estadia.Rows[0].Cells[0].Value);
-                    fecha_hasta = Convert.ToDateTime(dg_estadia.Rows[0].Cells[1].Value);
+                    //fecha_desde = Convert.ToDateTime(dg_estadia.Rows[0].Cells[0].Value);
+                    //fecha_hasta = Convert.ToDateTime(dg_estadia.Rows[0].Cells[1].Value);
+
+                    // Convierto la Fecha al formato local
+                    fecha_desde = DateTime.ParseExact(dg_estadia.Rows[0].Cells[0].Value.ToString(), "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal);
+                    fecha_hasta = DateTime.ParseExact(dg_estadia.Rows[0].Cells[1].Value.ToString(), "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal);
 
                     // Muestro los objetos ocultos
                     Container_estadia.Visible = true;
@@ -222,15 +227,14 @@ namespace FrbaHotel
             // Si hay Registros
             if (dg_estadia.RowCount > 0)
             {
-
-
                 // Oculto Columnas del Resultado
                 dg_estadia.Columns[6].Visible = false;
                 dg_estadia.Columns[7].Visible = false;
 
+                // Convierto la Fecha al formato local
+                fecha_desde = DateTime.ParseExact(dg_estadia.Rows[0].Cells[0].Value.ToString(), "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal);
+                fecha_hasta = DateTime.ParseExact(dg_estadia.Rows[0].Cells[1].Value.ToString(), "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal);
 
-                fecha_desde = Convert.ToDateTime(dg_estadia.Rows[0].Cells[0].Value);
-                fecha_hasta = Convert.ToDateTime(dg_estadia.Rows[0].Cells[1].Value);
 
                 // Muestro los objetos ocultos
                 Container_estadia.Visible = true;

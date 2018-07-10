@@ -108,6 +108,7 @@ CREATE TABLE [DENVER].[facturas](
       [factura_forma_pago_id] [smallint] NULL,
       [factura_cliente_tipo_documento] [smallint] NULL,
       [factura_pasaporte_nro] [numeric](18, 0) NULL,
+      [factura_hotel_id] [smallint] NULL,
       [factura_created] [datetime] NULL,
  CONSTRAINT [PK_facturas] PRIMARY KEY CLUSTERED 
 (
@@ -594,6 +595,10 @@ ALTER TABLE [DENVER].[facturas]  WITH CHECK ADD  CONSTRAINT [FK_facturas_cliente
 REFERENCES [DENVER].[clientes] ([cliente_tipo_documento_id], [cliente_pasaporte_nro])
 GO
 
+ALTER TABLE [DENVER].[facturas]  WITH CHECK ADD  CONSTRAINT [FK_facturas_hotel] FOREIGN KEY([factura_hotel_id])
+REFERENCES [DENVER].[hoteles] ([hotel_id])
+GO
+
 ALTER TABLE [DENVER].[facturas] CHECK CONSTRAINT [FK_facturas_clientes]
 GO
 
@@ -751,11 +756,6 @@ GO
 
 
 /****** CLIENTES ******/
-/*
-EXISTEN REGISTROS CON PASAPORTES DUPLICADOS Y PERTENECIENTES A PERSONAS DIFERENTES. SE EXCLUYERON. TAMBIEN SE PUSO COMO EMAIL EL NRO DE PASAPORTE 
-PARA GARANTIZAR QUE NO HAYA DUPLICADOS. EN OTRO PROCESO SE REEMPLAZARAN ESTOS VALORES POR AL MENOS UN EMAIL VALIDO
-
-*/
 INSERT INTO DENVER.clientes (cliente_pasaporte_nro,cliente_apellido,cliente_nombre,cliente_fecha_nac,cliente_email,cliente_dom_calle,
 cliente_dom_nro,cliente_piso,cliente_dpto,cliente_nacionalidad,cliente_tipo_documento_id, cliente_pais_id, cliente_created)  (
 
@@ -878,7 +878,7 @@ GO
 INSERT INTO DENVER.habitaciones 
 (habitacion_nro, habitacion_piso, habitacion_frente, habitacion_created, habitacion_hotel_id, habitacion_tipo_habitacion_id)
 (
-SELECT distinct Habitacion_Numero, Habitacion_Piso, Habitacion_Frente, GETDATE(), (SELECT distinct t1.hotel_id FROM DENVER.hoteles as t1 WHERE t1.hotel_calle = gd_esquema.Maestra.Hotel_Calle AND t1.hotel_ciudad = gd_esquema.Maestra.Hotel_Ciudad), Habitacion_Tipo_Codigo
+SELECT distinct Habitacion_Numero, Habitacion_Piso, Habitacion_Frente, GETDATE(), (SELECT distinct top 1 t1.hotel_id FROM DENVER.hoteles as t1 WHERE t1.hotel_calle = gd_esquema.Maestra.Hotel_Calle AND t1.hotel_ciudad = gd_esquema.Maestra.Hotel_Ciudad), Habitacion_Tipo_Codigo
 FROM         gd_esquema.Maestra
 
 )
@@ -893,6 +893,8 @@ FROM         gd_esquema.Maestra
 WHERE Consumible_Codigo is not null
 GROUP BY Consumible_Codigo, Consumible_Descripcion, Consumible_Precio
 )
+GO
+INSERT INTO DENVER.consumibles (consumible_id, consumible_descripcion, consumible_precio, consumible_created) VALUES (9999,'Otros',0,getdate());
 GO
 
 /****** REGIMENES ******/
@@ -911,7 +913,7 @@ INSERT INTO DENVER.hoteles_regimenes
 (hotel_regimen_hotel_id,hotel_regimen_regimen_id)
 (
 SELECT DISTINCT    
-(SELECT distinct t1.hotel_id FROM DENVER.hoteles as t1 WHERE t1.hotel_calle = gd_esquema.Maestra.Hotel_Calle AND t1.hotel_ciudad = gd_esquema.Maestra.Hotel_Ciudad),
+(SELECT distinct top 1 t1.hotel_id FROM DENVER.hoteles as t1 WHERE t1.hotel_calle = gd_esquema.Maestra.Hotel_Calle AND t1.hotel_ciudad = gd_esquema.Maestra.Hotel_Ciudad),
 (SELECT distinct t1.regimen_id FROM DENVER.regimenes as t1 WHERE t1.regimen_descripcion = gd_esquema.Maestra.Regimen_Descripcion)
  
 FROM gd_esquema.Maestra
@@ -921,9 +923,9 @@ GO
 
 /****** RESERVAS ******/
 INSERT INTO DENVER.reservas
-(reserva_fecha_inicio, reserva_fecha_fin,reserva_codigo,reserva_cant_noches, reserva_cliente_tipo_documento_id, reserva_cliente_pasaporte_nro, reserva_hotel_id, reserva_usuario_user, reserva_estado_id)
+(reserva_fecha_inicio, reserva_fecha_fin,reserva_codigo,reserva_cant_noches, reserva_cliente_tipo_documento_id, reserva_cliente_pasaporte_nro, reserva_hotel_id, reserva_usuario_user, reserva_estado_id, reserva_created)
 (
-SELECT     Reserva_Fecha_Inicio, (Reserva_Fecha_Inicio+Reserva_Cant_Noches), Reserva_Codigo, Reserva_Cant_Noches, 1, Cliente_Pasaporte_Nro, (SELECT distinct t1.hotel_id FROM DENVER.hoteles as t1 WHERE t1.hotel_calle = gd_esquema.Maestra.Hotel_Calle AND t1.hotel_ciudad = gd_esquema.Maestra.Hotel_Ciudad), 'MIGRATION',1
+SELECT     Reserva_Fecha_Inicio, (Reserva_Fecha_Inicio+Reserva_Cant_Noches), Reserva_Codigo, Reserva_Cant_Noches, 1, Cliente_Pasaporte_Nro, (SELECT distinct top 1 t1.hotel_id FROM DENVER.hoteles as t1 WHERE t1.hotel_calle = gd_esquema.Maestra.Hotel_Calle AND t1.hotel_ciudad = gd_esquema.Maestra.Hotel_Ciudad), 'MIGRATION',1, getdate()
 FROM         gd_esquema.Maestra
 WHERE
       Cliente_Pasaporte_Nro NOT IN(5833450,8573690,9616602,10968810,13197523,17144724,17993372,19944671,25170042,27682640,28333918,28766839,33462772,33467493,40407965,41118734,49848816,52451739,56505775,58145810,58685660,
@@ -935,7 +937,6 @@ WHERE
 GO
 
 /****** RESERVAS_HABITACIONES ******/
-truncate table DENVER.reservas_habitaciones
 INSERT INTO DENVER.reservas_habitaciones
 (reserva_habitaciones_reserva_codigo,reserva_habitaciones_fecha_inicio,reserva_habitaciones_fecha_fin,reserva_habitaciones_tipo_habitacion_id,reserva_habitaciones_cant_noches,reserva_habitaciones_regimen_id,reserva_habitacion_nro,reserva_habitaciones_precio)
 (
@@ -950,6 +951,24 @@ group by Reserva_Codigo, Habitacion_Tipo_Codigo, Reserva_Fecha_Inicio, Reserva_C
 )
 GO
 
+/****** ESTADIAS ******/
+INSERT INTO DENVER.estadias
+(estadia_cliente_tipo_documento_id,estadia_cliente_pasaporte_nro,estadia_fecha_inicio,estadia_cant_noches,estadia_fecha_fin,estadia_hotel_id,estadia_reserva_codigo,estadia_usuario_user,estadia_created)
+SELECT  
+      1
+      ,Cliente_Pasaporte_Nro
+      ,Estadia_Fecha_Inicio  
+      ,Estadia_Cant_Noches    
+      ,(Estadia_Fecha_Inicio+Estadia_Cant_Noches)
+      ,(SELECT distinct top 1 t1.hotel_id FROM DENVER.hoteles as t1 WHERE t1.hotel_calle = gd_esquema.Maestra.Hotel_Calle AND t1.hotel_ciudad = gd_esquema.Maestra.Hotel_Ciudad)
+      ,Reserva_Codigo
+      , 'MIGRATION',getdate()
+
+FROM GD1C2018.gd_esquema.Maestra
+WHERE 
+      Estadia_Fecha_Inicio is not null AND Cliente_Pasaporte_Nro NOT IN(5833450,8573690,9616602,10968810,13197523,17144724,17993372,19944671,25170042,27682640,28333918,28766839,33462772,33467493,40407965,41118734,49848816,52451739,56505775,58145810,58685660,
+      59187942,59790782,65047886,69110399,72231403,74872928, 74899834,75898906,82103542,82337502,83630142,85044064,87591511,
+      88559381,89094646,90135406,91296720,95744921)
 
 /****** CONSUMIBLES_CLIENTES ******/
 INSERT INTO DENVER.consumibles_clientes
@@ -966,11 +985,10 @@ GROUP BY
 )
 GO
 
-
 /****** FACTURA ******/
-insert into DENVER.facturas (factura_nro, factura_fecha, factura_total, factura_forma_pago_id, factura_cliente_tipo_documento, factura_pasaporte_nro, [factura_created])
+insert into DENVER.facturas (factura_nro, factura_fecha, factura_total, factura_forma_pago_id, factura_cliente_tipo_documento, factura_pasaporte_nro, factura_created, factura_hotel_id)
 (
-SELECT distinct Factura_Nro,Factura_Fecha,Factura_Total,1,1,Cliente_Pasaporte_Nro, Factura_Fecha 
+SELECT distinct Factura_Nro,Factura_Fecha,Factura_Total,1,1,Cliente_Pasaporte_Nro, Factura_Fecha, (SELECT distinct top 1 t1.hotel_id FROM DENVER.hoteles as t1 WHERE t1.hotel_calle = gd_esquema.Maestra.Hotel_Calle AND t1.hotel_ciudad = gd_esquema.Maestra.Hotel_Ciudad) 
 FROM gd_esquema.Maestra 
 where Factura_Nro is not null AND  Cliente_Pasaporte_Nro NOT IN(5833450,8573690,9616602,10968810,13197523,17144724,17993372,19944671,25170042,27682640,28333918,28766839,33462772,33467493,40407965,41118734,49848816,52451739,56505775,58145810,58685660,
 59187942,59790782,65047886,69110399,72231403,74872928, 74899834,75898906,82103542,82337502,83630142,85044064,87591511,
@@ -978,7 +996,6 @@ where Factura_Nro is not null AND  Cliente_Pasaporte_Nro NOT IN(5833450,8573690,
 )      
 GO
 
-/* 73 facturas excluidas */
 /****** FACTURA_ITEM ******/
 insert into DENVER.facturas_items (factura_item_nro, factura_item_cant, factura_item_monto, factura_consumible_id, factura_reserva_codigo)
 (
@@ -1576,7 +1593,7 @@ CREATE PROCEDURE DENVER.obtener_consumibles
 AS
 BEGIN
       SET NOCOUNT ON;
-      SELECT consumible_id, consumible_descripcion FROM DENVER.consumibles ORDER BY consumible_descripcion
+      SELECT consumible_id, consumible_descripcion FROM DENVER.consumibles WHERE consumible_id <> 9999 ORDER BY consumible_descripcion
 END
 GO
 
@@ -1672,12 +1689,13 @@ CREATE PROCEDURE DENVER.obtener_disponibilidad
 AS
 BEGIN
       SELECT 
-            d.disponibilidad_habitacion_nro as "Nro. de Habitacion", th.tipo_habitacion_descripcion as "Tipo de Habitacion", r.regimen_descripcion as Regimen, r.regimen_precio As "Precio Diario por Pax", DENVER.cant_pasajeros_tipo_habitacion(th.tipo_habitacion_id) as "Max Pax", r.regimen_id, th.tipo_habitacion_id
+            d.disponibilidad_habitacion_nro as "Nro. de Habitacion", th.tipo_habitacion_descripcion as "Tipo de Habitacion", r.regimen_descripcion as Regimen, r.regimen_precio As "Precio Diario por Pax", DENVER.cant_pasajeros_tipo_habitacion(th.tipo_habitacion_id) as "Max Pax", r.regimen_id, th.tipo_habitacion_id, h.hotel_recarga_estrella As "Recarga Hotel"
       from 
             DENVER.disponibilidades as d
             join DENVER.hoteles_regimenes as hr on hr.hotel_regimen_hotel_id = d.disponibilidad_hotel_id
             join DENVER.regimenes as r on r.regimen_id = hr.hotel_regimen_regimen_id
             join DENVER.tipo_habitaciones as th on th.tipo_habitacion_id = d.disponibilidad_tipo_habitacion_id
+            join DENVER.hoteles as h on h.hotel_id = d.disponibilidad_hotel_id
       where
             d.disponibilidad_fecha between @fecha_desde and @fecha_hasta
             and d.disponibilidad_hotel_id = @hotel_id
@@ -1686,7 +1704,7 @@ BEGIN
             and hr.hotel_regimen_regimen_id = isnull(@regimen_id,hr.hotel_regimen_regimen_id)
             and r.regimen_activo = 'S'
       group by 
-            d.disponibilidad_habitacion_nro, th.tipo_habitacion_descripcion, r.regimen_descripcion, r.regimen_precio, th.tipo_habitacion_id, r.regimen_id
+            d.disponibilidad_habitacion_nro, th.tipo_habitacion_descripcion, r.regimen_descripcion, r.regimen_precio, th.tipo_habitacion_id, r.regimen_id, h.hotel_recarga_estrella
       having
             count(*) = DATEDIFF(DAY,@fecha_desde,@fecha_hasta)+1        
 END
@@ -1784,7 +1802,7 @@ BEGIN
             if (@chechout IS NULL)
             begin
                   SELECT
-                        convert(varchar(50),rh.reserva_habitaciones_fecha_inicio,103) as "Fecha Entrada", convert(varchar(50),rh.reserva_habitaciones_fecha_fin,103) as "Fecha Salida",th.tipo_habitacion_descripcion as "Tipo Habitacion", reg.regimen_descripcion as "Regimen", rh.reserva_habitaciones_precio*rh.reserva_habitaciones_cant_noches as "Precio", rh.reserva_habitacion_nro as "Habitacion", th.tipo_habitacion_id, r.reserva_estado_id
+                        convert(varchar(50),rh.reserva_habitaciones_fecha_inicio,103) as "Fecha Entrada", convert(varchar(50),rh.reserva_habitaciones_fecha_fin,103) as "Fecha Salida",th.tipo_habitacion_descripcion as "Tipo Habitacion", reg.regimen_descripcion as "Regimen", rh.reserva_habitaciones_precio*rh.reserva_habitaciones_cant_noches as "Precio", rh.reserva_habitacion_nro as "Nro. Habitacion", th.tipo_habitacion_id, r.reserva_estado_id
                   FROM
                         DENVER.reservas as r
                         join DENVER.reservas_habitaciones as rh ON r.reserva_codigo = rh.reserva_habitaciones_reserva_codigo
@@ -1796,7 +1814,7 @@ BEGIN
             else
             begin
                   SELECT distinct
-                        convert(varchar(50),rh.reserva_habitaciones_fecha_inicio,103) as "Fecha Entrada", convert(varchar(50),rh.reserva_habitaciones_fecha_fin,103) as "Fecha Salida",th.tipo_habitacion_descripcion as "Tipo Habitacion", reg.regimen_descripcion as "Regimen", rh.reserva_habitaciones_precio*rh.reserva_habitaciones_cant_noches as "Precio", rh.reserva_habitacion_nro as "Habitacion", th.tipo_habitacion_id, r.reserva_estado_id
+                        convert(varchar(50),rh.reserva_habitaciones_fecha_inicio,103) as "Fecha Entrada", convert(varchar(50),rh.reserva_habitaciones_fecha_fin,103) as "Fecha Salida",th.tipo_habitacion_descripcion as "Tipo Habitacion", reg.regimen_descripcion as "Regimen", rh.reserva_habitaciones_precio*rh.reserva_habitaciones_cant_noches as "Precio", rh.reserva_habitacion_nro as "Nro. Habitacion", th.tipo_habitacion_id, r.reserva_estado_id
                   FROM
                         DENVER.reservas as r
                         join DENVER.reservas_habitaciones as rh ON r.reserva_codigo = rh.reserva_habitaciones_reserva_codigo
@@ -2317,7 +2335,7 @@ BEGIN
             LEFT JOIN DENVER.tipo_documentos as td ON td.tipo_documento_id = a.usuario_tipo_documento_id
       WHERE  a.usuario_nombre LIKE '%' + ISNULL(@usuario_nombre, usuario_nombre) + '%'
             AND a.usuario_apellido LIKE '%' + ISNULL(@usuario_apellido, usuario_apellido) + '%'
-            AND b.usuario_hotel_id = ISNULL(@hotel, usuario_hotel_id) AND usuario_activo = 'S'
+            AND b.usuario_hotel_id = ISNULL(@hotel, usuario_hotel_id) AND usuario_activo = 'S' AND a.usuario_user NOT IN ('GUEST','MIGRATION')
 END
 GO
 
@@ -2482,7 +2500,7 @@ BEGIN
 
       -- detalle de consumibles
       select
-            c.consumible_descripcion as "Descripcion", c.consumible_precio as "Precio"
+            c.consumible_id, c.consumible_descripcion as "Descripcion", c.consumible_precio as "Precio"
       from
             DENVER.consumibles_clientes as cc
             join DENVER.consumibles as c on cc.consumible_cliente_consumible_id = c.consumible_id
@@ -2493,7 +2511,7 @@ BEGIN
 
       -- detalle del hospedaje
       SELECT
-            'Estadia desde el '+convert(varchar(50),rh.reserva_habitaciones_fecha_inicio,103)+' hasta '+convert(varchar(50),rh.reserva_habitaciones_fecha_fin,103)+' en '+th.tipo_habitacion_descripcion+' y '+reg.regimen_descripcion as "Descripcion", rh.reserva_habitaciones_precio * DENVER.cant_pasajeros_tipo_habitacion(th.tipo_habitacion_id) as "Precio"
+            9999, 'Estadia desde el '+convert(varchar(50),rh.reserva_habitaciones_fecha_inicio,103)+' hasta '+convert(varchar(50),rh.reserva_habitaciones_fecha_fin,103)+' en '+th.tipo_habitacion_descripcion+' y '+reg.regimen_descripcion as "Descripcion", rh.reserva_habitaciones_precio * DENVER.cant_pasajeros_tipo_habitacion(th.tipo_habitacion_id) as "Precio"
       FROM
             DENVER.reservas as r
             join DENVER.reservas_habitaciones as rh ON r.reserva_codigo = rh.reserva_habitaciones_reserva_codigo
@@ -2505,7 +2523,7 @@ BEGIN
 
       -- Calculo el total de consumos
       select
-            @total_consumo = sum(c.consumible_precio)
+            @total_consumo = isnull(sum(c.consumible_precio),0)
       from
             DENVER.consumibles_clientes as cc
             join DENVER.consumibles as c on cc.consumible_cliente_consumible_id = c.consumible_id
@@ -2514,7 +2532,7 @@ BEGIN
 
       -- Calculo el total de la estadia
       SELECT
-            @total_estadia = sum(rh.reserva_habitaciones_precio * DENVER.cant_pasajeros_tipo_habitacion(th.tipo_habitacion_id))
+            @total_estadia = isnull(sum(rh.reserva_habitaciones_precio * DENVER.cant_pasajeros_tipo_habitacion(th.tipo_habitacion_id)),0)
       FROM
             DENVER.reservas as r
             join DENVER.reservas_habitaciones as rh ON r.reserva_codigo = rh.reserva_habitaciones_reserva_codigo
@@ -2525,8 +2543,6 @@ BEGIN
 
       -- Calculo el total a facturar
       SET @total_factura = @total_estadia + @total_consumo;
-
-
 
 END
 GO
@@ -2724,7 +2740,7 @@ END
 GO
 
 CREATE PROCEDURE [DENVER].[cancelar_reserva]
-      @cod_reserva numeric(18,09),
+      @cod_reserva numeric(18,0),
       @motivo ntext,
       @user nvarchar(50),
       @estado smallint,
@@ -2771,6 +2787,60 @@ AS
 BEGIN
       RETURN (SELECT count(*) FROM denver.reservas WHERE reserva_codigo = @reserva
 													 AND reserva_estado_id IN (1,2))
+
+END
+GO
+
+CREATE PROCEDURE [DENVER].[facturar_encabezado]
+      @fecha_egreso datetime,
+      @factura_total numeric(18,2),
+      @factura_forma_pago_id smallint,
+      @factura_cliente_tipo_documento smallint,
+      @factura_pasaporte_nro numeric(18,0),
+      @fecha_sistema datetime,
+      @factura_hotel_id smallint,
+      @factura_nro numeric(18,0)  OUTPUT
+AS
+BEGIN
+      SET NOCOUNT ON;  
+
+      declare @next_factura_nro numeric(18,0) = (SELECT TOP 1 factura_nro FROM DENVER.facturas ORDER BY factura_nro DESC)+1
+
+      insert into DENVER.facturas (factura_nro,factura_fecha,factura_total,factura_forma_pago_id,factura_cliente_tipo_documento,factura_pasaporte_nro,factura_hotel_id,factura_created) values (@next_factura_nro,@fecha_sistema,@factura_total,@factura_forma_pago_id,@factura_cliente_tipo_documento,@factura_pasaporte_nro,@factura_hotel_id,@fecha_sistema)
+
+      SELECT @factura_nro = @next_factura_nro
+
+END
+GO
+
+CREATE PROCEDURE [DENVER].[facturar_items]
+      @factura_nro numeric(18,0),
+      @factura_item_cant numeric(18,0),
+      @factura_item_monto numeric(18,2),
+      @factura_item_descripcion nvarchar(255),
+      @factura_cliente_tipo_documento smallint,
+      @factura_pasaporte_nro numeric(18,0),
+      @factura_hotel_id smallint,
+      @fecha_sistema datetime,
+      @factura_consumible_id numeric(18,0)
+AS
+BEGIN
+      SET NOCOUNT ON;  
+
+      -- Busco el Nro de Reserva Original
+      declare @nro_reserva numeric(18,0)
+      SELECT TOP 1
+            @nro_reserva = reserva_codigo
+      FROM 
+            [DENVER].[reservas] 
+      WHERE
+            reserva_cliente_tipo_documento_id = @factura_cliente_tipo_documento AND
+            reserva_cliente_pasaporte_nro = @factura_pasaporte_nro AND 
+            reserva_hotel_id = @factura_hotel_id AND 
+            reserva_estado_id = 6 AND
+            @fecha_sistema BETWEEN reserva_fecha_inicio AND reserva_fecha_fin
+
+      insert into DENVER.facturas_items (factura_item_nro,factura_item_cant,factura_item_monto,factura_item_descripcion,factura_consumible_id,factura_reserva_codigo) values (@factura_nro,@factura_item_cant,@factura_item_monto,@factura_item_descripcion,@factura_consumible_id,@nro_reserva)
 
 END
 GO

@@ -14,6 +14,9 @@ namespace FrbaHotel
     public partial class Facturar : Form
     {
         private DataBase db;
+        int total_factura;
+        DataTable dt_facturable;
+
         public Facturar()
         {
             db = DataBase.GetInstance();
@@ -22,40 +25,58 @@ namespace FrbaHotel
             // Cargo los combos
             Combos.cargarComboTipoDocumento(cmb_tipo_doc, false);
             Combos.cargarComboFormaPago(cmb_forma_pago,false);
+
+            // Defino las fechas por default segun archivo config
+            fecha_hasta.Value = accesoSistema.fechaSistema;
+
+            total_factura = 0;
         }
 
         private void btn_buscar_Click(object sender, EventArgs e)
         {
-            SqlCommand cmd = new SqlCommand("denver.obtener_facturable", db.Connection);
-            cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.AddWithValue("@fecha_salida", SqlDbType.DateTime).Value = Convert.ToDateTime(fecha_hasta.Value);
-            cmd.Parameters.AddWithValue("@tipo_documento", SqlDbType.Int).Value = Convert.ToInt32(cmb_tipo_doc.SelectedValue);
-            cmd.Parameters.AddWithValue("@nro_documento", SqlDbType.Int).Value = Convert.ToInt32(nro_documento.Text);
-            cmd.Parameters.AddWithValue("@hotel_id", SqlDbType.Int).Value = Convert.ToInt32(accesoSistema.HotelIdActual);
-            cmd.Parameters.AddWithValue("@total_factura", SqlDbType.Int).Direction = ParameterDirection.Output;
-
-            DataTable dt_facturable = new DataTable();
-
-            // Creo el DataTable para obtener los resultados del SP
-            using (var da = new SqlDataAdapter(cmd))
+            if (validarFormulario())
             {
-                da.Fill(dt_facturable);
+
+                SqlCommand cmd = new SqlCommand("denver.obtener_facturable", db.Connection);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.AddWithValue("@fecha_salida", SqlDbType.DateTime).Value = Convert.ToDateTime(fecha_hasta.Value);
+                cmd.Parameters.AddWithValue("@tipo_documento", SqlDbType.Int).Value = Convert.ToInt32(cmb_tipo_doc.SelectedValue);
+                cmd.Parameters.AddWithValue("@nro_documento", SqlDbType.Int).Value = Convert.ToInt32(nro_documento.Text);
+                cmd.Parameters.AddWithValue("@hotel_id", SqlDbType.Int).Value = Convert.ToInt32(accesoSistema.HotelIdActual);
+                cmd.Parameters.AddWithValue("@total_factura", SqlDbType.Int).Direction = ParameterDirection.Output;
+
+                dt_facturable = new DataTable();
+
+                // Creo el DataTable para obtener los resultados del SP
+                using (var da = new SqlDataAdapter(cmd))
+                {
+                    da.Fill(dt_facturable);
+                }
+
+                // Cargo la Grilla con los datos obtenidos
+                dg_consumos_facturar.DataSource = dt_facturable;
+
+
+                if (dt_facturable.Rows.Count > 0)
+                {
+                    Container_facturacion.Visible = true;
+
+                    // Obtengo el total de la factura
+                    total_factura = Convert.ToInt32(cmd.Parameters["@total_factura"].Value);
+
+                    label_total_facturar.Text = total_factura.ToString();
+                }
+                else
+                {
+                    DialogResult result = MessageBox.Show("No se encontraron registros con los datos ingresados", "Facturación", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+
             }
-
-            // Cargo la Grilla con los datos obtenidos
-            dg_consumos_facturar.DataSource = dt_facturable;
-
-
-            if (dt_facturable.Rows.Count > 0)
+            else
             {
-                Container_facturacion.Visible = true;
-
-                // Obtengo el total de la factura
-                int total_factura = Convert.ToInt32(cmd.Parameters["@total_factura"].Value);
-
-                label_total_facturar.Text = total_factura.ToString();
-
+                MessageBox.Show("Debe ingresar todos los campos para continuar", "Mensaje");
             }
 
         }
@@ -66,13 +87,61 @@ namespace FrbaHotel
             if (Convert.ToInt32(cmb_forma_pago.SelectedValue) == 2 & txt_detalle_pago.Text == "")
             {
                 DialogResult result = MessageBox.Show("Completar los datos de la Tarjeta de Credito", "Facturacion", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-
             }
             else
             {
+                SqlCommand cmd = new SqlCommand("denver.facturar_encabezado", db.Connection);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.AddWithValue("@fecha_egreso", SqlDbType.DateTime).Value = Convert.ToDateTime(fecha_hasta.Value);
+                cmd.Parameters.AddWithValue("@factura_total", SqlDbType.Int).Value = total_factura;
+                cmd.Parameters.AddWithValue("@factura_forma_pago_id", SqlDbType.Int).Value = Convert.ToInt32(cmb_forma_pago.SelectedValue);
+                cmd.Parameters.AddWithValue("@factura_cliente_tipo_documento", SqlDbType.Int).Value = Convert.ToInt32(cmb_tipo_doc.SelectedValue);
+                cmd.Parameters.AddWithValue("@factura_pasaporte_nro", SqlDbType.Int).Value = Convert.ToInt32(nro_documento.Text);
+                cmd.Parameters.AddWithValue("@fecha_sistema", SqlDbType.DateTime).Value = accesoSistema.fechaSistema;
+                cmd.Parameters.AddWithValue("@factura_hotel_id", SqlDbType.Int).Value = Convert.ToInt32(accesoSistema.HotelIdActual);
+                cmd.Parameters.AddWithValue("@factura_nro", SqlDbType.Int).Direction = ParameterDirection.Output;
+
+                // Ejecuto el SP
+                cmd.ExecuteNonQuery();
+
+                // Obtengo el nro de reserva
+                int nro_factura_obtenida = Convert.ToInt32(cmd.Parameters["@factura_nro"].Value);
+
+
+                // Asocio los items a la factura
+                for (var indice = 0; indice < dg_consumos_facturar.RowCount; indice++)
+                {
+
+                    cmd = new SqlCommand("denver.facturar_items", db.Connection);
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    cmd.Parameters.AddWithValue("@factura_nro", SqlDbType.Int).Value = nro_factura_obtenida.ToString();
+                    cmd.Parameters.AddWithValue("@factura_item_cant", SqlDbType.Int).Value = 1;
+                    cmd.Parameters.AddWithValue("@factura_item_monto", SqlDbType.Int).Value = dg_consumos_facturar.Rows[indice].Cells[2].Value;
+                    cmd.Parameters.AddWithValue("@factura_item_descripcion", SqlDbType.VarChar).Value = dg_consumos_facturar.Rows[indice].Cells[1].Value;
+                    cmd.Parameters.AddWithValue("@factura_consumible_id", SqlDbType.Int).Value = Convert.ToInt32(dg_consumos_facturar.Rows[indice].Cells[0].Value);
+                    cmd.Parameters.AddWithValue("@factura_cliente_tipo_documento", SqlDbType.Int).Value = Convert.ToInt32(cmb_tipo_doc.SelectedValue);
+                    cmd.Parameters.AddWithValue("@factura_pasaporte_nro", SqlDbType.Int).Value = Convert.ToInt32(nro_documento.Text);
+                    cmd.Parameters.AddWithValue("@factura_hotel_id", SqlDbType.Int).Value = Convert.ToInt32(accesoSistema.HotelIdActual);
+                    cmd.Parameters.AddWithValue("@fecha_sistema", SqlDbType.DateTime).Value = accesoSistema.fechaSistema;
+
+                    // Ejecuto el SP
+                    cmd.ExecuteNonQuery();
+
+                }
 
             }
+        }
+
+
+        private bool validarFormulario()
+        {
+            return (!Validacion.esInicial(nro_documento.Text) &
+                    !Validacion.esInicial(fecha_hasta.Value.ToString()) &
+                    !Validacion.esInicial(cmb_tipo_doc.SelectedValue.ToString())
+                    );
+
         }
     }
 }
