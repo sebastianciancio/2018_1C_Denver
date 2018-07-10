@@ -934,6 +934,22 @@ WHERE
 )
 GO
 
+/****** RESERVAS_HABITACIONES ******/
+truncate table DENVER.reservas_habitaciones
+INSERT INTO DENVER.reservas_habitaciones
+(reserva_habitaciones_reserva_codigo,reserva_habitaciones_fecha_inicio,reserva_habitaciones_fecha_fin,reserva_habitaciones_tipo_habitacion_id,reserva_habitaciones_cant_noches,reserva_habitaciones_regimen_id,reserva_habitacion_nro,reserva_habitaciones_precio)
+(
+SELECT  Reserva_Codigo, Reserva_Fecha_Inicio, (Reserva_Fecha_Inicio+Reserva_Cant_Noches), Habitacion_Tipo_Codigo, Reserva_Cant_Noches, (SELECT TOP 1 t1.regimen_id FROM DENVER.regimenes as t1 WHERE t1.regimen_descripcion = gd_esquema.Maestra.Regimen_Descripcion), Habitacion_Numero, 0
+FROM         gd_esquema.Maestra
+WHERE
+      Cliente_Pasaporte_Nro NOT IN(5833450,8573690,9616602,10968810,13197523,17144724,17993372,19944671,25170042,27682640,28333918,28766839,33462772,33467493,40407965,41118734,49848816,52451739,56505775,58145810,58685660,
+      59187942,59790782,65047886,69110399,72231403,74872928, 74899834,75898906,82103542,82337502,83630142,85044064,87591511,
+      88559381,89094646,90135406,91296720,95744921)
+group by Reserva_Codigo, Habitacion_Tipo_Codigo, Reserva_Fecha_Inicio, Reserva_Cant_Noches, Habitacion_Numero, Regimen_Descripcion
+
+)
+GO
+
 
 /****** CONSUMIBLES_CLIENTES ******/
 INSERT INTO DENVER.consumibles_clientes
@@ -1768,7 +1784,7 @@ BEGIN
             if (@chechout IS NULL)
             begin
                   SELECT
-                        rh.reserva_habitaciones_fecha_inicio as "Fecha Entrada", rh.reserva_habitaciones_fecha_fin as "Fecha Salida",th.tipo_habitacion_descripcion as "Tipo Habitacion", reg.regimen_descripcion as "Regimen", rh.reserva_habitaciones_precio*rh.reserva_habitaciones_cant_noches as "Precio", rh.reserva_habitacion_nro as "Habitacion", th.tipo_habitacion_id, r.reserva_estado_id
+                        convert(varchar(50),rh.reserva_habitaciones_fecha_inicio,103) as "Fecha Entrada", convert(varchar(50),rh.reserva_habitaciones_fecha_fin,103) as "Fecha Salida",th.tipo_habitacion_descripcion as "Tipo Habitacion", reg.regimen_descripcion as "Regimen", rh.reserva_habitaciones_precio*rh.reserva_habitaciones_cant_noches as "Precio", rh.reserva_habitacion_nro as "Habitacion", th.tipo_habitacion_id, r.reserva_estado_id
                   FROM
                         DENVER.reservas as r
                         join DENVER.reservas_habitaciones as rh ON r.reserva_codigo = rh.reserva_habitaciones_reserva_codigo
@@ -1780,7 +1796,7 @@ BEGIN
             else
             begin
                   SELECT distinct
-                        rh.reserva_habitaciones_fecha_inicio as "Fecha Entrada", rh.reserva_habitaciones_fecha_fin as "Fecha Salida",th.tipo_habitacion_descripcion as "Tipo Habitacion", reg.regimen_descripcion as "Regimen", rh.reserva_habitaciones_precio*rh.reserva_habitaciones_cant_noches as "Precio", rh.reserva_habitacion_nro as "Habitacion", th.tipo_habitacion_id, r.reserva_estado_id
+                        convert(varchar(50),rh.reserva_habitaciones_fecha_inicio,103) as "Fecha Entrada", convert(varchar(50),rh.reserva_habitaciones_fecha_fin,103) as "Fecha Salida",th.tipo_habitacion_descripcion as "Tipo Habitacion", reg.regimen_descripcion as "Regimen", rh.reserva_habitaciones_precio*rh.reserva_habitaciones_cant_noches as "Precio", rh.reserva_habitacion_nro as "Habitacion", th.tipo_habitacion_id, r.reserva_estado_id
                   FROM
                         DENVER.reservas as r
                         join DENVER.reservas_habitaciones as rh ON r.reserva_codigo = rh.reserva_habitaciones_reserva_codigo
@@ -2123,7 +2139,7 @@ BEGIN
 
 
       select
-            cc.consumible_cliente_fecha_consumo as "Fecha Consumo", c.consumible_descripcion as "Consumo", c.consumible_id
+            convert(varchar(50),cc.consumible_cliente_fecha_consumo,103) as "Fecha Consumo", c.consumible_descripcion as "Consumo", c.consumible_id
       from
             DENVER.consumibles_clientes as cc
             join DENVER.consumibles as c on cc.consumible_cliente_consumible_id = c.consumible_id
