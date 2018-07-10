@@ -56,7 +56,8 @@ namespace FrbaHotel
             if (cmb_regimen.SelectedIndex > 0)
                 cmd.Parameters.AddWithValue("@regimen_id", SqlDbType.Int).Value = Convert.ToInt32(cmb_regimen.SelectedValue);
 
-            cmd.Parameters.AddWithValue("@hotel_id", SqlDbType.Int).Value = Convert.ToInt32(accesoSistema.HotelIdActual);
+            if (accesoSistema.HotelIdActual != 0)
+             cmd.Parameters.AddWithValue("@hotel_id", SqlDbType.Int).Value = Convert.ToInt32(accesoSistema.HotelIdActual);
 
             // Creo el DataTable para obtener los resultados del SP
             DataTable dt = new DataTable();
@@ -135,6 +136,7 @@ namespace FrbaHotel
 
         private void btn_confirmar_reserva_Click(object sender, EventArgs e)
         {
+
 
             SqlCommand cmd = new SqlCommand("denver.crear_reserva", db.Connection);
             cmd.CommandType = CommandType.StoredProcedure;

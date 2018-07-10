@@ -47,7 +47,6 @@
             // 
             // txb_canc_rec_codigo
             // 
-            this.txb_canc_rec_codigo.Enabled = false;
             this.txb_canc_rec_codigo.Location = new System.Drawing.Point(127, 22);
             this.txb_canc_rec_codigo.Name = "txb_canc_rec_codigo";
             this.txb_canc_rec_codigo.Size = new System.Drawing.Size(119, 20);
