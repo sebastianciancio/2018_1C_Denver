@@ -24,8 +24,17 @@ namespace FrbaHotel
             // Cargo los Combos
             Combos.cargarComboTipoHabitacion(cmb_tipo_hab);
             Combos.cargarComboTipoRegimen(cmb_regimen, true);
+            Combos.cargarComboHotel(cmb_hotel,false);
 
-            
+            // Defino las fechas por default segun archivo config
+            fecha_desde.Value = accesoSistema.fechaSistema;
+            fecha_hasta.Value = accesoSistema.fechaSistema;
+
+            // Si existe un usuario logueado
+            if(accesoSistema.HotelIdActual != 0){
+                cmb_hotel.SelectedValue = accesoSistema.HotelIdActual;
+                cmb_hotel.Enabled = false;
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -56,8 +65,7 @@ namespace FrbaHotel
             if (cmb_regimen.SelectedIndex > 0)
                 cmd.Parameters.AddWithValue("@regimen_id", SqlDbType.Int).Value = Convert.ToInt32(cmb_regimen.SelectedValue);
 
-            if (accesoSistema.HotelIdActual != 0)
-             cmd.Parameters.AddWithValue("@hotel_id", SqlDbType.Int).Value = Convert.ToInt32(accesoSistema.HotelIdActual);
+            cmd.Parameters.AddWithValue("@hotel_id", SqlDbType.Int).Value = Convert.ToInt32(cmb_hotel.SelectedValue);
 
             // Creo el DataTable para obtener los resultados del SP
             DataTable dt = new DataTable();

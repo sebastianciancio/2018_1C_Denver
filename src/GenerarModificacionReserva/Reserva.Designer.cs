@@ -52,12 +52,15 @@
             this.txt_reserva_pasajero = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
-            this.btn_volver = new System.Windows.Forms.Button();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.cmb_hotel = new System.Windows.Forms.ComboBox();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dg_disponibilidad)).BeginInit();
             this.Container_disponibilidad.SuspendLayout();
             this.Container_pasajero.SuspendLayout();
             this.Container_Detalle_Reserva.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -71,7 +74,7 @@
             this.groupBox1.Controls.Add(this.cmb_tipo_hab);
             this.groupBox1.Controls.Add(this.fecha_desde);
             this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Location = new System.Drawing.Point(12, 12);
+            this.groupBox1.Location = new System.Drawing.Point(12, 46);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(737, 126);
             this.groupBox1.TabIndex = 0;
@@ -178,7 +181,7 @@
             // Container_disponibilidad
             // 
             this.Container_disponibilidad.Controls.Add(this.dg_disponibilidad);
-            this.Container_disponibilidad.Location = new System.Drawing.Point(12, 144);
+            this.Container_disponibilidad.Location = new System.Drawing.Point(12, 178);
             this.Container_disponibilidad.Name = "Container_disponibilidad";
             this.Container_disponibilidad.Size = new System.Drawing.Size(737, 185);
             this.Container_disponibilidad.TabIndex = 2;
@@ -189,7 +192,7 @@
             // Container_pasajero
             // 
             this.Container_pasajero.Controls.Add(this.btn_buscar);
-            this.Container_pasajero.Location = new System.Drawing.Point(12, 335);
+            this.Container_pasajero.Location = new System.Drawing.Point(12, 369);
             this.Container_pasajero.Name = "Container_pasajero";
             this.Container_pasajero.Size = new System.Drawing.Size(737, 60);
             this.Container_pasajero.TabIndex = 3;
@@ -219,7 +222,7 @@
             this.Container_Detalle_Reserva.Controls.Add(this.txt_reserva_pasajero);
             this.Container_Detalle_Reserva.Controls.Add(this.label6);
             this.Container_Detalle_Reserva.Controls.Add(this.label7);
-            this.Container_Detalle_Reserva.Location = new System.Drawing.Point(12, 401);
+            this.Container_Detalle_Reserva.Location = new System.Drawing.Point(12, 435);
             this.Container_Detalle_Reserva.Name = "Container_Detalle_Reserva";
             this.Container_Detalle_Reserva.Size = new System.Drawing.Size(737, 119);
             this.Container_Detalle_Reserva.TabIndex = 35;
@@ -315,22 +318,41 @@
             this.label7.TabIndex = 14;
             this.label7.Text = "Pasajero:";
             // 
-            // btn_volver
+            // groupBox2
             // 
-            this.btn_volver.Image = global::FrbaHotel.Properties.Resources.volver;
-            this.btn_volver.Location = new System.Drawing.Point(714, 526);
-            this.btn_volver.Name = "btn_volver";
-            this.btn_volver.Size = new System.Drawing.Size(35, 29);
-            this.btn_volver.TabIndex = 36;
-            this.btn_volver.UseVisualStyleBackColor = true;
-            this.btn_volver.Click += new System.EventHandler(this.btn_volver_Click);
+            this.groupBox2.Controls.Add(this.label9);
+            this.groupBox2.Controls.Add(this.cmb_hotel);
+            this.groupBox2.Location = new System.Drawing.Point(12, 0);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(737, 44);
+            this.groupBox2.TabIndex = 6;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Hotel";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(130, 13);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(32, 13);
+            this.label9.TabIndex = 4;
+            this.label9.Text = "Hotel";
+            // 
+            // cmb_hotel
+            // 
+            this.cmb_hotel.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmb_hotel.FormattingEnabled = true;
+            this.cmb_hotel.Location = new System.Drawing.Point(168, 10);
+            this.cmb_hotel.Name = "cmb_hotel";
+            this.cmb_hotel.Size = new System.Drawing.Size(396, 21);
+            this.cmb_hotel.TabIndex = 3;
             // 
             // Reserva
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(761, 564);
-            this.Controls.Add(this.btn_volver);
+            this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.Container_Detalle_Reserva);
             this.Controls.Add(this.Container_pasajero);
             this.Controls.Add(this.Container_disponibilidad);
@@ -346,6 +368,8 @@
             this.Container_pasajero.ResumeLayout(false);
             this.Container_Detalle_Reserva.ResumeLayout(false);
             this.Container_Detalle_Reserva.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -376,6 +400,8 @@
         private System.Windows.Forms.Label txt_reserva_habitacion;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Button btn_confirmar_reserva;
-        private System.Windows.Forms.Button btn_volver;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.ComboBox cmb_hotel;
     }
 }

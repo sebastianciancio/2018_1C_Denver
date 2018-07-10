@@ -1650,7 +1650,7 @@ GO
 CREATE PROCEDURE DENVER.obtener_disponibilidad
       @fecha_desde as datetime,
       @fecha_hasta as datetime,
-      @hotel_id as smallint = NULL,
+      @hotel_id as smallint,
       @tipo_habitacion as numeric(18,0),
       @regimen_id as numeric(18,0) = NULL
 AS
@@ -1664,7 +1664,7 @@ BEGIN
             join DENVER.tipo_habitaciones as th on th.tipo_habitacion_id = d.disponibilidad_tipo_habitacion_id
       where
             d.disponibilidad_fecha between @fecha_desde and @fecha_hasta
-            and d.disponibilidad_hotel_id = isnull(@hotel_id, d.disponibilidad_hotel_id)
+            and d.disponibilidad_hotel_id = @hotel_id
             and d.disponibilidad_ocupado = 0 
             and d.disponibilidad_tipo_habitacion_id = @tipo_habitacion 
             and hr.hotel_regimen_regimen_id = isnull(@regimen_id,hr.hotel_regimen_regimen_id)
