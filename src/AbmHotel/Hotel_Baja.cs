@@ -38,8 +38,8 @@ namespace FrbaHotel.AbmHotel
 
             cmd.Parameters.AddWithValue("@id_hotel", SqlDbType.Int).Value = id_hotel;
 
-            cmd.Parameters.AddWithValue("@fecha_inicio", SqlDbType.DateTime).Value = dtp_inicio.Value;
-            cmd.Parameters.AddWithValue("@fecha_fin", SqlDbType.DateTime).Value = dtp_fin.Value;
+            cmd.Parameters.AddWithValue("@fecha_inicio", SqlDbType.DateTime).Value = Convert.ToDateTime(dtp_inicio.Value);
+            cmd.Parameters.AddWithValue("@fecha_fin", SqlDbType.DateTime).Value = Convert.ToDateTime(dtp_fin.Value);
 
             cmd.Parameters.AddWithValue("@motivo", SqlDbType.VarChar).Value = cmb_motivo.SelectedValue;
 

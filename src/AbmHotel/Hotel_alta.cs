@@ -46,6 +46,9 @@ namespace FrbaHotel.AbmHotel
 
 
                 cmd.ExecuteNonQuery();
+
+                Close();
+
                 MessageBox.Show("Se ha cargado el Hotel " + txb_nombre.Text, "Mensaje");
             }
             else { MessageBox.Show("Debe completar todos los campos obligatorios", "Mensaje"); }

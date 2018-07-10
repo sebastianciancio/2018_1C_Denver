@@ -161,6 +161,8 @@
             // 
             // cmb_nacimiento
             // 
+            this.cmb_nacimiento.CustomFormat = "dd/MM/yyyy";
+            this.cmb_nacimiento.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.cmb_nacimiento.Location = new System.Drawing.Point(9, 267);
             this.cmb_nacimiento.Name = "cmb_nacimiento";
             this.cmb_nacimiento.Size = new System.Drawing.Size(200, 20);

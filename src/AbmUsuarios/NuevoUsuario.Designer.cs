@@ -36,30 +36,30 @@
             this.cmb_rol = new System.Windows.Forms.ComboBox();
             this.lbl_userRepetido = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.label13 = new System.Windows.Forms.Label();
-            this.cmb_nacimiento = new System.Windows.Forms.DateTimePicker();
-            this.label14 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.txb_calle = new System.Windows.Forms.TextBox();
-            this.lbl_cli_mod_direccion = new System.Windows.Forms.Label();
-            this.label12 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
             this.txb_mail = new System.Windows.Forms.TextBox();
-            this.lbl_cli_mod_mail = new System.Windows.Forms.Label();
+            this.cmb_nacimiento = new System.Windows.Forms.DateTimePicker();
+            this.txb_calle = new System.Windows.Forms.TextBox();
             this.txb_telefono = new System.Windows.Forms.TextBox();
+            this.txb_apellido = new System.Windows.Forms.TextBox();
+            this.txb_nombre = new System.Windows.Forms.TextBox();
+            this.label14 = new System.Windows.Forms.Label();
+            this.lbl_cli_mod_direccion = new System.Windows.Forms.Label();
             this.lbl_cli_mod_telefono = new System.Windows.Forms.Label();
             this.cmb_tipoDoc = new System.Windows.Forms.ComboBox();
             this.label9 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.lbl_asterisco = new System.Windows.Forms.Label();
-            this.txb_apellido = new System.Windows.Forms.TextBox();
             this.lbl_cli_mod_apellidos = new System.Windows.Forms.Label();
-            this.txb_nombre = new System.Windows.Forms.TextBox();
             this.lbl_cli_mod_nombre = new System.Windows.Forms.Label();
             this.txb_numDni = new System.Windows.Forms.TextBox();
             this.lbl_cl_mod_dni = new System.Windows.Forms.Label();
             this.lbl_mod_cl_t_dni = new System.Windows.Forms.Label();
+            this.lbl_asterisco = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
+            this.lbl_cli_mod_mail = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
@@ -164,23 +164,55 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Datos de la persona";
             // 
-            // label13
+            // txb_mail
             // 
-            this.label13.AutoSize = true;
-            this.label13.ForeColor = System.Drawing.Color.Red;
-            this.label13.Location = new System.Drawing.Point(101, 251);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(11, 13);
-            this.label13.TabIndex = 163;
-            this.label13.Text = "*";
+            this.txb_mail.Location = new System.Drawing.Point(169, 173);
+            this.txb_mail.MaxLength = 255;
+            this.txb_mail.Name = "txb_mail";
+            this.txb_mail.Size = new System.Drawing.Size(210, 20);
+            this.txb_mail.TabIndex = 154;
             // 
             // cmb_nacimiento
             // 
+            this.cmb_nacimiento.CustomFormat = "dd/MM/yyyy";
+            this.cmb_nacimiento.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.cmb_nacimiento.Location = new System.Drawing.Point(4, 267);
             this.cmb_nacimiento.Name = "cmb_nacimiento";
             this.cmb_nacimiento.Size = new System.Drawing.Size(200, 20);
             this.cmb_nacimiento.TabIndex = 162;
             this.cmb_nacimiento.Value = new System.DateTime(1990, 1, 1, 0, 0, 0, 0);
+            // 
+            // txb_calle
+            // 
+            this.txb_calle.Location = new System.Drawing.Point(4, 220);
+            this.txb_calle.MaxLength = 255;
+            this.txb_calle.Name = "txb_calle";
+            this.txb_calle.Size = new System.Drawing.Size(241, 20);
+            this.txb_calle.TabIndex = 159;
+            // 
+            // txb_telefono
+            // 
+            this.txb_telefono.Location = new System.Drawing.Point(6, 173);
+            this.txb_telefono.MaxLength = 255;
+            this.txb_telefono.Name = "txb_telefono";
+            this.txb_telefono.Size = new System.Drawing.Size(134, 20);
+            this.txb_telefono.TabIndex = 153;
+            // 
+            // txb_apellido
+            // 
+            this.txb_apellido.Location = new System.Drawing.Point(4, 132);
+            this.txb_apellido.MaxLength = 255;
+            this.txb_apellido.Name = "txb_apellido";
+            this.txb_apellido.Size = new System.Drawing.Size(323, 20);
+            this.txb_apellido.TabIndex = 143;
+            // 
+            // txb_nombre
+            // 
+            this.txb_nombre.Location = new System.Drawing.Point(6, 82);
+            this.txb_nombre.MaxLength = 255;
+            this.txb_nombre.Name = "txb_nombre";
+            this.txb_nombre.Size = new System.Drawing.Size(323, 20);
+            this.txb_nombre.TabIndex = 141;
             // 
             // label14
             // 
@@ -191,24 +223,6 @@
             this.label14.TabIndex = 161;
             this.label14.Text = "Fec. Nacimiento";
             // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.ForeColor = System.Drawing.Color.Red;
-            this.label6.Location = new System.Drawing.Point(59, 204);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(11, 13);
-            this.label6.TabIndex = 160;
-            this.label6.Text = "*";
-            // 
-            // txb_calle
-            // 
-            this.txb_calle.Location = new System.Drawing.Point(4, 220);
-            this.txb_calle.MaxLength = 255;
-            this.txb_calle.Name = "txb_calle";
-            this.txb_calle.Size = new System.Drawing.Size(241, 20);
-            this.txb_calle.TabIndex = 159;
-            // 
             // lbl_cli_mod_direccion
             // 
             this.lbl_cli_mod_direccion.AutoSize = true;
@@ -217,52 +231,6 @@
             this.lbl_cli_mod_direccion.Size = new System.Drawing.Size(52, 13);
             this.lbl_cli_mod_direccion.TabIndex = 158;
             this.lbl_cli_mod_direccion.Text = "Dirección";
-            // 
-            // label12
-            // 
-            this.label12.AutoSize = true;
-            this.label12.ForeColor = System.Drawing.Color.Red;
-            this.label12.Location = new System.Drawing.Point(53, 160);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(11, 13);
-            this.label12.TabIndex = 157;
-            this.label12.Text = "*";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.ForeColor = System.Drawing.Color.Red;
-            this.label4.Location = new System.Drawing.Point(269, 157);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(11, 13);
-            this.label4.TabIndex = 156;
-            this.label4.Text = "*";
-            // 
-            // txb_mail
-            // 
-            this.txb_mail.Location = new System.Drawing.Point(169, 173);
-            this.txb_mail.MaxLength = 255;
-            this.txb_mail.Name = "txb_mail";
-            this.txb_mail.Size = new System.Drawing.Size(210, 20);
-            this.txb_mail.TabIndex = 154;
-            // 
-            // lbl_cli_mod_mail
-            // 
-            this.lbl_cli_mod_mail.AutoSize = true;
-            this.lbl_cli_mod_mail.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_cli_mod_mail.Location = new System.Drawing.Point(166, 157);
-            this.lbl_cli_mod_mail.Name = "lbl_cli_mod_mail";
-            this.lbl_cli_mod_mail.Size = new System.Drawing.Size(97, 13);
-            this.lbl_cli_mod_mail.TabIndex = 155;
-            this.lbl_cli_mod_mail.Text = "Correo Electrónico:";
-            // 
-            // txb_telefono
-            // 
-            this.txb_telefono.Location = new System.Drawing.Point(6, 173);
-            this.txb_telefono.MaxLength = 255;
-            this.txb_telefono.Name = "txb_telefono";
-            this.txb_telefono.Size = new System.Drawing.Size(134, 20);
-            this.txb_telefono.TabIndex = 153;
             // 
             // lbl_cli_mod_telefono
             // 
@@ -305,34 +273,6 @@
             this.label8.TabIndex = 149;
             this.label8.Text = "*";
             // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.ForeColor = System.Drawing.Color.Red;
-            this.label5.Location = new System.Drawing.Point(58, 116);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(11, 13);
-            this.label5.TabIndex = 147;
-            this.label5.Text = "*";
-            // 
-            // lbl_asterisco
-            // 
-            this.lbl_asterisco.AutoSize = true;
-            this.lbl_asterisco.ForeColor = System.Drawing.Color.Red;
-            this.lbl_asterisco.Location = new System.Drawing.Point(100, 66);
-            this.lbl_asterisco.Name = "lbl_asterisco";
-            this.lbl_asterisco.Size = new System.Drawing.Size(11, 13);
-            this.lbl_asterisco.TabIndex = 146;
-            this.lbl_asterisco.Text = "*";
-            // 
-            // txb_apellido
-            // 
-            this.txb_apellido.Location = new System.Drawing.Point(4, 132);
-            this.txb_apellido.MaxLength = 255;
-            this.txb_apellido.Name = "txb_apellido";
-            this.txb_apellido.Size = new System.Drawing.Size(323, 20);
-            this.txb_apellido.TabIndex = 143;
-            // 
             // lbl_cli_mod_apellidos
             // 
             this.lbl_cli_mod_apellidos.AutoSize = true;
@@ -341,14 +281,6 @@
             this.lbl_cli_mod_apellidos.Size = new System.Drawing.Size(49, 13);
             this.lbl_cli_mod_apellidos.TabIndex = 142;
             this.lbl_cli_mod_apellidos.Text = "Apellidos";
-            // 
-            // txb_nombre
-            // 
-            this.txb_nombre.Location = new System.Drawing.Point(6, 82);
-            this.txb_nombre.MaxLength = 255;
-            this.txb_nombre.Name = "txb_nombre";
-            this.txb_nombre.Size = new System.Drawing.Size(323, 20);
-            this.txb_nombre.TabIndex = 141;
             // 
             // lbl_cli_mod_nombre
             // 
@@ -385,6 +317,76 @@
             this.lbl_mod_cl_t_dni.Size = new System.Drawing.Size(54, 13);
             this.lbl_mod_cl_t_dni.TabIndex = 137;
             this.lbl_mod_cl_t_dni.Text = "Tipo Doc.";
+            // 
+            // lbl_asterisco
+            // 
+            this.lbl_asterisco.AutoSize = true;
+            this.lbl_asterisco.ForeColor = System.Drawing.Color.Red;
+            this.lbl_asterisco.Location = new System.Drawing.Point(100, 66);
+            this.lbl_asterisco.Name = "lbl_asterisco";
+            this.lbl_asterisco.Size = new System.Drawing.Size(11, 13);
+            this.lbl_asterisco.TabIndex = 146;
+            this.lbl_asterisco.Text = "*";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.ForeColor = System.Drawing.Color.Red;
+            this.label5.Location = new System.Drawing.Point(58, 116);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(11, 13);
+            this.label5.TabIndex = 147;
+            this.label5.Text = "*";
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.ForeColor = System.Drawing.Color.Red;
+            this.label12.Location = new System.Drawing.Point(53, 160);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(11, 13);
+            this.label12.TabIndex = 157;
+            this.label12.Text = "*";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.ForeColor = System.Drawing.Color.Red;
+            this.label6.Location = new System.Drawing.Point(59, 204);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(11, 13);
+            this.label6.TabIndex = 160;
+            this.label6.Text = "*";
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.ForeColor = System.Drawing.Color.Red;
+            this.label13.Location = new System.Drawing.Point(101, 251);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(11, 13);
+            this.label13.TabIndex = 163;
+            this.label13.Text = "*";
+            // 
+            // lbl_cli_mod_mail
+            // 
+            this.lbl_cli_mod_mail.AutoSize = true;
+            this.lbl_cli_mod_mail.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_cli_mod_mail.Location = new System.Drawing.Point(166, 157);
+            this.lbl_cli_mod_mail.Name = "lbl_cli_mod_mail";
+            this.lbl_cli_mod_mail.Size = new System.Drawing.Size(97, 13);
+            this.lbl_cli_mod_mail.TabIndex = 155;
+            this.lbl_cli_mod_mail.Text = "Correo Electrónico:";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.ForeColor = System.Drawing.Color.Red;
+            this.label4.Location = new System.Drawing.Point(269, 157);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(11, 13);
+            this.label4.TabIndex = 156;
+            this.label4.Text = "*";
             // 
             // label7
             // 

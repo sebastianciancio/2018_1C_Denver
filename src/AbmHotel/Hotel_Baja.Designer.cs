@@ -54,7 +54,7 @@
             this.txb_nombre.Location = new System.Drawing.Point(16, 45);
             this.txb_nombre.Name = "txb_nombre";
             this.txb_nombre.ReadOnly = true;
-            this.txb_nombre.Size = new System.Drawing.Size(228, 20);
+            this.txb_nombre.Size = new System.Drawing.Size(369, 20);
             this.txb_nombre.TabIndex = 1;
             // 
             // lbl_inicio
@@ -68,18 +68,22 @@
             // 
             // dtp_inicio
             // 
+            this.dtp_inicio.CustomFormat = "dd/MM/yyyy";
+            this.dtp_inicio.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.dtp_inicio.Location = new System.Drawing.Point(90, 81);
             this.dtp_inicio.MinDate = new System.DateTime(2018, 5, 22, 0, 0, 0, 0);
             this.dtp_inicio.Name = "dtp_inicio";
-            this.dtp_inicio.Size = new System.Drawing.Size(154, 20);
+            this.dtp_inicio.Size = new System.Drawing.Size(295, 20);
             this.dtp_inicio.TabIndex = 3;
             // 
             // dtp_fin
             // 
+            this.dtp_fin.CustomFormat = "dd/MM/yyyy";
+            this.dtp_fin.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.dtp_fin.Location = new System.Drawing.Point(90, 112);
             this.dtp_fin.MinDate = new System.DateTime(2018, 5, 22, 0, 0, 0, 0);
             this.dtp_fin.Name = "dtp_fin";
-            this.dtp_fin.Size = new System.Drawing.Size(154, 20);
+            this.dtp_fin.Size = new System.Drawing.Size(295, 20);
             this.dtp_fin.TabIndex = 5;
             // 
             // lbl_fin
@@ -93,13 +97,14 @@
             // 
             // cmb_motivo
             // 
+            this.cmb_motivo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmb_motivo.FormattingEnabled = true;
             this.cmb_motivo.Items.AddRange(new object[] {
             "Reformas",
             "Ampliaciones"});
             this.cmb_motivo.Location = new System.Drawing.Point(21, 184);
             this.cmb_motivo.Name = "cmb_motivo";
-            this.cmb_motivo.Size = new System.Drawing.Size(219, 21);
+            this.cmb_motivo.Size = new System.Drawing.Size(364, 21);
             this.cmb_motivo.TabIndex = 6;
             // 
             // lbl_motivo
@@ -135,7 +140,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 261);
+            this.ClientSize = new System.Drawing.Size(397, 261);
             this.Controls.Add(this.btn_volver);
             this.Controls.Add(this.btn_guardar);
             this.Controls.Add(this.lbl_motivo);

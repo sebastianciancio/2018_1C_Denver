@@ -142,6 +142,8 @@
             // 
             // cmb_cli_mod_fec_nac
             // 
+            this.cmb_cli_mod_fec_nac.CustomFormat = "dd/MM/yyyy";
+            this.cmb_cli_mod_fec_nac.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.cmb_cli_mod_fec_nac.Location = new System.Drawing.Point(18, 181);
             this.cmb_cli_mod_fec_nac.Name = "cmb_cli_mod_fec_nac";
             this.cmb_cli_mod_fec_nac.Size = new System.Drawing.Size(200, 20);

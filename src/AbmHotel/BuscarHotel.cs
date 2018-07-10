@@ -61,7 +61,7 @@ namespace FrbaHotel.AbmHotel
             btn_baja.Visible = true;
             btn_modif.Visible = true;
             dgv_tablaHotel.Visible = true;
-            dgv_tablaHotel.Columns[6].Visible = false;
+            dgv_tablaHotel.Columns[5].Visible = false;
         }
 
         private void btn_modif_Click(object sender, EventArgs e)
@@ -83,7 +83,7 @@ namespace FrbaHotel.AbmHotel
 
                 AbmHotel.Hotel_Baja frm = new AbmHotel.Hotel_Baja();
                 DataGridViewRow row = dgv_tablaHotel.CurrentRow;
-                string id_hotel = row.Cells[6].Value.ToString();
+                string id_hotel = row.Cells[5].Value.ToString();
 
                 frm.id_hotel = id_hotel;
                 frm.Show();

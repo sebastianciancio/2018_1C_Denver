@@ -847,6 +847,21 @@ INSERT INTO DENVER.usuarios_hoteles (usuario_hotel_id, usuario_usuario_user) VAL
 INSERT INTO DENVER.usuarios_hoteles (usuario_hotel_id, usuario_usuario_user) VALUES (13,'ADMIN');
 INSERT INTO DENVER.usuarios_hoteles (usuario_hotel_id, usuario_usuario_user) VALUES (14,'ADMIN');
 INSERT INTO DENVER.usuarios_hoteles (usuario_hotel_id, usuario_usuario_user) VALUES (15,'ADMIN');
+INSERT INTO DENVER.usuarios_hoteles (usuario_hotel_id, usuario_usuario_user) VALUES (1,'RECEPCION');
+INSERT INTO DENVER.usuarios_hoteles (usuario_hotel_id, usuario_usuario_user) VALUES (2,'RECEPCION');
+INSERT INTO DENVER.usuarios_hoteles (usuario_hotel_id, usuario_usuario_user) VALUES (3,'RECEPCION');
+INSERT INTO DENVER.usuarios_hoteles (usuario_hotel_id, usuario_usuario_user) VALUES (4,'RECEPCION');
+INSERT INTO DENVER.usuarios_hoteles (usuario_hotel_id, usuario_usuario_user) VALUES (5,'RECEPCION');
+INSERT INTO DENVER.usuarios_hoteles (usuario_hotel_id, usuario_usuario_user) VALUES (6,'RECEPCION');
+INSERT INTO DENVER.usuarios_hoteles (usuario_hotel_id, usuario_usuario_user) VALUES (7,'RECEPCION');
+INSERT INTO DENVER.usuarios_hoteles (usuario_hotel_id, usuario_usuario_user) VALUES (8,'RECEPCION');
+INSERT INTO DENVER.usuarios_hoteles (usuario_hotel_id, usuario_usuario_user) VALUES (9,'RECEPCION');
+INSERT INTO DENVER.usuarios_hoteles (usuario_hotel_id, usuario_usuario_user) VALUES (10,'RECEPCION');
+INSERT INTO DENVER.usuarios_hoteles (usuario_hotel_id, usuario_usuario_user) VALUES (11,'RECEPCION');
+INSERT INTO DENVER.usuarios_hoteles (usuario_hotel_id, usuario_usuario_user) VALUES (12,'RECEPCION');
+INSERT INTO DENVER.usuarios_hoteles (usuario_hotel_id, usuario_usuario_user) VALUES (13,'RECEPCION');
+INSERT INTO DENVER.usuarios_hoteles (usuario_hotel_id, usuario_usuario_user) VALUES (14,'RECEPCION');
+INSERT INTO DENVER.usuarios_hoteles (usuario_hotel_id, usuario_usuario_user) VALUES (15,'RECEPCION');
 
 GO
 
@@ -1266,7 +1281,7 @@ BEGIN
             )
       VALUES(
             @usuario_user,
-            HASHBYTES('SHA2_256',@usuario_pass),
+            HASHBYTES('SHA2_256',UPPER(@usuario_pass)),
             @usuario_nombre,
             @usuario_apellido,
             @usuario_tipo_documento_id,
@@ -1396,8 +1411,7 @@ BEGIN
             WHERE pais_nombre = @pais_nombre; 
       END
 
-      SELECT hotel_nombre AS Nombre,hotel_estrellas AS Estrellas, p.pais_nombre AS Pais, hotel_ciudad AS Ciudad, hotel_ciudad AS Ciudad,
-               hotel_email AS Email, hotel_id 
+      SELECT hotel_nombre AS Nombre,hotel_estrellas AS Estrellas, p.pais_nombre AS Pais, hotel_ciudad AS Ciudad, hotel_email AS Email, hotel_id 
       FROM 
             DENVER.hoteles
             join DENVER.paises p on hotel_pais_id = p.pais_id
@@ -2311,7 +2325,7 @@ BEGIN
       UPDATE 
             [DENVER].[usuarios]
       SET
-            usuario_pass = HASHBYTES('SHA2_256',@usuario_pass),
+            usuario_pass = HASHBYTES('SHA2_256',UPPER(@usuario_pass)),
             usuario_nombre = @usuario_nombre,
             usuario_apellido = @usuario_apellido,
             usuario_tipo_documento_id = @usuario_tipo_documento_id,
@@ -2370,7 +2384,7 @@ BEGIN
             uh.usuario_hotel_id = @hotel_id AND 
             u.usuario_activo = 'S' 
       GROUP BY 
-            usuario_apellido, usuario_nombre, usuario_user, usuario_login_fallidos, usuario_rol_rol_nombre;;
+            usuario_apellido, usuario_nombre, usuario_user, usuario_login_fallidos, usuario_rol_rol_nombre;
 END
 GO
 
