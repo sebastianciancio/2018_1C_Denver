@@ -58,10 +58,7 @@ namespace FrbaHotel.AbmCliente
 
             txb_cli_mod_apellidos.Text    = row["cliente_apellido"].ToString();
             txb_cli_mod_nombres.Text      = row["cliente_nombre"].ToString();
-            if(row["cliente_fecha_nac"].ToString() != "")
-            {
-                cmb_cli_mod_fec_nac.Value = Convert.ToDateTime(row["cliente_fecha_nac"]);
-            };
+            cmb_cli_mod_fec_nac.Value = Convert.ToDateTime(row["cliente_fecha_nac"]);
             txb_cli_mod_mail.Text         = row["cliente_email"].ToString();
             txb_cli_mod_calle.Text        = row["cliente_dom_calle"].ToString();
             txb_cli_mod_nro.Text          = row["cliente_dom_nro"].ToString();
@@ -70,6 +67,7 @@ namespace FrbaHotel.AbmCliente
             txb_cli_mod_localidad.Text    = row["cliente_dom_localidad"].ToString();
             txb_cli_mod_telefono.Text     = row["cliente_telefono"].ToString();
             txb_cli_mod_nacionalidad.Text = row["cliente_nacionalidad"].ToString();
+            combo_pais.SelectedValue = row["cliente_pais_id"];
         }
 
         private void btn_cli_mod_guardar_Click(object sender, EventArgs e)

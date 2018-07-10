@@ -30,6 +30,7 @@ namespace FrbaHotel
             // Leo el Archivo de Configuracion y seteo la Hora del Sistema
             String[] config = File.ReadAllLines("../../Config.txt");
             fechaSistema = DateTime.Parse(DataBase.GetConfigValue(config[4]));
+            
 
             InitializeComponent();
         }

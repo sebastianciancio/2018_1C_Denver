@@ -19,6 +19,8 @@ namespace FrbaHotel.AbmUsuarios
         {
             db = DataBase.GetInstance();
             InitializeComponent();
+            Combos.cargarComboRoles(cmb_rol);
+            Combos.cargarComboTipoDocumento(cmb_tipoDoc);
         }
 
         private void Usuario_modificacion_Load(object sender, EventArgs e)
@@ -63,7 +65,7 @@ namespace FrbaHotel.AbmUsuarios
         private void btn_guardar_Click(object sender, EventArgs e)
         {
             if (validarFormulario()) { 
-            SqlCommand cmd = new SqlCommand("dbo.modificar_usuario", db.Connection);
+            SqlCommand cmd = new SqlCommand("denver.modificar_usuario", db.Connection);
             cmd.CommandType = CommandType.StoredProcedure;
 
             cmd.Parameters.AddWithValue("@usuario_user", SqlDbType.VarChar).Value = txb_user.Text;
@@ -72,15 +74,18 @@ namespace FrbaHotel.AbmUsuarios
             cmd.Parameters.AddWithValue("@usuario_nro_documento", SqlDbType.Int).Value = Convert.ToInt32(txb_numDni.Text);
             cmd.Parameters.AddWithValue("@usuario_apellido", SqlDbType.VarChar).Value = txb_apellido.Text;
             cmd.Parameters.AddWithValue("@usuario_nombre", SqlDbType.VarChar).Value = txb_nombre.Text;
-            cmd.Parameters.AddWithValue("@usuario_fecha_nac", SqlDbType.DateTime).Value = "";
+            cmd.Parameters.AddWithValue("@usuario_fecha_nac", SqlDbType.DateTime).Value = Convert.ToDateTime(cmb_nacimiento.Value);
             cmd.Parameters.AddWithValue("@usuario_email", SqlDbType.VarChar).Value = txb_mail.Text;
             cmd.Parameters.AddWithValue("@usuario_direccion", SqlDbType.VarChar).Value = txb_calle.Text;
             cmd.Parameters.AddWithValue("@usuario_telefono", SqlDbType.VarChar).Value = txb_telefono.Text;
             cmd.Parameters.AddWithValue("@usuario_rol", SqlDbType.VarChar).Value = cmb_rol.SelectedValue;
+            cmd.Parameters.AddWithValue("@fecha_sistema", SqlDbType.DateTime).Value = accesoSistema.fechaSistema;
 
             cmd.ExecuteNonQuery();
 
+            // Cierro la Ventana
             Close();
+
 
             MessageBox.Show("Se ha cargado el Usuario " + txb_user.Text, "Mensaje");
         }

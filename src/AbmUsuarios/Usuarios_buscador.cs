@@ -111,6 +111,10 @@ namespace FrbaHotel.AbmUsuarios
             dgv_tablaUsuario.DataSource = dt;
             dgv_tablaUsuario.Visible = true;
 
+            // Oculto Columnas del Resultado
+            dgv_tablaUsuario.Columns[7].Visible = false;
+
+
             if (Convert.ToInt32(cmb_hotel.SelectedValue) != accesoSistema.HotelIdActual)
             {
                 // dgv_tablaUsuario.Enabled = false;

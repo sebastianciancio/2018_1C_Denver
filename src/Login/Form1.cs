@@ -134,5 +134,10 @@ namespace FrbaHotel
 
 
         }
+
+        private void login_password_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
