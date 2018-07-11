@@ -61,6 +61,7 @@ namespace FrbaHotel.AbmUsuarios
                     this.Close();
 
 
+
                 } else {
                     MessageBox.Show("Debe completar todos los campos obligatorios", "Advertencia");
                 }

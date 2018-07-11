@@ -45,15 +45,20 @@ namespace FrbaHotel.AbmHotel
 
             cmd.Parameters.AddWithValue("@fecha_sistema", SqlDbType.DateTime).Value = accesoSistema.fechaSistema;
 
+            cmd.Parameters.AddWithValue("@result", SqlDbType.Int).Direction = ParameterDirection.Output;
+
             cmd.ExecuteNonQuery();
 
-            SqlDataAdapter sda = new SqlDataAdapter("SELECT denver.hotel_en_mantenimiento ('" + id_hotel + "')", db.Connection);
+            int retunvalue = (int)cmd.Parameters["@result"].Value;
+
+            /*SqlDataAdapter sda = new SqlDataAdapter("SELECT denver.hotel_en_mantenimiento ('" + id_hotel + "')", db.Connection);
             DataTable dt = new DataTable();
             sda.Fill(dt);
 
             // Si esta en mantenimiento
-            if (Convert.ToInt32(dt.Rows[0][0]) == 1)
-            {
+            if (Convert.ToInt32(dt.Rows[0][0]) == 1)*/
+            if (retunvalue == 0) 
+           {
                 MessageBox.Show("El hotel " + txb_nombre.Text + " se dio de baja correctamente", "Mensaje");
                 Close();
             }

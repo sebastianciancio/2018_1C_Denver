@@ -134,6 +134,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Bienvenidos a Hoteles Denver";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.accesoSistema_FormClosing);
+            this.Load += new System.EventHandler(this.accesoSistema_Load);
             this.ResumeLayout(false);
 
         }

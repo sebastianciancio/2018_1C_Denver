@@ -129,6 +129,12 @@
     <Compile Include="AbmRol\Modificar_rol.Designer.cs">
       <DependentUpon>Modificar_rol.cs</DependentUpon>
     </Compile>
+    <Compile Include="AbmUsuarios\Cambiar_pass.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmUsuarios\Cambiar_pass.Designer.cs">
+      <DependentUpon>Cambiar_pass.cs</DependentUpon>
+    </Compile>
     <Compile Include="AbmUsuarios\NuevoUsuario.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -272,6 +278,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AbmRol\Modificar_rol.resx">
       <DependentUpon>Modificar_rol.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AbmUsuarios\Cambiar_pass.resx">
+      <DependentUpon>Cambiar_pass.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="AbmUsuarios\NuevoUsuario.resx">
       <DependentUpon>NuevoUsuario.cs</DependentUpon>

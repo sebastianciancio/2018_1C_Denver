@@ -190,7 +190,11 @@ namespace FrbaHotel
 
         }
 
-
-
+        private void label_usuario_logueado_Click(object sender, EventArgs e)
+        {
+            AbmUsuarios.Usuario_modificacion frm = new AbmUsuarios.Usuario_modificacion();
+            frm.user_logueado = accesoSistema.UsuarioLogueado.Id; 
+            frm.Show();
+        }
     }
 }

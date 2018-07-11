@@ -99,6 +99,7 @@
             this.txb_pas.Location = new System.Drawing.Point(81, 62);
             this.txb_pas.MaxLength = 32;
             this.txb_pas.Name = "txb_pas";
+            this.txb_pas.PasswordChar = '*';
             this.txb_pas.Size = new System.Drawing.Size(118, 20);
             this.txb_pas.TabIndex = 3;
             // 

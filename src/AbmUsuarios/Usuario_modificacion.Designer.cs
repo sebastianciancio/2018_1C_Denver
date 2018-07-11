@@ -30,9 +30,6 @@
         {
             this.btn_volver = new System.Windows.Forms.Button();
             this.btn_guardar = new System.Windows.Forms.Button();
-            this.label11 = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label13 = new System.Windows.Forms.Label();
             this.cmb_nacimiento = new System.Windows.Forms.DateTimePicker();
@@ -60,10 +57,12 @@
             this.lbl_mod_cl_t_dni = new System.Windows.Forms.Label();
             this.cmb_rol = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.txb_pas = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
             this.txb_user = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.btn_contra = new System.Windows.Forms.Button();
+            this.btn_datos = new System.Windows.Forms.Button();
+            this.btn_habilitar = new System.Windows.Forms.Button();
+            this.btn_off = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -75,6 +74,7 @@
             this.btn_volver.TabIndex = 166;
             this.btn_volver.Text = "Volver";
             this.btn_volver.UseVisualStyleBackColor = true;
+            this.btn_volver.Click += new System.EventHandler(this.btn_volver_Click);
             // 
             // btn_guardar
             // 
@@ -84,64 +84,36 @@
             this.btn_guardar.TabIndex = 165;
             this.btn_guardar.Text = "Guardar";
             this.btn_guardar.UseVisualStyleBackColor = true;
+            this.btn_guardar.Visible = false;
             this.btn_guardar.Click += new System.EventHandler(this.btn_guardar_Click);
-            // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.ForeColor = System.Drawing.Color.Red;
-            this.label11.Location = new System.Drawing.Point(282, 8);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(11, 13);
-            this.label11.TabIndex = 164;
-            this.label11.Text = "*";
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.ForeColor = System.Drawing.Color.Red;
-            this.label10.Location = new System.Drawing.Point(109, 54);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(11, 13);
-            this.label10.TabIndex = 163;
-            this.label10.Text = "*";
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.ForeColor = System.Drawing.Color.Red;
-            this.label7.Location = new System.Drawing.Point(62, 14);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(11, 13);
-            this.label7.TabIndex = 162;
-            this.label7.Text = "*";
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.label13);
             this.groupBox1.Controls.Add(this.cmb_nacimiento);
-            this.groupBox1.Controls.Add(this.label14);
-            this.groupBox1.Controls.Add(this.label6);
             this.groupBox1.Controls.Add(this.txb_calle);
-            this.groupBox1.Controls.Add(this.lbl_cli_mod_direccion);
-            this.groupBox1.Controls.Add(this.label12);
-            this.groupBox1.Controls.Add(this.label4);
             this.groupBox1.Controls.Add(this.txb_mail);
-            this.groupBox1.Controls.Add(this.lbl_cli_mod_mail);
             this.groupBox1.Controls.Add(this.txb_telefono);
+            this.groupBox1.Controls.Add(this.txb_apellido);
+            this.groupBox1.Controls.Add(this.txb_nombre);
+            this.groupBox1.Controls.Add(this.label14);
+            this.groupBox1.Controls.Add(this.lbl_cli_mod_direccion);
+            this.groupBox1.Controls.Add(this.lbl_cli_mod_mail);
             this.groupBox1.Controls.Add(this.lbl_cli_mod_telefono);
             this.groupBox1.Controls.Add(this.cmb_tipoDoc);
             this.groupBox1.Controls.Add(this.label9);
             this.groupBox1.Controls.Add(this.label8);
-            this.groupBox1.Controls.Add(this.label5);
-            this.groupBox1.Controls.Add(this.lbl_asterisco);
-            this.groupBox1.Controls.Add(this.txb_apellido);
             this.groupBox1.Controls.Add(this.lbl_cli_mod_apellidos);
-            this.groupBox1.Controls.Add(this.txb_nombre);
             this.groupBox1.Controls.Add(this.lbl_cli_mod_nombre);
             this.groupBox1.Controls.Add(this.txb_numDni);
             this.groupBox1.Controls.Add(this.lbl_cl_mod_dni);
             this.groupBox1.Controls.Add(this.lbl_mod_cl_t_dni);
+            this.groupBox1.Controls.Add(this.lbl_asterisco);
+            this.groupBox1.Controls.Add(this.label5);
+            this.groupBox1.Controls.Add(this.label12);
+            this.groupBox1.Controls.Add(this.label4);
+            this.groupBox1.Controls.Add(this.label6);
+            this.groupBox1.Controls.Add(this.label13);
+            this.groupBox1.Enabled = false;
             this.groupBox1.Location = new System.Drawing.Point(9, 91);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(393, 308);
@@ -376,6 +348,7 @@
             // cmb_rol
             // 
             this.cmb_rol.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmb_rol.Enabled = false;
             this.cmb_rol.FormattingEnabled = true;
             this.cmb_rol.Location = new System.Drawing.Point(299, 8);
             this.cmb_rol.Name = "cmb_rol";
@@ -390,23 +363,6 @@
             this.label3.Size = new System.Drawing.Size(70, 13);
             this.label3.TabIndex = 158;
             this.label3.Text = "Rol Asignado";
-            // 
-            // txb_pas
-            // 
-            this.txb_pas.Location = new System.Drawing.Point(136, 51);
-            this.txb_pas.MaxLength = 32;
-            this.txb_pas.Name = "txb_pas";
-            this.txb_pas.Size = new System.Drawing.Size(118, 20);
-            this.txb_pas.TabIndex = 157;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(12, 54);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(91, 13);
-            this.label2.TabIndex = 156;
-            this.label2.Text = "Nueva Password:";
             // 
             // txb_user
             // 
@@ -425,26 +381,69 @@
             this.label1.TabIndex = 154;
             this.label1.Text = "Username :";
             // 
+            // btn_contra
+            // 
+            this.btn_contra.Location = new System.Drawing.Point(9, 51);
+            this.btn_contra.Name = "btn_contra";
+            this.btn_contra.Size = new System.Drawing.Size(122, 23);
+            this.btn_contra.TabIndex = 167;
+            this.btn_contra.Text = "Cambiar Contraseña";
+            this.btn_contra.UseVisualStyleBackColor = true;
+            this.btn_contra.Click += new System.EventHandler(this.btn_contra_Click);
+            // 
+            // btn_datos
+            // 
+            this.btn_datos.Location = new System.Drawing.Point(157, 51);
+            this.btn_datos.Name = "btn_datos";
+            this.btn_datos.Size = new System.Drawing.Size(115, 23);
+            this.btn_datos.TabIndex = 168;
+            this.btn_datos.Text = "Cambiar datos";
+            this.btn_datos.UseVisualStyleBackColor = true;
+            this.btn_datos.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // btn_habilitar
+            // 
+            this.btn_habilitar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.btn_habilitar.Location = new System.Drawing.Point(285, 51);
+            this.btn_habilitar.Name = "btn_habilitar";
+            this.btn_habilitar.Size = new System.Drawing.Size(136, 23);
+            this.btn_habilitar.TabIndex = 169;
+            this.btn_habilitar.Text = "Habiliar";
+            this.btn_habilitar.UseVisualStyleBackColor = false;
+            this.btn_habilitar.Visible = false;
+            this.btn_habilitar.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // btn_off
+            // 
+            this.btn_off.BackColor = System.Drawing.Color.Cyan;
+            this.btn_off.Location = new System.Drawing.Point(299, 51);
+            this.btn_off.Name = "btn_off";
+            this.btn_off.Size = new System.Drawing.Size(110, 23);
+            this.btn_off.TabIndex = 170;
+            this.btn_off.Text = "Cerrar Sesión";
+            this.btn_off.UseVisualStyleBackColor = false;
+            this.btn_off.Visible = false;
+            this.btn_off.Click += new System.EventHandler(this.btn_off_Click);
+            // 
             // Usuario_modificacion
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(425, 442);
+            this.Controls.Add(this.btn_off);
+            this.Controls.Add(this.btn_habilitar);
+            this.Controls.Add(this.btn_datos);
+            this.Controls.Add(this.btn_contra);
             this.Controls.Add(this.btn_volver);
             this.Controls.Add(this.btn_guardar);
-            this.Controls.Add(this.label11);
-            this.Controls.Add(this.label10);
-            this.Controls.Add(this.label7);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.cmb_rol);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.txb_pas);
-            this.Controls.Add(this.label2);
             this.Controls.Add(this.txb_user);
             this.Controls.Add(this.label1);
             this.Name = "Usuario_modificacion";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Usuario_modificacion";
+            this.Text = "Modificar Usuario";
             this.Load += new System.EventHandler(this.Usuario_modificacion_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
@@ -457,9 +456,6 @@
 
         private System.Windows.Forms.Button btn_volver;
         private System.Windows.Forms.Button btn_guardar;
-        private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.Label label7;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.DateTimePicker cmb_nacimiento;
@@ -487,9 +483,11 @@
         private System.Windows.Forms.Label lbl_mod_cl_t_dni;
         private System.Windows.Forms.ComboBox cmb_rol;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox txb_pas;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox txb_user;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button btn_contra;
+        private System.Windows.Forms.Button btn_datos;
+        private System.Windows.Forms.Button btn_habilitar;
+        private System.Windows.Forms.Button btn_off;
     }
 }

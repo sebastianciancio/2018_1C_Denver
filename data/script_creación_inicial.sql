@@ -1461,18 +1461,19 @@ CREATE PROCEDURE [DENVER].[baja_hotel]
       @fecha_inicio datetime = NULL,
       @fecha_fin  datetime = NULL, 
       @motivo nvarchar(255) = NULL,
-      @fecha_sistema datetime
+      @fecha_sistema datetime,
+	  @result	int OUTPUT
 AS   
 BEGIN 
       -- SET NOCOUNT ON added to prevent extra result sets from interfering with SELECT statements.
-      DECLARE @cont int;
+     -- DECLARE @cont int;
       SET NOCOUNT ON;  
-      SELECT @cont = count(*) from DENVER.reservas
+      SELECT @result = count(*) from DENVER.reservas
       WHERE( reserva_fecha_inicio BETWEEN  @fecha_inicio AND @fecha_fin
           OR reserva_fecha_fin    BETWEEN  @fecha_inicio AND @fecha_fin )
          AND reserva_hotel_id = @id_hotel 
 
-         IF (@cont = 0) 
+         IF (@result = 0) 
          BEGIN
 
             INSERT INTO [DENVER].[mantenimientos](
@@ -1488,9 +1489,9 @@ BEGIN
                         @fecha_fin,
                         @motivo,
                         @fecha_sistema);
-            END
-      
-             
+           
+			END
+		RETURN @result  
 END
 GO
 
@@ -2342,7 +2343,7 @@ GO
 
 CREATE PROCEDURE [DENVER].[modificar_usuario] 
       @usuario_user nvarchar(50) = NULL,
-      @usuario_pass varchar(50) = NULL,
+      --@usuario_pass varchar(50) = NULL,
       @usuario_apellido nvarchar(255) = NULL,
       @usuario_nombre nvarchar(255) = NULL,
       @usuario_tipo_documento_id smallint = NULL,
@@ -2360,7 +2361,7 @@ BEGIN
       UPDATE 
             [DENVER].[usuarios]
       SET
-            usuario_pass = HASHBYTES('SHA2_256',UPPER(@usuario_pass)),
+        --    usuario_pass = HASHBYTES('SHA2_256',UPPER(@usuario_pass)),
             usuario_nombre = @usuario_nombre,
             usuario_apellido = @usuario_apellido,
             usuario_tipo_documento_id = @usuario_tipo_documento_id,
@@ -2782,7 +2783,7 @@ BEGIN
 END
 GO
 
-CREATE FUNCTION denver.existe_reserva (@reserva numeric(18,0))
+CREATE FUNCTION [DENVER].[existe_reserva] (@reserva numeric(18,0))
 RETURNS int
 AS
 BEGIN
@@ -2841,7 +2842,29 @@ BEGIN
 END
 GO
 
+CREATE PROCEDURE [DENVER].[habilitar_usuario] 
+      @usuario_user nvarchar(50) = NULL
+AS
+BEGIN
+      SET NOCOUNT ON;
+      UPDATE usuarios SET usuario_activo = 'S' WHERE usuario_user = @usuario_user;
+END
+GO
+
+CREATE PROCEDURE DENVER.cambiar_contraseña 
+      @usuario_user nvarchar(50),
+	  @pass varchar(50)
+AS
+BEGIN
+      SET NOCOUNT ON;
+      UPDATE usuarios SET usuario_pass = HASHBYTES('SHA2_256',UPPER(@pass)) WHERE usuario_user = @usuario_user;
+END
+
+GO
+
+   
 -- Vacio las disponibilidades
 truncate table DENVER.disponibilidades
 exec DENVER.habilitar_disponibilidad '20180601', '20201231'
 GO
+
