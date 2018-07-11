@@ -70,6 +70,8 @@ namespace FrbaHotel
                     accesoSistema.HotelIdActual = Convert.ToInt32(cmb_hotel.SelectedValue);
                     accesoSistema.HotelNombreActual = cmb_hotel.Text;
 
+                    accesoSistema.pass = login_password.Text;
+
                     // Si tiene solo 1 Rol
                     if (dt.Rows[0][5].ToString() == "1")
                     {

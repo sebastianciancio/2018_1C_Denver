@@ -194,6 +194,7 @@
             this.label_usuario_logueado.TabIndex = 2;
             this.label_usuario_logueado.Text = "usuario_logueado";
             this.label_usuario_logueado.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.label_usuario_logueado.Click += new System.EventHandler(this.label_usuario_logueado_Click);
             // 
             // groupBox1
             // 

@@ -83,7 +83,7 @@ namespace FrbaHotel.AbmHotel
 
                 AbmHotel.Hotel_Baja frm = new AbmHotel.Hotel_Baja();
                 DataGridViewRow row = dgv_tablaHotel.CurrentRow;
-                string id_hotel = row.Cells[5].Value.ToString();
+                string id_hotel = row.Cells[6].Value.ToString();
 
                 frm.id_hotel = id_hotel;
                 frm.Show();

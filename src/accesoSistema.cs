@@ -20,6 +20,7 @@ namespace FrbaHotel
         static public Cliente ClienteSeleccionado = new Cliente();
         static public bool habilitarSeleccionCliente = false;
         static public DateTime fechaSistema;
+        static public string pass;
 
         System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(accesoSistema));
 
@@ -134,6 +135,11 @@ namespace FrbaHotel
         {
             CancelarReserva.Cancelar_reserva frm = new CancelarReserva.Cancelar_reserva();
             frm.Show();
+        }
+
+        private void accesoSistema_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

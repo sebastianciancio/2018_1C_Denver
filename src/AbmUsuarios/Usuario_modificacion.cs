@@ -14,6 +14,8 @@ namespace FrbaHotel.AbmUsuarios
     public partial class Usuario_modificacion : Form
     {
         public string user;
+        //Parametro para cuando el usuario logueado desea modificarse
+        public string user_logueado;
         private DataBase db;
         public Usuario_modificacion()
         {
@@ -28,9 +30,11 @@ namespace FrbaHotel.AbmUsuarios
             SqlCommand cmd = new SqlCommand("denver.buscar_usuario_completo", db.Connection);
             cmd.CommandType = CommandType.StoredProcedure;
 
-
-            cmd.Parameters.AddWithValue("@usuario_user", SqlDbType.VarChar).Value = user;
-
+            if (user != null)
+            {
+                cmd.Parameters.AddWithValue("@usuario_user", SqlDbType.VarChar).Value = user;
+            }
+            else { cmd.Parameters.AddWithValue("@usuario_user", SqlDbType.VarChar).Value = user_logueado; }
             // Creo el DataTable para obtener los resultados del SP
             DataTable dt = new DataTable();
 
@@ -43,8 +47,8 @@ namespace FrbaHotel.AbmUsuarios
             DataRow row = dt.Rows[0];
 
             //Mando los datos al form Modificar_cliente
-            txb_user.Text = user;
-
+            //txb_user.Text = user;
+            txb_user.Text = row["usuario_user"].ToString();
             //cmb_tipoDoc.SelectedValue = row["usuario_tipo_documento_id"].ToString();
             txb_numDni.Text = row["usuario_nro_documento"].ToString();
             txb_apellido.Text = row["usuario_apellido"].ToString();
@@ -60,6 +64,9 @@ namespace FrbaHotel.AbmUsuarios
             if (row["usuario_fecha_nac"].ToString() != "")
             { cmb_nacimiento.Value = Convert.ToDateTime(row["usuario_fecha_nac"]); }
 
+            if (row["usuario_activo"].ToString() == "N") { btn_habilitar.Visible = true; }
+            if (txb_user.Text == accesoSistema.UsuarioLogueado.Id ) { btn_off.Visible = true; } 
+               
         }
 
         private void btn_guardar_Click(object sender, EventArgs e)
@@ -69,7 +76,7 @@ namespace FrbaHotel.AbmUsuarios
             cmd.CommandType = CommandType.StoredProcedure;
 
             cmd.Parameters.AddWithValue("@usuario_user", SqlDbType.VarChar).Value = txb_user.Text;
-            cmd.Parameters.AddWithValue("@usuario_pass", SqlDbType.VarChar).Value = txb_pas.Text;
+          //  cmd.Parameters.AddWithValue("@usuario_pass", SqlDbType.VarChar).Value = txb_pas.Text;
             cmd.Parameters.AddWithValue("@usuario_tipo_documento_id", SqlDbType.Int).Value = cmb_tipoDoc.SelectedValue;
             cmd.Parameters.AddWithValue("@usuario_nro_documento", SqlDbType.Int).Value = Convert.ToInt32(txb_numDni.Text);
             cmd.Parameters.AddWithValue("@usuario_apellido", SqlDbType.VarChar).Value = txb_apellido.Text;
@@ -96,7 +103,7 @@ namespace FrbaHotel.AbmUsuarios
         private bool validarFormulario()
         {
             return (!Validacion.esInicial(txb_user.Text) &
-                    !Validacion.esInicial(txb_pas.Text) &
+                   // !Validacion.esInicial(txb_pas.Text) &
                     !Validacion.esInicial(txb_apellido.Text) &
                     !Validacion.esInicial(txb_nombre.Text) &
                     !Validacion.esInicial(txb_mail.Text) &
@@ -105,6 +112,52 @@ namespace FrbaHotel.AbmUsuarios
                     !Validacion.esInicial(cmb_nacimiento.Value.ToString()));
 
         }
-  }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            groupBox1.Enabled = true;
+            cmb_rol.Enabled = true;
+            btn_guardar.Visible = true;
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            SqlCommand cmd = new SqlCommand("denver.habilitar_usuario", db.Connection);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@usuario_user", SqlDbType.VarChar).Value = txb_user.Text;
+            cmd.ExecuteNonQuery();
+
+            MessageBox.Show("El usuario se habilito correctamente", "Mensaje");
+            btn_habilitar.Visible = false;
+        }
+
+        private void btn_volver_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void btn_contra_Click(object sender, EventArgs e)
+        {
+            Hide();
+            AbmUsuarios.Cambiar_pass frm = new AbmUsuarios.Cambiar_pass();
+            frm.user = txb_user.Text;
+            frm.Show();
+        }
+
+        private void btn_off_Click(object sender, EventArgs e)
+        {
+            accesoSistema.UsuarioLogueado.Apellido = "";
+            accesoSistema.UsuarioLogueado.Nombre = "";
+            accesoSistema.UsuarioLogueado.Id = "";
+            accesoSistema.UsuarioLogueado.Rol = "";
+            accesoSistema.HotelIdActual = 0;
+            accesoSistema.HotelNombreActual = "";
+            accesoSistema.pass = "";
+            accesoSistema.UsuarioLogueado.Rol = "";
+
+            accesoSistema frm = new accesoSistema();
+            frm.Show();
+        }
+    }
     
 }
