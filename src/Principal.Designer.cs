@@ -44,6 +44,7 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.label_rol_usuario_logueado = new System.Windows.Forms.Label();
             this.label_fecha_sistema = new System.Windows.Forms.Label();
+            this.cmb_reservas_acciones = new System.Windows.Forms.ComboBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -199,6 +200,7 @@
             // groupBox1
             // 
             this.groupBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.groupBox1.Controls.Add(this.cmb_reservas_acciones);
             this.groupBox1.Controls.Add(this.btn_listados);
             this.groupBox1.Controls.Add(this.btn_reserva);
             this.groupBox1.Controls.Add(this.btn_check);
@@ -259,6 +261,23 @@
             this.label_fecha_sistema.Text = "fecha";
             this.label_fecha_sistema.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
+            // cmb_reservas_acciones
+            // 
+            this.cmb_reservas_acciones.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmb_reservas_acciones.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.cmb_reservas_acciones.FormattingEnabled = true;
+            this.cmb_reservas_acciones.Items.AddRange(new object[] {
+            "Opciones",
+            "Crear",
+            "Modificar",
+            "Cancelar"});
+            this.cmb_reservas_acciones.Location = new System.Drawing.Point(30, 78);
+            this.cmb_reservas_acciones.Name = "cmb_reservas_acciones";
+            this.cmb_reservas_acciones.Size = new System.Drawing.Size(142, 26);
+            this.cmb_reservas_acciones.TabIndex = 17;
+            this.cmb_reservas_acciones.Visible = false;
+            this.cmb_reservas_acciones.SelectedIndexChanged += new System.EventHandler(this.cmb_reservas_acciones_SelectedIndexChanged);
+            // 
             // Principal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -301,6 +320,7 @@
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Label label_rol_usuario_logueado;
         private System.Windows.Forms.Label label_fecha_sistema;
+        private System.Windows.Forms.ComboBox cmb_reservas_acciones;
     }
 }
 

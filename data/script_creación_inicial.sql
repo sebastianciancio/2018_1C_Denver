@@ -1811,7 +1811,7 @@ BEGIN
                         join DENVER.tipo_habitaciones as th on rh.reserva_habitaciones_tipo_habitacion_id = th.tipo_habitacion_id
                         join DENVER.regimenes as reg on reg.regimen_id = rh.reserva_habitaciones_regimen_id
                   WHERE
-                        r.reserva_codigo = @nro_reserva;
+                        r.reserva_codigo = @nro_reserva AND r.reserva_estado_id NOT IN (3,4,5);
             end
             else
             begin

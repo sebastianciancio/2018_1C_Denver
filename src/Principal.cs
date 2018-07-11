@@ -96,8 +96,9 @@ namespace FrbaHotel
 
         private void button6_Click(object sender, EventArgs e)
         {
-            Reserva frm = new Reserva();
-            frm.Show();
+            // Muestro las acciones posibles
+            cmb_reservas_acciones.Visible = true;
+            cmb_reservas_acciones.SelectedItem = "Opciones";
         }
 
         private void btn_consumibles_Click(object sender, EventArgs e)
@@ -195,6 +196,38 @@ namespace FrbaHotel
             AbmUsuarios.Usuario_modificacion frm = new AbmUsuarios.Usuario_modificacion();
             frm.user_logueado = accesoSistema.UsuarioLogueado.Id; 
             frm.Show();
+        }
+
+        private void cmb_reservas_acciones_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+            switch(cmb_reservas_acciones.SelectedItem.ToString())
+            {
+                case "Crear":
+                    // Oculto las acciones posibles
+                    cmb_reservas_acciones.Visible = false;
+
+                    Reserva frm = new Reserva();
+                    frm.Show();
+                    break;
+
+                case "Modificar":
+                    // Oculto las acciones posibles
+                    cmb_reservas_acciones.Visible = false;
+
+                    ModificacionReserva frm2 = new ModificacionReserva();
+                    frm2.Show();
+                    break;
+
+                case "Cancelar":
+                    // Oculto las acciones posibles
+                    cmb_reservas_acciones.Visible = false;
+
+                    CancelacionReserva frm3 = new CancelacionReserva();
+                    frm3.Show();
+                    break;
+            }
+
         }
     }
 }

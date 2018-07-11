@@ -125,15 +125,18 @@ namespace FrbaHotel
         private void btn_modificar_Click(object sender, EventArgs e)
         {
             this.Hide();
-            CancelarReserva.BuscarReserva frm = new CancelarReserva.BuscarReserva();
+            //CancelarReserva.BuscarReserva frm = new CancelarReserva.BuscarReserva();
 
+            CancelacionReserva frm = new CancelacionReserva();
             frm.Show();
 
         }
 
         private void btn_canc_Click(object sender, EventArgs e)
         {
-            CancelarReserva.Cancelar_reserva frm = new CancelarReserva.Cancelar_reserva();
+            this.Hide();
+            //CancelarReserva.Cancelar_reserva frm = new CancelarReserva.Cancelar_reserva();
+            ModificacionReserva frm = new ModificacionReserva();
             frm.Show();
         }
 

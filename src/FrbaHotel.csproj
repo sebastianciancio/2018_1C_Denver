@@ -159,18 +159,6 @@
     <Compile Include="accesoSistema.designer.cs">
       <DependentUpon>accesoSistema.cs</DependentUpon>
     </Compile>
-    <Compile Include="CancelarReserva\Cancelar_reserva.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="CancelarReserva\Cancelar_reserva.Designer.cs">
-      <DependentUpon>Cancelar_reserva.cs</DependentUpon>
-    </Compile>
-    <Compile Include="CancelarReserva\BuscarReserva.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="CancelarReserva\BuscarReserva.Designer.cs">
-      <DependentUpon>BuscarReserva.cs</DependentUpon>
-    </Compile>
     <Compile Include="CancelarReserva\Modificar_reserva.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -184,6 +172,18 @@
     </Compile>
     <Compile Include="Facturar\Facturar.Designer.cs">
       <DependentUpon>Facturar.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GenerarModificacionReserva\CancelacionReserva.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GenerarModificacionReserva\CancelacionReserva.Designer.cs">
+      <DependentUpon>CancelacionReserva.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GenerarModificacionReserva\ModificacionReserva.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GenerarModificacionReserva\ModificacionReserva.Designer.cs">
+      <DependentUpon>ModificacionReserva.cs</DependentUpon>
     </Compile>
     <Compile Include="Principal.cs">
       <SubType>Form</SubType>
@@ -294,17 +294,17 @@
     <EmbeddedResource Include="accesoSistema.resx">
       <DependentUpon>accesoSistema.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="CancelarReserva\BuscarReserva.resx">
-      <DependentUpon>BuscarReserva.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="CancelarReserva\Cancelar_reserva.resx">
-      <DependentUpon>Cancelar_reserva.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="CancelarReserva\Modificar_reserva.resx">
       <DependentUpon>Modificar_reserva.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Facturar\Facturar.resx">
       <DependentUpon>Facturar.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GenerarModificacionReserva\CancelacionReserva.resx">
+      <DependentUpon>CancelacionReserva.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GenerarModificacionReserva\ModificacionReserva.resx">
+      <DependentUpon>ModificacionReserva.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GenerarModificacionReserva\Reserva.resx">
       <DependentUpon>Reserva.cs</DependentUpon>
@@ -314,6 +314,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Principal.resx">
       <DependentUpon>Principal.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="AbmCliente\Cliente.resx">
       <DependentUpon>Cliente.cs</DependentUpon>
