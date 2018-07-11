@@ -41,10 +41,10 @@
             this.btn_estadia = new System.Windows.Forms.Button();
             this.label_usuario_logueado = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.cmb_reservas_acciones = new System.Windows.Forms.ComboBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.label_rol_usuario_logueado = new System.Windows.Forms.Label();
             this.label_fecha_sistema = new System.Windows.Forms.Label();
-            this.cmb_reservas_acciones = new System.Windows.Forms.ComboBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -214,6 +214,23 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Operaciones";
             // 
+            // cmb_reservas_acciones
+            // 
+            this.cmb_reservas_acciones.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmb_reservas_acciones.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.cmb_reservas_acciones.FormattingEnabled = true;
+            this.cmb_reservas_acciones.Items.AddRange(new object[] {
+            "Opciones",
+            "Crear",
+            "Modificar",
+            "Cancelar"});
+            this.cmb_reservas_acciones.Location = new System.Drawing.Point(30, 78);
+            this.cmb_reservas_acciones.Name = "cmb_reservas_acciones";
+            this.cmb_reservas_acciones.Size = new System.Drawing.Size(142, 26);
+            this.cmb_reservas_acciones.TabIndex = 17;
+            this.cmb_reservas_acciones.Visible = false;
+            this.cmb_reservas_acciones.SelectedIndexChanged += new System.EventHandler(this.cmb_reservas_acciones_SelectedIndexChanged);
+            // 
             // groupBox2
             // 
             this.groupBox2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
@@ -260,23 +277,6 @@
             this.label_fecha_sistema.TabIndex = 16;
             this.label_fecha_sistema.Text = "fecha";
             this.label_fecha_sistema.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // cmb_reservas_acciones
-            // 
-            this.cmb_reservas_acciones.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmb_reservas_acciones.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.cmb_reservas_acciones.FormattingEnabled = true;
-            this.cmb_reservas_acciones.Items.AddRange(new object[] {
-            "Opciones",
-            "Crear",
-            "Modificar",
-            "Cancelar"});
-            this.cmb_reservas_acciones.Location = new System.Drawing.Point(30, 78);
-            this.cmb_reservas_acciones.Name = "cmb_reservas_acciones";
-            this.cmb_reservas_acciones.Size = new System.Drawing.Size(142, 26);
-            this.cmb_reservas_acciones.TabIndex = 17;
-            this.cmb_reservas_acciones.Visible = false;
-            this.cmb_reservas_acciones.SelectedIndexChanged += new System.EventHandler(this.cmb_reservas_acciones_SelectedIndexChanged);
             // 
             // Principal
             // 

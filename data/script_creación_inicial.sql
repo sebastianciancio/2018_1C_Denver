@@ -1804,7 +1804,7 @@ BEGIN
             if (@chechout IS NULL)
             begin
                   SELECT
-                        convert(varchar(50),rh.reserva_habitaciones_fecha_inicio,103) as "Fecha Entrada", convert(varchar(50),rh.reserva_habitaciones_fecha_fin,103) as "Fecha Salida",th.tipo_habitacion_descripcion as "Tipo Habitacion", reg.regimen_descripcion as "Regimen", rh.reserva_habitaciones_precio*rh.reserva_habitaciones_cant_noches as "Precio", rh.reserva_habitacion_nro as "Nro. Habitacion", th.tipo_habitacion_id, r.reserva_estado_id
+                        convert(varchar(50),rh.reserva_habitaciones_fecha_inicio,103) as "Fecha Entrada", convert(varchar(50),rh.reserva_habitaciones_fecha_fin,103) as "Fecha Salida",th.tipo_habitacion_descripcion as "Tipo Habitacion", reg.regimen_descripcion as "Regimen", rh.reserva_habitaciones_precio*rh.reserva_habitaciones_cant_noches as "Precio", rh.reserva_habitacion_nro as "Nro. Habitacion", th.tipo_habitacion_id, r.reserva_estado_id, reg.regimen_id
                   FROM
                         DENVER.reservas as r
                         join DENVER.reservas_habitaciones as rh ON r.reserva_codigo = rh.reserva_habitaciones_reserva_codigo
@@ -1816,7 +1816,7 @@ BEGIN
             else
             begin
                   SELECT distinct
-                        convert(varchar(50),rh.reserva_habitaciones_fecha_inicio,103) as "Fecha Entrada", convert(varchar(50),rh.reserva_habitaciones_fecha_fin,103) as "Fecha Salida",th.tipo_habitacion_descripcion as "Tipo Habitacion", reg.regimen_descripcion as "Regimen", rh.reserva_habitaciones_precio*rh.reserva_habitaciones_cant_noches as "Precio", rh.reserva_habitacion_nro as "Nro. Habitacion", th.tipo_habitacion_id, r.reserva_estado_id
+                        convert(varchar(50),rh.reserva_habitaciones_fecha_inicio,103) as "Fecha Entrada", convert(varchar(50),rh.reserva_habitaciones_fecha_fin,103) as "Fecha Salida",th.tipo_habitacion_descripcion as "Tipo Habitacion", reg.regimen_descripcion as "Regimen", rh.reserva_habitaciones_precio*rh.reserva_habitaciones_cant_noches as "Precio", rh.reserva_habitacion_nro as "Nro. Habitacion", th.tipo_habitacion_id, r.reserva_estado_id, reg.regimen_id
                   FROM
                         DENVER.reservas as r
                         join DENVER.reservas_habitaciones as rh ON r.reserva_codigo = rh.reserva_habitaciones_reserva_codigo
@@ -2871,9 +2871,10 @@ BEGIN
 END
 GO
 
+
    
 -- Vacio las disponibilidades
 truncate table DENVER.disponibilidades
-exec DENVER.habilitar_disponibilidad '20180601', '20201231'
+exec DENVER.habilitar_disponibilidad '20180601', '20210101'
 GO
 

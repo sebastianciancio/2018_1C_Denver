@@ -29,10 +29,10 @@
         private void InitializeComponent()
         {
             this.Container_reserva = new System.Windows.Forms.GroupBox();
-            this.btn_cancelar_reserva = new System.Windows.Forms.Button();
-            this.dg_reserva = new System.Windows.Forms.DataGridView();
             this.txb_motivo = new System.Windows.Forms.TextBox();
             this.lbl_canc_res_motivo = new System.Windows.Forms.Label();
+            this.btn_cancelar_reserva = new System.Windows.Forms.Button();
+            this.dg_reserva = new System.Windows.Forms.DataGridView();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label9 = new System.Windows.Forms.Label();
             this.btn_buscar_reserva = new System.Windows.Forms.Button();
@@ -58,6 +58,23 @@
             this.Container_reserva.Text = "Detalle de la Reserva";
             this.Container_reserva.Visible = false;
             // 
+            // txb_motivo
+            // 
+            this.txb_motivo.Location = new System.Drawing.Point(8, 154);
+            this.txb_motivo.Multiline = true;
+            this.txb_motivo.Name = "txb_motivo";
+            this.txb_motivo.Size = new System.Drawing.Size(722, 72);
+            this.txb_motivo.TabIndex = 10;
+            // 
+            // lbl_canc_res_motivo
+            // 
+            this.lbl_canc_res_motivo.AutoSize = true;
+            this.lbl_canc_res_motivo.Location = new System.Drawing.Point(6, 138);
+            this.lbl_canc_res_motivo.Name = "lbl_canc_res_motivo";
+            this.lbl_canc_res_motivo.Size = new System.Drawing.Size(118, 13);
+            this.lbl_canc_res_motivo.TabIndex = 9;
+            this.lbl_canc_res_motivo.Text = "Motivo de cancelación:";
+            // 
             // btn_cancelar_reserva
             // 
             this.btn_cancelar_reserva.BackColor = System.Drawing.Color.Lime;
@@ -80,23 +97,6 @@
             this.dg_reserva.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dg_reserva.Size = new System.Drawing.Size(724, 114);
             this.dg_reserva.TabIndex = 1;
-            // 
-            // txb_motivo
-            // 
-            this.txb_motivo.Location = new System.Drawing.Point(8, 154);
-            this.txb_motivo.Multiline = true;
-            this.txb_motivo.Name = "txb_motivo";
-            this.txb_motivo.Size = new System.Drawing.Size(722, 72);
-            this.txb_motivo.TabIndex = 10;
-            // 
-            // lbl_canc_res_motivo
-            // 
-            this.lbl_canc_res_motivo.AutoSize = true;
-            this.lbl_canc_res_motivo.Location = new System.Drawing.Point(6, 138);
-            this.lbl_canc_res_motivo.Name = "lbl_canc_res_motivo";
-            this.lbl_canc_res_motivo.Size = new System.Drawing.Size(118, 13);
-            this.lbl_canc_res_motivo.TabIndex = 9;
-            this.lbl_canc_res_motivo.Text = "Motivo de cancelación:";
             // 
             // groupBox1
             // 
@@ -129,6 +129,7 @@
             this.btn_buscar_reserva.TabIndex = 11;
             this.btn_buscar_reserva.Text = "Buscar";
             this.btn_buscar_reserva.UseVisualStyleBackColor = true;
+            this.btn_buscar_reserva.Click += new System.EventHandler(this.btn_buscar_reserva_Click);
             // 
             // cmb_hotel
             // 
