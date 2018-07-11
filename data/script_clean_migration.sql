@@ -170,7 +170,7 @@ DROP FUNCTION  [DENVER].[existe_reserva]
 DROP PROCEDURE [DENVER].[facturar_encabezado]
 DROP PROCEDURE [DENVER].[facturar_items]
 DROP PROCEDURE [DENVER].[habilitar_usuario]
-DROP PROCEDURE [DENVER].[cambiar_contraseña]
+DROP PROCEDURE [DENVER].[cambiar_contrasena]
 GO
 
 DROP SCHEMA [DENVER]

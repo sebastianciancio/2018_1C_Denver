@@ -155,6 +155,9 @@ namespace FrbaHotel.AbmUsuarios
             accesoSistema.pass = "";
             accesoSistema.UsuarioLogueado.Rol = "";
 
+            Hide();
+            Principal.ActiveForm.Hide();
+
             accesoSistema frm = new accesoSistema();
             frm.Show();
         }

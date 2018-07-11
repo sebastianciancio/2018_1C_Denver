@@ -62,7 +62,7 @@ namespace FrbaHotel.AbmUsuarios
                         {
                             if (txb_nueva.Text == txb_repetir.Text)
                             {
-                                SqlCommand cmd = new SqlCommand("denver.cambiar_contraseña", db.Connection);
+                                SqlCommand cmd = new SqlCommand("denver.cambiar_contrasena", db.Connection);
                                 cmd.CommandType = CommandType.StoredProcedure;
                                 cmd.Parameters.AddWithValue("@usuario_user", SqlDbType.VarChar).Value = accesoSistema.UsuarioLogueado.Id;
                                 cmd.Parameters.AddWithValue("@pass", SqlDbType.VarChar).Value = txb_nueva.Text;
@@ -92,7 +92,7 @@ namespace FrbaHotel.AbmUsuarios
                 {
                     if (txb_nueva.Text == txb_repetir.Text)
                     {
-                        SqlCommand cmd = new SqlCommand("denver.cambiar_contraseña", db.Connection);
+                        SqlCommand cmd = new SqlCommand("denver.cambiar_contrasena", db.Connection);
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@usuario_user", SqlDbType.VarChar).Value = txb_user.Text;
                         cmd.Parameters.AddWithValue("@pass", SqlDbType.VarChar).Value = txb_nueva.Text;

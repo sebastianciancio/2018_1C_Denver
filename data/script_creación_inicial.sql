@@ -2851,7 +2851,7 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE DENVER.cambiar_contraseña 
+CREATE PROCEDURE DENVER.cambiar_contrasena 
       @usuario_user nvarchar(50),
 	  @pass varchar(50)
 AS
