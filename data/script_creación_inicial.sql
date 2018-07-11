@@ -2862,6 +2862,15 @@ END
 
 GO
 
+CREATE FUNCTION [DENVER].[dias_antes_reserva] (@nro_reserva numeric(18,0), @fecha_sistema datetime)
+RETURNS int
+AS
+BEGIN
+      RETURN (SELECT datediff(day,reserva_fecha_inicio,@fecha_sistema) FROM denver.reservas WHERE reserva_codigo = @nro_reserva)
+
+END
+GO
+
    
 -- Vacio las disponibilidades
 truncate table DENVER.disponibilidades

@@ -155,10 +155,18 @@ namespace FrbaHotel
             cmd.Parameters.AddWithValue("@reserva_cliente_tipo_documento_id", SqlDbType.Int).Value = Convert.ToInt32(accesoSistema.ClienteSeleccionado.cliente_tipo_documento_id);
             cmd.Parameters.AddWithValue("@reserva_cliente_pasaporte_nro", SqlDbType.Int).Value = Convert.ToInt32(accesoSistema.ClienteSeleccionado.cliente_dni);
             cmd.Parameters.AddWithValue("@reserva_hotel_id", SqlDbType.Int).Value = Convert.ToInt32(accesoSistema.HotelIdActual);
-            cmd.Parameters.AddWithValue("@reserva_usuario_user", SqlDbType.VarChar).Value = accesoSistema.UsuarioLogueado.Id;
             cmd.Parameters.AddWithValue("@reserva_estado_id", SqlDbType.Int).Value = 1;
             cmd.Parameters.AddWithValue("@fecha_sistema", SqlDbType.DateTime).Value = accesoSistema.fechaSistema;
             cmd.Parameters.AddWithValue("@nro_reserva", SqlDbType.Int).Direction = ParameterDirection.Output;
+
+            if (accesoSistema.UsuarioLogueado.Id == "")
+            {
+                cmd.Parameters.AddWithValue("@reserva_usuario_user", SqlDbType.VarChar).Value = "GUEST";
+            }
+            else
+            {
+                cmd.Parameters.AddWithValue("@reserva_usuario_user", SqlDbType.VarChar).Value = accesoSistema.UsuarioLogueado.Id;
+            }
 
             // Ejecuto el SP
             cmd.ExecuteNonQuery();

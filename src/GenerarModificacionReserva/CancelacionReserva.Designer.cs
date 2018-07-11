@@ -28,90 +28,21 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.label9 = new System.Windows.Forms.Label();
-            this.cmb_hotel = new System.Windows.Forms.ComboBox();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.btn_buscar_reserva = new System.Windows.Forms.Button();
-            this.label2 = new System.Windows.Forms.Label();
-            this.nro_reserva = new System.Windows.Forms.TextBox();
             this.Container_reserva = new System.Windows.Forms.GroupBox();
             this.btn_cancelar_reserva = new System.Windows.Forms.Button();
             this.dg_reserva = new System.Windows.Forms.DataGridView();
             this.txb_motivo = new System.Windows.Forms.TextBox();
             this.lbl_canc_res_motivo = new System.Windows.Forms.Label();
-            this.groupBox2.SuspendLayout();
-            this.groupBox1.SuspendLayout();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.btn_buscar_reserva = new System.Windows.Forms.Button();
+            this.cmb_hotel = new System.Windows.Forms.ComboBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.nro_reserva = new System.Windows.Forms.TextBox();
             this.Container_reserva.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dg_reserva)).BeginInit();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // groupBox2
-            // 
-            this.groupBox2.Controls.Add(this.label9);
-            this.groupBox2.Controls.Add(this.cmb_hotel);
-            this.groupBox2.Location = new System.Drawing.Point(12, 12);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(737, 44);
-            this.groupBox2.TabIndex = 10;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Hotel";
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(130, 13);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(32, 13);
-            this.label9.TabIndex = 4;
-            this.label9.Text = "Hotel";
-            // 
-            // cmb_hotel
-            // 
-            this.cmb_hotel.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmb_hotel.FormattingEnabled = true;
-            this.cmb_hotel.Location = new System.Drawing.Point(168, 10);
-            this.cmb_hotel.Name = "cmb_hotel";
-            this.cmb_hotel.Size = new System.Drawing.Size(396, 21);
-            this.cmb_hotel.TabIndex = 3;
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.btn_buscar_reserva);
-            this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Controls.Add(this.nro_reserva);
-            this.groupBox1.Location = new System.Drawing.Point(13, 62);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(737, 44);
-            this.groupBox1.TabIndex = 8;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Reserva";
-            // 
-            // btn_buscar_reserva
-            // 
-            this.btn_buscar_reserva.Location = new System.Drawing.Point(428, 11);
-            this.btn_buscar_reserva.Name = "btn_buscar_reserva";
-            this.btn_buscar_reserva.Size = new System.Drawing.Size(75, 23);
-            this.btn_buscar_reserva.TabIndex = 11;
-            this.btn_buscar_reserva.Text = "Buscar";
-            this.btn_buscar_reserva.UseVisualStyleBackColor = true;
-            this.btn_buscar_reserva.Click += new System.EventHandler(this.btn_checkin_Click);
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(237, 16);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(70, 13);
-            this.label2.TabIndex = 10;
-            this.label2.Text = "Nro. Reserva";
-            // 
-            // nro_reserva
-            // 
-            this.nro_reserva.Location = new System.Drawing.Point(313, 13);
-            this.nro_reserva.Name = "nro_reserva";
-            this.nro_reserva.Size = new System.Drawing.Size(93, 20);
-            this.nro_reserva.TabIndex = 9;
             // 
             // Container_reserva
             // 
@@ -119,9 +50,9 @@
             this.Container_reserva.Controls.Add(this.lbl_canc_res_motivo);
             this.Container_reserva.Controls.Add(this.btn_cancelar_reserva);
             this.Container_reserva.Controls.Add(this.dg_reserva);
-            this.Container_reserva.Location = new System.Drawing.Point(13, 112);
+            this.Container_reserva.Location = new System.Drawing.Point(12, 62);
             this.Container_reserva.Name = "Container_reserva";
-            this.Container_reserva.Size = new System.Drawing.Size(736, 273);
+            this.Container_reserva.Size = new System.Drawing.Size(737, 273);
             this.Container_reserva.TabIndex = 11;
             this.Container_reserva.TabStop = false;
             this.Container_reserva.Text = "Detalle de la Reserva";
@@ -167,41 +98,94 @@
             this.lbl_canc_res_motivo.TabIndex = 9;
             this.lbl_canc_res_motivo.Text = "Motivo de cancelación:";
             // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.label9);
+            this.groupBox1.Controls.Add(this.btn_buscar_reserva);
+            this.groupBox1.Controls.Add(this.cmb_hotel);
+            this.groupBox1.Controls.Add(this.label2);
+            this.groupBox1.Controls.Add(this.nro_reserva);
+            this.groupBox1.Location = new System.Drawing.Point(12, 12);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(737, 44);
+            this.groupBox1.TabIndex = 11;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Reserva";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(9, 16);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(32, 13);
+            this.label9.TabIndex = 4;
+            this.label9.Text = "Hotel";
+            // 
+            // btn_buscar_reserva
+            // 
+            this.btn_buscar_reserva.Location = new System.Drawing.Point(646, 11);
+            this.btn_buscar_reserva.Name = "btn_buscar_reserva";
+            this.btn_buscar_reserva.Size = new System.Drawing.Size(75, 23);
+            this.btn_buscar_reserva.TabIndex = 11;
+            this.btn_buscar_reserva.Text = "Buscar";
+            this.btn_buscar_reserva.UseVisualStyleBackColor = true;
+            // 
+            // cmb_hotel
+            // 
+            this.cmb_hotel.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmb_hotel.FormattingEnabled = true;
+            this.cmb_hotel.Location = new System.Drawing.Point(47, 13);
+            this.cmb_hotel.Name = "cmb_hotel";
+            this.cmb_hotel.Size = new System.Drawing.Size(396, 21);
+            this.cmb_hotel.TabIndex = 3;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(455, 16);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(70, 13);
+            this.label2.TabIndex = 10;
+            this.label2.Text = "Nro. Reserva";
+            // 
+            // nro_reserva
+            // 
+            this.nro_reserva.Location = new System.Drawing.Point(531, 13);
+            this.nro_reserva.Name = "nro_reserva";
+            this.nro_reserva.Size = new System.Drawing.Size(93, 20);
+            this.nro_reserva.TabIndex = 9;
+            // 
             // CancelacionReserva
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(762, 396);
-            this.Controls.Add(this.Container_reserva);
+            this.ClientSize = new System.Drawing.Size(762, 351);
             this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.groupBox2);
+            this.Controls.Add(this.Container_reserva);
             this.Name = "CancelacionReserva";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Cancelación de Reserva";
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
             this.Container_reserva.ResumeLayout(false);
             this.Container_reserva.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dg_reserva)).EndInit();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.ComboBox cmb_hotel;
-        private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.Button btn_buscar_reserva;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox nro_reserva;
         private System.Windows.Forms.GroupBox Container_reserva;
         private System.Windows.Forms.Button btn_cancelar_reserva;
         private System.Windows.Forms.DataGridView dg_reserva;
         private System.Windows.Forms.TextBox txb_motivo;
         private System.Windows.Forms.Label lbl_canc_res_motivo;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Button btn_buscar_reserva;
+        private System.Windows.Forms.ComboBox cmb_hotel;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox nro_reserva;
     }
 }

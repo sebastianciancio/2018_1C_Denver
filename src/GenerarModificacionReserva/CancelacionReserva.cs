@@ -39,44 +39,54 @@ namespace FrbaHotel
             if (nro_reserva.Text != "" & float.TryParse(nro_reserva.Text, out numero_generico))
             {
 
-                // Cargo el detalle de la reserva
-                SqlCommand cmd = new SqlCommand("denver.obtener_detalle_reserva", db.Connection);
-                cmd.CommandType = CommandType.StoredProcedure;
+                SqlDataAdapter sda = new SqlDataAdapter("SELECT denver.dias_antes_reserva ('" + nro_reserva.Text + "','"+ accesoSistema.fechaSistema +"')", db.Connection);
+                DataTable dt = new DataTable();
+                sda.Fill(dt);
 
-                cmd.Parameters.AddWithValue("@nro_reserva", SqlDbType.Int).Value = Convert.ToInt32(nro_reserva.Text);
-
-                // Creo el DataTable para obtener los resultados del SP
-                DataTable dt_detalle_reserva = new DataTable();
-                using (var da2 = new SqlDataAdapter(cmd))
+                // Si la reserva comienza antes de hoy
+                if (Convert.ToInt32(dt.Rows[0][0]) < 0)
                 {
-                    da2.Fill(dt_detalle_reserva);
-                }
+                    // Cargo el detalle de la reserva
+                    SqlCommand cmd = new SqlCommand("denver.obtener_detalle_reserva", db.Connection);
+                    cmd.CommandType = CommandType.StoredProcedure;
 
-                // Cargo la Grilla con los datos obtenidos
-                dg_reserva.DataSource = dt_detalle_reserva;
+                    cmd.Parameters.AddWithValue("@nro_reserva", SqlDbType.Int).Value = Convert.ToInt32(nro_reserva.Text);
 
-                // Oculto Columnas del Resultado
-                dg_reserva.Columns[6].Visible = false;
-                dg_reserva.Columns[7].Visible = false;
+                    // Creo el DataTable para obtener los resultados del SP
+                    DataTable dt_detalle_reserva = new DataTable();
+                    using (var da2 = new SqlDataAdapter(cmd))
+                    {
+                        da2.Fill(dt_detalle_reserva);
+                    }
 
-                // Si no hay Registros 
-                if (dg_reserva.RowCount == 0)
-                {
-                    DialogResult result = MessageBox.Show("No se encontraron datos de la Reserva", "Cancelación", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    Container_reserva.Visible = false;
+                    // Cargo la Grilla con los datos obtenidos
+                    dg_reserva.DataSource = dt_detalle_reserva;
+
+                    // Oculto Columnas del Resultado
+                    dg_reserva.Columns[6].Visible = false;
+                    dg_reserva.Columns[7].Visible = false;
+
+                    // Si no hay Registros 
+                    if (dg_reserva.RowCount == 0)
+                    {
+                        DialogResult result = MessageBox.Show("No se encontraron datos de la Reserva", "Cancelación", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        Container_reserva.Visible = false;
+                    }
+                    else
+                    {
+                        Container_reserva.Visible = true;
+                    }
                 }
                 else
                 {
-                    Container_reserva.Visible = true;
+                    DialogResult result = MessageBox.Show("No se puede cancelar la Reserva ya que debe hacerse 24 hs antes del inicio", "Cancelación", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Container_reserva.Visible = false;
                 }
-
             }
             else
             {
                 DialogResult result = MessageBox.Show("Debe ingresar la Reserva para continuar", "Cancelación", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
             }
-
         }
 
         private void btn_cancelar_reserva_Click(object sender, EventArgs e)
