@@ -96,48 +96,82 @@ namespace FrbaHotel
                 cmd.Parameters.AddWithValue("@fecha_egreso", SqlDbType.DateTime).Value = Convert.ToDateTime(fecha_hasta.Value);
                 cmd.Parameters.AddWithValue("@factura_total", SqlDbType.Int).Value = total_factura;
                 cmd.Parameters.AddWithValue("@factura_forma_pago_id", SqlDbType.Int).Value = Convert.ToInt32(cmb_forma_pago.SelectedValue);
+                cmd.Parameters.AddWithValue("@factura_detalle_pago", SqlDbType.VarChar).Value = txt_detalle_pago.Text;
                 cmd.Parameters.AddWithValue("@factura_cliente_tipo_documento", SqlDbType.Int).Value = Convert.ToInt32(cmb_tipo_doc.SelectedValue);
                 cmd.Parameters.AddWithValue("@factura_pasaporte_nro", SqlDbType.Int).Value = Convert.ToInt32(nro_documento.Text);
                 cmd.Parameters.AddWithValue("@fecha_sistema", SqlDbType.DateTime).Value = accesoSistema.fechaSistema;
                 cmd.Parameters.AddWithValue("@factura_hotel_id", SqlDbType.Int).Value = Convert.ToInt32(accesoSistema.HotelIdActual);
                 cmd.Parameters.AddWithValue("@factura_nro", SqlDbType.Int).Direction = ParameterDirection.Output;
+                cmd.Parameters.AddWithValue("@nro_reserva", SqlDbType.Int).Direction = ParameterDirection.Output;
 
                 // Ejecuto el SP
                 cmd.ExecuteNonQuery();
 
-                // Obtengo el nro de reserva
+                // Obtengo el nro de factura
                 int nro_factura_obtenida = Convert.ToInt32(cmd.Parameters["@factura_nro"].Value);
 
+                // Obtengo el nro de reserva original
+                int nro_reserva_original = Convert.ToInt32(cmd.Parameters["@nro_reserva"].Value);
 
-                // Asocio los items a la factura
-                for (var indice = 0; indice < dg_consumos_facturar.RowCount; indice++)
+                if (nro_factura_obtenida > 0)
                 {
+                    // Asocio los items a la factura
+                    for (var indice = 0; indice < dg_consumos_facturar.RowCount; indice++)
+                    {
 
-                    cmd = new SqlCommand("denver.facturar_items", db.Connection);
+                        cmd = new SqlCommand("denver.facturar_items", db.Connection);
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        cmd.Parameters.AddWithValue("@factura_nro", SqlDbType.Int).Value = nro_factura_obtenida.ToString();
+                        cmd.Parameters.AddWithValue("@factura_item_cant", SqlDbType.Int).Value = 1;
+                        cmd.Parameters.AddWithValue("@factura_item_monto", SqlDbType.Int).Value = dg_consumos_facturar.Rows[indice].Cells[2].Value;
+                        cmd.Parameters.AddWithValue("@factura_item_descripcion", SqlDbType.VarChar).Value = dg_consumos_facturar.Rows[indice].Cells[1].Value;
+                        cmd.Parameters.AddWithValue("@factura_consumible_id", SqlDbType.Int).Value = Convert.ToInt32(dg_consumos_facturar.Rows[indice].Cells[0].Value);
+                        cmd.Parameters.AddWithValue("@factura_cliente_tipo_documento", SqlDbType.Int).Value = Convert.ToInt32(cmb_tipo_doc.SelectedValue);
+                        cmd.Parameters.AddWithValue("@factura_pasaporte_nro", SqlDbType.Int).Value = Convert.ToInt32(nro_documento.Text);
+                        cmd.Parameters.AddWithValue("@factura_hotel_id", SqlDbType.Int).Value = Convert.ToInt32(accesoSistema.HotelIdActual);
+                        cmd.Parameters.AddWithValue("@fecha_sistema", SqlDbType.DateTime).Value = accesoSistema.fechaSistema;
+                        cmd.Parameters.AddWithValue("@fecha_facturacion", SqlDbType.DateTime).Value = fecha_hasta.Value;
+
+                        // Ejecuto el SP
+                        cmd.ExecuteNonQuery();
+
+                    }
+                    // Muestro Mensaje
+                    DialogResult result = MessageBox.Show("Se ha emitido la Factura Nro.: " + nro_factura_obtenida.ToString(), "Confirmacion de Facturación",
+                             MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    // Cambio el estado de la Reserva Original a Facturada
+                    cmd = new SqlCommand("denver.cambiar_estado_reserva", db.Connection);
                     cmd.CommandType = CommandType.StoredProcedure;
 
-                    cmd.Parameters.AddWithValue("@factura_nro", SqlDbType.Int).Value = nro_factura_obtenida.ToString();
-                    cmd.Parameters.AddWithValue("@factura_item_cant", SqlDbType.Int).Value = 1;
-                    cmd.Parameters.AddWithValue("@factura_item_monto", SqlDbType.Int).Value = dg_consumos_facturar.Rows[indice].Cells[2].Value;
-                    cmd.Parameters.AddWithValue("@factura_item_descripcion", SqlDbType.VarChar).Value = dg_consumos_facturar.Rows[indice].Cells[1].Value;
-                    cmd.Parameters.AddWithValue("@factura_consumible_id", SqlDbType.Int).Value = Convert.ToInt32(dg_consumos_facturar.Rows[indice].Cells[0].Value);
-                    cmd.Parameters.AddWithValue("@factura_cliente_tipo_documento", SqlDbType.Int).Value = Convert.ToInt32(cmb_tipo_doc.SelectedValue);
-                    cmd.Parameters.AddWithValue("@factura_pasaporte_nro", SqlDbType.Int).Value = Convert.ToInt32(nro_documento.Text);
-                    cmd.Parameters.AddWithValue("@factura_hotel_id", SqlDbType.Int).Value = Convert.ToInt32(accesoSistema.HotelIdActual);
-                    cmd.Parameters.AddWithValue("@fecha_sistema", SqlDbType.DateTime).Value = accesoSistema.fechaSistema;
+                    cmd.Parameters.AddWithValue("@nro_reserva", SqlDbType.Int).Value = nro_reserva_original.ToString();
+                    cmd.Parameters.AddWithValue("@nuevo_estado", SqlDbType.Int).Value = 7;
 
                     // Ejecuto el SP
                     cmd.ExecuteNonQuery();
-
+                }
+                else
+                {
+                    // Muestro Mensaje Error
+                    DialogResult result = MessageBox.Show("Se ha producido un error y no se pudo Facturar", "Confirmacion de Facturación",
+                             MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
 
+                // Reseteo los datos
+                dg_consumos_facturar.Visible = false;
+                Container_facturacion.Visible = false;
+                nro_documento.Text = "";
             }
         }
 
 
         private bool validarFormulario()
         {
-            return (!Validacion.esInicial(nro_documento.Text) &
+
+            float numero_generico;
+
+            return (!Validacion.esInicial(nro_documento.Text) & float.TryParse(nro_documento.Text, out numero_generico) &
                     !Validacion.esInicial(fecha_hasta.Value.ToString()) &
                     !Validacion.esInicial(cmb_tipo_doc.SelectedValue.ToString())
                     );

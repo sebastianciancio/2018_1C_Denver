@@ -33,75 +33,90 @@ namespace FrbaHotel
 
         private void btn_checkin_Click(object sender, EventArgs e)
         {
-            SqlCommand cmd = new SqlCommand("denver.obtener_pasajero_reserva", db.Connection);
-            cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.AddWithValue("@nro_reserva", SqlDbType.Int).Value = Convert.ToInt32(nro_reserva.Text);
+            float numero_generico;
 
-            dt_pasajeros.Clear();
-
-            // Creo el DataTable para obtener los resultados del SP
-            using (var da = new SqlDataAdapter(cmd))
+            // Si se cargo la Reserva
+            if (nro_reserva.Text != "" & float.TryParse(nro_reserva.Text, out numero_generico))
             {
-                da.Fill(dt_pasajeros);
-            }
 
-            // Cargo la Grilla con los datos obtenidos
-            dg_pasajeros.DataSource = dt_pasajeros;
+                SqlCommand cmd = new SqlCommand("denver.obtener_pasajero_reserva", db.Connection);
+                cmd.CommandType = CommandType.StoredProcedure;
 
-            // Oculto Columnas del Resultado
-            dg_pasajeros.Columns[4].Visible = false;
+                cmd.Parameters.AddWithValue("@nro_reserva", SqlDbType.Int).Value = Convert.ToInt32(nro_reserva.Text);
 
-            // Cargo el detalle de la reserva
-            cmd = new SqlCommand("denver.obtener_detalle_reserva", db.Connection);
-            cmd.CommandType = CommandType.StoredProcedure;
+                dt_pasajeros.Clear();
 
-            cmd.Parameters.AddWithValue("@nro_reserva", SqlDbType.Int).Value = Convert.ToInt32(nro_reserva.Text);
-
-            // Creo el DataTable para obtener los resultados del SP
-            DataTable dt_detalle_reserva = new DataTable();
-            using (var da2 = new SqlDataAdapter(cmd))
-            {
-                da2.Fill(dt_detalle_reserva);
-            }
-
-            // Cargo la Grilla con los datos obtenidos
-            dg_estadia.DataSource = dt_detalle_reserva;
-
-            // Oculto Columnas del Resultado
-            dg_estadia.Columns[6].Visible = false;
-            dg_estadia.Columns[7].Visible = false;
-
-            // Si hay Registros 
-            if (dg_estadia.RowCount > 0)
-            {
-                // Si el estado no es cancelado ni confimado
-                if (Convert.ToInt32(dg_estadia.Rows[0].Cells[7].Value) <= 2)
+                // Creo el DataTable para obtener los resultados del SP
+                using (var da = new SqlDataAdapter(cmd))
                 {
-                    //fecha_desde = Convert.ToDateTime(dg_estadia.Rows[0].Cells[0].Value);
-                    //fecha_hasta = Convert.ToDateTime(dg_estadia.Rows[0].Cells[1].Value);
+                    da.Fill(dt_pasajeros);
+                }
 
-                    // Convierto la Fecha al formato local
-                    fecha_desde = DateTime.ParseExact(dg_estadia.Rows[0].Cells[0].Value.ToString(), "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal);
-                    fecha_hasta = DateTime.ParseExact(dg_estadia.Rows[0].Cells[1].Value.ToString(), "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal);
+                // Cargo la Grilla con los datos obtenidos
+                dg_pasajeros.DataSource = dt_pasajeros;
 
-                    // Muestro los objetos ocultos
-                    Container_estadia.Visible = true;
-                    Container_pasajero.Visible = true;
+                // Oculto Columnas del Resultado
+                dg_pasajeros.Columns[4].Visible = false;
+
+                // Cargo el detalle de la reserva
+                cmd = new SqlCommand("denver.obtener_detalle_reserva", db.Connection);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.AddWithValue("@nro_reserva", SqlDbType.Int).Value = Convert.ToInt32(nro_reserva.Text);
+
+                // Creo el DataTable para obtener los resultados del SP
+                DataTable dt_detalle_reserva = new DataTable();
+                using (var da2 = new SqlDataAdapter(cmd))
+                {
+                    da2.Fill(dt_detalle_reserva);
+                }
+
+                // Cargo la Grilla con los datos obtenidos
+                dg_estadia.DataSource = dt_detalle_reserva;
+
+                // Oculto Columnas del Resultado
+                dg_estadia.Columns[6].Visible = false;
+                dg_estadia.Columns[7].Visible = false;
+
+                // Si hay Registros 
+                if (dg_estadia.RowCount > 0)
+                {
+                    // Si el estado no es cancelado ni confimado
+                    if (Convert.ToInt32(dg_estadia.Rows[0].Cells[7].Value) <= 2)
+                    {
+                        //fecha_desde = Convert.ToDateTime(dg_estadia.Rows[0].Cells[0].Value);
+                        //fecha_hasta = Convert.ToDateTime(dg_estadia.Rows[0].Cells[1].Value);
+
+                        // Convierto la Fecha al formato local
+                        fecha_desde = DateTime.ParseExact(dg_estadia.Rows[0].Cells[0].Value.ToString(), "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal);
+                        fecha_hasta = DateTime.ParseExact(dg_estadia.Rows[0].Cells[1].Value.ToString(), "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal);
+
+                        // Muestro los objetos ocultos
+                        Container_estadia.Visible = true;
+                        Container_pasajero.Visible = true;
+                    }
+                    else
+                    {
+                        DialogResult result = MessageBox.Show("La Reserva se encuentra Confirmada o Cancelada", "Check/In", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+
                 }
                 else
                 {
-                    DialogResult result = MessageBox.Show("La Reserva se encuentra Confirmada o Cancelada", "Check/In", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    DialogResult result = MessageBox.Show("No se encontraron datos de la Reserva", "Check/In", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                    Container_estadia.Visible = false;
+                    Container_pasajero.Visible = false;
                 }
 
             }
             else
             {
-                DialogResult result = MessageBox.Show("No se encontraron datos de la Reserva", "Check/In", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                DialogResult result = MessageBox.Show("Debe ingresar la Reserva para continuar", "Check/In", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
-                Container_estadia.Visible = false;
-                Container_pasajero.Visible = false;
             }
+
         }
 
         private void btn_agregar_pax_Click(object sender, EventArgs e)

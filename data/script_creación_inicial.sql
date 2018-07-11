@@ -100,12 +100,12 @@ CREATE TABLE [DENVER].[estados](
 ) ON [PRIMARY]
 GO
 
-
 CREATE TABLE [DENVER].[facturas](
       [factura_nro] [numeric](18, 0) NOT NULL,
       [factura_fecha] [datetime] NULL,
       [factura_total] [numeric](18, 2) NULL,
       [factura_forma_pago_id] [smallint] NULL,
+      [factura_detalle_pago] [nvarchar](150) NULL,
       [factura_cliente_tipo_documento] [smallint] NULL,
       [factura_pasaporte_nro] [numeric](18, 0) NULL,
       [factura_hotel_id] [smallint] NULL,
@@ -687,6 +687,7 @@ INSERT INTO DENVER.estados VALUES (3, 'RESERVA CANCELADA POR RECEPCIÓN');
 INSERT INTO DENVER.estados VALUES (4, 'RESERVA CANCELADA POR CLIENTE');
 INSERT INTO DENVER.estados VALUES (5, 'RESERVA CANCELADA POR NO-SHOW');
 INSERT INTO DENVER.estados VALUES (6, 'RESERVA CON INGRESO (EFECTIVIZADA)');
+INSERT INTO DENVER.estados VALUES (7, 'RESERVA CON INGRESO (FACTURADA)');
 GO
 
 /****** tipo_documentos  ******/
@@ -2153,7 +2154,7 @@ BEGIN
             DENVER.reservas as r
             join reservas_habitaciones as rh on rh.reserva_habitaciones_reserva_codigo = r.reserva_codigo
       where
-            rh.reserva_habitacion_nro = @habitacion_nro and r.reserva_hotel_id = @hotel_id;
+            rh.reserva_habitacion_nro = @habitacion_nro and r.reserva_hotel_id = @hotel_id AND r.reserva_estado_id = 6;
 
 
       select
@@ -2186,7 +2187,7 @@ BEGIN
             DENVER.reservas as r
             join reservas_habitaciones as rh on rh.reserva_habitaciones_reserva_codigo = r.reserva_codigo
       where
-            rh.reserva_habitacion_nro = @habitacion_nro and r.reserva_hotel_id = @hotel_id;
+            rh.reserva_habitacion_nro = @habitacion_nro and r.reserva_hotel_id = @hotel_id AND r.reserva_estado_id = 6;
 
 
       insert into DENVER.consumibles_clientes (consumible_cliente_consumible_id,consumible_cliente_tipo_documento_id,consumible_cliente_pasaporte_nro,consumible_cliente_fecha_consumo,consumible_cliente_reserva_codigo) values (@consumible_id,@cliente_tipo_doc,@cliente_nro_doc, @fecha_consumo, @nro_reserva)
@@ -2492,11 +2493,11 @@ BEGIN
 
       -- obtengo nro_reserva
       select
-            @nro_reserva = r.reserva_codigo
+            @nro_reserva = isnull(r.reserva_codigo,0)
       from
             DENVER.reservas as r
       where
-            r.reserva_cliente_tipo_documento_id = @tipo_documento and r.reserva_cliente_pasaporte_nro = @nro_documento and r.reserva_hotel_id = @hotel_id and @fecha_salida between r.reserva_fecha_inicio and r.reserva_fecha_fin;
+            r.reserva_cliente_tipo_documento_id = @tipo_documento and r.reserva_cliente_pasaporte_nro = @nro_documento and r.reserva_hotel_id = @hotel_id and @fecha_salida between r.reserva_fecha_inicio and r.reserva_fecha_fin AND r.reserva_estado_id = 6;
 
       -- detalle de consumibles
       select
@@ -2795,20 +2796,25 @@ CREATE PROCEDURE [DENVER].[facturar_encabezado]
       @fecha_egreso datetime,
       @factura_total numeric(18,2),
       @factura_forma_pago_id smallint,
+      @factura_detalle_pago nvarchar(150),
       @factura_cliente_tipo_documento smallint,
       @factura_pasaporte_nro numeric(18,0),
       @fecha_sistema datetime,
       @factura_hotel_id smallint,
-      @factura_nro numeric(18,0)  OUTPUT
+      @factura_nro numeric(18,0)  OUTPUT,
+      @nro_reserva numeric(18,0) OUTPUT
 AS
 BEGIN
       SET NOCOUNT ON;  
 
       declare @next_factura_nro numeric(18,0) = (SELECT TOP 1 factura_nro FROM DENVER.facturas ORDER BY factura_nro DESC)+1
 
-      insert into DENVER.facturas (factura_nro,factura_fecha,factura_total,factura_forma_pago_id,factura_cliente_tipo_documento,factura_pasaporte_nro,factura_hotel_id,factura_created) values (@next_factura_nro,@fecha_sistema,@factura_total,@factura_forma_pago_id,@factura_cliente_tipo_documento,@factura_pasaporte_nro,@factura_hotel_id,@fecha_sistema)
+      insert into DENVER.facturas (factura_nro,factura_fecha,factura_total,factura_forma_pago_id,factura_cliente_tipo_documento,factura_pasaporte_nro,factura_hotel_id,factura_created, factura_detalle_pago) values (@next_factura_nro,@fecha_sistema,@factura_total,@factura_forma_pago_id,@factura_cliente_tipo_documento,@factura_pasaporte_nro,@factura_hotel_id,@fecha_sistema,@factura_detalle_pago)
 
       SELECT @factura_nro = @next_factura_nro
+
+      SELECT @nro_reserva = (SELECT TOP 1 reserva_codigo FROM [DENVER].[reservas] WHERE reserva_cliente_tipo_documento_id = @factura_cliente_tipo_documento AND reserva_cliente_pasaporte_nro = @factura_pasaporte_nro AND reserva_hotel_id = @factura_hotel_id AND 
+            reserva_estado_id = 6 AND @fecha_egreso BETWEEN reserva_fecha_inicio AND reserva_fecha_fin)
 
 END
 GO
@@ -2822,24 +2828,14 @@ CREATE PROCEDURE [DENVER].[facturar_items]
       @factura_pasaporte_nro numeric(18,0),
       @factura_hotel_id smallint,
       @fecha_sistema datetime,
+      @fecha_facturacion datetime,
       @factura_consumible_id numeric(18,0)
 AS
 BEGIN
-      SET NOCOUNT ON;  
-
       -- Busco el Nro de Reserva Original
-      declare @nro_reserva numeric(18,0)
-      SELECT TOP 1
-            @nro_reserva = reserva_codigo
-      FROM 
-            [DENVER].[reservas] 
-      WHERE
-            reserva_cliente_tipo_documento_id = @factura_cliente_tipo_documento AND
-            reserva_cliente_pasaporte_nro = @factura_pasaporte_nro AND 
-            reserva_hotel_id = @factura_hotel_id AND 
-            reserva_estado_id = 6 AND
-            @fecha_sistema BETWEEN reserva_fecha_inicio AND reserva_fecha_fin
-
+      declare @nro_reserva numeric(18,0) = (SELECT TOP 1 reserva_codigo FROM [DENVER].[reservas] WHERE reserva_cliente_tipo_documento_id = @factura_cliente_tipo_documento AND reserva_cliente_pasaporte_nro = @factura_pasaporte_nro AND reserva_hotel_id = @factura_hotel_id AND 
+            reserva_estado_id = 6 AND @fecha_facturacion BETWEEN reserva_fecha_inicio AND reserva_fecha_fin)
+      
       insert into DENVER.facturas_items (factura_item_nro,factura_item_cant,factura_item_monto,factura_item_descripcion,factura_consumible_id,factura_reserva_codigo) values (@factura_nro,@factura_item_cant,@factura_item_monto,@factura_item_descripcion,@factura_consumible_id,@nro_reserva)
 
 END
