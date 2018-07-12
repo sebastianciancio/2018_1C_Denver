@@ -15,6 +15,15 @@ namespace FrbaHotel
     public partial class ModificacionReserva : Form
     {
         private DataBase db;
+
+        private DateTime original_fecha_inicio;
+        private DateTime original_fecha_fin;
+        private int original_tipo_habitacion;
+        private int original_regimen_id;
+        private int original_habitacion_nro;
+        private int nueva_precio;
+        private int nueva_habitacion_nro;
+
         public ModificacionReserva()
         {
             db = DataBase.GetInstance();
@@ -35,6 +44,9 @@ namespace FrbaHotel
 
         private void btn_buscar_reserva_Click(object sender, EventArgs e)
         {
+            label_disponibilidad.Visible = false;
+            label_hab_precio.Visible = false;
+
             float numero_generico;
 
             // Si se cargo la Reserva
@@ -110,15 +122,24 @@ namespace FrbaHotel
         private void dg_reserva_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             label_disponibilidad.Visible = false;
+            label_hab_precio.Visible = false;
 
             DataGridViewRow row = dg_reserva.CurrentRow;
+
+            // Guardo los registros anteriores
+            original_fecha_inicio = DateTime.ParseExact(row.Cells[0].Value.ToString(), "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal);
+            original_fecha_fin = DateTime.ParseExact(row.Cells[1].Value.ToString(), "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal);
+            original_tipo_habitacion = Convert.ToInt32(row.Cells[6].Value);
+            original_regimen_id = Convert.ToInt32(row.Cells[8].Value);
+            original_habitacion_nro = Convert.ToInt32(row.Cells[5].Value);
 
             // Cargo el registro para poder modificarlo
             fecha_desde.Value = DateTime.ParseExact(row.Cells[0].Value.ToString(), "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal);
             fecha_hasta.Value = DateTime.ParseExact(row.Cells[1].Value.ToString(), "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal);
             cmb_regimen.SelectedValue= row.Cells[8].Value.ToString();
             cmb_tipo_hab.SelectedValue = row.Cells[6].Value.ToString();
-            
+
+
             // Muestro el Container del registro a modificar
             Container_modif_reserva.Visible = true;
         }
@@ -127,6 +148,7 @@ namespace FrbaHotel
         {
 
             label_disponibilidad.Visible = false;
+            label_hab_precio.Visible = false;
 
             SqlCommand cmd = new SqlCommand("denver.obtener_disponibilidad", db.Connection);
             cmd.CommandType = CommandType.StoredProcedure;
@@ -168,8 +190,15 @@ namespace FrbaHotel
                 label_disponibilidad.ForeColor = Color.Black;
                 label_disponibilidad.Text = "Existe disponibilidad";
 
+                // Guardo una Habitacion y su precio
+                nueva_precio = (Convert.ToInt32(dg_disponibilidad.Rows[0].Cells[4].Value) * Convert.ToInt32(dg_disponibilidad.Rows[0].Cells[3].Value)) + Convert.ToInt32(dg_disponibilidad.Rows[0].Cells[7].Value);
+                nueva_habitacion_nro = Convert.ToInt32(dg_disponibilidad.Rows[0].Cells[5].Value);
+
+                label_hab_precio.Text = "Nro. de Habitación disponible: " + nueva_habitacion_nro.ToString() + " - Precio Diario por Pax: " + nueva_precio.ToString();
+
                 // Muestro el boton Modificar
                 btn_Modificar.Visible = true;
+                label_hab_precio.Visible = true;
             }
             else
             {
@@ -180,7 +209,56 @@ namespace FrbaHotel
 
                 // Oculto el boton Modificar
                 btn_Modificar.Visible = false;
+                label_hab_precio.Visible = false;
             }
+
+        }
+
+        private void btn_Modificar_Click(object sender, EventArgs e)
+        {
+            SqlCommand cmd = new SqlCommand("denver.modificar_reserva", db.Connection);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+
+            cmd.Parameters.AddWithValue("@original_fecha_inicio", SqlDbType.DateTime).Value = original_fecha_inicio;
+            cmd.Parameters.AddWithValue("@original_fecha_fin", SqlDbType.DateTime).Value = original_fecha_fin;
+            cmd.Parameters.AddWithValue("@original_tipo_habitacion", SqlDbType.Int).Value = original_tipo_habitacion;
+            cmd.Parameters.AddWithValue("@original_regimen_id", SqlDbType.Int).Value = original_regimen_id;
+            cmd.Parameters.AddWithValue("@original_habitacion_nro", SqlDbType.Int).Value = original_habitacion_nro;
+
+            cmd.Parameters.AddWithValue("@nueva_fecha_inicio", SqlDbType.DateTime).Value = fecha_desde.Value;
+            cmd.Parameters.AddWithValue("@nueva_fecha_fin", SqlDbType.DateTime).Value = fecha_hasta.Value;
+            cmd.Parameters.AddWithValue("@nueva_tipo_habitacion", SqlDbType.Int).Value = Convert.ToInt32(cmb_tipo_hab.SelectedValue);
+            cmd.Parameters.AddWithValue("@nueva_regimen_id", SqlDbType.Int).Value = Convert.ToInt32(cmb_regimen.SelectedValue);
+            cmd.Parameters.AddWithValue("@nueva_precio", SqlDbType.Int).Value = Convert.ToInt32(cmb_tipo_hab.SelectedValue);
+            cmd.Parameters.AddWithValue("@nueva_habitacion_nro", SqlDbType.Int).Value = nueva_habitacion_nro;
+
+
+
+            if (accesoSistema.UsuarioLogueado.Nombre == "")
+            {
+                cmd.Parameters.AddWithValue("@reserva_usuario_user", SqlDbType.VarChar).Value = "GUEST";
+            }
+            else
+            {
+                cmd.Parameters.AddWithValue("@reserva_usuario_user", SqlDbType.VarChar).Value = accesoSistema.UsuarioLogueado.Id;
+            }
+
+            cmd.Parameters.AddWithValue("@reserva_hotel_id", SqlDbType.Int).Value = Convert.ToInt32(cmb_hotel.SelectedValue);
+            cmd.Parameters.AddWithValue("@fecha_sistema", SqlDbType.DateTime).Value = accesoSistema.fechaSistema;
+            cmd.Parameters.AddWithValue("@nro_reserva", SqlDbType.Int).Value = Convert.ToInt32(nro_reserva.Text);
+
+            // Ejecuto el SP
+            cmd.ExecuteNonQuery();
+
+            MessageBox.Show("La reserva se ha modificado", "Mensaje");
+
+            // Oculto los objetos
+            btn_Modificar.Visible = false;
+            label_hab_precio.Visible = false;
+            Container_reserva.Visible = false;
+            Container_modif_reserva.Visible = false;
+            label_disponibilidad.Visible = false;
 
         }
     }

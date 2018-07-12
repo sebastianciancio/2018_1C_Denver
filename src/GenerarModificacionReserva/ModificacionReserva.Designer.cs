@@ -35,9 +35,11 @@
             this.label2 = new System.Windows.Forms.Label();
             this.nro_reserva = new System.Windows.Forms.TextBox();
             this.Container_reserva = new System.Windows.Forms.GroupBox();
-            this.btn_Modificar = new System.Windows.Forms.Button();
             this.dg_reserva = new System.Windows.Forms.DataGridView();
+            this.btn_Modificar = new System.Windows.Forms.Button();
             this.Container_modif_reserva = new System.Windows.Forms.GroupBox();
+            this.label_disponibilidad = new System.Windows.Forms.Label();
+            this.btn_check_disponibilidad = new System.Windows.Forms.Button();
             this.cmb_regimen = new System.Windows.Forms.ComboBox();
             this.fecha_hasta = new System.Windows.Forms.DateTimePicker();
             this.label4 = new System.Windows.Forms.Label();
@@ -46,9 +48,8 @@
             this.cmb_tipo_hab = new System.Windows.Forms.ComboBox();
             this.fecha_desde = new System.Windows.Forms.DateTimePicker();
             this.label5 = new System.Windows.Forms.Label();
-            this.btn_check_disponibilidad = new System.Windows.Forms.Button();
-            this.label_disponibilidad = new System.Windows.Forms.Label();
             this.dg_disponibilidad = new System.Windows.Forms.DataGridView();
+            this.label_hab_precio = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.Container_reserva.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dg_reserva)).BeginInit();
@@ -125,17 +126,6 @@
             this.Container_reserva.Text = "Detalle de la Reserva";
             this.Container_reserva.Visible = false;
             // 
-            // btn_Modificar
-            // 
-            this.btn_Modificar.BackColor = System.Drawing.Color.Lime;
-            this.btn_Modificar.Location = new System.Drawing.Point(486, 98);
-            this.btn_Modificar.Name = "btn_Modificar";
-            this.btn_Modificar.Size = new System.Drawing.Size(182, 27);
-            this.btn_Modificar.TabIndex = 8;
-            this.btn_Modificar.Text = "Modificar Reserva";
-            this.btn_Modificar.UseVisualStyleBackColor = false;
-            this.btn_Modificar.Visible = false;
-            // 
             // dg_reserva
             // 
             this.dg_reserva.AllowUserToAddRows = false;
@@ -149,8 +139,21 @@
             this.dg_reserva.TabIndex = 1;
             this.dg_reserva.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dg_reserva_CellClick);
             // 
+            // btn_Modificar
+            // 
+            this.btn_Modificar.BackColor = System.Drawing.Color.Lime;
+            this.btn_Modificar.Location = new System.Drawing.Point(486, 133);
+            this.btn_Modificar.Name = "btn_Modificar";
+            this.btn_Modificar.Size = new System.Drawing.Size(182, 27);
+            this.btn_Modificar.TabIndex = 8;
+            this.btn_Modificar.Text = "Modificar Reserva";
+            this.btn_Modificar.UseVisualStyleBackColor = false;
+            this.btn_Modificar.Visible = false;
+            this.btn_Modificar.Click += new System.EventHandler(this.btn_Modificar_Click);
+            // 
             // Container_modif_reserva
             // 
+            this.Container_modif_reserva.Controls.Add(this.label_hab_precio);
             this.Container_modif_reserva.Controls.Add(this.label_disponibilidad);
             this.Container_modif_reserva.Controls.Add(this.btn_check_disponibilidad);
             this.Container_modif_reserva.Controls.Add(this.cmb_regimen);
@@ -164,11 +167,34 @@
             this.Container_modif_reserva.Controls.Add(this.label5);
             this.Container_modif_reserva.Location = new System.Drawing.Point(12, 235);
             this.Container_modif_reserva.Name = "Container_modif_reserva";
-            this.Container_modif_reserva.Size = new System.Drawing.Size(737, 131);
+            this.Container_modif_reserva.Size = new System.Drawing.Size(737, 172);
             this.Container_modif_reserva.TabIndex = 13;
             this.Container_modif_reserva.TabStop = false;
             this.Container_modif_reserva.Text = "Modificación de la Reserva";
             this.Container_modif_reserva.Visible = false;
+            // 
+            // label_disponibilidad
+            // 
+            this.label_disponibilidad.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
+            this.label_disponibilidad.Location = new System.Drawing.Point(209, 133);
+            this.label_disponibilidad.Margin = new System.Windows.Forms.Padding(3, 5, 3, 0);
+            this.label_disponibilidad.Name = "label_disponibilidad";
+            this.label_disponibilidad.Padding = new System.Windows.Forms.Padding(0, 7, 0, 0);
+            this.label_disponibilidad.Size = new System.Drawing.Size(244, 27);
+            this.label_disponibilidad.TabIndex = 10;
+            this.label_disponibilidad.Text = "Existe Disponibilidad";
+            this.label_disponibilidad.Visible = false;
+            // 
+            // btn_check_disponibilidad
+            // 
+            this.btn_check_disponibilidad.BackColor = System.Drawing.Color.Lime;
+            this.btn_check_disponibilidad.Location = new System.Drawing.Point(21, 133);
+            this.btn_check_disponibilidad.Name = "btn_check_disponibilidad";
+            this.btn_check_disponibilidad.Size = new System.Drawing.Size(182, 27);
+            this.btn_check_disponibilidad.TabIndex = 9;
+            this.btn_check_disponibilidad.Text = "Comprobar Disponibilidad";
+            this.btn_check_disponibilidad.UseVisualStyleBackColor = false;
+            this.btn_check_disponibilidad.Click += new System.EventHandler(this.btn_check_disponibilidad_Click);
             // 
             // cmb_regimen
             // 
@@ -242,29 +268,6 @@
             this.label5.TabIndex = 0;
             this.label5.Text = "Desde";
             // 
-            // btn_check_disponibilidad
-            // 
-            this.btn_check_disponibilidad.BackColor = System.Drawing.Color.Lime;
-            this.btn_check_disponibilidad.Location = new System.Drawing.Point(21, 98);
-            this.btn_check_disponibilidad.Name = "btn_check_disponibilidad";
-            this.btn_check_disponibilidad.Size = new System.Drawing.Size(182, 27);
-            this.btn_check_disponibilidad.TabIndex = 9;
-            this.btn_check_disponibilidad.Text = "Comprobar Disponibilidad";
-            this.btn_check_disponibilidad.UseVisualStyleBackColor = false;
-            this.btn_check_disponibilidad.Click += new System.EventHandler(this.btn_check_disponibilidad_Click);
-            // 
-            // label_disponibilidad
-            // 
-            this.label_disponibilidad.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
-            this.label_disponibilidad.Location = new System.Drawing.Point(209, 98);
-            this.label_disponibilidad.Margin = new System.Windows.Forms.Padding(3, 5, 3, 0);
-            this.label_disponibilidad.Name = "label_disponibilidad";
-            this.label_disponibilidad.Padding = new System.Windows.Forms.Padding(0, 7, 0, 0);
-            this.label_disponibilidad.Size = new System.Drawing.Size(244, 27);
-            this.label_disponibilidad.TabIndex = 10;
-            this.label_disponibilidad.Text = "Existe Disponibilidad";
-            this.label_disponibilidad.Visible = false;
-            // 
             // dg_disponibilidad
             // 
             this.dg_disponibilidad.AllowUserToAddRows = false;
@@ -278,11 +281,24 @@
             this.dg_disponibilidad.TabIndex = 14;
             this.dg_disponibilidad.Visible = false;
             // 
+            // label_hab_precio
+            // 
+            this.label_hab_precio.BackColor = System.Drawing.Color.Transparent;
+            this.label_hab_precio.Location = new System.Drawing.Point(21, 91);
+            this.label_hab_precio.Margin = new System.Windows.Forms.Padding(3, 5, 3, 0);
+            this.label_hab_precio.Name = "label_hab_precio";
+            this.label_hab_precio.Padding = new System.Windows.Forms.Padding(0, 7, 0, 0);
+            this.label_hab_precio.Size = new System.Drawing.Size(647, 27);
+            this.label_hab_precio.TabIndex = 11;
+            this.label_hab_precio.Text = "Habitacion xxx disponible a precio xxx";
+            this.label_hab_precio.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.label_hab_precio.Visible = false;
+            // 
             // ModificacionReserva
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(763, 379);
+            this.ClientSize = new System.Drawing.Size(763, 419);
             this.Controls.Add(this.Container_modif_reserva);
             this.Controls.Add(this.Container_reserva);
             this.Controls.Add(this.groupBox1);
@@ -323,5 +339,6 @@
         private System.Windows.Forms.Button btn_check_disponibilidad;
         private System.Windows.Forms.Label label_disponibilidad;
         private System.Windows.Forms.DataGridView dg_disponibilidad;
+        private System.Windows.Forms.Label label_hab_precio;
     }
 }

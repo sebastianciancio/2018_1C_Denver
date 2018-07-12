@@ -56,6 +56,19 @@ ALTER TABLE [DENVER].[disponibilidades] DROP CONSTRAINT [FK_disponibilidades_tip
 ALTER TABLE [DENVER].[disponibilidades] DROP CONSTRAINT [FK_disponibilidades_habitaciones]
 ALTER TABLE [DENVER].[disponibilidades] DROP CONSTRAINT [DF_disponibilidades_disponibilidad_ocupado]
 GO
+
+/*  --------------------------------------------------------------------------------
+ELIMINACION DE INDICES
+-------------------------------------------------------------------------------- */
+
+DROP INDEX [IX_ciudad] ON [DENVER].[hoteles]
+DROP INDEX [IX_calle] ON [DENVER].[hoteles]
+DROP INDEX [IX_disponibilidad_fecha] ON [DENVER].[disponibilidades]
+DROP INDEX [IX_disponibilidad_ocupado] ON [DENVER].[disponibilidades]
+DROP INDEX [IX_disponibilidad_hotel_id] ON [DENVER].[disponibilidades]
+DROP INDEX [IX_disponibilidad_habitacion_nro] ON [DENVER].[disponibilidades]
+DROP INDEX [IX_disponibilidad_tipo_habitacion_id] ON [DENVER].[disponibilidades]
+
 /*  --------------------------------------------------------------------------------
 ELIMINACION TODAS LAS TABLAS
 -------------------------------------------------------------------------------- */
@@ -172,6 +185,8 @@ DROP PROCEDURE [DENVER].[facturar_items]
 DROP PROCEDURE [DENVER].[habilitar_usuario]
 DROP PROCEDURE [DENVER].[cambiar_contrasena]
 DROP FUNCTION [DENVER].[dias_antes_reserva]
+DROP PROCEDURE [DENVER].[modificar_reserva]
+DROP PROCEDURE [DENVER].[actualizar_disponibilidad_migracion]
 GO
 
 DROP SCHEMA [DENVER]
