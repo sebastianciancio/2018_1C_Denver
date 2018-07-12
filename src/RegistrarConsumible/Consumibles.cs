@@ -98,7 +98,7 @@ namespace FrbaHotel
                 {
 
                     DataRow nueva_fila = dt_consumos_nuevos.NewRow();
-                    nueva_fila[0] = DateTime.Now.ToString("dd/MM/yyyy");
+                    nueva_fila[0] = accesoSistema.fechaSistema.Day.ToString() + "/" + accesoSistema.fechaSistema.Month.ToString() + "/" + accesoSistema.fechaSistema.Year.ToString();
                     nueva_fila[1] = cmb_productos.Text;
                     nueva_fila[2] = cmb_productos.SelectedValue;
 

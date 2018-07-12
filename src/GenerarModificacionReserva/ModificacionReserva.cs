@@ -193,7 +193,7 @@ namespace FrbaHotel
 
                 // Guardo una Habitacion y su precio
                 nueva_precio = (Convert.ToInt32(dg_disponibilidad.Rows[0].Cells[4].Value) * Convert.ToInt32(dg_disponibilidad.Rows[0].Cells[3].Value)) + Convert.ToInt32(dg_disponibilidad.Rows[0].Cells[7].Value);
-                nueva_habitacion_nro = Convert.ToInt32(dg_disponibilidad.Rows[0].Cells[5].Value);
+                nueva_habitacion_nro = Convert.ToInt32(dg_disponibilidad.Rows[0].Cells[0].Value);
 
                 label_hab_precio.Text = "Nro. de Habitación disponible: " + nueva_habitacion_nro.ToString() + " - Precio Diario por Pax: " + nueva_precio.ToString();
 

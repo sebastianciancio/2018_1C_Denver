@@ -262,6 +262,7 @@ namespace FrbaHotel
                 // Oculto Columnas del Resultado
                 dg_estadia.Columns[6].Visible = false;
                 dg_estadia.Columns[7].Visible = false;
+                dg_estadia.Columns[8].Visible = false;
 
                 // Convierto la Fecha al formato local
                 fecha_desde = DateTime.ParseExact(dg_estadia.Rows[0].Cells[0].Value.ToString(), "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal);

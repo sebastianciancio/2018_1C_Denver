@@ -58,6 +58,8 @@ namespace FrbaHotel
                 // Cargo la Grilla con los datos obtenidos
                 dg_consumos_facturar.DataSource = dt_facturable;
 
+                // Oculto Columnas del Resultado
+                dg_consumos_facturar.Columns[0].Visible = false;
 
                 if (dt_facturable.Rows.Count > 0)
                 {
@@ -66,7 +68,7 @@ namespace FrbaHotel
                     // Obtengo el total de la factura
                     total_factura = Convert.ToInt32(cmd.Parameters["@total_factura"].Value);
 
-                    label_total_facturar.Text = total_factura.ToString();
+                    label_total_facturar.Text = "$"+total_factura.ToString();
                 }
                 else
                 {
