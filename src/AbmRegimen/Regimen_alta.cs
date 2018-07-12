@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.SqlClient;
+using System.Text.RegularExpressions;
 
 namespace FrbaHotel.AbmRegimen
 {
@@ -27,6 +28,12 @@ namespace FrbaHotel.AbmRegimen
 
         private void btn_guardar_Click(object sender, EventArgs e)
         {
+            Regex reg = new Regex("A-Z");
+            if (reg.IsMatch(txb_precio.Text))
+            {
+                MessageBox.Show("El numero no puede contener caracteres", "Error");
+                return;
+            }
             if (!Validacion.esInicial(txb_nombre.Text) & !Validacion.esInicial(txb_precio.Text))
             {
                 SqlCommand cmd = new SqlCommand("denver.alta_regimen", db.Connection);

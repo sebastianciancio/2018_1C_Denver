@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.SqlClient;
+using System.Text.RegularExpressions;
 
 namespace FrbaHotel.AbmHabitacion
 {
@@ -24,6 +25,17 @@ namespace FrbaHotel.AbmHabitacion
 
         private void btn_guardar_Click(object sender, EventArgs e)
         {
+            Regex reg = new Regex("[A-z]");
+            if (reg.IsMatch(txb_numero.Text))
+            {
+                MessageBox.Show("El numero de habitación no puede contener caracteres", "Error");
+                return;
+            }
+            if (reg.IsMatch(txb_piso.Text))
+            {
+                MessageBox.Show("El piso no puede contener caracteres", "Error");
+                return;
+            }
             if (validarFormulario())
             {
                 //

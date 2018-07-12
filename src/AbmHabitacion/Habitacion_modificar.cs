@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.SqlClient;
+using System.Text.RegularExpressions;
 
 namespace FrbaHotel.AbmHabitacion
 {
@@ -61,6 +62,25 @@ namespace FrbaHotel.AbmHabitacion
 
         private void btn_guardar_Click(object sender, EventArgs e)
         {
+            Regex reg = new Regex("[A-z]");
+            if (reg.IsMatch(txb_numero.Text))
+            {
+                MessageBox.Show("El numero de habitación no puede contener caracteres", "Error");
+                return;
+            }
+            if (reg.IsMatch(txb_piso.Text))
+            {
+                MessageBox.Show("El piso no puede contener caracteres", "Error");
+                return;
+            }
+            //PASE EL TEXBOX A STRING
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < txb_desc.Lines.Count(); i++)
+            {
+                sb.Append(txb_desc.Lines[i].ToString());
+            }
+            string desc = sb.ToString();
+
             // verifico que no hayan cambiado habitacion u hotel 
             int flag = 0;
             int existe = 0;
@@ -82,38 +102,37 @@ namespace FrbaHotel.AbmHabitacion
                 flag = dt.Rows.Count;
                 if (flag != 0)
                 {
-                    MessageBox.Show("No se puede cambiar la ubicación de la habitacion número " + hab_nro + " ya que tiene reservas activas", "Mensaje"); }
+                    MessageBox.Show("No se puede cambiar la ubicación de la habitacion número " + hab_nro + " ya que tiene reservas activas", "Mensaje");
+                    return;
+                }
                 //verifico que no exista la combiacion habitacion-hotel
-                else{
-                    SqlCommand hhu = new SqlCommand("denver.existe_habitacion_hotel", db.Connection);
-                    hhu.CommandType = CommandType.StoredProcedure;
 
-                    hhu.Parameters.AddWithValue("@habitacion_nro", SqlDbType.Int).Value = Convert.ToInt32(txb_numero.Text);
-                    hhu.Parameters.AddWithValue("@hotel_id", SqlDbType.Int).Value = Convert.ToInt32(cmb_hotel.SelectedValue);
+                SqlCommand hhu = new SqlCommand("denver.existe_habitacion_hotel", db.Connection);
+                hhu.CommandType = CommandType.StoredProcedure;
 
-                    DataTable hh = new DataTable();
+                hhu.Parameters.AddWithValue("@habitacion_nro", SqlDbType.Int).Value = Convert.ToInt32(txb_numero.Text);
+                hhu.Parameters.AddWithValue("@hotel_id", SqlDbType.Int).Value = Convert.ToInt32(cmb_hotel.SelectedValue);
 
-                    using (var da = new SqlDataAdapter(hhu))
-                    {
-                        da.Fill(hh);
-                    }
+                DataTable hh = new DataTable();
 
-                    existe = hh.Rows.Count;
-                    if (existe != 0)
-                    {
-                        MessageBox.Show("Ya existe una habitacion con el numero " + Convert.ToInt32(txb_numero.Text) + " en el hotel " + cmb_hotel.Text, "Mensaje");
-                    };
+                using (var da = new SqlDataAdapter(hhu))
+                {
+                    da.Fill(hh);
+                }
+
+                existe = hh.Rows.Count;
+                if (existe != 0)
+                {
+                    MessageBox.Show("Ya existe una habitacion con el numero " + Convert.ToInt32(txb_numero.Text) + " en el hotel " + cmb_hotel.Text, "Mensaje");
+                    return;
                 };
-               };
-            if ( existe == 0 & flag == 0) { 
-                StringBuilder sb = new StringBuilder();
-                    for (int i = 0; i < txb_desc.Lines.Count(); i++)
-                    {
-                        sb.Append(txb_desc.Lines[i].ToString());
-                    }
-                    string desc = sb.ToString();
 
-                    SqlCommand cmd = new SqlCommand("denver.modificar_habitacion", db.Connection);
+
+                if (existe == 0 & flag == 0)
+                {
+
+
+                    SqlCommand cmd = new SqlCommand("denver.cargar_habitacion", db.Connection);
                     cmd.CommandType = CommandType.StoredProcedure;
 
                     cmd.Parameters.AddWithValue("@habitacion_nro", SqlDbType.Int).Value = Convert.ToInt32(txb_numero.Text);
@@ -125,10 +144,31 @@ namespace FrbaHotel.AbmHabitacion
                     cmd.Parameters.AddWithValue("@habitacion_descripcion", SqlDbType.NText).Value = desc;
                     cmd.Parameters.AddWithValue("@fecha_sistema", SqlDbType.DateTime).Value = accesoSistema.fechaSistema;
 
-                cmd.ExecuteNonQuery();
+                    cmd.ExecuteNonQuery();
 
                     MessageBox.Show("Se ha modificado la habitación " + hab_nro, "Mensaje");
                 }
+            }
+            else
+            {
+                SqlCommand cmd2 = new SqlCommand("denver.modificar_habitacion", db.Connection);
+                cmd2.CommandType = CommandType.StoredProcedure;
+
+                cmd2.Parameters.AddWithValue("@habitacion_nro", SqlDbType.Int).Value = Convert.ToInt32(txb_numero.Text);
+                cmd2.Parameters.AddWithValue("@habitacion_piso", SqlDbType.Int).Value = Convert.ToInt32(txb_piso.Text);
+                if (cb_vista.Checked == true)
+                { cmd2.Parameters.AddWithValue("@habitacion_frente", SqlDbType.VarChar).Value = 'S'; }
+                else { cmd2.Parameters.AddWithValue("@habitacion_frente", SqlDbType.VarChar).Value = 'N'; }
+                cmd2.Parameters.AddWithValue("@habitacion_hotel_id", SqlDbType.Int).Value = cmb_hotel.SelectedValue;
+                cmd2.Parameters.AddWithValue("@habitacion_descripcion", SqlDbType.NText).Value = desc;
+                //cmd2.Parameters.AddWithValue("@fecha_sistema", SqlDbType.DateTime).Value = accesoSistema.fechaSistema;
+
+                cmd2.ExecuteNonQuery();
+
+                MessageBox.Show("Se ha modificado la habitación " + hab_nro, "Mensaje");
+
+
+            }
            }
         }
     }

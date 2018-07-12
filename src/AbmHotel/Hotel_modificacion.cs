@@ -7,8 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
 using System.Data.SqlClient;
+using System.Text.RegularExpressions;
 
 namespace FrbaHotel.AbmHotel
 {
@@ -30,6 +30,12 @@ namespace FrbaHotel.AbmHotel
         {
             if (validarFormulario())
             {
+                Regex reg = new Regex("[A-z]");
+                if (reg.IsMatch(txb_nro.Text))
+                {
+                    MessageBox.Show("El numero no puede contener caracteres", "Error");
+                    return;
+                }
                 SqlCommand cmd = new SqlCommand("denver.modificar_hotel", db.Connection);
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -38,6 +44,7 @@ namespace FrbaHotel.AbmHotel
                 cmd.Parameters.AddWithValue("@hotel_mail", SqlDbType.NVarChar).Value = txb_mail.Text;
                 cmd.Parameters.AddWithValue("@hotel_telefono", SqlDbType.NVarChar).Value = txb_telefono.Text;
                 cmd.Parameters.AddWithValue("@hotel_direccion", SqlDbType.NVarChar).Value = txb_calle.Text;
+                cmd.Parameters.AddWithValue("@hotel_numero", SqlDbType.Int).Value = Convert.ToInt32(txb_nro.Text);
                 cmd.Parameters.AddWithValue("@hotel_estrellas", SqlDbType.Int).Value = Convert.ToInt32(cmb_estrellas.Text);
                 cmd.Parameters.AddWithValue("@hotel_ciudad", SqlDbType.NVarChar).Value = txb_ciudad.Text;
                 cmd.Parameters.AddWithValue("@hotel_pais", SqlDbType.Int).Value = cmb_pais.SelectedValue;

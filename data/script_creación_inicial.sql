@@ -2448,6 +2448,7 @@ CREATE PROCEDURE [DENVER].[modificar_hotel]
       @hotel_mail nvarchar(255),
       @hotel_telefono nvarchar(255),
       @hotel_direccion nvarchar(255),
+	  @hotel_numero numeric(18,0) = NULL,
       @hotel_estrellas smallint,
       @hotel_ciudad nvarchar(255),
       @hotel_pais smallint,
@@ -2601,27 +2602,21 @@ CREATE PROCEDURE [DENVER].[modificar_habitacion]
       @habitacion_piso numeric(18,0),
       @habitacion_frente nvarchar(50),
       @habitacion_hotel_id smallint,
-      @habitacion_descripcion ntext,
-      @fecha_sistema datetime
+      @habitacion_descripcion ntext
+   --   @fecha_sistema datetime
 AS
 BEGIN
       SET NOCOUNT ON;  
-      INSERT INTO habitaciones(
-      habitacion_nro,
-      habitacion_piso,
-      habitacion_frente,
-      habitacion_descripcion,
-      habitacion_hotel_id,
-      habitacion_activa,
-      habitacion_created)
-      VALUES(
-      @habitacion_nro,
-      @habitacion_piso,
-      @habitacion_frente,
-      @habitacion_descripcion,
-      @habitacion_hotel_id,
-      'S',
-      @fecha_sistema)
+	  UPDATE denver.habitaciones SET
+	  habitacion_piso = @habitacion_piso,
+	  habitacion_frente = @habitacion_frente,
+	  habitacion_descripcion = @habitacion_descripcion
+	  WHERE 
+	  habitacion_nro = @habitacion_nro AND
+	  @habitacion_hotel_id = @habitacion_hotel_id
+
+
+     
 END
 GO
 

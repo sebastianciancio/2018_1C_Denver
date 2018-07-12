@@ -71,7 +71,7 @@ namespace FrbaHotel.AbmHotel
 
             //por el numero obtiene la columna
             // Obtenés El ID del hotel
-            string hotel_id = row.Cells[6].Value.ToString();
+            string hotel_id = row.Cells[5].Value.ToString();
             //Paso el valor de las claves al nuevo formulario de modificación
             //para poder consultar la base de datos y traer los campos que se quieran modificar
             frm.hotel_id = hotel_id;
@@ -83,7 +83,7 @@ namespace FrbaHotel.AbmHotel
 
                 AbmHotel.Hotel_Baja frm = new AbmHotel.Hotel_Baja();
                 DataGridViewRow row = dgv_tablaHotel.CurrentRow;
-                string id_hotel = row.Cells[6].Value.ToString();
+                string id_hotel = row.Cells[5].Value.ToString();
 
                 frm.id_hotel = id_hotel;
                 frm.Show();

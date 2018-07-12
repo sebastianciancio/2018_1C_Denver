@@ -8,8 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.SqlClient;
+using System.Text.RegularExpressions;
 
-    
+
 namespace FrbaHotel.AbmCliente
 {
 
@@ -72,8 +73,19 @@ namespace FrbaHotel.AbmCliente
 
         private void btn_cli_mod_guardar_Click(object sender, EventArgs e)
         {
+            Regex reg = new Regex("[A-z]");
             if (validarFormulario())
-            {
+            {  
+                if (reg.IsMatch(txb_cli_mod_dni.Text))
+                {
+                    MessageBox.Show("El numero de documento no puede contener caracteres", "Error");
+                    return;
+                }
+                if (reg.IsMatch(txb_cli_mod_piso.Text))
+                {
+                    MessageBox.Show("El piso no puede contener caracteres", "Error");
+                    return;
+                }
                 SqlCommand cmd = new SqlCommand("denver.modificar_cliente", db.Connection);
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -85,7 +97,10 @@ namespace FrbaHotel.AbmCliente
                 cmd.Parameters.AddWithValue("@cliente_email", SqlDbType.VarChar).Value = txb_cli_mod_mail.Text;
                 cmd.Parameters.AddWithValue("@cliente_dom_calle", SqlDbType.VarChar).Value = txb_cli_mod_calle.Text;
                 cmd.Parameters.AddWithValue("@cliente_dom_nro", SqlDbType.VarChar).Value = txb_cli_mod_nro.Text;
-                cmd.Parameters.AddWithValue("@cliente_piso", SqlDbType.Int).Value = Convert.ToInt32(txb_cli_mod_piso.Text);
+                if (txb_cli_mod_dni.Text != "")
+                {
+                    cmd.Parameters.AddWithValue("@cliente_piso", SqlDbType.Int).Value = Convert.ToInt32(txb_cli_mod_piso.Text);
+                }
                 cmd.Parameters.AddWithValue("@cliente_dpto", SqlDbType.VarChar).Value = txb_cli_mod_dpto.Text;
                 cmd.Parameters.AddWithValue("@cliente_dom_localidad", SqlDbType.VarChar).Value = txb_cli_mod_localidad.Text;
                 cmd.Parameters.AddWithValue("@cliente_telefono", SqlDbType.VarChar).Value = txb_cli_mod_telefono.Text;
