@@ -22,7 +22,7 @@ namespace FrbaHotel.AbmHotel
 
             // Cargo el Combo Pais
             Combos.cargarComboPais(combo_pais);
-            Combos.cargarComboTipoRegimen(cmb_regimenes);
+            Combos.cargarComboTipoRegimen(cmb_regimenes, accesoSistema.HotelIdActual);
             Combos.cargarComboCantidad(cmb_estrellas, 1, 5);
         }
 
@@ -53,7 +53,7 @@ namespace FrbaHotel.AbmHotel
                 cmd.Parameters.AddWithValue("@hotel_pais_id", SqlDbType.SmallInt).Value = combo_pais.SelectedValue;
                 cmd.Parameters.AddWithValue("@hotel_regimen", SqlDbType.VarChar).Value = cmb_regimenes.SelectedValue;
                 cmd.Parameters.AddWithValue("@user_creador", SqlDbType.VarChar).Value = accesoSistema.UsuarioLogueado.Id;
-                cmd.Parameters.AddWithValue("@fecha_sistema", SqlDbType.DateTime).Value = accesoSistema.fechaSistema;
+                cmd.Parameters.AddWithValue("@fecha_sistema", SqlDbType.DateTime).Value = accesoSistema.fechaSistemaSQL;
 
 
                 cmd.ExecuteNonQuery();

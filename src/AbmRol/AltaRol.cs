@@ -42,7 +42,7 @@ namespace FrbaHotel.AbmRol
 
                 cmd.Parameters.AddWithValue("@rol", SqlDbType.VarChar).Value = txb_nombre.Text;
 
-                cmd.Parameters.AddWithValue("@fecha_sistema", SqlDbType.DateTime).Value = accesoSistema.fechaSistema;
+                cmd.Parameters.AddWithValue("@fecha_sistema", SqlDbType.DateTime).Value = accesoSistema.fechaSistemaSQL;
                 cmd.ExecuteNonQuery();
 
                 int sum;

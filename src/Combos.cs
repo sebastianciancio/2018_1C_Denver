@@ -96,11 +96,11 @@ namespace FrbaHotel
 
         }
 
-        public static void cargarComboTipoRegimen(ComboBox combo, bool agregarTodos = false)
+        public static void cargarComboTipoRegimen(ComboBox combo, int hotel, bool agregarTodos = false)
         {
             SqlCommand cmd = new SqlCommand("denver.obtener_regimenes", DataBase.GetInstance().Connection);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.AddWithValue("@hotel_id", SqlDbType.VarChar).Value = accesoSistema.HotelIdActual;
+            cmd.Parameters.AddWithValue("@hotel_id", SqlDbType.Int).Value = Convert.ToInt32(hotel);
             SqlDataReader reader;
 
             reader = cmd.ExecuteReader();

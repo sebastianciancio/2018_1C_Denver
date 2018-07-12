@@ -45,7 +45,7 @@ namespace FrbaHotel.AbmRegimen
                 else { cmd.Parameters.AddWithValue("@estado", SqlDbType.VarChar).Value = 'N'; }
                 cmd.Parameters.AddWithValue("@precio", SqlDbType.Decimal).Value = Convert.ToDecimal(txb_precio.Text);
 
-                cmd.Parameters.AddWithValue("@fecha_sistema", SqlDbType.DateTime).Value = accesoSistema.fechaSistema;
+                cmd.Parameters.AddWithValue("@fecha_sistema", SqlDbType.DateTime).Value = accesoSistema.fechaSistemaSQL;
                 
                    cmd.ExecuteNonQuery();
 

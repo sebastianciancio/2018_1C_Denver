@@ -99,7 +99,7 @@ namespace FrbaHotel
                 cmd.Parameters.AddWithValue("@factura_detalle_pago", SqlDbType.VarChar).Value = txt_detalle_pago.Text;
                 cmd.Parameters.AddWithValue("@factura_cliente_tipo_documento", SqlDbType.Int).Value = Convert.ToInt32(cmb_tipo_doc.SelectedValue);
                 cmd.Parameters.AddWithValue("@factura_pasaporte_nro", SqlDbType.Int).Value = Convert.ToInt32(nro_documento.Text);
-                cmd.Parameters.AddWithValue("@fecha_sistema", SqlDbType.DateTime).Value = accesoSistema.fechaSistema;
+                cmd.Parameters.AddWithValue("@fecha_sistema", SqlDbType.DateTime).Value = accesoSistema.fechaSistemaSQL;
                 cmd.Parameters.AddWithValue("@factura_hotel_id", SqlDbType.Int).Value = Convert.ToInt32(accesoSistema.HotelIdActual);
                 cmd.Parameters.AddWithValue("@factura_nro", SqlDbType.Int).Direction = ParameterDirection.Output;
                 cmd.Parameters.AddWithValue("@nro_reserva", SqlDbType.Int).Direction = ParameterDirection.Output;
@@ -130,7 +130,7 @@ namespace FrbaHotel
                         cmd.Parameters.AddWithValue("@factura_cliente_tipo_documento", SqlDbType.Int).Value = Convert.ToInt32(cmb_tipo_doc.SelectedValue);
                         cmd.Parameters.AddWithValue("@factura_pasaporte_nro", SqlDbType.Int).Value = Convert.ToInt32(nro_documento.Text);
                         cmd.Parameters.AddWithValue("@factura_hotel_id", SqlDbType.Int).Value = Convert.ToInt32(accesoSistema.HotelIdActual);
-                        cmd.Parameters.AddWithValue("@fecha_sistema", SqlDbType.DateTime).Value = accesoSistema.fechaSistema;
+                        cmd.Parameters.AddWithValue("@fecha_sistema", SqlDbType.DateTime).Value = accesoSistema.fechaSistemaSQL;
                         cmd.Parameters.AddWithValue("@fecha_facturacion", SqlDbType.DateTime).Value = fecha_hasta.Value;
 
                         // Ejecuto el SP

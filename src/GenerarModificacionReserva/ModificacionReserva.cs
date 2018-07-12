@@ -32,7 +32,7 @@ namespace FrbaHotel
             // Cargo los Combos
             Combos.cargarComboHotel(cmb_hotel, false);
             Combos.cargarComboTipoHabitacion(cmb_tipo_hab);
-            Combos.cargarComboTipoRegimen(cmb_regimen);
+            Combos.cargarComboTipoRegimen(cmb_regimen, accesoSistema.HotelIdActual);
 
             // Si existe un usuario logueado
             if (accesoSistema.HotelIdActual != 0)
@@ -61,7 +61,7 @@ namespace FrbaHotel
                 // Si existe
                 if (Convert.ToInt32(dt.Rows[0][0]) == 1)
                 {
-                    sda = new SqlDataAdapter("SELECT denver.dias_antes_reserva ('" + nro_reserva.Text + "','" + accesoSistema.fechaSistema + "')", db.Connection);
+                    sda = new SqlDataAdapter("SELECT denver.dias_antes_reserva ('" + nro_reserva.Text + "','" + accesoSistema.fechaSistemaSQL + "')", db.Connection);
                     dt = new DataTable();
                     sda.Fill(dt);
 
@@ -73,6 +73,7 @@ namespace FrbaHotel
                         cmd.CommandType = CommandType.StoredProcedure;
 
                         cmd.Parameters.AddWithValue("@nro_reserva", SqlDbType.Int).Value = Convert.ToInt32(nro_reserva.Text);
+                        cmd.Parameters.AddWithValue("@hotel_id", SqlDbType.Int).Value = Convert.ToInt32(cmb_hotel.SelectedValue);
 
                         // Creo el DataTable para obtener los resultados del SP
                         DataTable dt_detalle_reserva = new DataTable();
@@ -102,7 +103,7 @@ namespace FrbaHotel
                     }
                     else
                     {
-                        DialogResult result = MessageBox.Show("No se puede cancelar la Reserva ya que debe hacerse 24 hs antes del inicio", "Modificación", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        DialogResult result = MessageBox.Show("No se puede modificar la Reserva ya que debe hacerse 24 hs antes del inicio", "Modificación", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         Container_reserva.Visible = false;
                     }
                 }
@@ -245,7 +246,7 @@ namespace FrbaHotel
             }
 
             cmd.Parameters.AddWithValue("@reserva_hotel_id", SqlDbType.Int).Value = Convert.ToInt32(cmb_hotel.SelectedValue);
-            cmd.Parameters.AddWithValue("@fecha_sistema", SqlDbType.DateTime).Value = accesoSistema.fechaSistema;
+            cmd.Parameters.AddWithValue("@fecha_sistema", SqlDbType.DateTime).Value = accesoSistema.fechaSistemaSQL;
             cmd.Parameters.AddWithValue("@nro_reserva", SqlDbType.Int).Value = Convert.ToInt32(nro_reserva.Text);
 
             // Ejecuto el SP

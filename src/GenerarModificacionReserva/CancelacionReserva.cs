@@ -62,6 +62,8 @@ namespace FrbaHotel
                         cmd.CommandType = CommandType.StoredProcedure;
 
                         cmd.Parameters.AddWithValue("@nro_reserva", SqlDbType.Int).Value = Convert.ToInt32(nro_reserva.Text);
+                        cmd.Parameters.AddWithValue("@hotel_id", SqlDbType.Int).Value = Convert.ToInt32(cmb_hotel.SelectedValue);
+                        
 
                         // Creo el DataTable para obtener los resultados del SP
                         DataTable dt_detalle_reserva = new DataTable();
@@ -131,7 +133,7 @@ namespace FrbaHotel
                 cmd.Parameters.AddWithValue("@user", SqlDbType.VarChar).Value = accesoSistema.UsuarioLogueado.Id;
                 cmd.Parameters.AddWithValue("@estado", SqlDbType.Int).Value = 3;
             }
-            cmd.Parameters.AddWithValue("@fecha_sistema", SqlDbType.DateTime).Value = accesoSistema.fechaSistema;
+            cmd.Parameters.AddWithValue("@fecha_sistema", SqlDbType.DateTime).Value = accesoSistema.fechaSistemaSQL;
 
             cmd.ExecuteNonQuery();
 

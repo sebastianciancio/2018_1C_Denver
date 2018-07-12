@@ -21,6 +21,7 @@ namespace FrbaHotel
         static public bool habilitarSeleccionCliente = false;
         static public DateTime fechaSistema;
         static public string pass;
+        static public string fechaSistemaSQL;
 
         System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(accesoSistema));
 
@@ -30,9 +31,29 @@ namespace FrbaHotel
 
             // Leo el Archivo de Configuracion y seteo la Hora del Sistema
             String[] config = File.ReadAllLines("../../Config.txt");
-            fechaSistema = DateTime.Parse(DataBase.GetConfigValue(config[4]));
-            
+            fechaSistema = DateTime.Parse(DataBase.GetConfigValue(config[4]) + " 00:00:00 AM");
 
+            // Cargo la Fecha en formato Universal para SQL YYYYMMDD
+            fechaSistemaSQL = fechaSistema.Year.ToString();
+
+            if (fechaSistema.Month < 10)
+            {
+                fechaSistemaSQL += "0" + fechaSistema.Month.ToString();
+            }
+            else
+            {
+                fechaSistemaSQL += fechaSistema.Month.ToString();
+            }
+
+            if (fechaSistema.Day < 10)
+            {
+                fechaSistemaSQL += "0" + fechaSistema.Day.ToString();
+            }
+            else
+            {
+                fechaSistemaSQL += fechaSistema.Day.ToString();
+            }
+            
             InitializeComponent();
         }
 
@@ -116,7 +137,7 @@ namespace FrbaHotel
 
         private void btn_nueva_Click(object sender, EventArgs e)
         {
-            this.Hide();
+            //this.Hide();
             Reserva frm = new Reserva();
 
             frm.Show();
@@ -124,9 +145,7 @@ namespace FrbaHotel
 
         private void btn_modificar_Click(object sender, EventArgs e)
         {
-            this.Hide();
-            //CancelarReserva.BuscarReserva frm = new CancelarReserva.BuscarReserva();
-
+            //this.Hide();
             CancelacionReserva frm = new CancelacionReserva();
             frm.Show();
 
@@ -134,8 +153,7 @@ namespace FrbaHotel
 
         private void btn_canc_Click(object sender, EventArgs e)
         {
-            this.Hide();
-            //CancelarReserva.Cancelar_reserva frm = new CancelarReserva.Cancelar_reserva();
+            //this.Hide();
             ModificacionReserva frm = new ModificacionReserva();
             frm.Show();
         }

@@ -63,7 +63,7 @@ namespace FrbaHotel.AbmCliente
                 cmd.Parameters.AddWithValue("@cliente_telefono", SqlDbType.VarChar).Value = txb_cli_new_telefono.Text;
                 cmd.Parameters.AddWithValue("@cliente_nacionalidad", SqlDbType.VarChar).Value = txb_cli_new_nacionalidad.Text;
                 cmd.Parameters.AddWithValue("@cliente_pais_id", SqlDbType.SmallInt).Value = combo_pais.SelectedValue;
-                cmd.Parameters.AddWithValue("@fecha_sistema", SqlDbType.DateTime).Value = accesoSistema.fechaSistema;
+                cmd.Parameters.AddWithValue("@fecha_sistema", SqlDbType.DateTime).Value = accesoSistema.fechaSistemaSQL;
 
                 cmd.ExecuteNonQuery();
 

@@ -40,8 +40,7 @@ namespace FrbaHotel
             if (nro_reserva.Text != "" & float.TryParse(nro_reserva.Text, out numero_generico))
             {
 
-
-                SqlDataAdapter sda = new SqlDataAdapter("SELECT denver.dias_antes_reserva ('" + nro_reserva.Text + "','" + accesoSistema.fechaSistema + "')", db.Connection);
+                SqlDataAdapter sda = new SqlDataAdapter("SELECT denver.dias_antes_reserva ('" + nro_reserva.Text + "','" + accesoSistema.fechaSistemaSQL + "')", db.Connection);
                 DataTable dt = new DataTable();
                 sda.Fill(dt);
 
@@ -72,6 +71,7 @@ namespace FrbaHotel
                     cmd.CommandType = CommandType.StoredProcedure;
 
                     cmd.Parameters.AddWithValue("@nro_reserva", SqlDbType.Int).Value = Convert.ToInt32(nro_reserva.Text);
+                    cmd.Parameters.AddWithValue("@hotel_id", SqlDbType.Int).Value = Convert.ToInt32(accesoSistema.HotelIdActual);
 
                     // Creo el DataTable para obtener los resultados del SP
                     DataTable dt_detalle_reserva = new DataTable();
@@ -86,6 +86,7 @@ namespace FrbaHotel
                     // Oculto Columnas del Resultado
                     dg_estadia.Columns[6].Visible = false;
                     dg_estadia.Columns[7].Visible = false;
+                    dg_estadia.Columns[8].Visible = false;
 
                     // Si hay Registros 
                     if (dg_estadia.RowCount > 0)
@@ -242,6 +243,7 @@ namespace FrbaHotel
             cmd.CommandType = CommandType.StoredProcedure;
 
             cmd.Parameters.AddWithValue("@habitacion_nro", SqlDbType.Int).Value = Convert.ToInt32(cmb_habitacion.Text);
+            cmd.Parameters.AddWithValue("@hotel_id", SqlDbType.Int).Value = Convert.ToInt32(accesoSistema.HotelIdActual);
 
             // Creo el DataTable para obtener los resultados del SP
             DataTable dt_detalle_reserva = new DataTable();

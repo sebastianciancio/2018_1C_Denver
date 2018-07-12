@@ -11,6 +11,7 @@ GO
 alter login gdHotel2018 with default_language= Spanish
 GO
 
+-- Seteo el formato de las fechas
 set dateformat dmy
 GO
 
@@ -694,6 +695,7 @@ GO
 
 -------------------------------------------------------------------------------- */
 
+-- Funcion que devuelve el max. de pasajeros segun el tipo de habitacion
 CREATE FUNCTION DENVER.cant_pasajeros_tipo_habitacion (@tipo_habitacion numeric(18,0))
 RETURNS int
 AS
@@ -707,6 +709,10 @@ BEGIN
       END)
 END
 GO
+
+/*  --------------------------------------------------------------------------------
+CARGA Y MIGRACION DE DATOS DEL SISTEMA ANTERIOR
+-------------------------------------------------------------------------------- */
 
 /****** PAISES  ******/
 INSERT INTO DENVER.paises VALUES (1, 'ARGENTINA');
@@ -1076,6 +1082,7 @@ GO
 CREACION DE  LOS SP
 -------------------------------------------------------------------------------- */
 
+-- SP PARA BUSCAR CLIENTES EN EL ABM
 CREATE PROCEDURE [DENVER].[buscar_cliente]    
       @cliente_apellido nvarchar(255) = NULL ,
       @cliente_nombre nvarchar(255) = NULL,
@@ -1083,7 +1090,6 @@ CREATE PROCEDURE [DENVER].[buscar_cliente]
       @cliente_nro_doc int = NULL 
 AS   
 BEGIN 
-      -- SET NOCOUNT ON added to prevent extra result sets from interfering with SELECT statements.
       SET NOCOUNT ON;  
 
       SELECT 
@@ -1099,6 +1105,7 @@ BEGIN
 END
 GO
 
+-- SP PARA CARGAR UN CLIENTE EN EL ABM
 CREATE PROCEDURE [DENVER].[cargar_cliente]    
       @cliente_tipo_documento smallint = NULL,
       @cliente_pasaporte_nro numeric(18, 0) = NULL,
@@ -1154,7 +1161,7 @@ BEGIN
 END
 GO
 
-
+-- SP PARA ELIMINAR UN CLIENTE EN EL ABM
 CREATE PROCEDURE [DENVER].[eliminar_cliente]
       @cliente_tipo_documento_id nvarchar(50),
       @cliente_pasaporte_nro numeric(18,0)
@@ -1175,7 +1182,7 @@ BEGIN
 END
 GO
 
-
+-- SP PARA CARGAR UN HOTEL EN EL ABM
 CREATE PROCEDURE [DENVER].[cargar_hotel]
       @hotel_nombre nvarchar(255),
       @hotel_email nvarchar(255),
@@ -1220,12 +1227,12 @@ BEGIN
             @hotel_telefono,
             @hotel_pais_id,
             'S'
-)
+      )
 
-        SELECT TOP 1 @hotel_id = HOTEL_ID 
+      SELECT TOP 1 @hotel_id = HOTEL_ID 
           FROM DENVER.hoteles ORDER BY hotel_id DESC
 
-    INSERT INTO   DENVER.hoteles_regimenes (
+      INSERT INTO   DENVER.hoteles_regimenes (
                         hotel_regimen_hotel_id,
                         hotel_regimen_regimen_id )
                         VALUES (
@@ -1241,6 +1248,7 @@ BEGIN
 END
 GO
 
+-- SP PARA ELIMINAR UN HOTEL EN EL ABM
 CREATE PROCEDURE [DENVER].[eliminar_hotel]
       @hotel_id smallint
 AS
@@ -1253,8 +1261,7 @@ BEGIN
 END
 GO
 
-
-
+-- SP PARA CARGAR UNA HABITACION EN EL ABM
 CREATE PROCEDURE [DENVER].[cargar_habitacion]
       @habitacion_nro numeric(18,0),
       @habitacion_piso numeric(18,0),
@@ -1286,7 +1293,7 @@ BEGIN
 END
 GO
 
-
+-- SP PARA ELIMINAR UNA HABITACION EN EL ABM
 CREATE PROCEDURE [DENVER].[eliminar_habitacion]
       @habitacion_nro numeric(18,0),
       @habitacion_hotel_id smallint
@@ -1301,6 +1308,7 @@ BEGIN
 END
 GO
 
+-- SP PARA ACTIVAR UNA HABITACION EN EL ABM
 CREATE PROCEDURE [DENVER].[alta_habitacion]
       @habitacion_nro numeric(18,0),
       @habitacion_hotel_id smallint
@@ -1315,6 +1323,7 @@ BEGIN
 END
 GO
 
+-- SP PARA ELIMINAR UN REGIMEN EN EL ABM
 CREATE PROCEDURE [DENVER].[eliminar_regimen]
       @regimen_id numeric(18,0)
 AS
@@ -1327,7 +1336,7 @@ BEGIN
 END
 GO
 
-
+-- SP PARA CAMBIAR EL ESTADO DE UN ROL EN EL ABM
 CREATE PROCEDURE [DENVER].[actualizar_estado_rol]
       @rol_nombre nvarchar(255),
       @rol_estado char
@@ -1340,7 +1349,7 @@ BEGIN
 END
 GO
 
-
+-- SP PARA CARGAR UN USUARIO EN EL ABM
 CREATE PROCEDURE [DENVER].[cargar_usuario]
       @usuario_user nvarchar(50),
       @usuario_pass varchar(50),
@@ -1411,7 +1420,7 @@ BEGIN
 END
 GO
 
-
+-- SP PARA ELIMINAR UN USUARIO EN EL ABM
 CREATE PROCEDURE [DENVER].[eliminar_usuario]
       @usuario_user nvarchar(50)
 AS
@@ -1424,12 +1433,12 @@ BEGIN
 END
 GO
 
+-- SP PARA BUSCAR LOS DATOS COMPLETOS DE UN CLIENTE Y UTILIZAR EN EL ABM
 CREATE PROCEDURE [DENVER].[buscar_cliente_completo] 
       @cliente_doc nvarchar(50) = NULL,
       @cliente_dni int = NULL 
 AS   
 BEGIN 
-    -- SET NOCOUNT ON added to prevent extra result sets from interfering with SELECT statements.
       SET NOCOUNT ON;  
 
       SELECT *
@@ -1440,7 +1449,7 @@ BEGIN
 END
 GO
 
-
+-- SP PARA MODIFICAR UN CLIENTE EN EL ABM
 CREATE PROCEDURE [DENVER].[modificar_cliente] 
       @cliente_tipo_documento nvarchar(255) = NULL,
       @cliente_pasaporte_nro numeric(18, 0) = NULL,
@@ -1458,7 +1467,6 @@ CREATE PROCEDURE [DENVER].[modificar_cliente]
       @cliente_pais_id smallint = NULL
 AS   
 BEGIN 
-    -- SET NOCOUNT ON added to prevent extra result sets from interfering with SELECT statements.
       SET NOCOUNT ON;  
 
       DECLARE @tipo_documento_id smallint ;
@@ -1488,6 +1496,7 @@ BEGIN
 END
 GO
 
+-- SP PARA BUSCAR UN HOTEL EN EL ABM
 CREATE PROCEDURE [DENVER].[buscar_hotel]    
       @hotel_nombre nvarchar(255) = NULL ,
       @hotel_ciudad nvarchar(255) = NULL,
@@ -1495,7 +1504,6 @@ CREATE PROCEDURE [DENVER].[buscar_hotel]
       @hotel_estrellas smallint = NULL
 AS   
 BEGIN 
-      -- SET NOCOUNT ON added to prevent extra result sets from interfering with SELECT statements.
       SET NOCOUNT ON;  
       DECLARE @pais_id smallint ;
 
@@ -1517,6 +1525,7 @@ BEGIN
 END
 GO
 
+-- SP PARA ELIMINAR UN HOTEL EN EL ABM
 CREATE PROCEDURE [DENVER].[baja_hotel]    
       @id_hotel smallint = NULL ,
       @fecha_inicio datetime = NULL,
@@ -1526,7 +1535,6 @@ CREATE PROCEDURE [DENVER].[baja_hotel]
 	  @result	int OUTPUT
 AS   
 BEGIN 
-      -- SET NOCOUNT ON added to prevent extra result sets from interfering with SELECT statements.
      -- DECLARE @cont int;
       SET NOCOUNT ON;  
       SELECT @result = count(*) from DENVER.reservas
@@ -1556,6 +1564,7 @@ BEGIN
 END
 GO
 
+-- SP PARA ACTUALIZAR LOS INTENTOS FALLIDOS EN EL LOGIN
 CREATE PROCEDURE DENVER.marcar_intentos_loguin_fallidos 
       @usuario_user nvarchar(50) = NULL
 AS
@@ -1566,6 +1575,7 @@ BEGIN
 END
 GO
 
+-- SP PARA INHABILITAR A UN USUARIO (POR EJ. POR MAS DE 3 INTENTOS FALLIDOS EN EL LOGIN)
 CREATE PROCEDURE DENVER.inhabilitar_usuario 
       @usuario_user nvarchar(50) = NULL
 AS
@@ -1575,6 +1585,7 @@ BEGIN
 END
 GO
 
+-- SP PARA INICIALIZAR LOS INTENTOS FALLIDOS EN EL LOGIN
 CREATE PROCEDURE DENVER.reset_intentos_loguin_fallidos 
       @usuario_user nvarchar(50) = NULL
 AS
@@ -1585,7 +1596,7 @@ BEGIN
 END
 GO
 
-
+-- FUNCION PARA OBTENER LA CANTIDAD DE ROLES QUE TIENE UN USUARIO
 CREATE FUNCTION DENVER.cant_roles_usuario (@usuario_user nvarchar(50))
 RETURNS int
 AS
@@ -1595,7 +1606,7 @@ BEGIN
 END
 GO
 
-
+-- SP PARA OBTENER TODOS LOS HOTELES ACTIVOS ASOCIADOS A UN USUARIO
 CREATE PROCEDURE DENVER.obtener_hoteles
       @usuario_user nvarchar(50) = NULL
 AS
@@ -1607,14 +1618,15 @@ BEGIN
             DENVER.hoteles as h
             JOIN DENVER.usuarios_hoteles as uh ON h.hotel_id = uh.usuario_hotel_id
       WHERE
-            uh.usuario_usuario_user = ISNULL(@usuario_user, uh.usuario_usuario_user)
-    GROUP BY
+            uh.usuario_usuario_user = ISNULL(@usuario_user, uh.usuario_usuario_user) AND h.hotel_activo = 'S'
+      GROUP BY
             h.hotel_id, h.hotel_nombre 
       ORDER BY 
             h.hotel_nombre
 END
 GO
 
+-- SP PARA OBTENER TODOS LOS TIPOS DE DOCUMENTOS
 CREATE PROCEDURE DENVER.obtener_tipo_documento
 AS
 BEGIN
@@ -1623,6 +1635,7 @@ BEGIN
 END
 GO
 
+-- SP PARA OBTENER TODOS LOS REGIMENES ACTIVOS
 CREATE PROCEDURE DENVER.obtener_regimenes
       @hotel_id smallint
 AS
@@ -1634,24 +1647,24 @@ BEGIN
             DENVER.regimenes AS r
             JOIN DENVER.hoteles_regimenes AS hr ON r.regimen_id = hr.hotel_regimen_regimen_id
       WHERE
-            hr.hotel_regimen_hotel_id = ISNULL(@hotel_id, hr.hotel_regimen_hotel_id)
+            hr.hotel_regimen_hotel_id = ISNULL(@hotel_id, hr.hotel_regimen_hotel_id) AND r.regimen_activo = 'S'
       group by
             regimen_id,regimen_descripcion 
       ORDER BY regimen_descripcion
 END
 GO
 
+-- SP PARA OBTENER TODAS LAS HABITACIONES ACTIVAS DE UN HOTEL
 CREATE PROCEDURE DENVER.obtener_habitaciones
       @hotel_id smallint
 AS
 BEGIN
       SET NOCOUNT ON;
-      SELECT habitacion_nro FROM DENVER.habitaciones WHERE habitacion_hotel_id = @hotel_id ORDER BY habitacion_nro
+      SELECT habitacion_nro FROM DENVER.habitaciones WHERE habitacion_hotel_id = @hotel_id AND habitacion_activa = 'S' ORDER BY habitacion_nro
 END
 GO
 
-
-
+-- SP PARA OBTENER TODOS LOS CONSUMIBLES
 CREATE PROCEDURE DENVER.obtener_consumibles
 AS
 BEGIN
@@ -1660,6 +1673,7 @@ BEGIN
 END
 GO
 
+-- SP PARA OBTENER TODOS LOS TIPO DE HABITACIONES
 CREATE PROCEDURE DENVER.obtener_tipo_habitaciones
 AS
 BEGIN
@@ -1668,6 +1682,7 @@ BEGIN
 END
 GO
 
+-- SP PARA OBTENER TODOS LOS PAISES
 CREATE PROCEDURE DENVER.obtener_paises
 AS
 BEGIN
@@ -1676,6 +1691,7 @@ BEGIN
 END
 GO
 
+-- SP PARA OBTENER TODAS LAS FORMAS DE PAGO
 CREATE PROCEDURE DENVER.obtener_formas_pago
 AS
 BEGIN
@@ -1684,6 +1700,7 @@ BEGIN
 END
 GO
 
+-- SP PARA OBTENER TODOS LOS ROLES DE UN USUARIO
 CREATE PROCEDURE DENVER.obtener_roles
       @usuario_user nvarchar(50) = NULL
 AS
@@ -1716,6 +1733,7 @@ BEGIN
 END
 GO
 
+-- SP PARA OBTENER LA DISPONIBILIDAD DADO RANGO FECHA, HOTEL, TIPO DE HABITACION Y/O REGIMEN
 CREATE PROCEDURE DENVER.obtener_disponibilidad
       @fecha_desde as datetime,
       @fecha_hasta as datetime,
@@ -1746,6 +1764,7 @@ BEGIN
 END
 GO
 
+-- SP PARA CREAR UNA RESERVA
 CREATE PROCEDURE DENVER.crear_reserva 
       @reserva_fecha_inicio datetime,
       @reserva_fecha_fin datetime,
@@ -1767,6 +1786,7 @@ BEGIN
 END
 GO
 
+-- SP PARA AGREGAR LAS HABITACIONES A UNA RESERVA REALIZADA
 CREATE PROCEDURE DENVER.agregar_habitaciones_reserva 
       @nro_reserva numeric(18,0),
       @reserva_fecha_inicio datetime,
@@ -1781,6 +1801,7 @@ BEGIN
 END
 GO
 
+-- FUNCION PARA DETERMINAR SI UN USUARIO EXISTE
 CREATE FUNCTION DENVER.existe_usuario (@usuario_user nvarchar(50))
 RETURNS int
 AS
@@ -1790,7 +1811,7 @@ BEGIN
 END
 GO
 
-
+-- SP PARA OBTENER TODOS LOS PASAJROS DE UNA RESERVA
 CREATE PROCEDURE DENVER.obtener_pasajero_reserva 
       @nro_reserva numeric(18,0)
 AS
@@ -1808,9 +1829,10 @@ BEGIN
 END
 GO
 
-
+-- SP PARA OBTENER TODOS LOS DATOS DE UNA RESERVA (EXCEPTO LOS PASAJEROS)
 CREATE PROCEDURE DENVER.obtener_detalle_reserva 
       @nro_reserva numeric(18,0) = NULL,
+      @hotel_id as smallint,
       @habitacion_nro numeric(18,0) = NULL,
       @chechout char(1) = NULL
 AS
@@ -1831,7 +1853,7 @@ BEGIN
                         join DENVER.tipo_habitaciones as th on rh.reserva_habitaciones_tipo_habitacion_id = th.tipo_habitacion_id
                         join DENVER.regimenes as reg on reg.regimen_id = rh.reserva_habitaciones_regimen_id
                   WHERE
-                        r.reserva_codigo = @nro_reserva AND r.reserva_estado_id NOT IN (3,4,5);
+                        r.reserva_codigo = @nro_reserva AND r.reserva_estado_id NOT IN (3,4,5) AND r.reserva_hotel_id = @hotel_id;
             end
             else
             begin
@@ -1844,7 +1866,7 @@ BEGIN
                         join DENVER.regimenes as reg on reg.regimen_id = rh.reserva_habitaciones_regimen_id
                         join DENVER.disponibilidades as d on d.disponibilidad_fecha between rh.reserva_habitaciones_fecha_inicio and rh.reserva_habitaciones_fecha_fin and d.disponibilidad_habitacion_nro = rh.reserva_habitacion_nro and d.disponibilidad_hotel_id = r.reserva_hotel_id and d.disponibilidad_tipo_habitacion_id = th.tipo_habitacion_id
                   WHERE
-                        r.reserva_codigo =  @nro_reserva and d.disponibilidad_ocupado = 1;
+                        r.reserva_codigo =  @nro_reserva and d.disponibilidad_ocupado = 1 AND r.reserva_hotel_id = @hotel_id;
             end
 
       end
@@ -1860,14 +1882,15 @@ BEGIN
                   join DENVER.tipo_habitaciones as th on rh.reserva_habitaciones_tipo_habitacion_id = th.tipo_habitacion_id
                   join DENVER.regimenes as reg on reg.regimen_id = rh.reserva_habitaciones_regimen_id
             WHERE
-                  rh.reserva_habitacion_nro = @habitacion_nro AND r.reserva_estado_id IN (6);
+                  rh.reserva_habitacion_nro = @habitacion_nro AND r.reserva_estado_id IN (6) AND r.reserva_hotel_id = @hotel_id;
 
-            exec DENVER.obtener_detalle_reserva @nro_reserva_aux, NULL, 'S';
+            exec DENVER.obtener_detalle_reserva @nro_reserva_aux, @hotel_id, NULL, 'S';
       end
 
 END
 GO
 
+-- SP PARA CAMBIAR EL ESTADO A UNA RESERVA
 CREATE PROCEDURE DENVER.cambiar_estado_reserva 
       @nro_reserva numeric(18,0),
       @nuevo_estado smallint
@@ -1882,7 +1905,7 @@ BEGIN
 END
 GO
 
-
+-- SP PARA CONFIRMAR UNA RESERVA Y REGISTRAR LA ESTADIA (CHECK/IN)
 CREATE PROCEDURE DENVER.confirmar_checkin 
       @nro_reserva numeric(18,0),
       @estadia_cliente_tipo_documento_id smallint,
@@ -1902,39 +1925,31 @@ BEGIN
 END
 GO
 
--- Hoteles con mayor cantidad de reservas canceladas
+-- SP PARA GENERAR OUTPUT DEL LISTADO: HOTELES CON MAYOR CANTIDAD DE RESERVAS CANCELADAS
 CREATE PROCEDURE DENVER.listado1 
       @anio smallint,
       @trimestre smallint
 AS
 BEGIN
---    DECLARE @meses varchar(50);
-
---
---    if (@trimestre = 1) set @meses = '(1,2,3)';
---    if (@trimestre = 2) set @meses = '(4,5,6)';
---    if (@trimestre = 3) set @meses = '(7,8,9)';
---    if (@trimestre = 4) set @meses = '(10,11,12)';
-
       CREATE TABLE #trimestre
     ( mes int)
 
       if (@trimestre = 1)
       BEGIN
-         INSERT INTO #trimestre(mes) VALUES (1), (2), (3);
-     END
+            INSERT INTO #trimestre(mes) VALUES (1), (2), (3);
+      END
       if (@trimestre = 2)
       BEGIN
-         INSERT INTO #trimestre(mes) VALUES (4), (5) , (6);
-     END
-            if (@trimestre = 3)
+            INSERT INTO #trimestre(mes) VALUES (4), (5) , (6);
+      END
+      if (@trimestre = 3)
       BEGIN
-         INSERT INTO #trimestre(mes) VALUES (7), (8), (9);
-     END
-            if (@trimestre = 4)
+            INSERT INTO #trimestre(mes) VALUES (7), (8), (9);
+      END
+      if (@trimestre = 4)
       BEGIN
-         INSERT INTO #trimestre(mes) VALUES (10), (11), (12);
-     END
+            INSERT INTO #trimestre(mes) VALUES (10), (11), (12);
+      END
 
       select TOP 5
             h.hotel_nombre as Hotel, count(*) as "Total Reservas Canceladas"
@@ -1955,7 +1970,7 @@ BEGIN
 END
 GO
 
--- Hoteles con mayor cantidad de consumibles facturados
+-- SP PARA GENERAR OUTPUT DEL LISTADO: HOTELES CON MAYOR CANTIDAD DE CONSUMIBLES FACTURADOS
 CREATE PROCEDURE DENVER.listado2
       @anio smallint,
       @trimestre smallint
@@ -1998,7 +2013,7 @@ select top 5 c.hotel_nombre as Hotel, count(*) as "Total Consumibles Facturados"
 END
 GO
 
--- Hoteles con mayor cantidad de días fuera de servicio
+-- SP PARA GENERAR OUTPUT DEL LISTADO: HOTELES CON MAYOR CANTIDAD DE DÍAS FUERA DE SERVICIO
 CREATE PROCEDURE DENVER.listado3
       @anio int,
       @trimestre int
@@ -2037,7 +2052,7 @@ select top 5 a.hotel_nombre as Hotel, sum(DateDIFF(dd, mantenimiento_fecha_hasta
 END
 GO
 
--- Habitaciones con mayor cantidad de días y veces que fueron ocupados
+-- SP PARA GENERAR OUTPUT DEL LISTADO: HABITACIONES CON MAYOR CANTIDAD DE DÍAS Y VECES QUE FUERON OCUPADOS
 CREATE PROCEDURE DENVER.listado4
       @anio int,
       @trimestre int
@@ -2079,7 +2094,7 @@ BEGIN
 END
 GO
 
--- Cliente con mayor cantidad de puntos
+-- SP PARA GENERAR OUTPUT DEL LISTADO: CLIENTE CON MAYOR CANTIDAD DE PUNTOS
 CREATE PROCEDURE DENVER.listado5
       @anio int,
       @trimestre int
@@ -2122,6 +2137,7 @@ BEGIN
 END
 GO
 
+-- SP PARA MARCAR COMO OCUPADO UNA DETERMINADA DISPONIBILIDAD
 CREATE PROCEDURE DENVER.ocupar_disponibilidad
       @fecha_ocupacion datetime,
       @hotel_id smallint,      
@@ -2142,6 +2158,7 @@ BEGIN
 END
 GO
 
+-- SP PARA MARCAR COMO LIBRE UNA DETERMINADA DISPONIBILIDAD
 CREATE PROCEDURE DENVER.liberar_disponibilidad
       @fecha_ocupacion datetime,
       @hotel_id smallint,
@@ -2161,6 +2178,7 @@ BEGIN
 END
 GO
 
+-- SP PARA OBTENER TODOS LOS CONSUMOS REALIZADOS EN UNA HABITACION / RESERVA
 CREATE PROCEDURE DENVER.obtener_consumos
       @habitacion_nro numeric(18,0),
       @hotel_id smallint,
@@ -2192,6 +2210,7 @@ BEGIN
 END
 GO
 
+-- SP PARA CARGAR LOS CONSUMOS REALIZADOS POR UNA DETERMINADA HABITACION
 CREATE PROCEDURE DENVER.registrar_consumos
       @consumible_id numeric(18,0),
       @fecha_consumo datetime,
@@ -2216,6 +2235,7 @@ BEGIN
 END
 GO
 
+-- SP PARA CREAR UN ROL EN EL ABM
 CREATE PROCEDURE [DENVER].[crear_rol]    
       @rol nvarchar(255),
       @fecha_sistema datetime
@@ -2232,17 +2252,14 @@ BEGIN
             @rol,
             'S',
             @fecha_sistema)
-
-      
-
 END
 GO
 
+-- SP PARA MODIFICAR UN ROL EN EL ABM
 CREATE PROCEDURE [DENVER].[modificar_rol]    
       @rol nvarchar(255)
 AS   
 BEGIN 
-      -- SET NOCOUNT ON added to prevent extra result sets from interfering with SELECT statements.
       SET NOCOUNT ON;  
 
       SELECT rol_funcionalidad_rol_nombre AS ROL,  rol_funcionalidad_funcionalidad_id AS FUNCIONALIDAD
@@ -2251,6 +2268,7 @@ BEGIN
 END
 GO
 
+-- SP PARA ASOCIAR UNA FUNCIONALIDAD DEL SISTEMA A UN ROL EN EL ABM
 CREATE PROCEDURE [DENVER].[crear_rol_funcionalidad]    
       @rol_nombre nvarchar(255),
       @rol_funcionalidad smallint
@@ -2269,6 +2287,7 @@ BEGIN
 END
 GO
 
+-- SP PARA OBTENER LAS FUNCIONALIDADES DEL SISTEMA DE UN ROL DETERMINADO
 CREATE PROCEDURE [DENVER].[funcionalidades_rol]    
       @usuario_rol nvarchar(255)
 AS   
@@ -2282,6 +2301,7 @@ BEGIN
 END
 GO
 
+-- FUNCION PARA DETERMINAR SI EXISTE UN ROL
 CREATE FUNCTION DENVER.existe_rol (@rol nvarchar(50))
 RETURNS int
 AS
@@ -2291,6 +2311,7 @@ BEGIN
 END
 GO
 
+-- SP PARA OBTENER TODAS LAS FUNCIONALIDADES DEL SISTEMA
 CREATE PROCEDURE DENVER.obtener_funcionalidades
 AS
 BEGIN
@@ -2300,6 +2321,7 @@ BEGIN
 END
 GO
 
+-- SP PARA OBTENER LAS FUNCIONALIDADES DEL SISTEMA DE UN ROL DETERMINADO
 CREATE PROCEDURE [DENVER].[buscar_funcionalidades_rol]
 @rol_nombre nvarchar(255)
 AS
@@ -2312,6 +2334,7 @@ BEGIN
 END
 GO
 
+-- SP PARA ELIMINAR UN ROL DETERMINADO
 CREATE PROCEDURE [DENVER].[eliminar_rol_completo]
       @rol nvarchar(255),
       @rol_nuevo nvarchar(255)
@@ -2319,18 +2342,17 @@ AS
 BEGIN
       SET NOCOUNT ON;  
       
-    DELETE FROM DENVER.roles_funcionalidades WHERE rol_funcionalidad_rol_nombre = @rol;
+      DELETE FROM DENVER.roles_funcionalidades WHERE rol_funcionalidad_rol_nombre = @rol;
 
       UPDATE DENVER.usuarios_roles
-       SET usuario_rol_rol_nombre = @rol_nuevo
-        WHERE usuario_rol_rol_nombre = @rol ;
+      SET usuario_rol_rol_nombre = @rol_nuevo
+      WHERE usuario_rol_rol_nombre = @rol ;
 
       DELETE FROM DENVER.roles WHERE rol_nombre = @rol 
-
-
 END
 GO
 
+-- SP PARA OBTENER LOS ROLES Y SU ESTADO
 CREATE PROCEDURE [DENVER].[cargar_tabla_roles]
 AS
 BEGIN
@@ -2341,13 +2363,13 @@ BEGIN
 END
 GO
 
+-- SP PARA BUSCAR UN USUARIO EN EL ABM
 CREATE PROCEDURE [DENVER].[buscar_usuario]    
       @usuario_nombre nvarchar(255) = NULL ,
       @usuario_apellido nvarchar(255) = NULL,
       @hotel int = NULL 
 AS   
 BEGIN 
-      -- SET NOCOUNT ON added to prevent extra result sets from interfering with SELECT statements.
       SET NOCOUNT ON;  
 
       SELECT a.usuario_user AS Usuario, a.usuario_nombre AS Nombre, a.usuario_apellido AS Apellido, td.tipo_documento_nombre AS 'Tipo DNI',
@@ -2362,6 +2384,7 @@ BEGIN
 END
 GO
 
+-- SP PARA MODIFICAR UN USUARIO EN EL ABM
 CREATE PROCEDURE [DENVER].[modificar_usuario] 
       @usuario_user nvarchar(50) = NULL,
       --@usuario_pass varchar(50) = NULL,
@@ -2406,11 +2429,11 @@ BEGIN
 END
 GO
 
+-- SP PARA OBTENER TODOS LOS DATOS DE UN USUARIO EN EL ABM
 CREATE PROCEDURE [DENVER].[buscar_usuario_completo]    
       @usuario_user nvarchar(50)
 AS   
 BEGIN 
-      -- SET NOCOUNT ON added to prevent extra result sets from interfering with SELECT statements.
       SET NOCOUNT ON;  
 
       SELECT
@@ -2423,6 +2446,7 @@ BEGIN
 END
 GO
 
+-- SP PARA LOGUEAR UN USUARIO
 CREATE PROCEDURE DENVER.loguin
       @usuario_user nvarchar(50),
       @usuario_pass varchar(50),
@@ -2445,12 +2469,11 @@ BEGIN
 END
 GO
 
+-- SP PARA OBTENER LOS DATOS DE UN HOTEL EN EL ABM
 CREATE PROCEDURE [DENVER].[buscar_hotel_completo]    
       @hotel_id smallint
-
 AS   
 BEGIN 
-      -- SET NOCOUNT ON added to prevent extra result sets from interfering with SELECT statements.
       SET NOCOUNT ON;  
 
       SELECT hotel_nombre , hotel_calle, hotel_nro_calle, hotel_ciudad, hotel_pais_id,
@@ -2463,6 +2486,7 @@ BEGIN
 END
 GO
 
+-- SP PARA MODIFICAR UN HOTEL EN EL ABM
 CREATE PROCEDURE [DENVER].[modificar_hotel]
       @hotel_id smallint,
       @hotel_nombre nvarchar(255),
@@ -2502,6 +2526,7 @@ BEGIN
 END
 GO
 
+-- SP PARA OBTENER TODOS LOS ITEMS QUE SERAN FACTURADOS
 CREATE PROCEDURE DENVER.obtener_facturable
       @fecha_salida datetime,
       @tipo_documento numeric(18,0),
@@ -2571,23 +2596,23 @@ BEGIN
 END
 GO
 
+-- FUNCION PARA SABER CUANTOS HOTELES ESTAN EN MANTENIMIENTO
 CREATE FUNCTION DENVER.hotel_en_mantenimiento (@hotel_id smallint)
 RETURNS int
 AS
 BEGIN
       RETURN (SELECT count(*) FROM DENVER.hoteles WHERE hotel_id = @hotel_id
                                                                           AND hotel_activo = 'N' )
-
 END
 GO
 
+-- SP PARA OBTENER LOS DATOS DE UNA HABITACION EN EL ABM
 CREATE PROCEDURE DENVER.buscar_habitacion
       @hotel_nombre smallint = NULL ,
       @hab_numero numeric(18,0) = NULL,
       @hab_piso numeric(18,0) = NULL
 AS   
 BEGIN 
-      -- SET NOCOUNT ON added to prevent extra result sets from interfering with SELECT statements.
       SET NOCOUNT ON;  
        
        SELECT habitacion_nro AS Numero, habitacion_piso AS Piso, CASE WHEN habitacion_frente = 'S' THEN 'SI' ELSE 'NO' END AS 'Con Vista',
@@ -2603,13 +2628,13 @@ BEGIN
 END         
 GO
 
+-- SP PARA OBTENER TODOS LOS DATOS DE UNA HABITACION EN EL ABM
 CREATE PROCEDURE DENVER.buscar_habitacion_completa
       @hotel_id smallint = NULL ,
       @hab_nro numeric(18,0) = NULL
       
 AS   
 BEGIN 
-      -- SET NOCOUNT ON added to prevent extra result sets from interfering with SELECT statements.
       SET NOCOUNT ON;  
        
        SELECT * FROM DENVER.habitaciones 
@@ -2618,6 +2643,7 @@ BEGIN
 END         
 GO
 
+-- SP PARA MODIFICAR UNA HABITACION EN EL ABM
 CREATE PROCEDURE [DENVER].[modificar_habitacion]
       @habitacion_nro numeric(18,0),
       @habitacion_piso numeric(18,0),
@@ -2641,32 +2667,33 @@ BEGIN
 END
 GO
 
+-- SP PARA OBTENER LOS DATOS DE UNA HABITACION EN EL ABM
 CREATE PROCEDURE DENVER.buscar_reserva_hab_hotel
       @habitacion_nro numeric(18,0),
       @hotel_id smallint
       
 AS   
 BEGIN 
-      -- SET NOCOUNT ON added to prevent extra result sets from interfering with SELECT statements.
       SET NOCOUNT ON;  
        
-       SELECT * FROM DENVER.reservas_habitaciones h
-                  join DENVER.reservas r on  h.reserva_habitaciones_reserva_codigo = r.reserva_codigo
-                   
-            WHERE (reserva_estado_id = 1 or reserva_estado_id = 2)
-              AND reserva_habitacion_nro = @habitacion_nro
-              AND reserva_hotel_id = @hotel_id 
+      SELECT * 
+      FROM 
+            DENVER.reservas_habitaciones h
+            join DENVER.reservas r on  h.reserva_habitaciones_reserva_codigo = r.reserva_codigo
+      WHERE (reserva_estado_id = 1 or reserva_estado_id = 2)
+            AND reserva_habitacion_nro = @habitacion_nro
+            AND reserva_hotel_id = @hotel_id 
 
 END         
 GO
 
+-- SP PARA DETERMINAR SI EXISTE UNA HABITACION EN UN HOTEL
 CREATE PROCEDURE DENVER.existe_habitacion_hotel
       @habitacion_nro numeric(18,0),
       @hotel_id smallint
       
 AS   
 BEGIN 
-      -- SET NOCOUNT ON added to prevent extra result sets from interfering with SELECT statements.
       SET NOCOUNT ON;  
        
        SELECT * FROM DENVER.habitaciones 
@@ -2676,33 +2703,31 @@ BEGIN
 END         
 GO
 
+-- SP PARA ASOCIAR UN USUARIO A UN HOTEL
 CREATE PROCEDURE DENVER.cargar_usuario_hotel
       @usuario_nombre nvarchar(50),
       @usuario_hotel smallint
-      
 AS   
 BEGIN 
 
-             INSERT INTO [DENVER].[usuarios_hoteles](
-                 usuario_usuario_user,
-                   usuario_hotel_id
-                   
-                   )
-                   VALUES (
-                   @usuario_nombre,
-                   @usuario_hotel)
+      INSERT INTO [DENVER].[usuarios_hoteles](
+      usuario_usuario_user,
+      usuario_hotel_id
 
-
+      )
+      VALUES (
+      @usuario_nombre,
+      @usuario_hotel)
 END
 GO
 
+-- SP PARA OBTENER LOS REGIMENES Y SUS ESTADOS
 CREATE PROCEDURE [DENVER].[buscar_regimen]    
       @nombre_regimen nvarchar(255) = NULL ,
       @estado nvarchar = NULL
       
 AS     
 BEGIN 
-      -- SET NOCOUNT ON added to prevent extra result sets from interfering with SELECT statements.
       SET NOCOUNT ON;  
       
       SELECT  regimen_descripcion AS Nombre, regimen_precio AS 'Precio U$S',
@@ -2714,15 +2739,14 @@ BEGIN
 END
 GO
 
+-- SP PARA CARGAR UN REGIMEN EN EL ABM
 CREATE PROCEDURE [DENVER].[alta_regimen]    
       @nombre_regimen nvarchar(255) ,
       @estado nvarchar,
       @precio decimal(18,2),
       @fecha_sistema datetime
-      
 AS     
 BEGIN 
-      -- SET NOCOUNT ON added to prevent extra result sets from interfering with SELECT statements.
       SET NOCOUNT ON;  
       
       INSERT INTO DENVER.regimenes(
@@ -2735,28 +2759,27 @@ BEGIN
       @precio,
       @estado,
       @fecha_sistema)
-
-
-      
 END
 GO
 
+-- SP PARA BUSCAR UNA RESERVA
 CREATE PROCEDURE [DENVER].[buscar_reserva]    
       @reserva numeric(18,0)      
 AS     
 BEGIN 
-      -- SET NOCOUNT ON added to prevent extra resultets from interfering with SELECT statements.
 	SET NOCOUNT ON;  
 	
-	SELECT  reserva_codigo AS 'Cod Reserva', hotel_nombre AS Hotel
+	SELECT
+            reserva_codigo AS 'Cod Reserva', hotel_nombre AS Hotel
 	FROM 
 		denver.reservas a join denver.hoteles b on a.reserva_hotel_id = b.hotel_id 
-	  WHERE reserva_codigo = @reserva
-	    --and reserva_cliente_tipo_documento_id = @cliente_tipo_doc
-		and reserva_estado_id NOT IN (3,4)
+	WHERE reserva_codigo = @reserva
+            --and reserva_cliente_tipo_documento_id = @cliente_tipo_doc
+            and reserva_estado_id NOT IN (3,4)
 END
 GO
 
+-- SP PARA CANCELAR UNA RESERVA
 CREATE PROCEDURE [DENVER].[cancelar_reserva]
       @cod_reserva numeric(18,0),
       @motivo ntext,
@@ -2767,7 +2790,7 @@ AS
 BEGIN
       SET NOCOUNT ON;  
 
-	  DECLARE @hotel_id smallint, @habitacion numeric(18,0), @tipo_hab numeric(18,0),
+	DECLARE @hotel_id smallint, @habitacion numeric(18,0), @tipo_hab numeric(18,0),
 			  @fecha_inicio datetime, @fecha_fin datetime;
 				
       UPDATE [denver].[reservas]
@@ -2785,7 +2808,7 @@ BEGIN
 	   ON a.reserva_codigo = b.reserva_habitaciones_reserva_codigo
 	   WHERE reserva_codigo = @cod_reserva;
 
-	  UPDATE 
+	UPDATE 
             denver.disponibilidades
       SET 
             disponibilidad_ocupado = 0
@@ -2794,21 +2817,20 @@ BEGIN
             disponibilidad_habitacion_nro = @habitacion and
             disponibilidad_tipo_habitacion_id = @tipo_hab and
             disponibilidad_fecha BETWEEN @fecha_inicio AND @fecha_fin
-
-	    
 END
 GO
 
+-- FUNCION PARA DETERMINAR SI UNA RESERVA EXISTE O NO
 CREATE FUNCTION [DENVER].[existe_reserva] (@reserva numeric(18,0))
 RETURNS int
 AS
 BEGIN
       RETURN (SELECT count(*) FROM denver.reservas WHERE reserva_codigo = @reserva
 													 AND reserva_estado_id IN (1,2))
-
 END
 GO
 
+-- SP PARA CARGAR EL ENCABEZADO DE UNA FACTURA
 CREATE PROCEDURE [DENVER].[facturar_encabezado]
       @fecha_egreso datetime,
       @factura_total numeric(18,2),
@@ -2832,10 +2854,10 @@ BEGIN
 
       SELECT @nro_reserva = (SELECT TOP 1 reserva_codigo FROM [DENVER].[reservas] WHERE reserva_cliente_tipo_documento_id = @factura_cliente_tipo_documento AND reserva_cliente_pasaporte_nro = @factura_pasaporte_nro AND reserva_hotel_id = @factura_hotel_id AND 
             reserva_estado_id = 6 AND @fecha_egreso BETWEEN reserva_fecha_inicio AND reserva_fecha_fin)
-
 END
 GO
 
+-- SP PARA CARGAR LOS ITEMS DE UNA FACTURA
 CREATE PROCEDURE [DENVER].[facturar_items]
       @factura_nro numeric(18,0),
       @factura_item_cant numeric(18,0),
@@ -2860,6 +2882,7 @@ BEGIN
 END
 GO
 
+-- SP PARA HABILITAR A UN USUARIO
 CREATE PROCEDURE [DENVER].[habilitar_usuario] 
       @usuario_user nvarchar(50) = NULL
 AS
@@ -2869,6 +2892,7 @@ BEGIN
 END
 GO
 
+-- SP PARA CAMBIAR LA CONTRASENA DE UN USUARIO
 CREATE PROCEDURE [DENVER].[cambiar_contrasena]
       @usuario_user nvarchar(50),
 	  @pass varchar(50)
@@ -2880,15 +2904,16 @@ END
 
 GO
 
+-- FUNCION PARA DETERMINAR CUANTOS DIAS FALTAN PARA QUE EMPIECE UNA RESERVA
 CREATE FUNCTION [DENVER].[dias_antes_reserva] (@nro_reserva numeric(18,0), @fecha_sistema datetime)
 RETURNS int
 AS
 BEGIN
       RETURN (SELECT datediff(day,reserva_fecha_inicio,@fecha_sistema) FROM denver.reservas WHERE reserva_codigo = @nro_reserva)
-
 END
 GO
 
+-- SP PARA MODIFICAR UNA RESERVA
 CREATE PROCEDURE [DENVER].[modificar_reserva]
       @original_fecha_inicio datetime,
       @original_fecha_fin datetime,
@@ -2935,16 +2960,18 @@ BEGIN
             reserva_habitaciones_regimen_id = @original_regimen_id AND
             reserva_habitacion_nro = @original_habitacion_nro
 
-
       -- Actualizo el rango de fechas de la Reserva (reservas)            
       UPDATE
             DENVER.reservas
       SET
             reserva_fecha_inicio = @nueva_fecha_inicio, 
             reserva_fecha_fin = @nueva_fecha_fin,
-            reserva_cant_noches = datediff(day,@nueva_fecha_fin,@nueva_fecha_inicio)
+            reserva_cant_noches = datediff(day,reserva_fecha_fin, reserva_fecha_inicio)
       WHERE 
             reserva_codigo = @nro_reserva
+
+      -- Cambio el estado de la reserva a Modificada
+      exec DENVER.cambiar_estado_reserva @nro_reserva, 2
 
       -- Ocupo la disponibilidad de las fechas nuevas
       declare @fecha_actual2 datetime = @nueva_fecha_inicio
@@ -2957,6 +2984,7 @@ BEGIN
 END
 GO
 
+-- SP PARA HABILITAR LA DISPONIBILIDAD EN UN RANGO DE FECHA
 CREATE PROCEDURE DENVER.habilitar_disponibilidad 
       @fecha_desde datetime = NULL,
       @fecha_hasta datetime = NULL
@@ -2983,6 +3011,7 @@ BEGIN
 END
 GO
 
+-- SP PARA ACTUALIZAR LA DISPONIBILIDAD DE LOS DATOS MIGRADOS
 CREATE PROCEDURE [DENVER].[actualizar_disponibilidad_migracion]
 AS
 BEGIN
@@ -3015,10 +3044,10 @@ BEGIN
 END
 GO
 
--- Habilito las disponibilidades
+-- HABILITO LAS DISPONIBILIDADES
 exec DENVER.habilitar_disponibilidad '20170101', '20201231'
 GO
 
 -- Actualizo las disponibilidades de las Reservas existentes
-exec [DENVER].[actualizar_disponibilidad_migracion]
+--exec [DENVER].[actualizar_disponibilidad_migracion]
 --GO

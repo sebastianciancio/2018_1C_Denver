@@ -21,20 +21,22 @@ namespace FrbaHotel
             db = DataBase.GetInstance();
             InitializeComponent();
 
-            // Cargo los Combos
-            Combos.cargarComboTipoHabitacion(cmb_tipo_hab);
-            Combos.cargarComboTipoRegimen(cmb_regimen, true);
-            Combos.cargarComboHotel(cmb_hotel,false);
-
             // Defino las fechas por default segun archivo config
             fecha_desde.Value = accesoSistema.fechaSistema;
             fecha_hasta.Value = accesoSistema.fechaSistema;
 
             // Si existe un usuario logueado
-            if(accesoSistema.HotelIdActual != 0){
+            if (accesoSistema.HotelIdActual != 0)
+            {
                 cmb_hotel.SelectedValue = accesoSistema.HotelIdActual;
                 cmb_hotel.Enabled = false;
             }
+
+            // Cargo los Combos
+            Combos.cargarComboTipoHabitacion(cmb_tipo_hab);
+            Combos.cargarComboHotel(cmb_hotel, false);
+            Combos.cargarComboTipoRegimen(cmb_regimen, Convert.ToInt32(cmb_hotel.SelectedValue), true);
+
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -154,9 +156,9 @@ namespace FrbaHotel
             cmd.Parameters.AddWithValue("@reserva_fecha_fin", SqlDbType.DateTime).Value = fecha_hasta.Value;
             cmd.Parameters.AddWithValue("@reserva_cliente_tipo_documento_id", SqlDbType.Int).Value = Convert.ToInt32(accesoSistema.ClienteSeleccionado.cliente_tipo_documento_id);
             cmd.Parameters.AddWithValue("@reserva_cliente_pasaporte_nro", SqlDbType.Int).Value = Convert.ToInt32(accesoSistema.ClienteSeleccionado.cliente_dni);
-            cmd.Parameters.AddWithValue("@reserva_hotel_id", SqlDbType.Int).Value = Convert.ToInt32(accesoSistema.HotelIdActual);
             cmd.Parameters.AddWithValue("@reserva_estado_id", SqlDbType.Int).Value = 1;
-            cmd.Parameters.AddWithValue("@fecha_sistema", SqlDbType.DateTime).Value = accesoSistema.fechaSistema;
+            cmd.Parameters.AddWithValue("@fecha_sistema", SqlDbType.DateTime).Value = accesoSistema.fechaSistemaSQL;
+            cmd.Parameters.AddWithValue("@reserva_hotel_id", SqlDbType.Int).Value = Convert.ToInt32(cmb_hotel.SelectedValue);
             cmd.Parameters.AddWithValue("@nro_reserva", SqlDbType.Int).Direction = ParameterDirection.Output;
 
             if (accesoSistema.UsuarioLogueado.Id == "")

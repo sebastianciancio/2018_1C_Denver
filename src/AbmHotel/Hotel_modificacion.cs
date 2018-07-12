@@ -21,7 +21,7 @@ namespace FrbaHotel.AbmHotel
             InitializeComponent();
             db = DataBase.GetInstance();
             Combos.cargarComboPais(cmb_pais, true);
-            Combos.cargarComboTipoRegimen(cmb_regimenes, false);
+            Combos.cargarComboTipoRegimen(cmb_regimenes, accesoSistema.HotelIdActual, false);
 
         }
 
