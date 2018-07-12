@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.SqlClient;
+using System.Text.RegularExpressions;
 
 namespace FrbaHotel.AbmCliente
 {
@@ -19,6 +20,7 @@ namespace FrbaHotel.AbmCliente
 
         public Cliente_alta()
         {
+            
             InitializeComponent();
             db = DataBase.GetInstance();
             Cliente_alta.Cli_alta = this;
@@ -28,11 +30,22 @@ namespace FrbaHotel.AbmCliente
 
         private void btn_cli_new_guardar_Click(object sender, EventArgs e)
         {
+            Regex reg = new Regex("[A-z]");
             if (validarFormulario())
             {
+                if (reg.IsMatch(txb_cl_new_dni.Text))
+                { MessageBox.Show("El numero de documento no puede contener caracteres", "Error");
+                    return;}
+                if (reg.IsMatch(txb_cli_new_piso.Text))
+                {
+                    MessageBox.Show("El piso no puede contener caracteres", "Error");
+                    return;
+                }
+
                 SqlCommand cmd = new SqlCommand("denver.cargar_cliente", db.Connection);
                 cmd.CommandType = CommandType.StoredProcedure;
 
+              
                 cmd.Parameters.AddWithValue("@cliente_tipo_documento", SqlDbType.Int).Value = cmb_cli_new_tip_doc.SelectedValue;
                 cmd.Parameters.AddWithValue("@cliente_pasaporte_nro", SqlDbType.Int).Value = Convert.ToInt32(txb_cl_new_dni.Text);
                 cmd.Parameters.AddWithValue("@cliente_apellido", SqlDbType.VarChar).Value = txb_cli_new_apellidos.Text;
@@ -41,7 +54,10 @@ namespace FrbaHotel.AbmCliente
                 cmd.Parameters.AddWithValue("@cliente_email", SqlDbType.VarChar).Value = txb_cli_new_mail.Text;
                 cmd.Parameters.AddWithValue("@cliente_dom_calle", SqlDbType.VarChar).Value = txb_cli_new_calle.Text;
                 cmd.Parameters.AddWithValue("@cliente_dom_nro", SqlDbType.VarChar).Value = txb_cli_new_nro.Text;
-                cmd.Parameters.AddWithValue("@cliente_piso", SqlDbType.Int).Value = Convert.ToInt32(txb_cli_new_piso.Text);
+                if (txb_cli_new_piso.Text != "")
+                {
+                    cmd.Parameters.AddWithValue("@cliente_piso", SqlDbType.Int).Value = Convert.ToInt32(txb_cli_new_piso.Text);
+                }
                 cmd.Parameters.AddWithValue("@cliente_dpto", SqlDbType.VarChar).Value = txb_cli_new_dpto.Text;
                 cmd.Parameters.AddWithValue("@cliente_dom_localidad", SqlDbType.VarChar).Value = txb_cli_new_localidad.Text;
                 cmd.Parameters.AddWithValue("@cliente_telefono", SqlDbType.VarChar).Value = txb_cli_new_telefono.Text;
@@ -81,7 +97,7 @@ namespace FrbaHotel.AbmCliente
                     !Validacion.esInicial(txb_cli_new_nacionalidad.Text) &
                     !Validacion.esInicial(txb_cli_new_localidad.Text) &
                     !Validacion.esInicial(txb_cli_new_telefono.Text) );
-
+                   
         }
 
     }

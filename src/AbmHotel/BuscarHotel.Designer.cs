@@ -52,7 +52,6 @@
             // 
             this.dgv_tablaHotel.AllowUserToAddRows = false;
             this.dgv_tablaHotel.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgv_tablaHotel.Enabled = false;
             this.dgv_tablaHotel.Location = new System.Drawing.Point(12, 101);
             this.dgv_tablaHotel.MultiSelect = false;
             this.dgv_tablaHotel.Name = "dgv_tablaHotel";
