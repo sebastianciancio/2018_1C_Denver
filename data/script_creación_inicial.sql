@@ -1565,7 +1565,7 @@ END
 GO
 
 -- SP PARA ACTUALIZAR LOS INTENTOS FALLIDOS EN EL LOGIN
-CREATE PROCEDURE DENVER.marcar_intentos_loguin_fallidos
+CREATE PROCEDURE [DENVER].[marcar_intentos_loguin_fallidos]
       @usuario_user nvarchar(50) = NULL,
 	  @intentos int OUTPUT
 AS
@@ -1576,16 +1576,18 @@ BEGIN
 
 	  SELECT @intentos = usuario_login_fallidos FROM denver.usuarios WHERE usuario_user = @usuario_user;
 	  
-	  RETURN @intentos 
+	  RETURN isnull(@intentos,0) 
 END
+GO
 
 -- SP PARA INHABILITAR A UN USUARIO (POR EJ. POR MAS DE 3 INTENTOS FALLIDOS EN EL LOGIN)
-CREATE PROCEDURE DENVER.inhabilitar_usuario 
+CREATE PROCEDURE [DENVER].[inhabilitar_usuario] 
       @usuario_user nvarchar(50) = NULL
 AS
 BEGIN
       SET NOCOUNT ON;
-      UPDATE usuarios SET usuario_activo = 'N' WHERE usuario_user = @usuario_user;
+      UPDATE usuarios SET usuario_activo = 'N'		  
+	   WHERE usuario_user = @usuario_user;
 END
 GO
 
@@ -2387,7 +2389,7 @@ BEGIN
             AND a.usuario_apellido LIKE '%' + ISNULL(@usuario_apellido, usuario_apellido) + '%'
             AND b.usuario_hotel_id = ISNULL(@hotel, usuario_hotel_id)  
 			AND a.usuario_user NOT IN ('GUEST','MIGRATION')
-			AND (usuario_activo = 'S' or usuario_login_fallidos > 3)
+			AND (usuario_activo = 'S' or usuario_login_fallidos > 2)
 END
 GO
 
@@ -2895,7 +2897,10 @@ CREATE PROCEDURE [DENVER].[habilitar_usuario]
 AS
 BEGIN
       SET NOCOUNT ON;
-      UPDATE usuarios SET usuario_activo = 'S' WHERE usuario_user = @usuario_user;
+      UPDATE usuarios SET usuario_activo = 'S',
+						  usuario_pass = HASHBYTES('SHA2_256',UPPER('initial1')),
+						  usuario_login_fallidos = 0
+		    WHERE usuario_user = @usuario_user;
 END
 GO
 

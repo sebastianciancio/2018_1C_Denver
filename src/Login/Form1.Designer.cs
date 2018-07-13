@@ -109,7 +109,7 @@
             this.login_password.Size = new System.Drawing.Size(174, 20);
             this.login_password.TabIndex = 3;
             this.login_password.UseSystemPasswordChar = true;
-            this.login_password.TextChanged += new System.EventHandler(this.login_password_TextChanged);
+            
             // 
             // label2
             // 

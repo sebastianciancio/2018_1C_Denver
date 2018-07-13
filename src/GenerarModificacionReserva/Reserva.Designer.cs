@@ -361,6 +361,7 @@
             this.Text = "Reservas";
             this.Activated += new System.EventHandler(this.Reserva_Activated);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Reserva_FormClosed);
+            
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dg_disponibilidad)).EndInit();

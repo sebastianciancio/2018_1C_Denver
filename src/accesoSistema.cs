@@ -158,9 +158,6 @@ namespace FrbaHotel
             frm.Show();
         }
 
-        private void accesoSistema_Load(object sender, EventArgs e)
-        {
 
-        }
     }
 }

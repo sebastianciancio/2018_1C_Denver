@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.SqlClient;
+using System.Text.RegularExpressions;
 
 namespace FrbaHotel.AbmUsuarios
 {
@@ -71,8 +72,15 @@ namespace FrbaHotel.AbmUsuarios
 
         private void btn_guardar_Click(object sender, EventArgs e)
         {
-            if (validarFormulario()) { 
-            SqlCommand cmd = new SqlCommand("denver.modificar_usuario", db.Connection);
+            if (validarFormulario()) {
+
+                Regex reg = new Regex("[A-z]");
+                if (reg.IsMatch(txb_telefono.Text))
+                {
+                    MessageBox.Show("El telefono no puede contener caracteres", "Error");
+                    return;
+                }
+                SqlCommand cmd = new SqlCommand("denver.modificar_usuario", db.Connection);
             cmd.CommandType = CommandType.StoredProcedure;
 
             cmd.Parameters.AddWithValue("@usuario_user", SqlDbType.VarChar).Value = txb_user.Text;
@@ -127,7 +135,7 @@ namespace FrbaHotel.AbmUsuarios
             cmd.Parameters.AddWithValue("@usuario_user", SqlDbType.VarChar).Value = txb_user.Text;
             cmd.ExecuteNonQuery();
 
-            MessageBox.Show("El usuario se habilito correctamente", "Mensaje");
+            MessageBox.Show("El usuario se habilito correctamente, Password: initial1", "Mensaje");
             btn_habilitar.Visible = false;
         }
 

@@ -39,6 +39,33 @@ namespace FrbaHotel
 
         private void btn_acceder_Click(object sender, EventArgs e)
         {
+            if (Validacion.esInicial(login_usuario.Text))
+            {
+                MessageBox.Show("Debe completar el usuario", "Mensaje");
+                return;
+            }
+
+            if (Validacion.esInicial(login_password.Text))
+            {
+                MessageBox.Show("Debe completar ", "Mensaje");
+                return;
+            }
+            // verifivo que exista el usuario ingresado
+            SqlDataAdapter sda = new SqlDataAdapter("SELECT denver.existe_usuario ('" + login_usuario.Text + "')", db.Connection);
+            DataTable ex = new DataTable();
+            sda.Fill(ex);
+
+            // Si no existe aviso y corto el programa
+            if (Convert.ToInt32(ex.Rows[0][0]) == 0)
+            {
+
+                MessageBox.Show("El usuario no existe", "Mensaje");
+                login_password.Text = "";
+                login_usuario.Text = "";
+                return;
+             }
+
+            //verifico el correcto login
             SqlCommand cmd;
             cmd = new SqlCommand("denver.loguin", db.Connection);
             cmd.CommandType = CommandType.StoredProcedure;
@@ -53,7 +80,7 @@ namespace FrbaHotel
             {
                 da.Fill(dt);
             }
-
+            // si se logueo bien
             if (dt.Rows.Count == 1)
             {
                 // Si tuvo menos de 3 intentos fallidos
@@ -97,7 +124,7 @@ namespace FrbaHotel
                         // TODO
                         // Mostrar el combo de los Roles
                     }
-                    
+
 
                     // Reseteo los intentos fallidos
                     cmd = new SqlCommand("denver.reset_intentos_loguin_fallidos", db.Connection);
@@ -109,58 +136,60 @@ namespace FrbaHotel
                     Principal frm = new Principal();
                     frm.Show();
                 }
-                else
-                {
-                    // Si tuvo 3 intentos fallidos
-                    MessageBox.Show("Usuario bloqueado por más de 3 intentos fallidos.", "Mensaje");
+                /* else
+                 {
+                     // Si tuvo 3 intentos fallidos
+                     MessageBox.Show("Usuario bloqueado por más de 3 intentos fallidos.", "Mensaje");
 
-                    // Bloqueo al Usuario
-                    cmd = new SqlCommand("denver.inhabilitar_usuario", db.Connection);
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@usuario_user", SqlDbType.VarChar).Value = login_usuario.Text;
-                    cmd.ExecuteNonQuery();
-                }
+                     // Bloqueo al Usuario
+                     cmd = new SqlCommand("denver.inhabilitar_usuario", db.Connection);
+                     cmd.CommandType = CommandType.StoredProcedure;
+                     cmd.Parameters.AddWithValue("@usuario_user", SqlDbType.VarChar).Value = login_usuario.Text;
+                     cmd.ExecuteNonQuery();
+                 }*/
 
             }
             else
             {
-               // MessageBox.Show("Acceso no permitido.", "Mensaje");
-
-                // Incremento los Intentos Fallidos
-                cmd = new SqlCommand("denver.marcar_intentos_loguin_fallidos", db.Connection);
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@usuario_user", SqlDbType.VarChar).Value = login_usuario.Text;
-               
-
-                cmd.Parameters.AddWithValue("@intentos", SqlDbType.Int).Direction = ParameterDirection.Output;
-
-                cmd.ExecuteNonQuery();
-                int retunvalue = (int)cmd.Parameters["@intentos"].Value;
-
-                if (retunvalue > 3)
-                {
-                    MessageBox.Show("Usuario bloqueado por más de 3 intentos fallidos. Comuniquese con un administrador", "Mensaje");
-
-                    // Bloqueo al Usuario
-                    SqlCommand cmd2 = new SqlCommand("denver.inhabilitar_usuario", db.Connection);
-                    cmd2.CommandType = CommandType.StoredProcedure;
-                    cmd2.Parameters.AddWithValue("@usuario_user", SqlDbType.VarChar).Value = login_usuario.Text;
-                    cmd2.ExecuteNonQuery();
-                }
-                else
-                {
-                    MessageBox.Show("Acceso no permitido.", "Mensaje");
-                }
+                // si no se logueo bien, veo los intentos fallidos 
+                    cmd = new SqlCommand("denver.marcar_intentos_loguin_fallidos", db.Connection);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@usuario_user", SqlDbType.VarChar).Value = login_usuario.Text;
 
 
+                    cmd.Parameters.AddWithValue("@intentos", SqlDbType.Int).Direction = ParameterDirection.Output;
+
+                    cmd.ExecuteNonQuery();
+                    int retunvalue = (int)cmd.Parameters["@intentos"].Value;
+
+                    if (retunvalue > 2)
+                    {
+                        MessageBox.Show("Usuario bloqueado por más de 3 intentos fallidos. Comuniquese con un administrador", "Mensaje");
+
+                        // Bloqueo al Usuario
+                        SqlCommand cmd2 = new SqlCommand("denver.inhabilitar_usuario", db.Connection);
+                        cmd2.CommandType = CommandType.StoredProcedure;
+                        cmd2.Parameters.AddWithValue("@usuario_user", SqlDbType.VarChar).Value = login_usuario.Text;
+                        cmd2.ExecuteNonQuery();
+
+                        login_password.Text = "";
+                    }
+                    else
+                    {
+                        MessageBox.Show("Acceso no permitido.", "Mensaje");
+                        login_password.Text = "";
+                    }
+
+
+          /*      }
+
+                else { MessageBox.Show("El usuario no existe", "Mensaje");
+                    login_password.Text = "";
+                    login_usuario.Text = "";
+                }*/
             }
-
-
         }
 
-        private void login_password_TextChanged(object sender, EventArgs e)
-        {
 
-        }
     }
 }

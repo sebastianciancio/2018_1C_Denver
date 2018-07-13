@@ -41,6 +41,16 @@ namespace FrbaHotel.AbmCliente
                     MessageBox.Show("El piso no puede contener caracteres", "Error");
                     return;
                 }
+                if (reg.IsMatch(txb_cli_new_nro.Text))
+                {
+                    MessageBox.Show("El numero de calle no puede contener caracteres", "Error");
+                    return;
+                }
+                if (reg.IsMatch(txb_cli_new_telefono.Text))
+                {
+                    MessageBox.Show("El Telefono no puede contener caracteres", "Error");
+                    return;
+                }
 
                 SqlCommand cmd = new SqlCommand("denver.cargar_cliente", db.Connection);
                 cmd.CommandType = CommandType.StoredProcedure;

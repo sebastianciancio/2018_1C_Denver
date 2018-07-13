@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.SqlClient;
+using System.Text.RegularExpressions;
 
 namespace FrbaHotel.AbmUsuarios
 {
@@ -35,6 +36,13 @@ namespace FrbaHotel.AbmUsuarios
             } else {
                 if (validarFormulario())
                 {
+                    Regex reg = new Regex("[A-z]");
+                    if (reg.IsMatch(txb_telefono.Text))
+                    {
+                        MessageBox.Show("El telefono no puede contener caracteres", "Error");
+                        return;
+                    }
+                   
                     SqlCommand cmd = new SqlCommand("denver.cargar_usuario", db.Connection);
                     cmd.CommandType = CommandType.StoredProcedure;
 
