@@ -95,7 +95,7 @@ namespace FrbaHotel.AbmRol
                     cmd.ExecuteNonQuery();
 
                     // Muestro resultado de la operacion
-                    MessageBox.Show("El rol " + rol +  " se actualizo con exito", "Mensaje");
+                    MessageBox.Show("El rol " + rol +  " se actualizó con éxito", "Mensaje");
 
                     this.GestionRoles_Load(null, null);
 

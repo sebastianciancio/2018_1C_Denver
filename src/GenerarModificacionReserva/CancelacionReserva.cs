@@ -41,7 +41,7 @@ namespace FrbaHotel
 
 
                 // Valido que exista la reserva
-                SqlDataAdapter sda = new SqlDataAdapter("SELECT denver.existe_reserva ('" + nro_reserva.Text + "')", db.Connection);
+                SqlDataAdapter sda = new SqlDataAdapter("SELECT denver.existe_reserva ('" + nro_reserva.Text + "', " + cmb_hotel.SelectedValue + ")", db.Connection);
                 DataTable dt = new DataTable();
                 sda.Fill(dt);
 
@@ -50,7 +50,7 @@ namespace FrbaHotel
                 {
 
 
-                    sda = new SqlDataAdapter("SELECT denver.dias_antes_reserva ('" + nro_reserva.Text + "','" + accesoSistema.fechaSistema + "')", db.Connection);
+                    sda = new SqlDataAdapter("SELECT denver.dias_antes_reserva ('" + nro_reserva.Text + "','" + accesoSistema.fechaSistemaSQL + "')", db.Connection);
                     dt = new DataTable();
                     sda.Fill(dt);
 

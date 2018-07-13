@@ -229,5 +229,23 @@ namespace FrbaHotel
             }
 
         }
+
+        private void btn_off_Click(object sender, EventArgs e)
+        {
+            accesoSistema.UsuarioLogueado.Apellido = "";
+            accesoSistema.UsuarioLogueado.Nombre = "";
+            accesoSistema.UsuarioLogueado.Id = "";
+            accesoSistema.UsuarioLogueado.Rol = "";
+            accesoSistema.HotelIdActual = 0;
+            accesoSistema.HotelNombreActual = "";
+            accesoSistema.pass = "";
+            accesoSistema.UsuarioLogueado.Rol = "";
+
+            Hide();
+
+            accesoSistema frm = new accesoSistema();
+            frm.Show();
+
+        }
     }
 }

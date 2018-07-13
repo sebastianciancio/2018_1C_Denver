@@ -813,6 +813,7 @@ INSERT INTO DENVER.roles_funcionalidades (rol_funcionalidad_rol_nombre, rol_func
 INSERT INTO DENVER.roles_funcionalidades (rol_funcionalidad_rol_nombre, rol_funcionalidad_funcionalidad_id) VALUES ('ADMINISTRADOR GENERAL', 11);
 INSERT INTO DENVER.roles_funcionalidades (rol_funcionalidad_rol_nombre, rol_funcionalidad_funcionalidad_id) VALUES ('ADMINISTRADOR GENERAL', 12);
 INSERT INTO DENVER.roles_funcionalidades (rol_funcionalidad_rol_nombre, rol_funcionalidad_funcionalidad_id) VALUES ('GUEST', 7);
+INSERT INTO DENVER.roles_funcionalidades (rol_funcionalidad_rol_nombre, rol_funcionalidad_funcionalidad_id) VALUES ('GUEST', 8);
 INSERT INTO DENVER.roles_funcionalidades (rol_funcionalidad_rol_nombre, rol_funcionalidad_funcionalidad_id) VALUES ('RECEPCIONISTA', 3);
 INSERT INTO DENVER.roles_funcionalidades (rol_funcionalidad_rol_nombre, rol_funcionalidad_funcionalidad_id) VALUES ('RECEPCIONISTA', 7);
 INSERT INTO DENVER.roles_funcionalidades (rol_funcionalidad_rol_nombre, rol_funcionalidad_funcionalidad_id) VALUES ('RECEPCIONISTA', 8);
@@ -1737,7 +1738,7 @@ BEGIN
             FROM 
                   DENVER.roles AS r
             WHERE
-                  r.rol_activo = 'S'
+                  r.rol_activo = 'S' AND r.rol_nombre <> 'GUEST'
             GROUP BY
                   r.rol_nombre
             ORDER BY 
@@ -1749,7 +1750,7 @@ BEGIN
                   DENVER.roles AS r
                   LEFT JOIN DENVER.usuarios_roles AS ur ON  r.rol_nombre = ur.usuario_rol_rol_nombre
             WHERE
-                  ur.usuario_rol_usuario_user = ISNULL(@usuario_user, ur.usuario_rol_usuario_user) AND r.rol_activo = 'S'
+                  ur.usuario_rol_usuario_user = ISNULL(@usuario_user, ur.usuario_rol_usuario_user) AND r.rol_activo = 'S' AND r.rol_nombre <> 'GUEST'
             GROUP BY
                   r.rol_nombre
             ORDER BY 
@@ -1784,7 +1785,7 @@ BEGIN
       group by 
             d.disponibilidad_habitacion_nro, th.tipo_habitacion_descripcion, r.regimen_descripcion, r.regimen_precio, th.tipo_habitacion_id, r.regimen_id, h.hotel_recarga_estrella
       having
-            count(*) = DATEDIFF(DAY,@fecha_desde,@fecha_hasta)+1        
+            count(*) = DATEDIFF(DAY,@fecha_desde,@fecha_hasta)
 END
 GO
 
@@ -1818,10 +1819,21 @@ CREATE PROCEDURE DENVER.agregar_habitaciones_reserva
       @reserva_regimen_id  numeric(18,0),
       @reserva_tipo_habitacion_id numeric(18,0),
       @reserva_habitacion_nro numeric(18,0),
-      @reserva_precio_habitacion numeric(18,0)
+      @reserva_precio_habitacion numeric(18,0),
+      @reserva_hotel_id smallint
 AS
 BEGIN
       insert into reservas_habitaciones (reserva_habitaciones_reserva_codigo,reserva_habitaciones_fecha_inicio,reserva_habitaciones_fecha_fin,reserva_habitaciones_tipo_habitacion_id,reserva_habitaciones_cant_noches,reserva_habitaciones_regimen_id,reserva_habitacion_nro,reserva_habitaciones_precio) values (@nro_reserva, @reserva_fecha_inicio,@reserva_fecha_fin,@reserva_tipo_habitacion_id,DATEDIFF(day, @reserva_fecha_inicio, @reserva_fecha_fin), @reserva_regimen_id, @reserva_habitacion_nro, @reserva_precio_habitacion)
+
+
+      -- Ocupo la disponibilidad de las fechas nuevas
+      declare @fecha_actual datetime = @reserva_fecha_inicio
+      while (@fecha_actual <= @reserva_fecha_fin)
+      begin
+            exec DENVER.ocupar_disponibilidad @fecha_actual, @reserva_hotel_id, @reserva_tipo_habitacion_id, @reserva_habitacion_nro
+            set @fecha_actual = dateadd(day, 1, @fecha_actual)
+      end
+
 END
 GO
 
@@ -2362,18 +2374,28 @@ GO
 -- SP PARA ELIMINAR UN ROL DETERMINADO
 CREATE PROCEDURE [DENVER].[eliminar_rol_completo]
       @rol nvarchar(255),
-      @rol_nuevo nvarchar(255)
+      @rol_nuevo nvarchar(255),
+      @fecha_sistema datetime
 AS
 BEGIN
       SET NOCOUNT ON;  
-      
+
+      -- Elimino las funcionalidades asociadas
       DELETE FROM DENVER.roles_funcionalidades WHERE rol_funcionalidad_rol_nombre = @rol;
 
-      UPDATE DENVER.usuarios_roles
-      SET usuario_rol_rol_nombre = @rol_nuevo
-      WHERE usuario_rol_rol_nombre = @rol ;
+      -- Si se cambio el nombre del Rol      
+      IF @rol <> @rol_nuevo
+      BEGIN
+            -- Creo el Nuevo Rol
+            exec DENVER.crear_rol @rol_nuevo, @fecha_sistema
 
-      DELETE FROM DENVER.roles WHERE rol_nombre = @rol 
+            -- Actualizo los usuarios con el nuevo rol
+            UPDATE DENVER.usuarios_roles SET usuario_rol_rol_nombre = @rol_nuevo WHERE usuario_rol_rol_nombre = @rol ;
+
+            -- Elimino el Rol Anterior
+            DELETE FROM DENVER.roles WHERE rol_nombre = @rol 
+      END
+
 END
 GO
 
@@ -2383,7 +2405,7 @@ AS
 BEGIN
       SET NOCOUNT ON;
       SELECT rol_nombre AS Roles, CASE WHEN rol_activo = 'S' THEN 'ACTIVO' ELSE 'INACTIVO' END AS Estado  
-        FROM DENVER.roles
+        FROM DENVER.roles WHERE rol_nombre <> 'GUEST'
 
 END
 GO
@@ -2848,12 +2870,11 @@ END
 GO
 
 -- FUNCION PARA DETERMINAR SI UNA RESERVA EXISTE O NO
-CREATE FUNCTION [DENVER].[existe_reserva] (@reserva numeric(18,0))
+CREATE FUNCTION [DENVER].[existe_reserva] (@reserva numeric(18,0), @hotel_id smallint)
 RETURNS int
 AS
 BEGIN
-      RETURN (SELECT count(*) FROM denver.reservas WHERE reserva_codigo = @reserva
-													 AND reserva_estado_id IN (1,2))
+      RETURN (SELECT count(*) FROM denver.reservas WHERE reserva_codigo = @reserva AND reserva_hotel_id = @hotel_id AND reserva_estado_id IN (1,2))
 END
 GO
 

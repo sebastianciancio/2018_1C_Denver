@@ -45,6 +45,7 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.label_rol_usuario_logueado = new System.Windows.Forms.Label();
             this.label_fecha_sistema = new System.Windows.Forms.Label();
+            this.btn_off = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -278,12 +279,24 @@
             this.label_fecha_sistema.Text = "fecha";
             this.label_fecha_sistema.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
+            // btn_off
+            // 
+            this.btn_off.BackColor = System.Drawing.Color.Cyan;
+            this.btn_off.Location = new System.Drawing.Point(139, -1);
+            this.btn_off.Name = "btn_off";
+            this.btn_off.Size = new System.Drawing.Size(110, 23);
+            this.btn_off.TabIndex = 171;
+            this.btn_off.Text = "Cerrar Sesión";
+            this.btn_off.UseVisualStyleBackColor = false;
+            this.btn_off.Click += new System.EventHandler(this.btn_off_Click);
+            // 
             // Principal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(967, 354);
+            this.Controls.Add(this.btn_off);
             this.Controls.Add(this.label_fecha_sistema);
             this.Controls.Add(this.label_rol_usuario_logueado);
             this.Controls.Add(this.groupBox2);
@@ -321,6 +334,7 @@
         private System.Windows.Forms.Label label_rol_usuario_logueado;
         private System.Windows.Forms.Label label_fecha_sistema;
         private System.Windows.Forms.ComboBox cmb_reservas_acciones;
+        private System.Windows.Forms.Button btn_off;
     }
 }
 

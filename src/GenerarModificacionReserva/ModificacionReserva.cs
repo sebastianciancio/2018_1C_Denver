@@ -54,7 +54,7 @@ namespace FrbaHotel
             {
 
                 // Valido que exista la reserva
-                SqlDataAdapter sda = new SqlDataAdapter("SELECT denver.existe_reserva ('" + nro_reserva.Text + "')", db.Connection);
+                SqlDataAdapter sda = new SqlDataAdapter("SELECT denver.existe_reserva ('" + nro_reserva.Text + "', " + cmb_hotel.SelectedValue + ")", db.Connection);
                 DataTable dt = new DataTable();
                 sda.Fill(dt);
 
@@ -154,17 +154,19 @@ namespace FrbaHotel
             SqlCommand cmd = new SqlCommand("denver.obtener_disponibilidad", db.Connection);
             cmd.CommandType = CommandType.StoredProcedure;
 
+
             DateTime fecha_sin_hora = new DateTime();
+            string[] formatos = { "dd/MM/yyyy", "d/MM/yyyy", "dd/M/yyyy", "d/M/yyyy" };
 
             if (fecha_desde.Text != "")
             {
-                fecha_sin_hora = new DateTime(Convert.ToDateTime(fecha_desde.Value).Year, Convert.ToDateTime(fecha_desde.Value).Month, Convert.ToDateTime(fecha_desde.Value).Day);
+                fecha_sin_hora = DateTime.ParseExact(fecha_desde.Value.Day.ToString() + "/" + fecha_desde.Value.Month.ToString() + "/" + fecha_desde.Value.Year.ToString(), formatos, CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal);
                 cmd.Parameters.AddWithValue("@fecha_desde", SqlDbType.DateTime).Value = fecha_sin_hora;
             }
 
             if (fecha_hasta.Text != "")
             {
-                fecha_sin_hora = new DateTime(Convert.ToDateTime(fecha_hasta.Value).Year, Convert.ToDateTime(fecha_hasta.Value).Month, Convert.ToDateTime(fecha_hasta.Value).Day);
+                fecha_sin_hora = DateTime.ParseExact(fecha_hasta.Value.Day.ToString() + "/" + fecha_hasta.Value.Month.ToString() + "/" + fecha_hasta.Value.Year.ToString(), formatos, CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal);
                 cmd.Parameters.AddWithValue("@fecha_hasta", SqlDbType.DateTime).Value = fecha_sin_hora;
             }
 
