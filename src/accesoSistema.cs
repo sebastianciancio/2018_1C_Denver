@@ -146,7 +146,7 @@ namespace FrbaHotel
         private void btn_modificar_Click(object sender, EventArgs e)
         {
             //this.Hide();
-            CancelacionReserva frm = new CancelacionReserva();
+            ModificacionReserva frm = new ModificacionReserva();
             frm.Show();
 
         }
@@ -154,8 +154,9 @@ namespace FrbaHotel
         private void btn_canc_Click(object sender, EventArgs e)
         {
             //this.Hide();
-            ModificacionReserva frm = new ModificacionReserva();
+            CancelacionReserva frm = new CancelacionReserva();
             frm.Show();
+
         }
 
 

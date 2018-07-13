@@ -38,6 +38,7 @@
             this.dg_reserva = new System.Windows.Forms.DataGridView();
             this.btn_Modificar = new System.Windows.Forms.Button();
             this.Container_modif_reserva = new System.Windows.Forms.GroupBox();
+            this.label_hab_precio = new System.Windows.Forms.Label();
             this.label_disponibilidad = new System.Windows.Forms.Label();
             this.btn_check_disponibilidad = new System.Windows.Forms.Button();
             this.cmb_regimen = new System.Windows.Forms.ComboBox();
@@ -49,7 +50,6 @@
             this.fecha_desde = new System.Windows.Forms.DateTimePicker();
             this.label5 = new System.Windows.Forms.Label();
             this.dg_disponibilidad = new System.Windows.Forms.DataGridView();
-            this.label_hab_precio = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.Container_reserva.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dg_reserva)).BeginInit();
@@ -173,6 +173,19 @@
             this.Container_modif_reserva.Text = "Modificación de la Reserva";
             this.Container_modif_reserva.Visible = false;
             // 
+            // label_hab_precio
+            // 
+            this.label_hab_precio.BackColor = System.Drawing.Color.Transparent;
+            this.label_hab_precio.Location = new System.Drawing.Point(21, 91);
+            this.label_hab_precio.Margin = new System.Windows.Forms.Padding(3, 5, 3, 0);
+            this.label_hab_precio.Name = "label_hab_precio";
+            this.label_hab_precio.Padding = new System.Windows.Forms.Padding(0, 7, 0, 0);
+            this.label_hab_precio.Size = new System.Drawing.Size(647, 27);
+            this.label_hab_precio.TabIndex = 11;
+            this.label_hab_precio.Text = "Habitacion xxx disponible a precio xxx";
+            this.label_hab_precio.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.label_hab_precio.Visible = false;
+            // 
             // label_disponibilidad
             // 
             this.label_disponibilidad.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
@@ -281,19 +294,6 @@
             this.dg_disponibilidad.TabIndex = 14;
             this.dg_disponibilidad.Visible = false;
             // 
-            // label_hab_precio
-            // 
-            this.label_hab_precio.BackColor = System.Drawing.Color.Transparent;
-            this.label_hab_precio.Location = new System.Drawing.Point(21, 91);
-            this.label_hab_precio.Margin = new System.Windows.Forms.Padding(3, 5, 3, 0);
-            this.label_hab_precio.Name = "label_hab_precio";
-            this.label_hab_precio.Padding = new System.Windows.Forms.Padding(0, 7, 0, 0);
-            this.label_hab_precio.Size = new System.Drawing.Size(647, 27);
-            this.label_hab_precio.TabIndex = 11;
-            this.label_hab_precio.Text = "Habitacion xxx disponible a precio xxx";
-            this.label_hab_precio.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.label_hab_precio.Visible = false;
-            // 
             // ModificacionReserva
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -304,6 +304,7 @@
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.dg_disponibilidad);
             this.Name = "ModificacionReserva";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "ModificacionReserva";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();

@@ -36,6 +36,11 @@ namespace FrbaHotel.AbmHotel
                     MessageBox.Show("El numero no puede contener caracteres", "Error");
                     return;
                 }
+                if (reg.IsMatch(txb_telefono.Text))
+                {
+                    MessageBox.Show("El telefono no puede contener caracteres", "Error");
+                    return;
+                }
                 SqlCommand cmd = new SqlCommand("denver.modificar_hotel", db.Connection);
                 cmd.CommandType = CommandType.StoredProcedure;
 

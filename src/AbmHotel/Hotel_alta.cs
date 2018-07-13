@@ -29,6 +29,11 @@ namespace FrbaHotel.AbmHotel
         private void btn_guardar_Click(object sender, EventArgs e)
         {
             Regex reg = new Regex("[A-z]");
+            if (reg.IsMatch(txb_telefono.Text))
+            {
+                MessageBox.Show("El telefono no puede contener caracteres", "Error");
+                return;
+            }
 
             if (validarFormulario())
             {
@@ -46,6 +51,7 @@ namespace FrbaHotel.AbmHotel
                 {
                     MessageBox.Show("El numero no puede contener caracteres", "Error");
                     return;
+
 
                 }
                 cmd.Parameters.AddWithValue("@hotel_estrellas", SqlDbType.SmallInt).Value = Convert.ToInt32(cmb_estrellas.Text);
