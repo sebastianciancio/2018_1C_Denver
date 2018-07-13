@@ -1843,12 +1843,83 @@ CREATE PROCEDURE DENVER.crear_reserva
       @nro_reserva numeric(18,0) OUTPUT
 AS
 BEGIN
+      -- Obtengo el Nro de Reserva a asignar
       declare @next_id numeric(18,0) = (SELECT TOP 1 reserva_codigo FROM DENVER.reservas ORDER BY reserva_codigo DESC)+1
 
+      -- Cargo la Reserva
       insert into DENVER.reservas (reserva_codigo,reserva_fecha_inicio,reserva_fecha_fin,reserva_cant_noches,reserva_cliente_tipo_documento_id,reserva_cliente_pasaporte_nro,reserva_hotel_id,reserva_usuario_user,reserva_estado_id,reserva_created) values (@next_id,@reserva_fecha_inicio,@reserva_fecha_fin,DATEDIFF(day, @reserva_fecha_inicio, @reserva_fecha_fin),@reserva_cliente_tipo_documento_id,@reserva_cliente_pasaporte_nro,@reserva_hotel_id,@reserva_usuario_user,@reserva_estado_id, @fecha_sistema)
 
-      SELECT @nro_reserva = @next_id
 
+      -- Si existen Reservas que no fueron efectivizadas, se cancelan automaticamente por NO-SHOW
+
+            -- Cambio el estado de las reservas por CANCELADA (NO-SHOW)
+            UPDATE
+                  DENVER.reservas
+            SET
+                  reserva_estado_id = 5
+            WHERE
+                  reserva_codigo IN (
+                                    select
+                                        r.reserva_codigo
+                                    from
+                                        DENVER.reservas as r
+                                        join DENVER.reservas_habitaciones as rh on rh.reserva_habitaciones_reserva_codigo = r.reserva_codigo
+                                    where
+                                        r.reserva_hotel_id = 6 and 
+                                        r.reserva_fecha_inicio < @fecha_sistema AND
+                                        r.reserva_estado_id IN (1,2)
+                                    group by 
+                                          r.reserva_codigo
+                        )
+
+            -- Libero la disponibilidad de las reservas canceladas
+            declare cur_disponibilidades_liberar CURSOR for (
+                        select
+                         d.disponibilidad_fecha, d.disponibilidad_habitacion_nro, d.disponibilidad_hotel_id, d.disponibilidad_tipo_habitacion_id
+                        from
+                            DENVER.reservas as r
+                            join DENVER.reservas_habitaciones as rh on rh.reserva_habitaciones_reserva_codigo = r.reserva_codigo
+                            join DENVER.disponibilidades as d ON (d.disponibilidad_hotel_id = r.reserva_hotel_id AND d.disponibilidad_habitacion_nro = rh.reserva_habitacion_nro AND d.disponibilidad_fecha between r.reserva_fecha_inicio AND r.reserva_fecha_fin AND rh.reserva_habitaciones_tipo_habitacion_id = d.disponibilidad_tipo_habitacion_id )
+                        where
+                            r.reserva_codigo IN (
+                                    select
+                                        r.reserva_codigo
+                                    from
+                                        DENVER.reservas as r
+                                        join DENVER.reservas_habitaciones as rh on rh.reserva_habitaciones_reserva_codigo = r.reserva_codigo
+                                    where
+                                        r.reserva_hotel_id = 6 and 
+                                        r.reserva_fecha_inicio < @fecha_sistema AND
+                                        r.reserva_estado_id IN (1,2)
+                                    group by 
+                                          r.reserva_codigo
+                        )
+                        group by
+                              d.disponibilidad_fecha, d.disponibilidad_habitacion_nro, d.disponibilidad_hotel_id, d.disponibilidad_tipo_habitacion_id
+                  )
+
+
+            declare @dispo_fecha datetime
+            declare @dispo_habitacion_nro numeric(18,0)
+            declare @dispo_hotel_id smallint
+            declare @dispo_tipo_habitacion_id numeric(18,0)
+
+
+            open cur_disponibilidades_liberar
+            fetch next from cur_disponibilidades_liberar into @dispo_fecha, @dispo_habitacion_nro, @dispo_hotel_id, @dispo_tipo_habitacion_id
+
+            while (@@FETCH_STATUS = 0)
+            BEGIN
+                  -- Libero cada disponiblidad
+                  exec DENVER.liberar_disponibilidad @dispo_fecha, @dispo_hotel_id, @dispo_tipo_habitacion_id, @dispo_habitacion_nro
+
+                  fetch next from cur_disponibilidades_liberar into @dispo_fecha, @dispo_habitacion_nro, @dispo_hotel_id, @dispo_tipo_habitacion_id
+            end
+            close cur_disponibilidades_liberar
+            deallocate cur_disponibilidades_liberar
+
+
+      SELECT @nro_reserva = @next_id
 END
 GO
 
