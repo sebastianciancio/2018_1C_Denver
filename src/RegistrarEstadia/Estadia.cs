@@ -312,7 +312,7 @@ namespace FrbaHotel
                 fecha_desde = fecha_desde.AddDays(1);
             }
 
-            // Confirmo la Estadia
+            // Confirmo el Check/Out
             DialogResult result = MessageBox.Show("Check-Out confirmado", "Confirmacion",
                      MessageBoxButtons.OK, MessageBoxIcon.Information);
 

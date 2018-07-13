@@ -29,17 +29,17 @@ namespace FrbaHotel
             db = DataBase.GetInstance();
             InitializeComponent();
 
-            // Cargo los Combos
-            Combos.cargarComboHotel(cmb_hotel, false);
-            Combos.cargarComboTipoHabitacion(cmb_tipo_hab);
-            Combos.cargarComboTipoRegimen(cmb_regimen, accesoSistema.HotelIdActual);
-
             // Si existe un usuario logueado
             if (accesoSistema.HotelIdActual != 0)
             {
                 cmb_hotel.SelectedValue = accesoSistema.HotelIdActual;
                 cmb_hotel.Enabled = false;
             }
+
+            // Cargo los Combos
+            Combos.cargarComboHotel(cmb_hotel, false);
+            Combos.cargarComboTipoHabitacion(cmb_tipo_hab);
+            Combos.cargarComboTipoRegimen(cmb_regimen, Convert.ToInt32(cmb_hotel.SelectedValue), true);
         }
 
         private void btn_buscar_reserva_Click(object sender, EventArgs e)
