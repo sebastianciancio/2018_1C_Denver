@@ -22,7 +22,7 @@ namespace FrbaHotel
 
             // Cargo el Combo Tipo de Reporte
             Combos.cargarComboListados(cmb_tipo_reporte);
-            Combos.cargarComboCantidad(cmb_anio, 2010, 2020);
+            Combos.cargarComboCantidad(cmb_anio, 2017, 2020);
             Combos.cargarComboCantidad(cmb_trimestre, 1, 4);
         }
 

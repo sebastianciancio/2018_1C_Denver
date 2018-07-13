@@ -2078,7 +2078,7 @@ BEGIN
          INSERT INTO #trimestre(mes) VALUES (10), (11), (12);
      END
 
-      select b.reserva_habitacion_nro as [Numero de habitacion], SUM(a.reserva_cant_noches) AS [Dias Ocupados],
+      select TOP 5 b.reserva_habitacion_nro as [Numero de habitacion], SUM(a.reserva_cant_noches) AS [Dias Ocupados],
              COUNT(*) AS [Cantidad de veces ocupada] , hotel_nombre AS [Hotel de pertenencia]
       from DENVER.reservas a JOIN DENVER.reservas_habitaciones b ON a.reserva_codigo = b.reserva_habitaciones_reserva_codigo  
             join DENVER.hoteles as c on a.reserva_hotel_id = c.hotel_id
@@ -2088,7 +2088,7 @@ BEGIN
       group by
             reserva_habitacion_nro, hotel_nombre
       order by
-            SUM(a.reserva_cant_noches),COUNT(*) DESc
+            SUM(a.reserva_cant_noches) DESC,COUNT(*) DESc
 
             DROP TABLE #trimestre
 END
