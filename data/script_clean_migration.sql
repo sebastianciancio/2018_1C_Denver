@@ -186,7 +186,6 @@ DROP PROCEDURE [DENVER].[habilitar_usuario]
 DROP PROCEDURE [DENVER].[cambiar_contrasena]
 DROP FUNCTION [DENVER].[dias_antes_reserva]
 DROP PROCEDURE [DENVER].[modificar_reserva]
-DROP PROCEDURE [DENVER].[actualizar_disponibilidad_migracion]
 GO
 
 DROP SCHEMA [DENVER]
