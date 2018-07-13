@@ -124,13 +124,35 @@ namespace FrbaHotel
             }
             else
             {
-                MessageBox.Show("Acceso no permitido.", "Mensaje");
+               // MessageBox.Show("Acceso no permitido.", "Mensaje");
 
                 // Incremento los Intentos Fallidos
                 cmd = new SqlCommand("denver.marcar_intentos_loguin_fallidos", db.Connection);
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@usuario_user", SqlDbType.VarChar).Value = login_usuario.Text;
+               
+
+                cmd.Parameters.AddWithValue("@intentos", SqlDbType.Int).Direction = ParameterDirection.Output;
+
                 cmd.ExecuteNonQuery();
+                int retunvalue = (int)cmd.Parameters["@intentos"].Value;
+
+                if (retunvalue > 3)
+                {
+                    MessageBox.Show("Usuario bloqueado por más de 3 intentos fallidos. Comuniquese con un administrador", "Mensaje");
+
+                    // Bloqueo al Usuario
+                    SqlCommand cmd2 = new SqlCommand("denver.inhabilitar_usuario", db.Connection);
+                    cmd2.CommandType = CommandType.StoredProcedure;
+                    cmd2.Parameters.AddWithValue("@usuario_user", SqlDbType.VarChar).Value = login_usuario.Text;
+                    cmd2.ExecuteNonQuery();
+                }
+                else
+                {
+                    MessageBox.Show("Acceso no permitido.", "Mensaje");
+                }
+
+
             }
 
 
