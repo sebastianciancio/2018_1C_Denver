@@ -1078,6 +1078,24 @@ where Factura_Nro is not null AND  Cliente_Pasaporte_Nro IN(5833450,8573690,9616
 )
 GO
 
+/****** DISPONIBILIDADES ******/
+insert into denver.disponibilidades (disponibilidad_habitacion_nro,disponibilidad_hotel_id,disponibilidad_fecha,disponibilidad_ocupado,disponibilidad_tipo_habitacion_id)
+(
+SELECT  
+      Habitacion_Numero,
+      (SELECT distinct top 1 t1.hotel_id FROM DENVER.hoteles as t1 WHERE t1.hotel_calle = gd_esquema.Maestra.Hotel_Calle AND t1.hotel_ciudad = gd_esquema.Maestra.Hotel_Ciudad),
+      Reserva_Fecha_Inicio, 
+      1,
+      Habitacion_Tipo_Codigo
+FROM gd_esquema.Maestra
+WHERE
+        Cliente_Pasaporte_Nro NOT IN(5833450,8573690,9616602,10968810,13197523,17144724,17993372,19944671,25170042,27682640,28333918,28766839,33462772,33467493,40407965,41118734,49848816,52451739,56505775,58145810,58685660,
+        59187942,59790782,65047886,69110399,72231403,74872928, 74899834,75898906,82103542,82337502,83630142,85044064,87591511,
+        88559381,89094646,90135406,91296720,95744921)
+group by Reserva_Fecha_Inicio, Habitacion_Tipo_Codigo, Habitacion_Numero, Hotel_Calle, Hotel_Ciudad
+)
+GO
+
 /*  --------------------------------------------------------------------------------
 CREACION DE  LOS SP
 -------------------------------------------------------------------------------- */
@@ -2985,69 +3003,63 @@ END
 GO
 
 -- SP PARA HABILITAR LA DISPONIBILIDAD EN UN RANGO DE FECHA
-CREATE PROCEDURE DENVER.habilitar_disponibilidad 
+CREATE PROCEDURE DENVER.habilitar_disponibilidad
       @fecha_desde datetime = NULL,
       @fecha_hasta datetime = NULL
 AS
 BEGIN
       SET NOCOUNT ON;
-      declare @fecha_actual datetime = @fecha_desde
-
-      while (@fecha_actual < @fecha_hasta)
-      begin
-
-
-            insert into DENVER.disponibilidades (disponibilidad_hotel_id, disponibilidad_habitacion_nro, disponibilidad_tipo_habitacion_id, disponibilidad_ocupado, disponibilidad_fecha) 
-            (
-                  SELECT
-                        ho.hotel_id, hab.habitacion_nro, th.tipo_habitacion_id, 0, @fecha_actual
-                  FROM 
-                  DENVER.habitaciones AS hab
-                  join DENVER.hoteles as ho on ho.hotel_id = hab.habitacion_hotel_id
-                  join DENVER.tipo_habitaciones as th on ho.hotel_id = hab.habitacion_hotel_id
-            )
-                  set @fecha_actual = dateadd(day, 1, @fecha_actual)
-      end
-END
-GO
-
--- SP PARA ACTUALIZAR LA DISPONIBILIDAD DE LOS DATOS MIGRADOS
-CREATE PROCEDURE [DENVER].[actualizar_disponibilidad_migracion]
-AS
-BEGIN
-      SET NOCOUNT ON;
       
-      declare cursor_reservas CURSOR for (SELECT  Reserva_Fecha_Inicio, Habitacion_Tipo_Codigo, Habitacion_Numero, (SELECT distinct top 1 t1.hotel_id FROM DENVER.hoteles as t1 WHERE t1.hotel_calle = gd_esquema.Maestra.Hotel_Calle AND t1.hotel_ciudad = gd_esquema.Maestra.Hotel_Ciudad)
-            FROM         gd_esquema.Maestra
-            WHERE
-                  Cliente_Pasaporte_Nro NOT IN(5833450,8573690,9616602,10968810,13197523,17144724,17993372,19944671,25170042,27682640,28333918,28766839,33462772,33467493,40407965,41118734,49848816,52451739,56505775,58145810,58685660,
-                  59187942,59790782,65047886,69110399,72231403,74872928, 74899834,75898906,82103542,82337502,83630142,85044064,87591511,
-                  88559381,89094646,90135406,91296720,95744921)
-            group by Reserva_Fecha_Inicio, Habitacion_Tipo_Codigo, Habitacion_Numero, Hotel_Calle, Hotel_Ciudad)
+      -- Creo Tabla Temporal de todas las fechas del rango indicado
+      CREATE TABLE #fechas
+      ( fecha datetime)
 
+      declare @fecha_actual datetime   
 
-      declare @fecha datetime
-      declare @hotel_id smallint
-      declare @tipo_habitacion numeric(18,0)
-      declare @habitacion_nro numeric(18, 0)
+      SET @fecha_actual = @fecha_desde
 
-      open cursor_reservas
-      fetch next from cursor_reservas into @fecha, @tipo_habitacion, @habitacion_nro, @hotel_id
-
-      while (@@FETCH_STATUS = 0)
-      BEGIN
-            exec DENVER.ocupar_disponibilidad @fecha, @hotel_id, @tipo_habitacion, @habitacion_nro
-            fetch next from cursor_reservas into @fecha, @tipo_habitacion, @habitacion_nro, @hotel_id
+      -- Cargo la Tabla Temporal
+      while (@fecha_actual <= @fecha_hasta)
+      begin
+          INSERT INTO #fechas(fecha) VALUES (@fecha_actual)
+          set @fecha_actual = dateadd(day, 1, @fecha_actual)
       end
-      close cursor_reservas
-      deallocate cursor_reservas   
+
+      -- Completo las Disponibilidades con espacios libres
+      insert into denver.disponibilidades (
+            disponibilidad_hotel_id,
+            disponibilidad_habitacion_nro,
+            disponibilidad_tipo_habitacion_id,
+            disponibilidad_fecha,
+            disponibilidad_ocupado
+      )
+      (
+            SELECT
+                ho.hotel_id,
+                hab.habitacion_nro,
+                th.tipo_habitacion_id,
+                ff.fecha,
+                (SELECT TOP 1
+                        (CASE count(*) WHEN 0 THEN 0 ELSE 1 END) 
+                FROM
+                        DENVER.disponibilidades AS d
+                WHERE 
+                        d.disponibilidad_habitacion_nro = hab.habitacion_nro AND 
+                        d.disponibilidad_hotel_id = ho.hotel_id AND 
+                        d.disponibilidad_tipo_habitacion_id = th.tipo_habitacion_id AND
+                              d.disponibilidad_fecha = ff.fecha
+                )
+
+            FROM 
+                DENVER.habitaciones AS hab, DENVER.hoteles AS ho, DENVER.tipo_habitaciones AS th, #fechas as ff
+            WHERE
+                ho.hotel_id = hab.habitacion_hotel_id AND th.tipo_habitacion_id = hab.habitacion_tipo_habitacion_id
+      )
+
+      DROP TABLE #fechas            
 END
 GO
 
 -- HABILITO LAS DISPONIBILIDADES
 exec DENVER.habilitar_disponibilidad '20170101', '20201231'
 GO
-
--- Actualizo las disponibilidades de las Reservas existentes
---exec [DENVER].[actualizar_disponibilidad_migracion]
---GO
