@@ -96,7 +96,7 @@ namespace FrbaHotel.AbmRol
                 cmd2.ExecuteNonQuery();
             }
 
-            MessageBox.Show("El rol" + txb_nombre.Text + " se creo correctamente", "Mensaje");
+            MessageBox.Show("El rol " + txb_nombre.Text + " se modificó correctamente", "Mensaje");
             Close();
 
 

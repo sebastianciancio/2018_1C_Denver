@@ -1583,15 +1583,19 @@ END
 GO
 
 -- SP PARA ACTUALIZAR LOS INTENTOS FALLIDOS EN EL LOGIN
-CREATE PROCEDURE DENVER.marcar_intentos_loguin_fallidos 
-      @usuario_user nvarchar(50) = NULL
+CREATE PROCEDURE DENVER.marcar_intentos_loguin_fallidos
+      @usuario_user nvarchar(50) = NULL,
+	  @intentos int OUTPUT
 AS
 BEGIN
       SET NOCOUNT ON;
 
       UPDATE usuarios SET usuario_login_fallidos = usuario_login_fallidos + 1 WHERE usuario_user = @usuario_user;
+
+	  SELECT @intentos = usuario_login_fallidos FROM denver.usuarios WHERE usuario_user = @usuario_user;
+	  
+	  RETURN @intentos 
 END
-GO
 
 -- SP PARA INHABILITAR A UN USUARIO (POR EJ. POR MAS DE 3 INTENTOS FALLIDOS EN EL LOGIN)
 CREATE PROCEDURE DENVER.inhabilitar_usuario 
@@ -1983,7 +1987,8 @@ BEGIN
       order by
             count(*) DESc
 
-            DROP TABLE #trimestre
+     
+
 
 END
 GO
@@ -2027,7 +2032,7 @@ select top 5 c.hotel_nombre as Hotel, count(*) as "Total Consumibles Facturados"
       order by
             count(*) DESc 
 
-            DROP TABLE #trimestre
+       
 END
 GO
 
@@ -2066,7 +2071,7 @@ select top 5 a.hotel_nombre as Hotel, sum(DateDIFF(dd, mantenimiento_fecha_hasta
       order by
             count(*) DESc 
 
-            DROP TABLE #trimestre
+           
 END
 GO
 
@@ -2108,7 +2113,7 @@ BEGIN
       order by
             SUM(a.reserva_cant_noches) DESC,COUNT(*) DESc
 
-            DROP TABLE #trimestre
+         
 END
 GO
 
@@ -2138,8 +2143,8 @@ BEGIN
          INSERT INTO #trimestre(mes) VALUES (10), (11), (12);
      END
 
-      select cliente_apellido AS Apellido, cliente_nombre AS Nombre, 
-             SUM( (a.reserva_cant_noches*d.reserva_habitaciones_precio)/20 + (c.factura_item_monto * c.factura_item_cant)/10 ) 
+      select top 5 cliente_apellido AS Apellido, cliente_nombre AS Nombre, 
+             SUM( (a.reserva_cant_noches*d.reserva_habitaciones_precio)/20 + (c.factura_item_monto * c.factura_item_cant)/10 ) AS [Cantidad de Puntos] 
       from DENVER.reservas a JOIN DENVER.clientes b ON a.reserva_cliente_pasaporte_nro = b.cliente_pasaporte_nro
                                                    AND a.reserva_cliente_tipo_documento_id = b.cliente_tipo_documento_id
          JOIN DENVER.facturas_items c ON  a.reserva_codigo = c.factura_reserva_codigo
@@ -2151,7 +2156,7 @@ BEGIN
             cliente_apellido, cliente_nombre
       order by
             SUM( (a.reserva_cant_noches*d.reserva_habitaciones_precio)/20 + (c.factura_item_monto * c.factura_item_cant)/10 ) DESc
-            DROP TABLE #trimestre
+            
 END
 GO
 
@@ -2398,7 +2403,9 @@ BEGIN
             LEFT JOIN DENVER.tipo_documentos as td ON td.tipo_documento_id = a.usuario_tipo_documento_id
       WHERE  a.usuario_nombre LIKE '%' + ISNULL(@usuario_nombre, usuario_nombre) + '%'
             AND a.usuario_apellido LIKE '%' + ISNULL(@usuario_apellido, usuario_apellido) + '%'
-            AND b.usuario_hotel_id = ISNULL(@hotel, usuario_hotel_id) AND usuario_activo = 'S' AND a.usuario_user NOT IN ('GUEST','MIGRATION')
+            AND b.usuario_hotel_id = ISNULL(@hotel, usuario_hotel_id)  
+			AND a.usuario_user NOT IN ('GUEST','MIGRATION')
+			AND (usuario_activo = 'S' or usuario_login_fallidos > 3)
 END
 GO
 
