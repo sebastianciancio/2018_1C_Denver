@@ -20,24 +20,25 @@ namespace FrbaHotel
         {
             db = DataBase.GetInstance();
             InitializeComponent();
-            Combos.cargarComboHotel(cmb_hotel, false);
+          //  Combos.cargarComboHotel(cmb_hotel, false);
 
             // Defino las fechas por default segun archivo config
             fecha_desde.Value = accesoSistema.fechaSistema;
             fecha_hasta.Value = accesoSistema.fechaSistema;
 
             // Si existe un usuario logueado
-            if (accesoSistema.HotelIdActual != 0)
-            {
-                cmb_hotel.SelectedValue = Convert.ToInt32(accesoSistema.HotelIdActual);
-                cmb_hotel.Enabled = false;
-            }
+
 
             // Cargo los Combos
             Combos.cargarComboTipoHabitacion(cmb_tipo_hab);
             Combos.cargarComboHotel(cmb_hotel, false);
             Combos.cargarComboTipoRegimen(cmb_regimen, Convert.ToInt32(cmb_hotel.SelectedValue), true);
 
+            if (accesoSistema.HotelIdActual != 0)
+            {
+                cmb_hotel.SelectedValue = Convert.ToInt32(accesoSistema.HotelIdActual);
+                cmb_hotel.Enabled = false;
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)
