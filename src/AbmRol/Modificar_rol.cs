@@ -66,21 +66,14 @@ namespace FrbaHotel.AbmRol
         private void btn_guardar_Click(object sender, EventArgs e)
         {
 
-            //ELIMINO EL ROL ANTERIOR
+            //ELIMINO EL ROL ANTERIOR (SI CORRESPONDE) Y CREO/MODIFICO EL NUEVO
             SqlCommand rol = new SqlCommand("denver.eliminar_rol_completo", db.Connection);
             rol.CommandType = CommandType.StoredProcedure;
 
             rol.Parameters.AddWithValue("@rol", SqlDbType.VarChar).Value = modRol;
             rol.Parameters.AddWithValue("@rol_nuevo", SqlDbType.VarChar).Value = txb_nombre.Text;
+            rol.Parameters.AddWithValue("@fecha_sistema", SqlDbType.DateTime).Value = accesoSistema.fechaSistemaSQL;
             rol.ExecuteNonQuery();
-
-            // CREO EL NUEVO ROL
-            SqlCommand cmd = new SqlCommand("denver.crear_rol", db.Connection);
-            cmd.CommandType = CommandType.StoredProcedure;
-
-            cmd.Parameters.AddWithValue("@rol", SqlDbType.VarChar).Value = txb_nombre.Text;
-            cmd.Parameters.AddWithValue("@fecha_sistema", SqlDbType.DateTime).Value = accesoSistema.fechaSistemaSQL;
-            cmd.ExecuteNonQuery();
 
             int sum;
 

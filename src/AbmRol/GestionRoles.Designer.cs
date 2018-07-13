@@ -48,12 +48,12 @@
             this.dgv_roles.Name = "dgv_roles";
             this.dgv_roles.ReadOnly = true;
             this.dgv_roles.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgv_roles.Size = new System.Drawing.Size(225, 168);
+            this.dgv_roles.Size = new System.Drawing.Size(329, 168);
             this.dgv_roles.TabIndex = 0;
             // 
             // btn_modificar
             // 
-            this.btn_modificar.Location = new System.Drawing.Point(275, 56);
+            this.btn_modificar.Location = new System.Drawing.Point(383, 56);
             this.btn_modificar.Name = "btn_modificar";
             this.btn_modificar.Size = new System.Drawing.Size(103, 45);
             this.btn_modificar.TabIndex = 1;
@@ -74,7 +74,7 @@
             // btn_volver
             // 
             this.btn_volver.Image = global::FrbaHotel.Properties.Resources.volver;
-            this.btn_volver.Location = new System.Drawing.Point(333, 207);
+            this.btn_volver.Location = new System.Drawing.Point(441, 207);
             this.btn_volver.Name = "btn_volver";
             this.btn_volver.Size = new System.Drawing.Size(45, 42);
             this.btn_volver.TabIndex = 5;
@@ -83,7 +83,7 @@
             // 
             // btn_eliminar
             // 
-            this.btn_eliminar.Location = new System.Drawing.Point(275, 117);
+            this.btn_eliminar.Location = new System.Drawing.Point(383, 117);
             this.btn_eliminar.Name = "btn_eliminar";
             this.btn_eliminar.Size = new System.Drawing.Size(103, 45);
             this.btn_eliminar.TabIndex = 6;
@@ -95,7 +95,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(390, 261);
+            this.ClientSize = new System.Drawing.Size(500, 261);
             this.Controls.Add(this.btn_eliminar);
             this.Controls.Add(this.btn_volver);
             this.Controls.Add(this.dgv_roles);

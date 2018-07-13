@@ -37,44 +37,57 @@ namespace FrbaHotel
 
             if (validarFormulario())
             {
+                // Valido que se haya realizado el checkout previamente
+                SqlDataAdapter sda = new SqlDataAdapter("SELECT denver.checkout_realizado ('" + Convert.ToDateTime(fecha_hasta.Value) + "', " + cmb_tipo_doc.SelectedValue + ", " + nro_documento.Text + ", " + accesoSistema.HotelIdActual + ")", db.Connection);
+                DataTable dt = new DataTable();
+                sda.Fill(dt);
 
-                SqlCommand cmd = new SqlCommand("denver.obtener_facturable", db.Connection);
-                cmd.CommandType = CommandType.StoredProcedure;
-
-                cmd.Parameters.AddWithValue("@fecha_salida", SqlDbType.DateTime).Value = Convert.ToDateTime(fecha_hasta.Value);
-                cmd.Parameters.AddWithValue("@tipo_documento", SqlDbType.Int).Value = Convert.ToInt32(cmb_tipo_doc.SelectedValue);
-                cmd.Parameters.AddWithValue("@nro_documento", SqlDbType.Int).Value = Convert.ToInt32(nro_documento.Text);
-                cmd.Parameters.AddWithValue("@hotel_id", SqlDbType.Int).Value = Convert.ToInt32(accesoSistema.HotelIdActual);
-                cmd.Parameters.AddWithValue("@total_factura", SqlDbType.Int).Direction = ParameterDirection.Output;
-
-                dt_facturable = new DataTable();
-
-                // Creo el DataTable para obtener los resultados del SP
-                using (var da = new SqlDataAdapter(cmd))
+                // Si existe
+                if (Convert.ToInt32(dt.Rows[0][0]) == 0)
                 {
-                    da.Fill(dt_facturable);
-                }
 
-                // Cargo la Grilla con los datos obtenidos
-                dg_consumos_facturar.DataSource = dt_facturable;
+                    SqlCommand cmd = new SqlCommand("denver.obtener_facturable", db.Connection);
+                    cmd.CommandType = CommandType.StoredProcedure;
 
-                // Oculto Columnas del Resultado
-                dg_consumos_facturar.Columns[0].Visible = false;
+                    cmd.Parameters.AddWithValue("@fecha_salida", SqlDbType.DateTime).Value = Convert.ToDateTime(fecha_hasta.Value);
+                    cmd.Parameters.AddWithValue("@tipo_documento", SqlDbType.Int).Value = Convert.ToInt32(cmb_tipo_doc.SelectedValue);
+                    cmd.Parameters.AddWithValue("@nro_documento", SqlDbType.Int).Value = Convert.ToInt32(nro_documento.Text);
+                    cmd.Parameters.AddWithValue("@hotel_id", SqlDbType.Int).Value = Convert.ToInt32(accesoSistema.HotelIdActual);
+                    cmd.Parameters.AddWithValue("@total_factura", SqlDbType.Int).Direction = ParameterDirection.Output;
 
-                if (dt_facturable.Rows.Count > 0)
-                {
-                    Container_facturacion.Visible = true;
+                    dt_facturable = new DataTable();
 
-                    // Obtengo el total de la factura
-                    total_factura = Convert.ToInt32(cmd.Parameters["@total_factura"].Value);
+                    // Creo el DataTable para obtener los resultados del SP
+                    using (var da = new SqlDataAdapter(cmd))
+                    {
+                        da.Fill(dt_facturable);
+                    }
 
-                    label_total_facturar.Text = "$"+total_factura.ToString();
+                    // Cargo la Grilla con los datos obtenidos
+                    dg_consumos_facturar.DataSource = dt_facturable;
+
+                    // Oculto Columnas del Resultado
+                    dg_consumos_facturar.Columns[0].Visible = false;
+
+                    if (dt_facturable.Rows.Count > 0)
+                    {
+                        Container_facturacion.Visible = true;
+
+                        // Obtengo el total de la factura
+                        total_factura = Convert.ToInt32(cmd.Parameters["@total_factura"].Value);
+
+                        label_total_facturar.Text = "$" + total_factura.ToString();
+                    }
+                    else
+                    {
+                        DialogResult result = MessageBox.Show("No se encontraron registros con los datos ingresados", "Facturación", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+
                 }
                 else
                 {
-                    DialogResult result = MessageBox.Show("No se encontraron registros con los datos ingresados", "Facturación", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    DialogResult result = MessageBox.Show("Debe realizarse el checkout previamente", "Facturación", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-
             }
             else
             {

@@ -813,6 +813,7 @@ INSERT INTO DENVER.roles_funcionalidades (rol_funcionalidad_rol_nombre, rol_func
 INSERT INTO DENVER.roles_funcionalidades (rol_funcionalidad_rol_nombre, rol_funcionalidad_funcionalidad_id) VALUES ('ADMINISTRADOR GENERAL', 11);
 INSERT INTO DENVER.roles_funcionalidades (rol_funcionalidad_rol_nombre, rol_funcionalidad_funcionalidad_id) VALUES ('ADMINISTRADOR GENERAL', 12);
 INSERT INTO DENVER.roles_funcionalidades (rol_funcionalidad_rol_nombre, rol_funcionalidad_funcionalidad_id) VALUES ('GUEST', 7);
+INSERT INTO DENVER.roles_funcionalidades (rol_funcionalidad_rol_nombre, rol_funcionalidad_funcionalidad_id) VALUES ('GUEST', 8);
 INSERT INTO DENVER.roles_funcionalidades (rol_funcionalidad_rol_nombre, rol_funcionalidad_funcionalidad_id) VALUES ('RECEPCIONISTA', 3);
 INSERT INTO DENVER.roles_funcionalidades (rol_funcionalidad_rol_nombre, rol_funcionalidad_funcionalidad_id) VALUES ('RECEPCIONISTA', 7);
 INSERT INTO DENVER.roles_funcionalidades (rol_funcionalidad_rol_nombre, rol_funcionalidad_funcionalidad_id) VALUES ('RECEPCIONISTA', 8);
@@ -1737,7 +1738,7 @@ BEGIN
             FROM 
                   DENVER.roles AS r
             WHERE
-                  r.rol_activo = 'S'
+                  r.rol_activo = 'S' AND r.rol_nombre <> 'GUEST'
             GROUP BY
                   r.rol_nombre
             ORDER BY 
@@ -1749,11 +1750,52 @@ BEGIN
                   DENVER.roles AS r
                   LEFT JOIN DENVER.usuarios_roles AS ur ON  r.rol_nombre = ur.usuario_rol_rol_nombre
             WHERE
-                  ur.usuario_rol_usuario_user = ISNULL(@usuario_user, ur.usuario_rol_usuario_user) AND r.rol_activo = 'S'
+                  ur.usuario_rol_usuario_user = ISNULL(@usuario_user, ur.usuario_rol_usuario_user) AND r.rol_activo = 'S' AND r.rol_nombre <> 'GUEST'
             GROUP BY
                   r.rol_nombre
             ORDER BY 
                   r.rol_nombre
+END
+GO
+
+-- SP PARA MARCAR COMO OCUPADO UNA DETERMINADA DISPONIBILIDAD
+CREATE PROCEDURE DENVER.ocupar_disponibilidad
+      @fecha_ocupacion datetime,
+      @hotel_id smallint,      
+      @tipo_habitacion as numeric(18,0),
+      @habitacion_nro numeric(18,0)
+
+AS
+BEGIN
+      UPDATE 
+            DENVER.disponibilidades
+      SET 
+            disponibilidad_ocupado = 1
+      where
+            disponibilidad_hotel_id = @hotel_id and
+            disponibilidad_habitacion_nro = @habitacion_nro and
+            disponibilidad_tipo_habitacion_id = @tipo_habitacion and
+            disponibilidad_fecha = @fecha_ocupacion
+END
+GO
+
+-- SP PARA MARCAR COMO LIBRE UNA DETERMINADA DISPONIBILIDAD
+CREATE PROCEDURE DENVER.liberar_disponibilidad
+      @fecha_ocupacion datetime,
+      @hotel_id smallint,
+      @tipo_habitacion as numeric(18,0),
+      @habitacion_nro numeric(18,0)
+AS
+BEGIN
+      UPDATE 
+            DENVER.disponibilidades
+      SET 
+            disponibilidad_ocupado = 0
+      where
+            disponibilidad_hotel_id = @hotel_id and
+            disponibilidad_habitacion_nro = @habitacion_nro and
+            disponibilidad_tipo_habitacion_id = @tipo_habitacion and
+            disponibilidad_fecha = @fecha_ocupacion
 END
 GO
 
@@ -1784,7 +1826,7 @@ BEGIN
       group by 
             d.disponibilidad_habitacion_nro, th.tipo_habitacion_descripcion, r.regimen_descripcion, r.regimen_precio, th.tipo_habitacion_id, r.regimen_id, h.hotel_recarga_estrella
       having
-            count(*) = DATEDIFF(DAY,@fecha_desde,@fecha_hasta)+1        
+            count(*) >= DATEDIFF(DAY,@fecha_desde,@fecha_hasta)
 END
 GO
 
@@ -1801,12 +1843,83 @@ CREATE PROCEDURE DENVER.crear_reserva
       @nro_reserva numeric(18,0) OUTPUT
 AS
 BEGIN
+      -- Obtengo el Nro de Reserva a asignar
       declare @next_id numeric(18,0) = (SELECT TOP 1 reserva_codigo FROM DENVER.reservas ORDER BY reserva_codigo DESC)+1
 
+      -- Cargo la Reserva
       insert into DENVER.reservas (reserva_codigo,reserva_fecha_inicio,reserva_fecha_fin,reserva_cant_noches,reserva_cliente_tipo_documento_id,reserva_cliente_pasaporte_nro,reserva_hotel_id,reserva_usuario_user,reserva_estado_id,reserva_created) values (@next_id,@reserva_fecha_inicio,@reserva_fecha_fin,DATEDIFF(day, @reserva_fecha_inicio, @reserva_fecha_fin),@reserva_cliente_tipo_documento_id,@reserva_cliente_pasaporte_nro,@reserva_hotel_id,@reserva_usuario_user,@reserva_estado_id, @fecha_sistema)
 
-      SELECT @nro_reserva = @next_id
 
+      -- Si existen Reservas que no fueron efectivizadas, se cancelan automaticamente por NO-SHOW
+
+            -- Cambio el estado de las reservas por CANCELADA (NO-SHOW)
+            UPDATE
+                  DENVER.reservas
+            SET
+                  reserva_estado_id = 5
+            WHERE
+                  reserva_codigo IN (
+                                    select
+                                        r.reserva_codigo
+                                    from
+                                        DENVER.reservas as r
+                                        join DENVER.reservas_habitaciones as rh on rh.reserva_habitaciones_reserva_codigo = r.reserva_codigo
+                                    where
+                                        r.reserva_hotel_id = 6 and 
+                                        r.reserva_fecha_inicio < @fecha_sistema AND
+                                        r.reserva_estado_id IN (1,2)
+                                    group by 
+                                          r.reserva_codigo
+                        )
+
+            -- Libero la disponibilidad de las reservas canceladas
+            declare cur_disponibilidades_liberar CURSOR for (
+                        select
+                         d.disponibilidad_fecha, d.disponibilidad_habitacion_nro, d.disponibilidad_hotel_id, d.disponibilidad_tipo_habitacion_id
+                        from
+                            DENVER.reservas as r
+                            join DENVER.reservas_habitaciones as rh on rh.reserva_habitaciones_reserva_codigo = r.reserva_codigo
+                            join DENVER.disponibilidades as d ON (d.disponibilidad_hotel_id = r.reserva_hotel_id AND d.disponibilidad_habitacion_nro = rh.reserva_habitacion_nro AND d.disponibilidad_fecha between r.reserva_fecha_inicio AND r.reserva_fecha_fin AND rh.reserva_habitaciones_tipo_habitacion_id = d.disponibilidad_tipo_habitacion_id )
+                        where
+                            r.reserva_codigo IN (
+                                    select
+                                        r.reserva_codigo
+                                    from
+                                        DENVER.reservas as r
+                                        join DENVER.reservas_habitaciones as rh on rh.reserva_habitaciones_reserva_codigo = r.reserva_codigo
+                                    where
+                                        r.reserva_hotel_id = 6 and 
+                                        r.reserva_fecha_inicio < @fecha_sistema AND
+                                        r.reserva_estado_id IN (1,2)
+                                    group by 
+                                          r.reserva_codigo
+                        )
+                        group by
+                              d.disponibilidad_fecha, d.disponibilidad_habitacion_nro, d.disponibilidad_hotel_id, d.disponibilidad_tipo_habitacion_id
+                  )
+
+
+            declare @dispo_fecha datetime
+            declare @dispo_habitacion_nro numeric(18,0)
+            declare @dispo_hotel_id smallint
+            declare @dispo_tipo_habitacion_id numeric(18,0)
+
+
+            open cur_disponibilidades_liberar
+            fetch next from cur_disponibilidades_liberar into @dispo_fecha, @dispo_habitacion_nro, @dispo_hotel_id, @dispo_tipo_habitacion_id
+
+            while (@@FETCH_STATUS = 0)
+            BEGIN
+                  -- Libero cada disponiblidad
+                  exec DENVER.liberar_disponibilidad @dispo_fecha, @dispo_hotel_id, @dispo_tipo_habitacion_id, @dispo_habitacion_nro
+
+                  fetch next from cur_disponibilidades_liberar into @dispo_fecha, @dispo_habitacion_nro, @dispo_hotel_id, @dispo_tipo_habitacion_id
+            end
+            close cur_disponibilidades_liberar
+            deallocate cur_disponibilidades_liberar
+
+
+      SELECT @nro_reserva = @next_id
 END
 GO
 
@@ -1818,10 +1931,21 @@ CREATE PROCEDURE DENVER.agregar_habitaciones_reserva
       @reserva_regimen_id  numeric(18,0),
       @reserva_tipo_habitacion_id numeric(18,0),
       @reserva_habitacion_nro numeric(18,0),
-      @reserva_precio_habitacion numeric(18,0)
+      @reserva_precio_habitacion numeric(18,0),
+      @reserva_hotel_id smallint
 AS
 BEGIN
       insert into reservas_habitaciones (reserva_habitaciones_reserva_codigo,reserva_habitaciones_fecha_inicio,reserva_habitaciones_fecha_fin,reserva_habitaciones_tipo_habitacion_id,reserva_habitaciones_cant_noches,reserva_habitaciones_regimen_id,reserva_habitacion_nro,reserva_habitaciones_precio) values (@nro_reserva, @reserva_fecha_inicio,@reserva_fecha_fin,@reserva_tipo_habitacion_id,DATEDIFF(day, @reserva_fecha_inicio, @reserva_fecha_fin), @reserva_regimen_id, @reserva_habitacion_nro, @reserva_precio_habitacion)
+
+
+      -- Ocupo la disponibilidad de las fechas nuevas
+      declare @fecha_actual datetime = @reserva_fecha_inicio
+      while (@fecha_actual <= @reserva_fecha_fin)
+      begin
+            exec DENVER.ocupar_disponibilidad @fecha_actual, @reserva_hotel_id, @reserva_tipo_habitacion_id, @reserva_habitacion_nro
+            set @fecha_actual = dateadd(day, 1, @fecha_actual)
+      end
+
 END
 GO
 
@@ -2162,47 +2286,6 @@ BEGIN
 END
 GO
 
--- SP PARA MARCAR COMO OCUPADO UNA DETERMINADA DISPONIBILIDAD
-CREATE PROCEDURE DENVER.ocupar_disponibilidad
-      @fecha_ocupacion datetime,
-      @hotel_id smallint,      
-      @tipo_habitacion as numeric(18,0),
-      @habitacion_nro numeric(18,0)
-
-AS
-BEGIN
-      UPDATE 
-            DENVER.disponibilidades
-      SET 
-            disponibilidad_ocupado = 1
-      where
-            disponibilidad_hotel_id = @hotel_id and
-            disponibilidad_habitacion_nro = @habitacion_nro and
-            disponibilidad_tipo_habitacion_id = @tipo_habitacion and
-            disponibilidad_fecha = @fecha_ocupacion
-END
-GO
-
--- SP PARA MARCAR COMO LIBRE UNA DETERMINADA DISPONIBILIDAD
-CREATE PROCEDURE DENVER.liberar_disponibilidad
-      @fecha_ocupacion datetime,
-      @hotel_id smallint,
-      @tipo_habitacion as numeric(18,0),
-      @habitacion_nro numeric(18,0)
-AS
-BEGIN
-      UPDATE 
-            DENVER.disponibilidades
-      SET 
-            disponibilidad_ocupado = 0
-      where
-            disponibilidad_hotel_id = @hotel_id and
-            disponibilidad_habitacion_nro = @habitacion_nro and
-            disponibilidad_tipo_habitacion_id = @tipo_habitacion and
-            disponibilidad_fecha = @fecha_ocupacion
-END
-GO
-
 -- SP PARA OBTENER TODOS LOS CONSUMOS REALIZADOS EN UNA HABITACION / RESERVA
 CREATE PROCEDURE DENVER.obtener_consumos
       @habitacion_nro numeric(18,0),
@@ -2362,18 +2445,28 @@ GO
 -- SP PARA ELIMINAR UN ROL DETERMINADO
 CREATE PROCEDURE [DENVER].[eliminar_rol_completo]
       @rol nvarchar(255),
-      @rol_nuevo nvarchar(255)
+      @rol_nuevo nvarchar(255),
+      @fecha_sistema datetime
 AS
 BEGIN
       SET NOCOUNT ON;  
-      
+
+      -- Elimino las funcionalidades asociadas
       DELETE FROM DENVER.roles_funcionalidades WHERE rol_funcionalidad_rol_nombre = @rol;
 
-      UPDATE DENVER.usuarios_roles
-      SET usuario_rol_rol_nombre = @rol_nuevo
-      WHERE usuario_rol_rol_nombre = @rol ;
+      -- Si se cambio el nombre del Rol      
+      IF @rol <> @rol_nuevo
+      BEGIN
+            -- Creo el Nuevo Rol
+            exec DENVER.crear_rol @rol_nuevo, @fecha_sistema
 
-      DELETE FROM DENVER.roles WHERE rol_nombre = @rol 
+            -- Actualizo los usuarios con el nuevo rol
+            UPDATE DENVER.usuarios_roles SET usuario_rol_rol_nombre = @rol_nuevo WHERE usuario_rol_rol_nombre = @rol ;
+
+            -- Elimino el Rol Anterior
+            DELETE FROM DENVER.roles WHERE rol_nombre = @rol 
+      END
+
 END
 GO
 
@@ -2383,7 +2476,7 @@ AS
 BEGIN
       SET NOCOUNT ON;
       SELECT rol_nombre AS Roles, CASE WHEN rol_activo = 'S' THEN 'ACTIVO' ELSE 'INACTIVO' END AS Estado  
-        FROM DENVER.roles
+        FROM DENVER.roles WHERE rol_nombre <> 'GUEST'
 
 END
 GO
@@ -2835,25 +2928,22 @@ BEGIN
 	   ON a.reserva_codigo = b.reserva_habitaciones_reserva_codigo
 	   WHERE reserva_codigo = @cod_reserva;
 
-	UPDATE 
-            denver.disponibilidades
-      SET 
-            disponibilidad_ocupado = 0
-      where
-            disponibilidad_hotel_id = @hotel_id and
-            disponibilidad_habitacion_nro = @habitacion and
-            disponibilidad_tipo_habitacion_id = @tipo_hab and
-            disponibilidad_fecha BETWEEN @fecha_inicio AND @fecha_fin
+      -- Libero la disponibilidad de las fechas de la reserva            
+      declare @fecha_actual datetime = @fecha_inicio
+      while (@fecha_actual <= @fecha_fin)
+      begin
+            exec DENVER.liberar_disponibilidad @fecha_actual, @hotel_id, @tipo_hab, @habitacion
+            set @fecha_actual = dateadd(day, 1, @fecha_actual)
+      end
 END
 GO
 
 -- FUNCION PARA DETERMINAR SI UNA RESERVA EXISTE O NO
-CREATE FUNCTION [DENVER].[existe_reserva] (@reserva numeric(18,0))
+CREATE FUNCTION [DENVER].[existe_reserva] (@reserva numeric(18,0), @hotel_id smallint)
 RETURNS int
 AS
 BEGIN
-      RETURN (SELECT count(*) FROM denver.reservas WHERE reserva_codigo = @reserva
-													 AND reserva_estado_id IN (1,2))
+      RETURN (SELECT count(*) FROM denver.reservas WHERE reserva_codigo = @reserva AND reserva_hotel_id = @hotel_id AND reserva_estado_id IN (1,2))
 END
 GO
 
@@ -3052,7 +3142,7 @@ BEGIN
                 th.tipo_habitacion_id,
                 ff.fecha,
                 (SELECT TOP 1
-                        (CASE count(*) WHEN 0 THEN 0 ELSE 1 END) 
+                        (CASE count(*) WHEN 0 THEN 0 ELSE 9 END) 
                 FROM
                         DENVER.disponibilidades AS d
                 WHERE 
@@ -3068,10 +3158,53 @@ BEGIN
                 ho.hotel_id = hab.habitacion_hotel_id AND th.tipo_habitacion_id = hab.habitacion_tipo_habitacion_id
       )
 
+      -- Borro aquellos registros con disponibilidad_ocupado = 9 que generan inconsistencias
+      DELETE FROM denver.disponibilidades WHERE disponibilidad_ocupado = 9
+
       DROP TABLE #fechas            
 END
 GO
 
+
+-- FUNCTION PARA DETERMINAR SI YA SE EFECTUO UN CHECKOUT O NO
+CREATE FUNCTION [DENVER].[checkout_realizado] (@fecha_salida datetime,@tipo_documento numeric(18,0),@nro_documento numeric(18,0),@hotel_id smallint)
+RETURNS int
+AS
+BEGIN
+      declare @tipo_habitacion numeric(18,0)
+      declare @habitacion_nro numeric(18, 0)
+
+      -- obtengo el tipo de habitacion y nro de la reserva para saber si ya se liberaron con el checkout
+      select
+            @tipo_habitacion = rh.reserva_habitaciones_tipo_habitacion_id, @habitacion_nro = rh.reserva_habitacion_nro
+      from
+            DENVER.reservas as r
+            join reservas_habitaciones as rh on rh.reserva_habitaciones_reserva_codigo = r.reserva_codigo
+      where
+            r.reserva_cliente_tipo_documento_id = @tipo_documento and
+            r.reserva_cliente_pasaporte_nro = @nro_documento and
+            r.reserva_hotel_id = @hotel_id and
+            @fecha_salida between r.reserva_fecha_inicio and r.reserva_fecha_fin AND
+            r.reserva_estado_id = 6;
+
+      RETURN (select
+            count(*)
+      from
+          DENVER.reservas as r
+          join DENVER.reservas_habitaciones as rh on rh.reserva_habitaciones_reserva_codigo = r.reserva_codigo
+            join DENVER.disponibilidades as d ON (d.disponibilidad_hotel_id = r.reserva_hotel_id AND d.disponibilidad_habitacion_nro = rh.reserva_habitacion_nro AND d.disponibilidad_fecha between r.reserva_fecha_inicio AND r.reserva_fecha_fin AND rh.reserva_habitaciones_tipo_habitacion_id = d.disponibilidad_tipo_habitacion_id )
+      where
+          r.reserva_cliente_tipo_documento_id = @tipo_documento and 
+            r.reserva_cliente_pasaporte_nro = @nro_documento and 
+            r.reserva_hotel_id = @hotel_id and 
+            @fecha_salida between r.reserva_fecha_inicio and r.reserva_fecha_fin AND 
+            r.reserva_estado_id = 6 AND
+            rh.reserva_habitaciones_tipo_habitacion_id = @tipo_habitacion AND 
+            rh.reserva_habitacion_nro = @habitacion_nro AND            
+            d.disponibilidad_ocupado = 1)
+
+END
+GO
 -- HABILITO LAS DISPONIBILIDADES
 exec DENVER.habilitar_disponibilidad '20170101', '20201231'
 GO
