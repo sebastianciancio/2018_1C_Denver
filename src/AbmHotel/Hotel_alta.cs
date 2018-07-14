@@ -35,6 +35,13 @@ namespace FrbaHotel.AbmHotel
                 return;
             }
 
+            if (reg.IsMatch(txb_Recarga.Text))
+            {
+                MessageBox.Show("La recarga no puede contener caracteres", "Error");
+                return;
+            }
+
+
             if (validarFormulario())
             {
                 SqlCommand cmd = new SqlCommand("denver.cargar_hotel", db.Connection);
@@ -44,6 +51,7 @@ namespace FrbaHotel.AbmHotel
                 cmd.Parameters.AddWithValue("@hotel_email", SqlDbType.VarChar).Value = txb_mail.Text;
                 cmd.Parameters.AddWithValue("@hotel_telefono", SqlDbType.VarChar).Value = txb_telefono.Text;
                 cmd.Parameters.AddWithValue("@hotel_calle", SqlDbType.VarChar).Value = txb_calle.Text;
+                cmd.Parameters.AddWithValue("@recarga", SqlDbType.Int).Value = Convert.ToInt32(txb_Recarga.Text);
                 if (!reg.IsMatch(txb_nro.Text))
                 {
                     cmd.Parameters.AddWithValue("@hotel_nro_calle", SqlDbType.Int).Value = Convert.ToInt32(txb_nro.Text);
@@ -83,7 +91,8 @@ namespace FrbaHotel.AbmHotel
                     !Validacion.esInicial(txb_telefono.Text) &
                     !Validacion.esInicial(txb_calle.Text) &
                     !Validacion.esInicial(txb_nro.Text) &
-                    !Validacion.esInicial(txb_ciudad.Text));
+                    !Validacion.esInicial(txb_ciudad.Text) &
+                    !Validacion.esInicial(txb_Recarga.Text));
 
         }
 

@@ -56,6 +56,8 @@
             this.txb_nro = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.combo_pais = new System.Windows.Forms.ComboBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.txb_Recarga = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // btn__volver
@@ -325,11 +327,30 @@
             this.combo_pais.Size = new System.Drawing.Size(209, 21);
             this.combo_pais.TabIndex = 132;
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(376, 22);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(102, 13);
+            this.label3.TabIndex = 133;
+            this.label3.Text = "Recargo por estrella";
+            // 
+            // txb_Recarga
+            // 
+            this.txb_Recarga.Location = new System.Drawing.Point(378, 39);
+            this.txb_Recarga.MaxLength = 18;
+            this.txb_Recarga.Name = "txb_Recarga";
+            this.txb_Recarga.Size = new System.Drawing.Size(100, 20);
+            this.txb_Recarga.TabIndex = 134;
+            // 
             // Hotel_alta
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(432, 301);
+            this.ClientSize = new System.Drawing.Size(495, 301);
+            this.Controls.Add(this.txb_Recarga);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.cmb_regimenes);
             this.Controls.Add(this.combo_pais);
             this.Controls.Add(this.txb_calle);
@@ -396,5 +417,7 @@
         private System.Windows.Forms.TextBox txb_nro;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.ComboBox combo_pais;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox txb_Recarga;
     }
 }
