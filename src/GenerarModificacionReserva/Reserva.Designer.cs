@@ -358,10 +358,10 @@
             this.Controls.Add(this.Container_disponibilidad);
             this.Controls.Add(this.groupBox1);
             this.Name = "Reserva";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Reservas";
             this.Activated += new System.EventHandler(this.Reserva_Activated);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Reserva_FormClosed);
-            
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dg_disponibilidad)).EndInit();

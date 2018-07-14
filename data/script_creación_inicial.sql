@@ -1213,7 +1213,8 @@ CREATE PROCEDURE [DENVER].[cargar_hotel]
       @hotel_pais_id smallint,
       @hotel_regimen smallint,
       @user_creador nvarchar(50),
-      @fecha_sistema datetime
+      @fecha_sistema datetime,
+	  @recarga numeric(18,0)
 AS
 BEGIN
       
@@ -1239,7 +1240,7 @@ BEGIN
             @hotel_nro_calle,
             @hotel_ciudad,
             @hotel_estrellas,
-            10,
+            @recarga,
             @fecha_sistema,
             @hotel_nombre,
             @hotel_email,
@@ -2603,7 +2604,7 @@ BEGIN
       SET NOCOUNT ON;  
 
       SELECT hotel_nombre , hotel_calle, hotel_nro_calle, hotel_ciudad, hotel_pais_id,
-               hotel_email, hotel_telefono , hotel_estrellas, hotel_regimen_regimen_id
+               hotel_email, hotel_telefono , hotel_estrellas, hotel_regimen_regimen_id, hotel_recarga_estrella
       FROM 
             DENVER.hoteles
             join DENVER.hoteles_regimenes p on hotel_id = p.hotel_regimen_hotel_id
@@ -2624,8 +2625,10 @@ CREATE PROCEDURE [DENVER].[modificar_hotel]
       @hotel_ciudad nvarchar(255),
       @hotel_pais smallint,
       @hotel_regimenes smallint,
-      @hotel_creacion datetime
-
+      @hotel_creacion datetime,
+	  --
+	  @recarga numeric(18,0)
+	  --
 AS
 BEGIN
       SET NOCOUNT ON;  
@@ -2639,8 +2642,9 @@ BEGIN
       hotel_estrellas = @hotel_estrellas,
       hotel_ciudad = @hotel_ciudad,
       hotel_pais_id = @hotel_pais,
-      hotel_created = @hotel_creacion
-      
+      hotel_created = @hotel_creacion,
+      hotel_recarga_estrella = @recarga
+
       WHERE
       hotel_id = @hotel_id 
  

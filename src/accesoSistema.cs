@@ -156,6 +156,7 @@ namespace FrbaHotel
             //this.Hide();
             CancelacionReserva frm = new CancelacionReserva();
             frm.Show();
+
         }
 
 

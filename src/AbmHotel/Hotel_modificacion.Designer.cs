@@ -60,13 +60,15 @@
             this.cmb_regimenes = new System.Windows.Forms.ComboBox();
             this.label8 = new System.Windows.Forms.Label();
             this.txb_calle = new System.Windows.Forms.TextBox();
+            this.txb_Recarga = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label12
             // 
             this.label12.AutoSize = true;
             this.label12.ForeColor = System.Drawing.Color.Red;
-            this.label12.Location = new System.Drawing.Point(302, 66);
+            this.label12.Location = new System.Drawing.Point(331, 63);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(11, 13);
             this.label12.TabIndex = 89;
@@ -102,7 +104,7 @@
             // 
             // txb_telefono
             // 
-            this.txb_telefono.Location = new System.Drawing.Point(255, 79);
+            this.txb_telefono.Location = new System.Drawing.Point(279, 79);
             this.txb_telefono.MaxLength = 255;
             this.txb_telefono.Name = "txb_telefono";
             this.txb_telefono.Size = new System.Drawing.Size(134, 20);
@@ -111,7 +113,7 @@
             // lbl_telefono
             // 
             this.lbl_telefono.AutoSize = true;
-            this.lbl_telefono.Location = new System.Drawing.Point(252, 63);
+            this.lbl_telefono.Location = new System.Drawing.Point(276, 63);
             this.lbl_telefono.Name = "lbl_telefono";
             this.lbl_telefono.Size = new System.Drawing.Size(49, 13);
             this.lbl_telefono.TabIndex = 84;
@@ -303,7 +305,7 @@
             // 
             this.label6.AutoSize = true;
             this.label6.ForeColor = System.Drawing.Color.Red;
-            this.label6.Location = new System.Drawing.Point(356, 111);
+            this.label6.Location = new System.Drawing.Point(319, 111);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(11, 13);
             this.label6.TabIndex = 133;
@@ -311,7 +313,7 @@
             // 
             // txb_nro
             // 
-            this.txb_nro.Location = new System.Drawing.Point(316, 127);
+            this.txb_nro.Location = new System.Drawing.Point(279, 127);
             this.txb_nro.MaxLength = 255;
             this.txb_nro.Name = "txb_nro";
             this.txb_nro.Size = new System.Drawing.Size(67, 20);
@@ -320,7 +322,7 @@
             // lbl_nro
             // 
             this.lbl_nro.AutoSize = true;
-            this.lbl_nro.Location = new System.Drawing.Point(313, 111);
+            this.lbl_nro.Location = new System.Drawing.Point(276, 111);
             this.lbl_nro.Name = "lbl_nro";
             this.lbl_nro.Size = new System.Drawing.Size(44, 13);
             this.lbl_nro.TabIndex = 131;
@@ -366,11 +368,30 @@
             this.txb_calle.Size = new System.Drawing.Size(241, 20);
             this.txb_calle.TabIndex = 69;
             // 
+            // txb_Recarga
+            // 
+            this.txb_Recarga.Location = new System.Drawing.Point(376, 28);
+            this.txb_Recarga.MaxLength = 18;
+            this.txb_Recarga.Name = "txb_Recarga";
+            this.txb_Recarga.Size = new System.Drawing.Size(100, 20);
+            this.txb_Recarga.TabIndex = 140;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(374, 11);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(102, 13);
+            this.label9.TabIndex = 139;
+            this.label9.Text = "Recargo por estrella";
+            // 
             // Hotel_modificacion
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(441, 279);
+            this.ClientSize = new System.Drawing.Size(484, 279);
+            this.Controls.Add(this.txb_Recarga);
+            this.Controls.Add(this.label9);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.cmb_regimenes);
             this.Controls.Add(this.cmb_pais);
@@ -446,5 +467,7 @@
         private System.Windows.Forms.ComboBox cmb_regimenes;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.TextBox txb_calle;
+        private System.Windows.Forms.TextBox txb_Recarga;
+        private System.Windows.Forms.Label label9;
     }
 }

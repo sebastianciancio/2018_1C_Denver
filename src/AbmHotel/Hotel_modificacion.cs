@@ -36,6 +36,18 @@ namespace FrbaHotel.AbmHotel
                     MessageBox.Show("El numero no puede contener caracteres", "Error");
                     return;
                 }
+                if (reg.IsMatch(txb_telefono.Text))
+                {
+                    MessageBox.Show("El telefono no puede contener caracteres", "Error");
+                    return;
+                }
+
+                if (reg.IsMatch(txb_Recarga.Text))
+                {
+                    MessageBox.Show("La recarga no puede contener caracteres", "Error");
+                    return;
+                }
+
                 SqlCommand cmd = new SqlCommand("denver.modificar_hotel", db.Connection);
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -51,6 +63,7 @@ namespace FrbaHotel.AbmHotel
                 //levanta el ID
                 cmd.Parameters.AddWithValue("@hotel_regimenes", SqlDbType.Int).Value = cmb_regimenes.SelectedValue;
                 cmd.Parameters.AddWithValue("@hotel_creacion", SqlDbType.Int).Value = Convert.ToDateTime(cmb_creacion.Value);
+                cmd.Parameters.AddWithValue("@recarga", SqlDbType.Int).Value = Convert.ToInt32(txb_Recarga.Text);
 
 
                 cmd.ExecuteNonQuery();
@@ -90,6 +103,7 @@ namespace FrbaHotel.AbmHotel
             cmb_pais.SelectedValue = row["hotel_pais_id"].ToString();
             txb_mail.Text = row["hotel_email"].ToString();
             txb_telefono.Text = row["hotel_telefono"].ToString();
+            txb_Recarga.Text = row["hotel_recarga_estrella"].ToString();
             cmb_estrellas.Text = row["hotel_estrellas"].ToString();
             cmb_regimenes.SelectedValue = row["hotel_regimen_regimen_id"].ToString();
 
@@ -104,7 +118,8 @@ namespace FrbaHotel.AbmHotel
                     !Validacion.esInicial(txb_telefono.Text) &
                     !Validacion.esInicial(txb_calle.Text) &
                     !Validacion.esInicial(txb_nro.Text) &
-                    !Validacion.esInicial(txb_ciudad.Text));
+                    !Validacion.esInicial(txb_ciudad.Text) &
+                    !Validacion.esInicial(txb_Recarga.Text));
     
         }
     } }
