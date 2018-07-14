@@ -28,8 +28,6 @@ namespace FrbaHotel.AbmHotel
 
         private void btn_guardar_Click(object sender, EventArgs e)
         {
-            if (validarFormulario())
-            {
                 Regex reg = new Regex("[A-z]");
                 if (reg.IsMatch(txb_nro.Text))
                 {
@@ -48,45 +46,48 @@ namespace FrbaHotel.AbmHotel
                     return;
                 }
 
-                SqlCommand cmd = new SqlCommand("denver.modificar_hotel", db.Connection);
-                cmd.CommandType = CommandType.StoredProcedure;
-
-                cmd.Parameters.AddWithValue("@hotel_id", SqlDbType.Int).Value = Convert.ToInt32(hotel_id);
-                cmd.Parameters.AddWithValue("@hotel_nombre", SqlDbType.NVarChar).Value = txb_nombre.Text;
-                cmd.Parameters.AddWithValue("@hotel_mail", SqlDbType.NVarChar).Value = txb_mail.Text;
-                cmd.Parameters.AddWithValue("@hotel_telefono", SqlDbType.NVarChar).Value = txb_telefono.Text;
-                cmd.Parameters.AddWithValue("@hotel_direccion", SqlDbType.NVarChar).Value = txb_calle.Text;
-                cmd.Parameters.AddWithValue("@hotel_numero", SqlDbType.Int).Value = Convert.ToInt32(txb_nro.Text);
-                cmd.Parameters.AddWithValue("@hotel_estrellas", SqlDbType.Int).Value = Convert.ToInt32(cmb_estrellas.Text);
-                cmd.Parameters.AddWithValue("@hotel_ciudad", SqlDbType.NVarChar).Value = txb_ciudad.Text;
-                cmd.Parameters.AddWithValue("@hotel_pais", SqlDbType.Int).Value = cmb_pais.SelectedValue;
-                //levanta el ID
-           //     cmd.Parameters.AddWithValue("@hotel_regimenes", SqlDbType.Int).Value = cmb_regimenes.SelectedValue;
-                cmd.Parameters.AddWithValue("@hotel_creacion", SqlDbType.Int).Value = Convert.ToDateTime(cmb_creacion.Value);
-                cmd.Parameters.AddWithValue("@recarga", SqlDbType.Int).Value = Convert.ToInt32(txb_Recarga.Text);
-                
-
-                cmd.ExecuteNonQuery();
-
-                
-                
-                int sum;
-                for (int i = 0; i < clb_regimenes.CheckedIndices.Count; i++)
+                if (validarFormulario())
                 {
-                    // int selection = clb_funcionalidades.CheckedIndices[i];
-                    SqlCommand cmd2 = new SqlCommand("denver.cargar_hotel_regimen", db.Connection);
-                    cmd2.CommandType = CommandType.StoredProcedure;
-                    cmd2.Parameters.AddWithValue("@hotel_id", SqlDbType.Int).Value = Convert.ToInt32(hotel_id);
-                    sum = clb_regimenes.CheckedIndices[i] + 1;
-                    cmd2.Parameters.AddWithValue("@regimen", SqlDbType.SmallInt).Value = sum;
-                    cmd2.ExecuteNonQuery();
+
+                    SqlCommand cmd = new SqlCommand("denver.modificar_hotel", db.Connection);
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    cmd.Parameters.AddWithValue("@hotel_id", SqlDbType.Int).Value = Convert.ToInt32(hotel_id);
+                    cmd.Parameters.AddWithValue("@hotel_nombre", SqlDbType.NVarChar).Value = txb_nombre.Text;
+                    cmd.Parameters.AddWithValue("@hotel_mail", SqlDbType.NVarChar).Value = txb_mail.Text;
+                    cmd.Parameters.AddWithValue("@hotel_telefono", SqlDbType.NVarChar).Value = txb_telefono.Text;
+                    cmd.Parameters.AddWithValue("@hotel_direccion", SqlDbType.NVarChar).Value = txb_calle.Text;
+                    cmd.Parameters.AddWithValue("@hotel_numero", SqlDbType.Int).Value = Convert.ToInt32(txb_nro.Text);
+                    cmd.Parameters.AddWithValue("@hotel_estrellas", SqlDbType.Int).Value = Convert.ToInt32(cmb_estrellas.Text);
+                    cmd.Parameters.AddWithValue("@hotel_ciudad", SqlDbType.NVarChar).Value = txb_ciudad.Text;
+                    cmd.Parameters.AddWithValue("@hotel_pais", SqlDbType.Int).Value = cmb_pais.SelectedValue;
+                    cmd.Parameters.AddWithValue("@recarga", SqlDbType.Int).Value = Convert.ToInt32(txb_Recarga.Text);
+
+                    cmd.ExecuteNonQuery();
+
+
+                    int sum;
+                    for (int i = 0; i < clb_regimenes.CheckedIndices.Count; i++)
+                    {
+                        // int selection = clb_funcionalidades.CheckedIndices[i];
+                        SqlCommand cmd2 = new SqlCommand("denver.cargar_hotel_regimen", db.Connection);
+                        cmd2.CommandType = CommandType.StoredProcedure;
+                        cmd2.Parameters.AddWithValue("@hotel_id", SqlDbType.Int).Value = Convert.ToInt32(hotel_id);
+                        sum = clb_regimenes.CheckedIndices[i] + 1;
+                        cmd2.Parameters.AddWithValue("@regimen", SqlDbType.SmallInt).Value = sum;
+                        cmd2.ExecuteNonQuery();
+                    }
+
+
+                    MessageBox.Show("El hotel " + txb_nombre.Text + " se modificó correctamente", "Mensaje");
+                    Close();
+                }
+                else 
+                { 
+                    MessageBox.Show("Debe completar todos los campos obligatorios", "Mensaje"); 
                 }
 
 
-
-                MessageBox.Show("El hotel " + txb_nombre.Text + " se modificó correctamente", "Mensaje");
-                Close();
-            } else { }
         }
 
         private void btn__volver_Click(object sender, EventArgs e)
@@ -169,6 +170,6 @@ namespace FrbaHotel.AbmHotel
                     !Validacion.esInicial(txb_nro.Text) &
                     !Validacion.esInicial(txb_ciudad.Text) &
                     !Validacion.esInicial(txb_Recarga.Text));
-    
+
         }
     } }

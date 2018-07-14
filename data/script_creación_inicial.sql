@@ -1385,7 +1385,8 @@ CREATE PROCEDURE [DENVER].[cargar_habitacion]
       @habitacion_frente nvarchar(50),
       @habitacion_tipo_habitacion_id numeric(18,0),
       @habitacion_hotel_id smallint,
-      @habitacion_descripcion ntext
+      @habitacion_descripcion ntext,
+      @fecha_sistema datetime
 AS
 BEGIN
       SET NOCOUNT ON;  
@@ -1406,7 +1407,7 @@ BEGIN
       @habitacion_descripcion,
       @habitacion_hotel_id,
       'S',
-      GETDATE())
+      @fecha_sistema)
 
 
       -- HABILITO LAS DISPONIBILIDADES
@@ -2163,11 +2164,12 @@ CREATE PROCEDURE DENVER.confirmar_checkin
       @estadia_fecha_inicio datetime,
       @estadia_fecha_fin datetime,
       @estadia_hotel_id smallint,
-      @estadia_usuario_user nvarchar(50)
+      @estadia_usuario_user nvarchar(50),
+      @fecha_sistema datetime
 AS
 BEGIN
 
-  INSERT INTO DENVER.estadias (estadia_cliente_tipo_documento_id,estadia_cliente_pasaporte_nro,estadia_fecha_inicio,estadia_cant_noches,estadia_fecha_fin,estadia_hotel_id,estadia_reserva_codigo,estadia_usuario_user,estadia_created) VALUES (@estadia_cliente_tipo_documento_id, @estadia_cliente_pasaporte_nro,@estadia_fecha_inicio,DATEDIFF(day, @estadia_fecha_inicio, @estadia_fecha_fin),@estadia_fecha_fin,@estadia_hotel_id,@nro_reserva,@estadia_usuario_user,GETDATE())
+  INSERT INTO DENVER.estadias (estadia_cliente_tipo_documento_id,estadia_cliente_pasaporte_nro,estadia_fecha_inicio,estadia_cant_noches,estadia_fecha_fin,estadia_hotel_id,estadia_reserva_codigo,estadia_usuario_user,estadia_created) VALUES (@estadia_cliente_tipo_documento_id, @estadia_cliente_pasaporte_nro,@estadia_fecha_inicio,DATEDIFF(day, @estadia_fecha_inicio, @estadia_fecha_fin),@estadia_fecha_fin,@estadia_hotel_id,@nro_reserva,@estadia_usuario_user,@fecha_sistema)
 
   -- cambio el estado de la reserva
   exec DENVER.cambiar_estado_reserva @nro_reserva, 6
@@ -2725,38 +2727,29 @@ CREATE PROCEDURE [DENVER].[modificar_hotel]
       @hotel_mail nvarchar(255),
       @hotel_telefono nvarchar(255),
       @hotel_direccion nvarchar(255),
-	  @hotel_numero numeric(18,0) = NULL,
+      @hotel_numero numeric(18,0) = NULL,
       @hotel_estrellas smallint,
       @hotel_ciudad nvarchar(255),
       @hotel_pais smallint,
-      --@hotel_regimenes smallint,
-      @hotel_creacion datetime,
-	  --
-	  @recarga numeric(18,0)
-	  --
+      @recarga numeric(18,0)
 AS
 BEGIN
       SET NOCOUNT ON;  
 
       UPDATE [DENVER].[hoteles]
       SET
-      hotel_nombre = @hotel_nombre,
-      hotel_email = @hotel_mail,
-      hotel_telefono = @hotel_telefono,
-      hotel_calle = @hotel_direccion,
-      hotel_estrellas = @hotel_estrellas,
-      hotel_ciudad = @hotel_ciudad,
-      hotel_pais_id = @hotel_pais,
-      hotel_created = @hotel_creacion,
-      hotel_recarga_estrella = @recarga
-
+            hotel_nombre = @hotel_nombre,
+            hotel_email = @hotel_mail,
+            hotel_telefono = @hotel_telefono,
+            hotel_calle = @hotel_direccion,
+            hotel_estrellas = @hotel_estrellas,
+            hotel_ciudad = @hotel_ciudad,
+            hotel_pais_id = @hotel_pais,
+            hotel_recarga_estrella = @recarga
       WHERE
-      hotel_id = @hotel_id 
+            hotel_id = @hotel_id 
  
-	  DELETE FROM DENVER.hoteles_regimenes WHERE hotel_regimen_hotel_id = @hotel_id
-
-
-      
+	DELETE FROM DENVER.hoteles_regimenes WHERE hotel_regimen_hotel_id = @hotel_id
 
 END
 GO
@@ -2939,16 +2932,17 @@ CREATE PROCEDURE [DENVER].[modificar_habitacion]
 AS
 BEGIN
       SET NOCOUNT ON;  
-	  UPDATE denver.habitaciones SET
-	  habitacion_piso = @habitacion_piso,
-	  habitacion_frente = @habitacion_frente,
-	  habitacion_descripcion = @habitacion_descripcion
-	  WHERE 
-	  habitacion_nro = @habitacion_nro AND
-	  @habitacion_hotel_id = @habitacion_hotel_id
 
+      UPDATE denver.habitaciones SET
+            habitacion_piso = @habitacion_piso,
+            habitacion_frente = @habitacion_frente,
+            habitacion_descripcion = @habitacion_descripcion
+      WHERE 
+            habitacion_nro = @habitacion_nro AND
+            habitacion_hotel_id = @habitacion_hotel_id
 
-     
+      -- HABILITO LAS DISPONIBILIDADES
+      exec DENVER.habilitar_disponibilidad '20170101', '20201231', @habitacion_hotel_id
 END
 GO
 
@@ -3273,7 +3267,6 @@ BEGIN
 END
 GO
 
-
 -- FUNCTION PARA DETERMINAR SI YA SE EFECTUO UN CHECKOUT O NO
 CREATE FUNCTION [DENVER].[checkout_realizado] (@fecha_salida datetime,@tipo_documento numeric(18,0),@nro_documento numeric(18,0),@hotel_id smallint)
 RETURNS int
@@ -3313,24 +3306,23 @@ BEGIN
 
 END
 GO
--- HABILITO LAS DISPONIBILIDADES
+
+-- SP PARA OBTENER TODOS LOS REGIMENES
 CREATE PROCEDURE [DENVER].[obtener_todos_regimenes]
 AS
 BEGIN
       SET NOCOUNT ON;
-	      
-		  SELECT regimen_descripcion FROM DENVER.regimenes WHERE regimen_activo = 'S' 
+      SELECT regimen_descripcion FROM DENVER.regimenes WHERE regimen_activo = 'S' 
 END
 GO
 
+-- SP PARA OBTENER TODOS LOS REGIMENES DE UN HOTEL
 CREATE PROCEDURE [DENVER].[buscar_regimenes_hotel]
 @hotel_id smallint
 AS
 BEGIN
       SET NOCOUNT ON;
-
-  SELECT hotel_regimen_regimen_id FROM DENVER.hoteles_regimenes WHERE hotel_regimen_hotel_id = @hotel_id
-            
+      SELECT hotel_regimen_regimen_id FROM DENVER.hoteles_regimenes WHERE hotel_regimen_hotel_id = @hotel_id
 END
 GO
 

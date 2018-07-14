@@ -165,7 +165,7 @@ namespace FrbaHotel.AbmHabitacion
 
                 cmd2.ExecuteNonQuery();
 
-                MessageBox.Show("Se ha modificado la habitación " + hab_nro, "Mensaje");
+                MessageBox.Show("Se ha modificado la habitación " + hab_nro + " y se habilitó su Disponibilidad para las Reservas", "Mensaje");
 
 
             }

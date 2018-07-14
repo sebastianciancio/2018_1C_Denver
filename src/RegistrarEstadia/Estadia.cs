@@ -189,6 +189,7 @@ namespace FrbaHotel
                 cmd.Parameters.AddWithValue("@estadia_hotel_id", SqlDbType.Int).Value = Convert.ToInt32(accesoSistema.HotelIdActual);
                 cmd.Parameters.AddWithValue("@estadia_usuario_user", SqlDbType.VarChar).Value = accesoSistema.UsuarioLogueado.Id;
                 cmd.Parameters.AddWithValue("@nro_reserva", SqlDbType.Int).Value = Convert.ToInt32(nro_reserva.Text);
+                cmd.Parameters.AddWithValue("@fecha_sistema", SqlDbType.DateTime).Value = accesoSistema.fechaSistemaSQL;
 
                 // Ejecuto el SP
                 cmd.ExecuteNonQuery();

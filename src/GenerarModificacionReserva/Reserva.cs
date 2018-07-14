@@ -46,57 +46,60 @@ namespace FrbaHotel
             SqlCommand cmd = new SqlCommand("denver.obtener_disponibilidad", db.Connection);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            DateTime fecha_sin_hora = new DateTime();
+            DateTime fecha_desde_sin_hora = new DateTime();
+            DateTime fecha_hasta_sin_hora = new DateTime();
+
             string[] formatos = {"dd/MM/yyyy", "d/MM/yyyy", "dd/M/yyyy", "d/M/yyyy"};
 
-            if (fecha_desde.Text != "")
+            fecha_desde_sin_hora = DateTime.ParseExact(fecha_desde.Value.Day.ToString() + "/" + fecha_desde.Value.Month.ToString() + "/" + fecha_desde.Value.Year.ToString(), formatos, CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal);
+            cmd.Parameters.AddWithValue("@fecha_desde", SqlDbType.DateTime).Value = fecha_desde_sin_hora;
+
+            fecha_hasta_sin_hora = DateTime.ParseExact(fecha_hasta.Value.Day.ToString() + "/" + fecha_hasta.Value.Month.ToString() + "/" + fecha_hasta.Value.Year.ToString(), formatos, CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal);
+            cmd.Parameters.AddWithValue("@fecha_hasta", SqlDbType.DateTime).Value = fecha_hasta_sin_hora;
+
+            // Valido que la Fecha Desde sea inferior a Hasta
+            if (fecha_desde_sin_hora >= fecha_hasta_sin_hora)
             {
-                fecha_sin_hora = DateTime.ParseExact(fecha_desde.Value.Day.ToString() + "/" + fecha_desde.Value.Month.ToString() + "/" + fecha_desde.Value.Year.ToString(), formatos, CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal);
-                cmd.Parameters.AddWithValue("@fecha_desde", SqlDbType.DateTime).Value = fecha_sin_hora;
+                DialogResult result = MessageBox.Show("La Fecha Hasta debe ser superior al inicio de la Reserva", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
-
-            if (fecha_hasta.Text != "")
+            else
             {
-                fecha_sin_hora = DateTime.ParseExact(fecha_hasta.Value.Day.ToString() + "/" + fecha_hasta.Value.Month.ToString() + "/" + fecha_hasta.Value.Year.ToString(), formatos, CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal);
-                cmd.Parameters.AddWithValue("@fecha_hasta", SqlDbType.DateTime).Value = fecha_sin_hora;
+                if (cmb_tipo_hab.SelectedValue.ToString().CompareTo("0") > 0)
+                    //if (cmb_tipo_hab.SelectedIndex > 0)
+                    cmd.Parameters.AddWithValue("@tipo_habitacion", SqlDbType.Int).Value = Convert.ToInt32(cmb_tipo_hab.SelectedValue);
+
+
+                if (cmb_regimen.SelectedIndex > 0)
+                    cmd.Parameters.AddWithValue("@regimen_id", SqlDbType.Int).Value = Convert.ToInt32(cmb_regimen.SelectedValue);
+
+                cmd.Parameters.AddWithValue("@hotel_id", SqlDbType.Int).Value = Convert.ToInt32(cmb_hotel.SelectedValue);
+
+                // Creo el DataTable para obtener los resultados del SP
+                DataTable dt = new DataTable();
+
+                using (var da = new SqlDataAdapter(cmd))
+                {
+                    da.Fill(dt);
+                }
+
+                // Cargo la Grilla con los datos obtenidos
+                dg_disponibilidad.DataSource = dt;
+
+                // Oculto Columnas del Resultado
+                dg_disponibilidad.Columns[4].Visible = false;
+                dg_disponibilidad.Columns[5].Visible = false;
+                dg_disponibilidad.Columns[6].Visible = false;
+                dg_disponibilidad.Columns[7].Visible = false;
+
+                // Muestro los objetos ocultos
+                dg_disponibilidad.Visible = true;
+                Container_disponibilidad.Visible = true;
+                Container_pasajero.Visible = true;
+
+                // Habilito la seleccion de Clientes
+                accesoSistema.habilitarSeleccionCliente = true;
+
             }
-
-
-            if (cmb_tipo_hab.SelectedValue.ToString().CompareTo("0") > 0)
-            //if (cmb_tipo_hab.SelectedIndex > 0)
-                cmd.Parameters.AddWithValue("@tipo_habitacion", SqlDbType.Int).Value = Convert.ToInt32(cmb_tipo_hab.SelectedValue);
-
-
-            if (cmb_regimen.SelectedIndex > 0)
-                cmd.Parameters.AddWithValue("@regimen_id", SqlDbType.Int).Value = Convert.ToInt32(cmb_regimen.SelectedValue);
-
-            cmd.Parameters.AddWithValue("@hotel_id", SqlDbType.Int).Value = Convert.ToInt32(cmb_hotel.SelectedValue);
-
-            // Creo el DataTable para obtener los resultados del SP
-            DataTable dt = new DataTable();
-
-            using (var da = new SqlDataAdapter(cmd))
-            {
-                da.Fill(dt);
-            }
-
-            // Cargo la Grilla con los datos obtenidos
-            dg_disponibilidad.DataSource = dt;
-
-            // Oculto Columnas del Resultado
-            dg_disponibilidad.Columns[4].Visible = false;
-            dg_disponibilidad.Columns[5].Visible = false;
-            dg_disponibilidad.Columns[6].Visible = false;
-            dg_disponibilidad.Columns[7].Visible = false;
-
-            // Muestro los objetos ocultos
-            dg_disponibilidad.Visible = true;
-            Container_disponibilidad.Visible = true;
-            Container_pasajero.Visible = true;
-
-            // Habilito la seleccion de Clientes
-            accesoSistema.habilitarSeleccionCliente = true;
-
         }
 
         private void btn_buscar_Click(object sender, EventArgs e)

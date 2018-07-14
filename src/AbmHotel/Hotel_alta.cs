@@ -42,7 +42,7 @@ namespace FrbaHotel.AbmHotel
             }
             if (Validacion.checkListVacia(clb_regimenes))
             {
-                MessageBox.Show("Debe seleccionar almenos un régimen", "Error");
+                MessageBox.Show("Debe seleccionar al menos un régimen", "Error");
                 return;
             }
 

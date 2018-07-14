@@ -70,6 +70,7 @@ namespace FrbaHotel.AbmHabitacion
                     SqlCommand cmd = new SqlCommand("denver.cargar_habitacion", db.Connection);
                     cmd.CommandType = CommandType.StoredProcedure;
 
+                    cmd.Parameters.AddWithValue("@fecha_sistema", SqlDbType.DateTime).Value = accesoSistema.fechaSistemaSQL;
                     cmd.Parameters.AddWithValue("@habitacion_nro", SqlDbType.Int).Value = Convert.ToInt32(txb_numero.Text);
                     cmd.Parameters.AddWithValue("@habitacion_piso", SqlDbType.Int).Value = Convert.ToInt32(txb_piso.Text);
                     if (cb_vista.Checked == true)
@@ -80,7 +81,7 @@ namespace FrbaHotel.AbmHabitacion
                     cmd.Parameters.AddWithValue("@habitacion_descripcion", SqlDbType.NText).Value = desc;
 
                     cmd.ExecuteNonQuery();
-                    MessageBox.Show("Se ha cargado la habitación " + txb_numero.Text, "Mensaje");
+                    MessageBox.Show("Se ha cargado la habitación " + txb_numero.Text + " y se habilitó su Disponibilidad para las Reservas", "Mensaje");
 
                     Close();
                 }

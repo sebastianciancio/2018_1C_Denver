@@ -155,66 +155,70 @@ namespace FrbaHotel
             cmd.CommandType = CommandType.StoredProcedure;
 
 
-            DateTime fecha_sin_hora = new DateTime();
+            DateTime fecha_desde_sin_hora = new DateTime();
+            DateTime fecha_hasta_sin_hora = new DateTime();
+
             string[] formatos = { "dd/MM/yyyy", "d/MM/yyyy", "dd/M/yyyy", "d/M/yyyy" };
 
-            if (fecha_desde.Text != "")
+            fecha_desde_sin_hora = DateTime.ParseExact(fecha_desde.Value.Day.ToString() + "/" + fecha_desde.Value.Month.ToString() + "/" + fecha_desde.Value.Year.ToString(), formatos, CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal);
+            cmd.Parameters.AddWithValue("@fecha_desde", SqlDbType.DateTime).Value = fecha_desde_sin_hora;
+
+            fecha_hasta_sin_hora = DateTime.ParseExact(fecha_hasta.Value.Day.ToString() + "/" + fecha_hasta.Value.Month.ToString() + "/" + fecha_hasta.Value.Year.ToString(), formatos, CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal);
+            cmd.Parameters.AddWithValue("@fecha_hasta", SqlDbType.DateTime).Value = fecha_hasta_sin_hora;
+
+            // Valido que la Fecha Desde sea inferior a Hasta
+            if (fecha_desde_sin_hora >= fecha_hasta_sin_hora)
             {
-                fecha_sin_hora = DateTime.ParseExact(fecha_desde.Value.Day.ToString() + "/" + fecha_desde.Value.Month.ToString() + "/" + fecha_desde.Value.Year.ToString(), formatos, CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal);
-                cmd.Parameters.AddWithValue("@fecha_desde", SqlDbType.DateTime).Value = fecha_sin_hora;
-            }
-
-            if (fecha_hasta.Text != "")
-            {
-                fecha_sin_hora = DateTime.ParseExact(fecha_hasta.Value.Day.ToString() + "/" + fecha_hasta.Value.Month.ToString() + "/" + fecha_hasta.Value.Year.ToString(), formatos, CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal);
-                cmd.Parameters.AddWithValue("@fecha_hasta", SqlDbType.DateTime).Value = fecha_sin_hora;
-            }
-
-            cmd.Parameters.AddWithValue("@tipo_habitacion", SqlDbType.Int).Value = Convert.ToInt32(cmb_tipo_hab.SelectedValue);
-            cmd.Parameters.AddWithValue("@regimen_id", SqlDbType.Int).Value = Convert.ToInt32(cmb_regimen.SelectedValue);
-            cmd.Parameters.AddWithValue("@hotel_id", SqlDbType.Int).Value = Convert.ToInt32(cmb_hotel.SelectedValue);
-
-            // Creo el DataTable para obtener los resultados del SP
-            DataTable dt = new DataTable();
-
-            using (var da = new SqlDataAdapter(cmd))
-            {
-                da.Fill(dt);
-            }
-
-            // Cargo la Grilla con los datos obtenidos
-            dg_disponibilidad.DataSource = dt;
-
-            // Si hay disponibilidad
-            if (dg_disponibilidad.RowCount > 0)
-            {
-                label_disponibilidad.Visible = true;
-                label_disponibilidad.BackColor = Color.GreenYellow;
-                label_disponibilidad.ForeColor = Color.Black;
-                label_disponibilidad.Text = "Existe disponibilidad";
-
-                // Guardo una Habitacion y su precio
-                nueva_precio = (Convert.ToInt32(dg_disponibilidad.Rows[0].Cells[4].Value) * Convert.ToInt32(dg_disponibilidad.Rows[0].Cells[3].Value)) + Convert.ToInt32(dg_disponibilidad.Rows[0].Cells[7].Value);
-                nueva_habitacion_nro = Convert.ToInt32(dg_disponibilidad.Rows[0].Cells[0].Value);
-
-                label_hab_precio.Text = "Nro. de Habitación disponible: " + nueva_habitacion_nro.ToString() + " - Precio Diario por Pax: " + nueva_precio.ToString();
-
-                // Muestro el boton Modificar
-                btn_Modificar.Visible = true;
-                label_hab_precio.Visible = true;
+                DialogResult result = MessageBox.Show("La Fecha Hasta debe ser superior al inicio de la Reserva", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             else
             {
-                label_disponibilidad.Visible = true;
-                label_disponibilidad.BackColor = Color.Red;
-                label_disponibilidad.ForeColor = Color.White;
-                label_disponibilidad.Text = "No existe disponibilidad";
+                cmd.Parameters.AddWithValue("@tipo_habitacion", SqlDbType.Int).Value = Convert.ToInt32(cmb_tipo_hab.SelectedValue);
+                cmd.Parameters.AddWithValue("@regimen_id", SqlDbType.Int).Value = Convert.ToInt32(cmb_regimen.SelectedValue);
+                cmd.Parameters.AddWithValue("@hotel_id", SqlDbType.Int).Value = Convert.ToInt32(cmb_hotel.SelectedValue);
 
-                // Oculto el boton Modificar
-                btn_Modificar.Visible = false;
-                label_hab_precio.Visible = false;
+                // Creo el DataTable para obtener los resultados del SP
+                DataTable dt = new DataTable();
+
+                using (var da = new SqlDataAdapter(cmd))
+                {
+                    da.Fill(dt);
+                }
+
+                // Cargo la Grilla con los datos obtenidos
+                dg_disponibilidad.DataSource = dt;
+
+                // Si hay disponibilidad
+                if (dg_disponibilidad.RowCount > 0)
+                {
+                    label_disponibilidad.Visible = true;
+                    label_disponibilidad.BackColor = Color.GreenYellow;
+                    label_disponibilidad.ForeColor = Color.Black;
+                    label_disponibilidad.Text = "Existe disponibilidad";
+
+                    // Guardo una Habitacion y su precio
+                    nueva_precio = (Convert.ToInt32(dg_disponibilidad.Rows[0].Cells[4].Value) * Convert.ToInt32(dg_disponibilidad.Rows[0].Cells[3].Value)) + Convert.ToInt32(dg_disponibilidad.Rows[0].Cells[7].Value);
+                    nueva_habitacion_nro = Convert.ToInt32(dg_disponibilidad.Rows[0].Cells[0].Value);
+
+                    label_hab_precio.Text = "Nro. de Habitación disponible: " + nueva_habitacion_nro.ToString() + " - Precio Diario por Pax: " + nueva_precio.ToString();
+
+                    // Muestro el boton Modificar
+                    btn_Modificar.Visible = true;
+                    label_hab_precio.Visible = true;
+                }
+                else
+                {
+                    label_disponibilidad.Visible = true;
+                    label_disponibilidad.BackColor = Color.Red;
+                    label_disponibilidad.ForeColor = Color.White;
+                    label_disponibilidad.Text = "No existe disponibilidad";
+
+                    // Oculto el boton Modificar
+                    btn_Modificar.Visible = false;
+                    label_hab_precio.Visible = false;
+                }
+
             }
-
         }
 
         private void btn_Modificar_Click(object sender, EventArgs e)
