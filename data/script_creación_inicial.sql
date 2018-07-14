@@ -2668,6 +2668,8 @@ BEGIN
       declare @nro_reserva numeric(18,0);
       declare @total_consumo numeric(18,0) = 0; 
       declare @total_estadia numeric(18,0) = 0; 
+      declare @total_descuento numeric(18,0) = 0;       
+      declare @regimen_estadia numeric(18,0)
 
       -- obtengo nro_reserva
       select
@@ -2677,28 +2679,15 @@ BEGIN
       where
             r.reserva_cliente_tipo_documento_id = @tipo_documento and r.reserva_cliente_pasaporte_nro = @nro_documento and r.reserva_hotel_id = @hotel_id and @fecha_salida between r.reserva_fecha_inicio and r.reserva_fecha_fin AND r.reserva_estado_id = 6;
 
-      -- detalle de consumibles
-      select
-            c.consumible_id, c.consumible_descripcion as "Descripcion", c.consumible_precio as "Precio"
-      from
-            DENVER.consumibles_clientes as cc
-            join DENVER.consumibles as c on cc.consumible_cliente_consumible_id = c.consumible_id
-      where
-            cc.consumible_cliente_reserva_codigo = @nro_reserva
-
-      union all
-
-      -- detalle del hospedaje
+      -- averiguo si la reserva es ALL-INCLUSIVE
       SELECT
-            9999, 'Estadia desde el '+convert(varchar(50),rh.reserva_habitaciones_fecha_inicio,103)+' hasta '+convert(varchar(50),rh.reserva_habitaciones_fecha_fin,103)+' en '+th.tipo_habitacion_descripcion+' y '+reg.regimen_descripcion as "Descripcion", rh.reserva_habitaciones_precio * DENVER.cant_pasajeros_tipo_habitacion(th.tipo_habitacion_id) as "Precio"
+            @regimen_estadia = reg.regimen_id
       FROM
             DENVER.reservas as r
             join DENVER.reservas_habitaciones as rh ON r.reserva_codigo = rh.reserva_habitaciones_reserva_codigo
-            join DENVER.tipo_habitaciones as th on rh.reserva_habitaciones_tipo_habitacion_id = th.tipo_habitacion_id
             join DENVER.regimenes as reg on reg.regimen_id = rh.reserva_habitaciones_regimen_id
       WHERE
             r.reserva_codigo = @nro_reserva;
-
 
       -- Calculo el total de consumos
       select
@@ -2708,6 +2697,67 @@ BEGIN
             join DENVER.consumibles as c on cc.consumible_cliente_consumible_id = c.consumible_id
       where
             cc.consumible_cliente_reserva_codigo = @nro_reserva
+
+      -- Si es ALL-INCLUSIVE
+      IF @regimen_estadia = 3
+      BEGIN
+            SET @total_descuento = (@total_consumo * -1)
+
+            -- detalle de consumibles
+            (select
+                  c.consumible_id, c.consumible_descripcion as "Descripcion", c.consumible_precio as "Precio"
+            from
+                  DENVER.consumibles_clientes as cc
+                  join DENVER.consumibles as c on cc.consumible_cliente_consumible_id = c.consumible_id
+            where
+                  cc.consumible_cliente_reserva_codigo = @nro_reserva
+                  )
+            union all
+                  (
+            -- detalle del hospedaje
+            SELECT
+                  9999, 'Estadia desde el '+convert(varchar(50),rh.reserva_habitaciones_fecha_inicio,103)+' hasta '+convert(varchar(50),rh.reserva_habitaciones_fecha_fin,103)+' en '+th.tipo_habitacion_descripcion+' y '+reg.regimen_descripcion + ' (F. Egreso: '+convert(varchar(50),@fecha_salida,103)+')' as "Descripcion", rh.reserva_habitaciones_precio * DENVER.cant_pasajeros_tipo_habitacion(th.tipo_habitacion_id) as "Precio"
+            FROM
+                  DENVER.reservas as r
+                  join DENVER.reservas_habitaciones as rh ON r.reserva_codigo = rh.reserva_habitaciones_reserva_codigo
+                  join DENVER.tipo_habitaciones as th on rh.reserva_habitaciones_tipo_habitacion_id = th.tipo_habitacion_id
+                  join DENVER.regimenes as reg on reg.regimen_id = rh.reserva_habitaciones_regimen_id
+            WHERE
+                  r.reserva_codigo = @nro_reserva
+                  )
+            union all
+                  (
+            -- Descuento por Régimen de Estadía
+            SELECT
+                  9999, 'Descuento por Régimen de Estadía' as "Descripcion", @total_descuento  as "Precio"
+                  )
+      END
+      ELSE
+      BEGIN
+
+            -- detalle de consumibles
+            select
+                  c.consumible_id, c.consumible_descripcion as "Descripcion", c.consumible_precio as "Precio"
+            from
+                  DENVER.consumibles_clientes as cc
+                  join DENVER.consumibles as c on cc.consumible_cliente_consumible_id = c.consumible_id
+            where
+                  cc.consumible_cliente_reserva_codigo = @nro_reserva
+
+            union all
+
+            -- detalle del hospedaje
+            SELECT
+                  9999, 'Estadia desde el '+convert(varchar(50),rh.reserva_habitaciones_fecha_inicio,103)+' hasta '+convert(varchar(50),rh.reserva_habitaciones_fecha_fin,103)+' en '+th.tipo_habitacion_descripcion+' y '+reg.regimen_descripcion + ' (F. Egreso: '+convert(varchar(50),@fecha_salida,103)+')' as "Descripcion", rh.reserva_habitaciones_precio * DENVER.cant_pasajeros_tipo_habitacion(th.tipo_habitacion_id) as "Precio"
+            FROM
+                  DENVER.reservas as r
+                  join DENVER.reservas_habitaciones as rh ON r.reserva_codigo = rh.reserva_habitaciones_reserva_codigo
+                  join DENVER.tipo_habitaciones as th on rh.reserva_habitaciones_tipo_habitacion_id = th.tipo_habitacion_id
+                  join DENVER.regimenes as reg on reg.regimen_id = rh.reserva_habitaciones_regimen_id
+            WHERE
+                  r.reserva_codigo = @nro_reserva;
+
+      END
 
       -- Calculo el total de la estadia
       SELECT
@@ -2721,7 +2771,7 @@ BEGIN
             r.reserva_codigo = @nro_reserva;
 
       -- Calculo el total a facturar
-      SET @total_factura = @total_estadia + @total_consumo;
+      SET @total_factura = @total_estadia + @total_consumo + @total_descuento;
 
 END
 GO
