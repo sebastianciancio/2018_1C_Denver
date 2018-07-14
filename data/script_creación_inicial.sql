@@ -1258,12 +1258,14 @@ BEGIN
                         @hotel_id,
                         @hotel_regimen)
 
+      -- Cargo un usuario al Hotel
       INSERT INTO DENVER.usuarios_hoteles (
                         usuario_hotel_id,
                         usuario_usuario_user)
                         VALUES (
                          @hotel_id,
                          @user_creador)
+
 END
 GO
 
@@ -1309,6 +1311,10 @@ BEGIN
       @habitacion_hotel_id,
       'S',
       GETDATE())
+
+
+      -- HABILITO LAS DISPONIBILIDADES
+      exec DENVER.habilitar_disponibilidad '20170101', '20201231', @habitacion_hotel_id
 END
 GO
 
@@ -3107,11 +3113,12 @@ GO
 -- SP PARA HABILITAR LA DISPONIBILIDAD EN UN RANGO DE FECHA
 CREATE PROCEDURE DENVER.habilitar_disponibilidad
       @fecha_desde datetime = NULL,
-      @fecha_hasta datetime = NULL
+      @fecha_hasta datetime = NULL,
+      @hotel_id smallint = NULL
 AS
 BEGIN
       SET NOCOUNT ON;
-      
+  
       -- Creo Tabla Temporal de todas las fechas del rango indicado
       CREATE TABLE #fechas
       ( fecha datetime)
@@ -3155,13 +3162,16 @@ BEGIN
             FROM 
                 DENVER.habitaciones AS hab, DENVER.hoteles AS ho, DENVER.tipo_habitaciones AS th, #fechas as ff
             WHERE
-                ho.hotel_id = hab.habitacion_hotel_id AND th.tipo_habitacion_id = hab.habitacion_tipo_habitacion_id
+                ho.hotel_id = hab.habitacion_hotel_id AND 
+                th.tipo_habitacion_id = hab.habitacion_tipo_habitacion_id AND 
+                ho.hotel_id = ISNULL(@hotel_id,ho.hotel_id)
       )
 
       -- Borro aquellos registros con disponibilidad_ocupado = 9 que generan inconsistencias
       DELETE FROM denver.disponibilidades WHERE disponibilidad_ocupado = 9
 
       DROP TABLE #fechas            
+
 END
 GO
 
