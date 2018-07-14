@@ -187,6 +187,7 @@ DROP PROCEDURE [DENVER].[cambiar_contrasena]
 DROP FUNCTION [DENVER].[dias_antes_reserva]
 DROP PROCEDURE [DENVER].[modificar_reserva]
 DROP FUNCTION [DENVER].[checkout_realizado]
+DROP PROCEDURE [DENVER].[buscar_regimenes_hotel]
 GO
 
 DROP SCHEMA [DENVER]

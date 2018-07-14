@@ -1211,16 +1211,17 @@ CREATE PROCEDURE [DENVER].[cargar_hotel]
       @hotel_estrellas numeric(18,0),
       @hotel_ciudad nvarchar(255),
       @hotel_pais_id smallint,
-      @hotel_regimen smallint,
+      --@hotel_regimen smallint,
       @user_creador nvarchar(50),
       @fecha_sistema datetime,
-	  @recarga numeric(18,0)
+	  @recarga numeric(18,0),
+	  @hotel_id smallint OUTPUT
 AS
 BEGIN
       
       SET NOCOUNT ON;  
 
-      DECLARE @hotel_id smallint;
+      --DECLARE @hotel_id smallint;
 
       INSERT INTO [DENVER].[hoteles](
             hotel_calle,
@@ -1252,12 +1253,12 @@ BEGIN
       SELECT TOP 1 @hotel_id = HOTEL_ID 
           FROM DENVER.hoteles ORDER BY hotel_id DESC
 
-      INSERT INTO   DENVER.hoteles_regimenes (
-                        hotel_regimen_hotel_id,
-                        hotel_regimen_regimen_id )
-                        VALUES (
-                        @hotel_id,
-                        @hotel_regimen)
+      --INSERT INTO   DENVER.hoteles_regimenes (
+       --                 hotel_regimen_hotel_id,
+        --                hotel_regimen_regimen_id )
+        --                VALUES (
+         --               @hotel_id,
+          --              @hotel_regimen)
 
       INSERT INTO DENVER.usuarios_hoteles (
                         usuario_hotel_id,
@@ -1265,9 +1266,27 @@ BEGIN
                         VALUES (
                          @hotel_id,
                          @user_creador)
+
+       RETURN @hotel_id
 END
 GO
 
+CREATE PROCEDURE [DENVER].[cargar_hotel_regimen]
+ @hotel_id smallint,
+ @regimen numeric(18,0)
+ AS
+ BEGIN
+		
+	INSERT INTO DENVER.hoteles_regimenes
+	( hotel_regimen_hotel_id,
+	  hotel_regimen_regimen_id)
+	  VALUES ( @hotel_id,
+			   @regimen)
+ 
+
+ 
+ END
+ GO
 -- SP PARA ELIMINAR UN HOTEL EN EL ABM
 CREATE PROCEDURE [DENVER].[eliminar_hotel]
       @hotel_id smallint
@@ -2618,7 +2637,7 @@ CREATE PROCEDURE [DENVER].[modificar_hotel]
       @hotel_estrellas smallint,
       @hotel_ciudad nvarchar(255),
       @hotel_pais smallint,
-      @hotel_regimenes smallint,
+      --@hotel_regimenes smallint,
       @hotel_creacion datetime,
 	  --
 	  @recarga numeric(18,0)
@@ -2642,10 +2661,10 @@ BEGIN
       WHERE
       hotel_id = @hotel_id 
  
-      UPDATE [DENVER].[hoteles_regimenes]
-      SET
-      hotel_regimen_regimen_id = @hotel_regimenes
-      WHERE hotel_regimen_hotel_id = @hotel_id
+	  DELETE FROM DENVER.hoteles_regimenes WHERE hotel_regimen_hotel_id = @hotel_id
+
+
+      
 
 END
 GO
@@ -3210,5 +3229,26 @@ BEGIN
 END
 GO
 -- HABILITO LAS DISPONIBILIDADES
+CREATE PROCEDURE [DENVER].[obtener_todos_regimenes]
+AS
+BEGIN
+      SET NOCOUNT ON;
+	      
+		  SELECT regimen_descripcion FROM DENVER.regimenes WHERE regimen_activo = 'S' 
+END
+GO
+
+CREATE PROCEDURE [DENVER].[buscar_regimenes_hotel]
+@hotel_id smallint
+AS
+BEGIN
+      SET NOCOUNT ON;
+
+  SELECT hotel_regimen_regimen_id FROM DENVER.hoteles_regimenes WHERE hotel_regimen_hotel_id = @hotel_id
+            
+END
+GO
+
+
 exec DENVER.habilitar_disponibilidad '20170101', '20201231'
 GO
