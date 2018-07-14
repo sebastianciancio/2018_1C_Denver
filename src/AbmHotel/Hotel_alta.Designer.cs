@@ -30,7 +30,6 @@
         {
             this.btn__volver = new System.Windows.Forms.Button();
             this.btn_guardar = new System.Windows.Forms.Button();
-            this.cmb_regimenes = new System.Windows.Forms.ComboBox();
             this.lbl_regimenes = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
@@ -58,11 +57,12 @@
             this.combo_pais = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
             this.txb_Recarga = new System.Windows.Forms.TextBox();
+            this.clb_regimenes = new System.Windows.Forms.CheckedListBox();
             this.SuspendLayout();
             // 
             // btn__volver
             // 
-            this.btn__volver.Location = new System.Drawing.Point(308, 252);
+            this.btn__volver.Location = new System.Drawing.Point(126, 258);
             this.btn__volver.Name = "btn__volver";
             this.btn__volver.Size = new System.Drawing.Size(99, 25);
             this.btn__volver.TabIndex = 127;
@@ -72,7 +72,7 @@
             // 
             // btn_guardar
             // 
-            this.btn_guardar.Location = new System.Drawing.Point(197, 252);
+            this.btn_guardar.Location = new System.Drawing.Point(15, 258);
             this.btn_guardar.Name = "btn_guardar";
             this.btn_guardar.Size = new System.Drawing.Size(100, 26);
             this.btn_guardar.TabIndex = 126;
@@ -80,23 +80,10 @@
             this.btn_guardar.UseVisualStyleBackColor = true;
             this.btn_guardar.Click += new System.EventHandler(this.btn_guardar_Click);
             // 
-            // cmb_regimenes
-            // 
-            this.cmb_regimenes.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmb_regimenes.FormattingEnabled = true;
-            this.cmb_regimenes.Items.AddRange(new object[] {
-            "All inclusive",
-            "Pensión completa",
-            "Solo desayuno"});
-            this.cmb_regimenes.Location = new System.Drawing.Point(250, 186);
-            this.cmb_regimenes.Name = "cmb_regimenes";
-            this.cmb_regimenes.Size = new System.Drawing.Size(141, 21);
-            this.cmb_regimenes.TabIndex = 125;
-            // 
             // lbl_regimenes
             // 
             this.lbl_regimenes.AutoSize = true;
-            this.lbl_regimenes.Location = new System.Drawing.Point(247, 170);
+            this.lbl_regimenes.Location = new System.Drawing.Point(269, 166);
             this.lbl_regimenes.Name = "lbl_regimenes";
             this.lbl_regimenes.Size = new System.Drawing.Size(104, 13);
             this.lbl_regimenes.TabIndex = 124;
@@ -153,7 +140,7 @@
             // 
             this.label12.AutoSize = true;
             this.label12.ForeColor = System.Drawing.Color.Red;
-            this.label12.Location = new System.Drawing.Point(294, 76);
+            this.label12.Location = new System.Drawing.Point(320, 76);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(11, 13);
             this.label12.TabIndex = 117;
@@ -189,7 +176,7 @@
             // 
             // txb_telefono
             // 
-            this.txb_telefono.Location = new System.Drawing.Point(247, 89);
+            this.txb_telefono.Location = new System.Drawing.Point(273, 89);
             this.txb_telefono.MaxLength = 255;
             this.txb_telefono.Name = "txb_telefono";
             this.txb_telefono.Size = new System.Drawing.Size(134, 20);
@@ -198,7 +185,7 @@
             // lbl_telefono
             // 
             this.lbl_telefono.AutoSize = true;
-            this.lbl_telefono.Location = new System.Drawing.Point(244, 73);
+            this.lbl_telefono.Location = new System.Drawing.Point(270, 73);
             this.lbl_telefono.Name = "lbl_telefono";
             this.lbl_telefono.Size = new System.Drawing.Size(49, 13);
             this.lbl_telefono.TabIndex = 112;
@@ -344,15 +331,23 @@
             this.txb_Recarga.Size = new System.Drawing.Size(100, 20);
             this.txb_Recarga.TabIndex = 134;
             // 
+            // clb_regimenes
+            // 
+            this.clb_regimenes.FormattingEnabled = true;
+            this.clb_regimenes.Location = new System.Drawing.Point(267, 186);
+            this.clb_regimenes.Name = "clb_regimenes";
+            this.clb_regimenes.Size = new System.Drawing.Size(175, 109);
+            this.clb_regimenes.TabIndex = 135;
+            // 
             // Hotel_alta
             // 
             this.AcceptButton = this.btn_guardar;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(495, 301);
+            this.ClientSize = new System.Drawing.Size(495, 324);
+            this.Controls.Add(this.clb_regimenes);
             this.Controls.Add(this.txb_Recarga);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.cmb_regimenes);
             this.Controls.Add(this.combo_pais);
             this.Controls.Add(this.txb_calle);
             this.Controls.Add(this.txb_nro);
@@ -383,6 +378,7 @@
             this.Name = "Hotel_alta";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Hotel_alta";
+            this.Load += new System.EventHandler(this.Hotel_alta_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -392,7 +388,6 @@
 
         private System.Windows.Forms.Button btn__volver;
         private System.Windows.Forms.Button btn_guardar;
-        private System.Windows.Forms.ComboBox cmb_regimenes;
         private System.Windows.Forms.Label lbl_regimenes;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label5;
@@ -420,5 +415,6 @@
         private System.Windows.Forms.ComboBox combo_pais;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox txb_Recarga;
+        private System.Windows.Forms.CheckedListBox clb_regimenes;
     }
 }

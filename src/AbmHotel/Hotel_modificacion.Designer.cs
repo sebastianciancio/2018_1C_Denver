@@ -57,11 +57,11 @@
             this.txb_nro = new System.Windows.Forms.TextBox();
             this.lbl_nro = new System.Windows.Forms.Label();
             this.cmb_pais = new System.Windows.Forms.ComboBox();
-            this.cmb_regimenes = new System.Windows.Forms.ComboBox();
             this.label8 = new System.Windows.Forms.Label();
             this.txb_calle = new System.Windows.Forms.TextBox();
             this.txb_Recarga = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
+            this.clb_regimenes = new System.Windows.Forms.CheckedListBox();
             this.SuspendLayout();
             // 
             // label12
@@ -222,7 +222,7 @@
             // lbl_estrellas
             // 
             this.lbl_estrellas.AutoSize = true;
-            this.lbl_estrellas.Location = new System.Drawing.Point(276, 12);
+            this.lbl_estrellas.Location = new System.Drawing.Point(236, 12);
             this.lbl_estrellas.Name = "lbl_estrellas";
             this.lbl_estrellas.Size = new System.Drawing.Size(74, 13);
             this.lbl_estrellas.TabIndex = 90;
@@ -238,7 +238,7 @@
             "3",
             "4",
             "5"});
-            this.cmb_estrellas.Location = new System.Drawing.Point(281, 28);
+            this.cmb_estrellas.Location = new System.Drawing.Point(241, 28);
             this.cmb_estrellas.Name = "cmb_estrellas";
             this.cmb_estrellas.Size = new System.Drawing.Size(79, 21);
             this.cmb_estrellas.TabIndex = 91;
@@ -247,7 +247,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.ForeColor = System.Drawing.Color.Red;
-            this.label1.Location = new System.Drawing.Point(349, 12);
+            this.label1.Location = new System.Drawing.Point(309, 12);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(11, 13);
             this.label1.TabIndex = 92;
@@ -283,7 +283,7 @@
             // 
             // btn__volver
             // 
-            this.btn__volver.Location = new System.Drawing.Point(316, 242);
+            this.btn__volver.Location = new System.Drawing.Point(134, 282);
             this.btn__volver.Name = "btn__volver";
             this.btn__volver.Size = new System.Drawing.Size(99, 25);
             this.btn__volver.TabIndex = 99;
@@ -293,7 +293,7 @@
             // 
             // btn_guardar
             // 
-            this.btn_guardar.Location = new System.Drawing.Point(205, 242);
+            this.btn_guardar.Location = new System.Drawing.Point(23, 282);
             this.btn_guardar.Name = "btn_guardar";
             this.btn_guardar.Size = new System.Drawing.Size(100, 26);
             this.btn_guardar.TabIndex = 98;
@@ -337,19 +337,6 @@
             this.cmb_pais.Size = new System.Drawing.Size(140, 21);
             this.cmb_pais.TabIndex = 136;
             // 
-            // cmb_regimenes
-            // 
-            this.cmb_regimenes.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmb_regimenes.FormattingEnabled = true;
-            this.cmb_regimenes.Items.AddRange(new object[] {
-            "All inclusive",
-            "Pensión completa",
-            "Solo desayuno"});
-            this.cmb_regimenes.Location = new System.Drawing.Point(255, 215);
-            this.cmb_regimenes.Name = "cmb_regimenes";
-            this.cmb_regimenes.Size = new System.Drawing.Size(141, 21);
-            this.cmb_regimenes.TabIndex = 137;
-            // 
             // label8
             // 
             this.label8.AutoSize = true;
@@ -370,7 +357,7 @@
             // 
             // txb_Recarga
             // 
-            this.txb_Recarga.Location = new System.Drawing.Point(376, 28);
+            this.txb_Recarga.Location = new System.Drawing.Point(336, 28);
             this.txb_Recarga.MaxLength = 18;
             this.txb_Recarga.Name = "txb_Recarga";
             this.txb_Recarga.Size = new System.Drawing.Size(100, 20);
@@ -379,21 +366,29 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(374, 11);
+            this.label9.Location = new System.Drawing.Point(334, 11);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(102, 13);
             this.label9.TabIndex = 139;
             this.label9.Text = "Recargo por estrella";
             // 
+            // clb_regimenes
+            // 
+            this.clb_regimenes.FormattingEnabled = true;
+            this.clb_regimenes.Location = new System.Drawing.Point(255, 211);
+            this.clb_regimenes.Name = "clb_regimenes";
+            this.clb_regimenes.Size = new System.Drawing.Size(175, 109);
+            this.clb_regimenes.TabIndex = 141;
+            // 
             // Hotel_modificacion
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(484, 279);
+            this.ClientSize = new System.Drawing.Size(442, 339);
+            this.Controls.Add(this.clb_regimenes);
             this.Controls.Add(this.txb_Recarga);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.label8);
-            this.Controls.Add(this.cmb_regimenes);
             this.Controls.Add(this.cmb_pais);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.txb_nro);
@@ -464,10 +459,10 @@
         private System.Windows.Forms.TextBox txb_nro;
         private System.Windows.Forms.Label lbl_nro;
         private System.Windows.Forms.ComboBox cmb_pais;
-        private System.Windows.Forms.ComboBox cmb_regimenes;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.TextBox txb_calle;
         private System.Windows.Forms.TextBox txb_Recarga;
         private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.CheckedListBox clb_regimenes;
     }
 }

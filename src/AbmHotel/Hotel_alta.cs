@@ -22,7 +22,7 @@ namespace FrbaHotel.AbmHotel
 
             // Cargo el Combo Pais
             Combos.cargarComboPais(combo_pais);
-            Combos.cargarComboTipoRegimen(cmb_regimenes, accesoSistema.HotelIdActual);
+            //Combos.cargarComboTipoRegimen(cmb_regimenes, accesoSistema.HotelIdActual);
             Combos.cargarComboCantidad(cmb_estrellas, 1, 5);
         }
 
@@ -40,7 +40,11 @@ namespace FrbaHotel.AbmHotel
                 MessageBox.Show("La recarga no puede contener caracteres", "Error");
                 return;
             }
-
+            if (Validacion.checkListVacia(clb_regimenes))
+            {
+                MessageBox.Show("Debe seleccionar almenos un régimen", "Error");
+                return;
+            }
 
             if (validarFormulario())
             {
@@ -65,12 +69,26 @@ namespace FrbaHotel.AbmHotel
                 cmd.Parameters.AddWithValue("@hotel_estrellas", SqlDbType.SmallInt).Value = Convert.ToInt32(cmb_estrellas.Text);
                 cmd.Parameters.AddWithValue("@hotel_ciudad", SqlDbType.VarChar).Value = txb_ciudad.Text;
                 cmd.Parameters.AddWithValue("@hotel_pais_id", SqlDbType.SmallInt).Value = combo_pais.SelectedValue;
-                cmd.Parameters.AddWithValue("@hotel_regimen", SqlDbType.VarChar).Value = cmb_regimenes.SelectedValue;
+               // cmd.Parameters.AddWithValue("@hotel_regimen", SqlDbType.VarChar).Value = cmb_regimenes.SelectedValue;
                 cmd.Parameters.AddWithValue("@user_creador", SqlDbType.VarChar).Value = accesoSistema.UsuarioLogueado.Id;
                 cmd.Parameters.AddWithValue("@fecha_sistema", SqlDbType.DateTime).Value = accesoSistema.fechaSistemaSQL;
-
+                cmd.Parameters.AddWithValue("@hotel_id", SqlDbType.Int).Direction = ParameterDirection.Output;
 
                 cmd.ExecuteNonQuery();
+
+                int retunvalue = (int)cmd.Parameters["@hotel_id"].Value;
+
+                int sum;
+                for (int i = 0; i < clb_regimenes.CheckedIndices.Count; i++)
+                {
+                    // int selection = clb_funcionalidades.CheckedIndices[i];
+                    SqlCommand cmd2 = new SqlCommand("denver.cargar_hotel_regimen", db.Connection);
+                    cmd2.CommandType = CommandType.StoredProcedure;
+                    cmd2.Parameters.AddWithValue("@hotel_id", SqlDbType.Int).Value = retunvalue;
+                    sum = clb_regimenes.CheckedIndices[i] + 1;
+                    cmd2.Parameters.AddWithValue("@regimen", SqlDbType.SmallInt).Value = sum;
+                    cmd2.ExecuteNonQuery();
+                }
 
                 Close();
 
@@ -96,5 +114,25 @@ namespace FrbaHotel.AbmHotel
 
         }
 
+        private void Hotel_alta_Load(object sender, EventArgs e)
+        {
+            SqlCommand cmd = new SqlCommand("denver.obtener_todos_regimenes", DataBase.GetInstance().Connection);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+
+            DataTable dt = new DataTable();
+
+            using (var da = new SqlDataAdapter(cmd))
+            {
+                da.Fill(dt);
+            }
+
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+
+                clb_regimenes.Items.Add(dt.Rows[i][0], false);
+
+            }
+        }
     }
 }

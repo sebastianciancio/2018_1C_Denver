@@ -21,7 +21,7 @@ namespace FrbaHotel.AbmHotel
             InitializeComponent();
             db = DataBase.GetInstance();
             Combos.cargarComboPais(cmb_pais, true);
-            Combos.cargarComboTipoRegimen(cmb_regimenes, accesoSistema.HotelIdActual, false);
+          //  Combos.cargarComboTipoRegimen(cmb_regimenes, accesoSistema.HotelIdActual, false);
 
         }
 
@@ -61,12 +61,28 @@ namespace FrbaHotel.AbmHotel
                 cmd.Parameters.AddWithValue("@hotel_ciudad", SqlDbType.NVarChar).Value = txb_ciudad.Text;
                 cmd.Parameters.AddWithValue("@hotel_pais", SqlDbType.Int).Value = cmb_pais.SelectedValue;
                 //levanta el ID
-                cmd.Parameters.AddWithValue("@hotel_regimenes", SqlDbType.Int).Value = cmb_regimenes.SelectedValue;
+           //     cmd.Parameters.AddWithValue("@hotel_regimenes", SqlDbType.Int).Value = cmb_regimenes.SelectedValue;
                 cmd.Parameters.AddWithValue("@hotel_creacion", SqlDbType.Int).Value = Convert.ToDateTime(cmb_creacion.Value);
                 cmd.Parameters.AddWithValue("@recarga", SqlDbType.Int).Value = Convert.ToInt32(txb_Recarga.Text);
-
+                
 
                 cmd.ExecuteNonQuery();
+
+                
+                
+                int sum;
+                for (int i = 0; i < clb_regimenes.CheckedIndices.Count; i++)
+                {
+                    // int selection = clb_funcionalidades.CheckedIndices[i];
+                    SqlCommand cmd2 = new SqlCommand("denver.cargar_hotel_regimen", db.Connection);
+                    cmd2.CommandType = CommandType.StoredProcedure;
+                    cmd2.Parameters.AddWithValue("@hotel_id", SqlDbType.Int).Value = Convert.ToInt32(hotel_id);
+                    sum = clb_regimenes.CheckedIndices[i] + 1;
+                    cmd2.Parameters.AddWithValue("@regimen", SqlDbType.SmallInt).Value = sum;
+                    cmd2.ExecuteNonQuery();
+                }
+
+
 
                 MessageBox.Show("El hotel " + txb_nombre.Text + " se modificó correctamente", "Mensaje");
                 Close();
@@ -105,12 +121,45 @@ namespace FrbaHotel.AbmHotel
             txb_telefono.Text = row["hotel_telefono"].ToString();
             txb_Recarga.Text = row["hotel_recarga_estrella"].ToString();
             cmb_estrellas.Text = row["hotel_estrellas"].ToString();
-            cmb_regimenes.SelectedValue = row["hotel_regimen_regimen_id"].ToString();
+            //cmb_regimenes.SelectedValue = row["hotel_regimen_regimen_id"].ToString();
+
+            SqlCommand cmd2 = new SqlCommand("denver.obtener_todos_regimenes", DataBase.GetInstance().Connection);
+            cmd2.CommandType = CommandType.StoredProcedure;
+
+
+            DataTable dt2 = new DataTable();
+
+            using (var da2 = new SqlDataAdapter(cmd2))
+            {
+                da2.Fill(dt2);
+            }
+
+            for (int i = 0; i < dt2.Rows.Count; i++)
+            {
+
+                clb_regimenes.Items.Add(dt2.Rows[i][0], false);
+
+            }
+
+            SqlCommand cmd3 = new SqlCommand("denver.buscar_regimenes_hotel", DataBase.GetInstance().Connection);
+            cmd3.CommandType = CommandType.StoredProcedure;
+
+            cmd3.Parameters.AddWithValue("@hotel_id", SqlDbType.VarChar).Value = Convert.ToInt32(hotel_id);
+            DataTable dt3 = new DataTable();
+
+            using (var da3 = new SqlDataAdapter(cmd3))
+            {
+                da3.Fill(dt3);
+            }
+
+            for (int i = 0; i < dt3.Rows.Count; i++)
+            {
+                clb_regimenes.SetItemChecked(Convert.ToInt32(dt3.Rows[i][0]) - 1, true);
+            }
 
         }
 
-
-
+    
         private bool validarFormulario()
         {
             return (!Validacion.esInicial(txb_nombre.Text) &
