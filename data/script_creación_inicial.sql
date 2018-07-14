@@ -1343,10 +1343,9 @@ BEGIN
                          @hotel_id,
                          @user_creador)
 
-<<<<<<< HEAD
+
        RETURN @hotel_id
-=======
->>>>>>> 6acd83615c3a3704b2f25a8960c4701835cfb5d1
+
 END
 GO
 
