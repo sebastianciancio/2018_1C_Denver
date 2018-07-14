@@ -1097,9 +1097,84 @@ group by Reserva_Fecha_Inicio, Habitacion_Tipo_Codigo, Habitacion_Numero, Hotel_
 )
 GO
 
+/****** ACTUALIZACION DE LAS RESERVAS FACTURADAS ******/
+UPDATE 
+      DENVER.reservas SET reserva_estado_id = 7
+WHERE 
+      reserva_codigo IN (
+                  SELECT factura_reserva_codigo
+                    FROM DENVER.facturas_items
+                  GROUP BY factura_reserva_codigo
+                  )
+GO
 /*  --------------------------------------------------------------------------------
 CREACION DE  LOS SP
 -------------------------------------------------------------------------------- */
+
+-- SP PARA HABILITAR LA DISPONIBILIDAD EN UN RANGO DE FECHA
+CREATE PROCEDURE DENVER.habilitar_disponibilidad
+      @fecha_desde datetime = NULL,
+      @fecha_hasta datetime = NULL,
+      @hotel_id smallint = NULL
+AS
+BEGIN
+      SET NOCOUNT ON;
+  
+      -- Creo Tabla Temporal de todas las fechas del rango indicado
+      CREATE TABLE #fechas
+      ( fecha datetime)
+
+      declare @fecha_actual datetime   
+
+      SET @fecha_actual = @fecha_desde
+
+      -- Cargo la Tabla Temporal
+      while (@fecha_actual <= @fecha_hasta)
+      begin
+          INSERT INTO #fechas(fecha) VALUES (@fecha_actual)
+          set @fecha_actual = dateadd(day, 1, @fecha_actual)
+      end
+
+      -- Completo las Disponibilidades con espacios libres
+      insert into denver.disponibilidades (
+            disponibilidad_hotel_id,
+            disponibilidad_habitacion_nro,
+            disponibilidad_tipo_habitacion_id,
+            disponibilidad_fecha,
+            disponibilidad_ocupado
+      )
+      (
+            SELECT
+                ho.hotel_id,
+                hab.habitacion_nro,
+                th.tipo_habitacion_id,
+                ff.fecha,
+                (SELECT TOP 1
+                        (CASE count(*) WHEN 0 THEN 0 ELSE 9 END) 
+                FROM
+                        DENVER.disponibilidades AS d
+                WHERE 
+                        d.disponibilidad_habitacion_nro = hab.habitacion_nro AND 
+                        d.disponibilidad_hotel_id = ho.hotel_id AND 
+                        d.disponibilidad_tipo_habitacion_id = th.tipo_habitacion_id AND
+                              d.disponibilidad_fecha = ff.fecha
+                )
+
+            FROM 
+                DENVER.habitaciones AS hab, DENVER.hoteles AS ho, DENVER.tipo_habitaciones AS th, #fechas as ff
+            WHERE
+                ho.hotel_id = hab.habitacion_hotel_id AND 
+                th.tipo_habitacion_id = hab.habitacion_tipo_habitacion_id AND 
+                ho.hotel_id = ISNULL(@hotel_id,ho.hotel_id)
+      )
+
+      -- Borro aquellos registros con disponibilidad_ocupado = 9 que generan inconsistencias
+      DELETE FROM denver.disponibilidades WHERE disponibilidad_ocupado = 9
+
+      DROP TABLE #fechas            
+
+END
+GO
 
 -- SP PARA BUSCAR CLIENTES EN EL ABM
 CREATE PROCEDURE [DENVER].[buscar_cliente]    
@@ -1260,6 +1335,7 @@ BEGIN
          --               @hotel_id,
           --              @hotel_regimen)
 
+      -- Cargo un usuario al Hotel
       INSERT INTO DENVER.usuarios_hoteles (
                         usuario_hotel_id,
                         usuario_usuario_user)
@@ -1267,7 +1343,10 @@ BEGIN
                          @hotel_id,
                          @user_creador)
 
+<<<<<<< HEAD
        RETURN @hotel_id
+=======
+>>>>>>> 6acd83615c3a3704b2f25a8960c4701835cfb5d1
 END
 GO
 
@@ -1329,6 +1408,10 @@ BEGIN
       @habitacion_hotel_id,
       'S',
       GETDATE())
+
+
+      -- HABILITO LAS DISPONIBILIDADES
+      exec DENVER.habilitar_disponibilidad '20170101', '20201231', @habitacion_hotel_id
 END
 GO
 
@@ -2132,10 +2215,6 @@ BEGIN
             h.hotel_nombre
       order by
             count(*) DESc
-
-     
-
-
 END
 GO
 
@@ -2166,19 +2245,21 @@ BEGIN
          INSERT INTO #trimestre(mes) VALUES (10), (11), (12);
      END
 
-select top 5 c.hotel_nombre as Hotel, count(*) as "Total Consumibles Facturados"
- from DENVER.consumibles_clientes a JOIN DENVER.reservas b
- ON a.consumible_cliente_reserva_codigo =  b.reserva_codigo
- JOIN DENVER.hoteles c ON c.hotel_id = b.reserva_hotel_id
-   WHERE b.reserva_estado_id IN (1,2,6)
-        AND MONTH(b.reserva_fecha_inicio) IN (SELECT mes FROM #trimestre) AND year(b.reserva_fecha_inicio) = @anio
-      --    AND MONTH(b.reserva_fecha_fin) IN (SELECT mes FROM #trimestre) AND year (b.reserva_fecha_fin) = @anio
+      select top 5 
+            c.hotel_nombre as Hotel, count(*) as "Total Consumibles Facturados"
+      from 
+            DENVER.facturas_items fi 
+            JOIN DENVER.facturas f ON f.factura_nro = fi.factura_item_nro
+            JOIN DENVER.hoteles c ON c.hotel_id = f.factura_hotel_id
+      WHERE 
+            fi.factura_consumible_id <> 9999
+            AND MONTH(f.factura_fecha) IN (SELECT mes FROM #trimestre) 
+            AND year(f.factura_fecha) = @anio
       group by
-            c.hotel_nombre
+          c.hotel_nombre
       order by
-            count(*) DESc 
+          count(*) DESc 
 
-       
 END
 GO
 
@@ -2193,31 +2274,35 @@ BEGIN
 
       if (@trimestre = 1)
       BEGIN
-         INSERT INTO #trimestre(mes) VALUES (1), (2), (3);
-     END
+            INSERT INTO #trimestre(mes) VALUES (1), (2), (3);
+      END
       if (@trimestre = 2)
       BEGIN
-         INSERT INTO #trimestre(mes) VALUES (4), (5) , (6);
-     END
-            if (@trimestre = 3)
+            INSERT INTO #trimestre(mes) VALUES (4), (5) , (6);
+      END
+      if (@trimestre = 3)
       BEGIN
-         INSERT INTO #trimestre(mes) VALUES (7), (8), (9);
-     END
-            if (@trimestre = 4)
+            INSERT INTO #trimestre(mes) VALUES (7), (8), (9);
+      END
+      if (@trimestre = 4)
       BEGIN
-         INSERT INTO #trimestre(mes) VALUES (10), (11), (12);
-     END
+            INSERT INTO #trimestre(mes) VALUES (10), (11), (12);
+      END
 
-select top 5 a.hotel_nombre as Hotel, sum(DateDIFF(dd, mantenimiento_fecha_hasta, mantenimiento_fecha_desde)) as "Dias Fuera de Servicio"
- from DENVER.hoteles a JOIN DENVER.mantenimientos b ON a.hotel_id = b.mantenimiento_hotel_id
-   WHERE MONTH(b.mantenimiento_fecha_desde) IN (SELECT mes FROM #trimestre) AND year(b.mantenimiento_fecha_desde) = @anio
+      select top 
+            5 a.hotel_nombre as Hotel, 
+            sum(DateDIFF(dd, mantenimiento_fecha_hasta, mantenimiento_fecha_desde)) as "Días Fuera de Servicio"
+      from 
+            DENVER.hoteles a 
+            JOIN DENVER.mantenimientos b ON a.hotel_id = b.mantenimiento_hotel_id
+      WHERE 
+            MONTH(b.mantenimiento_fecha_desde) IN (SELECT mes FROM #trimestre) AND year(b.mantenimiento_fecha_desde) = @anio
             AND MONTH(b.mantenimiento_fecha_hasta) IN (SELECT mes FROM #trimestre) AND year (b.mantenimiento_fecha_hasta) = @anio
       group by
             hotel_nombre
       order by
             count(*) DESc 
 
-           
 END
 GO
 
@@ -2232,34 +2317,37 @@ BEGIN
 
       if (@trimestre = 1)
       BEGIN
-         INSERT INTO #trimestre(mes) VALUES (1), (2), (3);
-     END
+            INSERT INTO #trimestre(mes) VALUES (1), (2), (3);
+      END
       if (@trimestre = 2)
       BEGIN
-         INSERT INTO #trimestre(mes) VALUES (4), (5) , (6);
-     END
-            if (@trimestre = 3)
+            INSERT INTO #trimestre(mes) VALUES (4), (5) , (6);
+      END
+      if (@trimestre = 3)
       BEGIN
-         INSERT INTO #trimestre(mes) VALUES (7), (8), (9);
-     END
-            if (@trimestre = 4)
+            INSERT INTO #trimestre(mes) VALUES (7), (8), (9);
+      END
+      if (@trimestre = 4)
       BEGIN
-         INSERT INTO #trimestre(mes) VALUES (10), (11), (12);
-     END
+            INSERT INTO #trimestre(mes) VALUES (10), (11), (12);
+      END
 
-      select TOP 5 b.reserva_habitacion_nro as [Numero de habitacion], SUM(a.reserva_cant_noches) AS [Dias Ocupados],
-             COUNT(*) AS [Cantidad de veces ocupada] , hotel_nombre AS [Hotel de pertenencia]
-      from DENVER.reservas a JOIN DENVER.reservas_habitaciones b ON a.reserva_codigo = b.reserva_habitaciones_reserva_codigo  
+      select TOP 5 
+            b.reserva_habitacion_nro as [Nro de habitación], 
+            SUM(a.reserva_cant_noches) AS [Días Ocupados],
+            COUNT(*) AS [Veces Ocupada], 
+            hotel_nombre AS [Hotel]
+      from 
+            DENVER.reservas a 
+            JOIN DENVER.reservas_habitaciones b ON a.reserva_codigo = b.reserva_habitaciones_reserva_codigo  
             join DENVER.hoteles as c on a.reserva_hotel_id = c.hotel_id
-      where MONTH(a.reserva_fecha_inicio) IN (SELECT mes FROM #trimestre) AND year(a.reserva_fecha_inicio) = @anio
-      --      AND MONTH(a.reserva_fecha_fin) IN (SELECT mes FROM #trimestre) AND year (a.reserva_fecha_fin) = @anio
-      --      AND a.reserva_estado_id IN (6)
+      where 
+            MONTH(a.reserva_fecha_inicio) IN (SELECT mes FROM #trimestre) AND year(a.reserva_fecha_inicio) = @anio
+            AND a.reserva_estado_id IN (7)
       group by
             reserva_habitacion_nro, hotel_nombre
       order by
             SUM(a.reserva_cant_noches) DESC,COUNT(*) DESc
-
-         
 END
 GO
 
@@ -2289,19 +2377,24 @@ BEGIN
          INSERT INTO #trimestre(mes) VALUES (10), (11), (12);
      END
 
-      select top 5 cliente_apellido AS Apellido, cliente_nombre AS Nombre, 
-             SUM( (a.reserva_cant_noches*d.reserva_habitaciones_precio)/20 + (c.factura_item_monto * c.factura_item_cant)/10 ) AS [Cantidad de Puntos] 
-      from DENVER.reservas a JOIN DENVER.clientes b ON a.reserva_cliente_pasaporte_nro = b.cliente_pasaporte_nro
-                                                   AND a.reserva_cliente_tipo_documento_id = b.cliente_tipo_documento_id
-         JOIN DENVER.facturas_items c ON  a.reserva_codigo = c.factura_reserva_codigo
-             JOIN DENVER.reservas_habitaciones d ON a.reserva_codigo = d.reserva_habitaciones_reserva_codigo
-      where MONTH(a.reserva_fecha_inicio) IN (SELECT mes FROM #trimestre) AND year(a.reserva_fecha_inicio) = @anio
-            AND MONTH(a.reserva_fecha_fin) IN (SELECT mes FROM #trimestre) AND year (a.reserva_fecha_fin) = @anio
-          AND a.reserva_estado_id IN (6)
+      select top 5 
+            cliente_apellido AS Apellido, 
+            cliente_nombre AS Nombre, 
+            SUM((abs(a.reserva_cant_noches)*d.reserva_habitaciones_precio)/20 + (c.factura_item_monto * c.factura_item_cant)/10 ) AS [Cantidad de Puntos] 
+      from 
+            DENVER.reservas a 
+            JOIN DENVER.clientes b ON a.reserva_cliente_pasaporte_nro = b.cliente_pasaporte_nro AND a.reserva_cliente_tipo_documento_id = b.cliente_tipo_documento_id
+            JOIN DENVER.facturas_items c ON  a.reserva_codigo = c.factura_reserva_codigo
+            JOIN DENVER.reservas_habitaciones d ON a.reserva_codigo = d.reserva_habitaciones_reserva_codigo
+      where 
+            MONTH(a.reserva_fecha_inicio) IN (SELECT mes FROM #trimestre) 
+            AND MONTH(a.reserva_fecha_fin) IN (SELECT mes FROM #trimestre)
+            AND @anio IN (year(a.reserva_fecha_inicio), year (a.reserva_fecha_fin) )
+            AND a.reserva_estado_id IN (7)
       group by
             cliente_apellido, cliente_nombre
       order by
-            SUM( (a.reserva_cant_noches*d.reserva_habitaciones_precio)/20 + (c.factura_item_monto * c.factura_item_cant)/10 ) DESc
+            SUM((abs(a.reserva_cant_noches)*d.reserva_habitaciones_precio)/20 + (c.factura_item_monto * c.factura_item_cant)/10 ) DESc
             
 END
 GO
@@ -2681,6 +2774,8 @@ BEGIN
       declare @nro_reserva numeric(18,0);
       declare @total_consumo numeric(18,0) = 0; 
       declare @total_estadia numeric(18,0) = 0; 
+      declare @total_descuento numeric(18,0) = 0;       
+      declare @regimen_estadia numeric(18,0)
 
       -- obtengo nro_reserva
       select
@@ -2690,28 +2785,15 @@ BEGIN
       where
             r.reserva_cliente_tipo_documento_id = @tipo_documento and r.reserva_cliente_pasaporte_nro = @nro_documento and r.reserva_hotel_id = @hotel_id and @fecha_salida between r.reserva_fecha_inicio and r.reserva_fecha_fin AND r.reserva_estado_id = 6;
 
-      -- detalle de consumibles
-      select
-            c.consumible_id, c.consumible_descripcion as "Descripcion", c.consumible_precio as "Precio"
-      from
-            DENVER.consumibles_clientes as cc
-            join DENVER.consumibles as c on cc.consumible_cliente_consumible_id = c.consumible_id
-      where
-            cc.consumible_cliente_reserva_codigo = @nro_reserva
-
-      union all
-
-      -- detalle del hospedaje
+      -- averiguo si la reserva es ALL-INCLUSIVE
       SELECT
-            9999, 'Estadia desde el '+convert(varchar(50),rh.reserva_habitaciones_fecha_inicio,103)+' hasta '+convert(varchar(50),rh.reserva_habitaciones_fecha_fin,103)+' en '+th.tipo_habitacion_descripcion+' y '+reg.regimen_descripcion as "Descripcion", rh.reserva_habitaciones_precio * DENVER.cant_pasajeros_tipo_habitacion(th.tipo_habitacion_id) as "Precio"
+            @regimen_estadia = reg.regimen_id
       FROM
             DENVER.reservas as r
             join DENVER.reservas_habitaciones as rh ON r.reserva_codigo = rh.reserva_habitaciones_reserva_codigo
-            join DENVER.tipo_habitaciones as th on rh.reserva_habitaciones_tipo_habitacion_id = th.tipo_habitacion_id
             join DENVER.regimenes as reg on reg.regimen_id = rh.reserva_habitaciones_regimen_id
       WHERE
             r.reserva_codigo = @nro_reserva;
-
 
       -- Calculo el total de consumos
       select
@@ -2721,6 +2803,67 @@ BEGIN
             join DENVER.consumibles as c on cc.consumible_cliente_consumible_id = c.consumible_id
       where
             cc.consumible_cliente_reserva_codigo = @nro_reserva
+
+      -- Si es ALL-INCLUSIVE
+      IF @regimen_estadia = 3
+      BEGIN
+            SET @total_descuento = (@total_consumo * -1)
+
+            -- detalle de consumibles
+            (select
+                  c.consumible_id, c.consumible_descripcion as "Descripcion", c.consumible_precio as "Precio"
+            from
+                  DENVER.consumibles_clientes as cc
+                  join DENVER.consumibles as c on cc.consumible_cliente_consumible_id = c.consumible_id
+            where
+                  cc.consumible_cliente_reserva_codigo = @nro_reserva
+                  )
+            union all
+                  (
+            -- detalle del hospedaje
+            SELECT
+                  9999, 'Estadia desde el '+convert(varchar(50),rh.reserva_habitaciones_fecha_inicio,103)+' hasta '+convert(varchar(50),rh.reserva_habitaciones_fecha_fin,103)+' en '+th.tipo_habitacion_descripcion+' y '+reg.regimen_descripcion + ' (F. Egreso: '+convert(varchar(50),@fecha_salida,103)+')' as "Descripcion", rh.reserva_habitaciones_precio * DENVER.cant_pasajeros_tipo_habitacion(th.tipo_habitacion_id) as "Precio"
+            FROM
+                  DENVER.reservas as r
+                  join DENVER.reservas_habitaciones as rh ON r.reserva_codigo = rh.reserva_habitaciones_reserva_codigo
+                  join DENVER.tipo_habitaciones as th on rh.reserva_habitaciones_tipo_habitacion_id = th.tipo_habitacion_id
+                  join DENVER.regimenes as reg on reg.regimen_id = rh.reserva_habitaciones_regimen_id
+            WHERE
+                  r.reserva_codigo = @nro_reserva
+                  )
+            union all
+                  (
+            -- Descuento por Régimen de Estadía
+            SELECT
+                  9999, 'Descuento por Régimen de Estadía' as "Descripcion", @total_descuento  as "Precio"
+                  )
+      END
+      ELSE
+      BEGIN
+
+            -- detalle de consumibles
+            select
+                  c.consumible_id, c.consumible_descripcion as "Descripcion", c.consumible_precio as "Precio"
+            from
+                  DENVER.consumibles_clientes as cc
+                  join DENVER.consumibles as c on cc.consumible_cliente_consumible_id = c.consumible_id
+            where
+                  cc.consumible_cliente_reserva_codigo = @nro_reserva
+
+            union all
+
+            -- detalle del hospedaje
+            SELECT
+                  9999, 'Estadia desde el '+convert(varchar(50),rh.reserva_habitaciones_fecha_inicio,103)+' hasta '+convert(varchar(50),rh.reserva_habitaciones_fecha_fin,103)+' en '+th.tipo_habitacion_descripcion+' y '+reg.regimen_descripcion + ' (F. Egreso: '+convert(varchar(50),@fecha_salida,103)+')' as "Descripcion", rh.reserva_habitaciones_precio * DENVER.cant_pasajeros_tipo_habitacion(th.tipo_habitacion_id) as "Precio"
+            FROM
+                  DENVER.reservas as r
+                  join DENVER.reservas_habitaciones as rh ON r.reserva_codigo = rh.reserva_habitaciones_reserva_codigo
+                  join DENVER.tipo_habitaciones as th on rh.reserva_habitaciones_tipo_habitacion_id = th.tipo_habitacion_id
+                  join DENVER.regimenes as reg on reg.regimen_id = rh.reserva_habitaciones_regimen_id
+            WHERE
+                  r.reserva_codigo = @nro_reserva;
+
+      END
 
       -- Calculo el total de la estadia
       SELECT
@@ -2734,7 +2877,7 @@ BEGIN
             r.reserva_codigo = @nro_reserva;
 
       -- Calculo el total a facturar
-      SET @total_factura = @total_estadia + @total_consumo;
+      SET @total_factura = @total_estadia + @total_consumo + @total_descuento;
 
 END
 GO
@@ -2994,6 +3137,10 @@ BEGIN
 
       SELECT @nro_reserva = (SELECT TOP 1 reserva_codigo FROM [DENVER].[reservas] WHERE reserva_cliente_tipo_documento_id = @factura_cliente_tipo_documento AND reserva_cliente_pasaporte_nro = @factura_pasaporte_nro AND reserva_hotel_id = @factura_hotel_id AND 
             reserva_estado_id = 6 AND @fecha_egreso BETWEEN reserva_fecha_inicio AND reserva_fecha_fin)
+
+      -- cambio el estado de la reserva
+      exec DENVER.cambiar_estado_reserva @nro_reserva, 7
+
 END
 GO
 
@@ -3124,67 +3271,6 @@ BEGIN
             set @fecha_actual2 = dateadd(day, 1, @fecha_actual2)
       end
 
-END
-GO
-
--- SP PARA HABILITAR LA DISPONIBILIDAD EN UN RANGO DE FECHA
-CREATE PROCEDURE DENVER.habilitar_disponibilidad
-      @fecha_desde datetime = NULL,
-      @fecha_hasta datetime = NULL
-AS
-BEGIN
-      SET NOCOUNT ON;
-      
-      -- Creo Tabla Temporal de todas las fechas del rango indicado
-      CREATE TABLE #fechas
-      ( fecha datetime)
-
-      declare @fecha_actual datetime   
-
-      SET @fecha_actual = @fecha_desde
-
-      -- Cargo la Tabla Temporal
-      while (@fecha_actual <= @fecha_hasta)
-      begin
-          INSERT INTO #fechas(fecha) VALUES (@fecha_actual)
-          set @fecha_actual = dateadd(day, 1, @fecha_actual)
-      end
-
-      -- Completo las Disponibilidades con espacios libres
-      insert into denver.disponibilidades (
-            disponibilidad_hotel_id,
-            disponibilidad_habitacion_nro,
-            disponibilidad_tipo_habitacion_id,
-            disponibilidad_fecha,
-            disponibilidad_ocupado
-      )
-      (
-            SELECT
-                ho.hotel_id,
-                hab.habitacion_nro,
-                th.tipo_habitacion_id,
-                ff.fecha,
-                (SELECT TOP 1
-                        (CASE count(*) WHEN 0 THEN 0 ELSE 9 END) 
-                FROM
-                        DENVER.disponibilidades AS d
-                WHERE 
-                        d.disponibilidad_habitacion_nro = hab.habitacion_nro AND 
-                        d.disponibilidad_hotel_id = ho.hotel_id AND 
-                        d.disponibilidad_tipo_habitacion_id = th.tipo_habitacion_id AND
-                              d.disponibilidad_fecha = ff.fecha
-                )
-
-            FROM 
-                DENVER.habitaciones AS hab, DENVER.hoteles AS ho, DENVER.tipo_habitaciones AS th, #fechas as ff
-            WHERE
-                ho.hotel_id = hab.habitacion_hotel_id AND th.tipo_habitacion_id = hab.habitacion_tipo_habitacion_id
-      )
-
-      -- Borro aquellos registros con disponibilidad_ocupado = 9 que generan inconsistencias
-      DELETE FROM denver.disponibilidades WHERE disponibilidad_ocupado = 9
-
-      DROP TABLE #fechas            
 END
 GO
 
